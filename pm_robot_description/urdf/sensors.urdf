@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot
+  name="pm_robot_description">
+
+  <!-- Cam1 -->
+  <link name="camera_link"></link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="Camera_Module_Z_Axis"/>
+    <child link="camera_link"/>
+    <origin xyz="0.02 0.021 -0.16" rpy="0 1.570796 0 "/>
+  </joint>
+
+  <link name="camera_link_optical"></link>
+
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="Camera_Module_Z_Axis"/>
+    <child link="camera_link_optical"/>
+    <origin xyz="0 0 0" rpy="-1.570796 0 -1.570796 "/>
+  </joint>
+
+  <gazebo reference="camera_link">
+    <sensor type="camera" name="Cam1">
+      <pose>0 0 0 0 0 0 </pose>
+      <visualize>true</visualize>
+      <update_rate>14.6</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.050453012</horizontal_fov>
+        <image>
+          <width>2592</width>
+          <height>1942</height>
+          <format>L8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>0.114</far>
+        </clip>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <topicName>pm_robot_description/cam1</topicName>
+        <frameName>camera_link_optical</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Laser -->
+  <link name="laser_top_link"></link>
+
+  <joint name="laser_top_joint" type="fixed">
+    <parent link="Z_Axis"/>
+    <child link="laser_top_link"/>
+    <origin xyz="-0.08 0.122 -0.48" rpy="-1.570796 1.570796 0 "/>
+  </joint>
+
+  <gazebo reference="laser_top_link">
+    <sensor type="gpu_ray" name="laser_top">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>40</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.1</min_angle>
+            <max_angle>0.1</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.0057</min>
+          <max>0.0063</max>
+          <resolution>0.0001</resolution>
+        </range>
+        <!-- <noise>
+          <type>gaussian</type>
+          Noise parameters based on published spec for Hokuyo laser
+               achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+               stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+               reading.
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise> -->
+      </ray>
+      <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+        <topicName>laser/scan</topicName>
+        <frameName>laser_top_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>
