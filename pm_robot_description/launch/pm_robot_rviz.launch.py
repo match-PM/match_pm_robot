@@ -17,7 +17,6 @@ from launch_ros.parameter_descriptions import ParameterValue
 import xacro
 
 def generate_launch_description():
-    
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('pm_robot_description'))
     xacro_file = os.path.join(pkg_path,'urdf','main.xacro')
@@ -25,17 +24,6 @@ def generate_launch_description():
     
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
     pkg_rviz = get_package_share_directory('rviz2')
-
-    # # Gazebo launch
-    # gazebo = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(pkg_gazebo_ros, 'launch', 'gazebo.launch.py'),
-    #     )
-    # )
-
-    # urdf_tutorial_path = get_package_share_path('urdf_tutorial')
-    # default_model_path = urdf_tutorial_path / 'urdf/01-myfirst.urdf'
-    # default_rviz_config_path = urdf_tutorial_path / 'rviz/urdf.rviz'
 
     gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
                                     description='Flag to enable joint_state_publisher_gui')
@@ -77,12 +65,7 @@ def generate_launch_description():
     return LaunchDescription([
         gui_arg,
         model_arg,
-        # DeclareLaunchArgument(
-        #     'world', 
-        #     default_value=[os.path.join(pkg_dolly_gazebo, 'worlds', 'dolly_empty.world'), ''],
-        #     description='SDF world file'),
 
-        #gazebo,
         rviz_arg,
         # joint_state_publisher_node,
         joint_state_publisher_gui_node,

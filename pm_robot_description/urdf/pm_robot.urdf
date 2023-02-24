@@ -16,13 +16,13 @@
       rpy="0 0 0" />
   </joint>
 
-<gazebo reference="Nest">
+<!-- <gazebo reference="Nest">
     <material>Gazebo/Black</material>
-</gazebo>
+</gazebo> -->
 
-<gazebo reference="Component">
+<!-- <gazebo reference="Component">
     <material>Gazebo/White</material>
-</gazebo>
+</gazebo> -->
 
   <link
     name="base_link">
@@ -46,13 +46,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/base_link.STL" />
+          filename="file://$(find pm_robot_description)/meshes/base_link.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -60,7 +60,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/base_link.STL" />
+          filename="file://$(find pm_robot_description)/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -86,13 +86,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/X_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -100,7 +100,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/X_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
       </geometry>
     </collision>
   </link>
@@ -144,13 +144,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Y_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -158,7 +158,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Y_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
       </geometry>
     </collision>
   </link>
@@ -202,13 +202,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Z_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -216,7 +216,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Z_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
       </geometry>
     </collision>
   </link>
@@ -264,13 +264,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gripper_Rot_Plate.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -278,7 +278,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gripper_Rot_Plate.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
       </geometry>
     </collision>
   </link>
@@ -326,13 +326,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gripper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gripper.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -340,7 +340,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gripper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gripper.STL" />
       </geometry>
     </collision>
   </link>
@@ -383,13 +383,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Glue_Cartridge_Flap.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -397,7 +397,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Glue_Cartridge_Flap.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
       </geometry>
     </collision>
   </link>
@@ -445,13 +445,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Glue_Cartridge.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -459,7 +459,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Glue_Cartridge.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge.STL" />
       </geometry>
     </collision>
   </link>
@@ -507,13 +507,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/EQ.STL" />
+          filename="file://$(find pm_robot_description)/meshes/EQ.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -521,7 +521,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/EQ.STL" />
+          filename="file://$(find pm_robot_description)/meshes/EQ.STL" />
       </geometry>
     </collision>
   </link>
@@ -569,13 +569,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Camera_Module_Z_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Camera_Module_Z_Axis.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -583,7 +583,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Camera_Module_Z_Axis.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Camera_Module_Z_Axis.STL" />
       </geometry>
     </collision>
   </link>
@@ -627,13 +627,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Test_Station.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -641,7 +641,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Test_Station.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
       </geometry>
     </collision>
   </link>
@@ -680,13 +680,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Base_Rigth.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Rigth.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -694,7 +694,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Base_Rigth.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Rigth.STL" />
       </geometry>
     </collision>
   </link>
@@ -733,13 +733,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Stage_1_Gonio_Right.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Stage_1_Gonio_Right.STL" />
       </geometry>
-      <material
+<!--        <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material>  -->
     </visual>
     <collision>
       <origin
@@ -747,7 +747,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Stage_1_Gonio_Right.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Stage_1_Gonio_Right.STL" />
       </geometry>
     </collision>
   </link>
@@ -786,13 +786,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Stage_1_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Upper.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -800,7 +800,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Stage_1_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Upper.STL" />
       </geometry>
     </collision>
   </link>
@@ -844,13 +844,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Stage_2_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_2_Upper.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -858,7 +858,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Stage_2_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_2_Upper.STL" />
       </geometry>
     </collision>
   </link>
@@ -902,13 +902,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Nest.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Nest.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -916,7 +916,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Nest.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Nest.STL" />
       </geometry>
     </collision>
   </link>
@@ -933,7 +933,7 @@
     <axis
       xyz="0 0 0" />
   </joint>
-
+<!-- 
   <link
     name="Component">
     <inertial>
@@ -986,7 +986,7 @@
       link="Component" />
     <axis
       xyz="0 0 0" />
-  </joint>
+  </joint> -->
 
   <link
     name="Camera_System">
@@ -1010,13 +1010,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Camera_System.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Camera_System.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1024,7 +1024,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Camera_System.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Camera_System.STL" />
       </geometry>
     </collision>
   </link>
@@ -1063,13 +1063,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Camera_Calibration.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Camera_Calibration.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1077,7 +1077,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Camera_Calibration.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Camera_Calibration.STL" />
       </geometry>
     </collision>
   </link>
@@ -1121,13 +1121,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Base_Left.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Left.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1135,7 +1135,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Base_Left.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Left.STL" />
       </geometry>
     </collision>
   </link>
@@ -1174,13 +1174,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Left_Stage_1_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_1_Upper.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1188,7 +1188,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Left_Stage_1_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_1_Upper.STL" />
       </geometry>
     </collision>
   </link>
@@ -1232,13 +1232,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Left_Stage_2_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_2_Upper.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1246,7 +1246,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Left_Stage_2_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_2_Upper.STL" />
       </geometry>
     </collision>
   </link>
@@ -1290,13 +1290,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Mount_Lower.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Lower.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1304,7 +1304,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Mount_Lower.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Lower.STL" />
       </geometry>
     </collision>
   </link>
@@ -1343,13 +1343,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Mount_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Upper.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1357,7 +1357,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/Gonio_Right_Mount_Upper.STL" />
+          filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Upper.STL" />
       </geometry>
     </collision>
   </link>
@@ -1396,13 +1396,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Cart_Left.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Cart_Left.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1410,7 +1410,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Cart_Left.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Cart_Left.STL" />
       </geometry>
     </collision>
   </link>
@@ -1454,13 +1454,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Module_Left.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Module_Left.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1468,7 +1468,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Module_Left.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Module_Left.STL" />
       </geometry>
     </collision>
   </link>
@@ -1512,13 +1512,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Cart_Right.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Cart_Right.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1526,7 +1526,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Cart_Right.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Cart_Right.STL" />
       </geometry>
     </collision>
   </link>
@@ -1570,13 +1570,13 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Module_Right.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Module_Right.STL" />
       </geometry>
-      <material
+<!--       <material
         name="">
         <color
           rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      </material> -->
     </visual>
     <collision>
       <origin
@@ -1584,7 +1584,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://pm_robot_description/meshes/UV_Module_Right.STL" />
+          filename="file://$(find pm_robot_description)/meshes/UV_Module_Right.STL" />
       </geometry>
     </collision>
   </link>
