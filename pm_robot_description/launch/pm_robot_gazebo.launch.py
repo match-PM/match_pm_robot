@@ -22,7 +22,7 @@ def generate_launch_description():
 
 
     # Configure the node
-    node_robot_state_publisher = Node(
+    robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
@@ -47,7 +47,7 @@ def generate_launch_description():
     # Run the node
     return LaunchDescription([
         gazebo,
-        node_robot_state_publisher,
+        robot_state_publisher_node,
         spawn_entity
     ])
 

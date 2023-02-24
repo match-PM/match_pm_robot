@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot
-  name="pm_robot_description">
+  name="pm_robot">
 
   <!-- Cam1 -->
   <link name="camera_link"></link>
