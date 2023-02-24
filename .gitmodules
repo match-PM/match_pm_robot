@@ -1,0 +1,8 @@
+[submodule "pm_robot_submodules/pylon-ros-camera"]
+	path = pm_robot_submodules/pylon-ros-camera
+	url = https://github.com/basler/pylon-ros-camera.git
+	branch = humble
+[submodule "pm_robot_submodules/image_common"]
+	path = pm_robot_submodules/image_common
+	url = https://github.com/ros-perception/image_common.git
+	branch = humble
