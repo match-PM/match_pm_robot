@@ -7,17 +7,24 @@
             <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </hardware>
         <joint name="X_Axis_Joint">
-            <command_interface name="velocity">
+            <command_interface name="position">
                 <param name="min">-10000</param>
                 <param name="max">10000</param>
             </command_interface>
-            <state_interface name="velocity"/>
+            <state_interface name="position"/>
+        </joint>
+        <joint name="Y_Axis_Joint">
+            <command_interface name="position">
+                <param name="min">-10000</param>
+                <param name="max">10000</param>
+            </command_interface>
+            <state_interface name="position"/>
         </joint>
     </ros2_control>
 
     <gazebo>
         <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-            <parameters>$(find pm_robot_description)/config/controller.yaml</parameters>
+            <parameters>$(find pm_robot_description)/config/control.yaml</parameters>
         </plugin>
     </gazebo>
 

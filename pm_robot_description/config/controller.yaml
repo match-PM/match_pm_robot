@@ -4,7 +4,7 @@ controller_manager:
     use_sim_time: true
 
     diff_cont:
-      type: diff_drive_controller/DiffDriveController
+      type: diff_drive_controller/
 
     joint_broad:
       type: joint_state_broadcaster/JointStateBroadcaster
