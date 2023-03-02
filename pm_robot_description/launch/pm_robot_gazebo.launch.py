@@ -7,7 +7,8 @@ from launch.actions import IncludeLaunchDescription
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-from launch.actions import TimerAction
+from launch.actions import RegisterEventHandler
+from launch.event_handlers import OnProcessExit
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -65,23 +66,33 @@ def generate_launch_description():
     robot_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
-        arguments= ["joint_trajectory_controller", "--controller-manager", "/controller_manager"],
+        arguments= ["joint_trajectory_controller"],
     )
 
     joint_broad_spawner = Node(
         package='controller_manager',
         executable='spawner',
-        arguments= ["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
+        arguments= ["joint_state_broadcaster"],
     )
+
+
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_broad_spawner,
+            on_exit=[robot_controller_spawner],
+        )
+    )
+
 
     # Run the node
     return LaunchDescription([
         gazebo,
         #control_node,
         robot_state_publisher_node,
-        spawn_entity,
-        robot_controller_spawner,
         joint_broad_spawner,
+        spawn_entity,
+        delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
     ])
 
 

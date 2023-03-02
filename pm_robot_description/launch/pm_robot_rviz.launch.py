@@ -62,13 +62,28 @@ def generate_launch_description():
         arguments=['-d', LaunchConfiguration('rvizconfig')],
     )
 
+    robot_controller_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments= ["forward_position_controller"],
+    )
+
+    joint_broad_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments= ["joint_state_broadcaster"],
+    )
+
+
     return LaunchDescription([
         gui_arg,
         model_arg,
 
         rviz_arg,
         # joint_state_publisher_node,
-        joint_state_publisher_gui_node,
+        #joint_state_publisher_gui_node,
         robot_state_publisher_node,
-        rviz_node
+        rviz_node,
+        joint_broad_spawner,
+        robot_controller_spawner,
     ])
