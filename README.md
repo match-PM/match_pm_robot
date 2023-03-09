@@ -44,4 +44,5 @@ ros2 launch pm_robot_description pm_robot_gazebo.rviz.py
 ```
 
 ## 4. External documentation
-[ROS2 Tutorial](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html)
+[ROS 2 - Humble - Documentation and Tutorial](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html)
+[Building a robot with ROS2](https://www.youtube.com/@ArticulatedRobotics/playlists)
