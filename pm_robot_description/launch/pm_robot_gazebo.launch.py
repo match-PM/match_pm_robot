@@ -69,6 +69,12 @@ def generate_launch_description():
         arguments= ["joint_trajectory_controller"],
     )
 
+    robot_controller_forward_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments= ["forward_position_controller"],
+    )
+
     joint_broad_spawner = Node(
         package='controller_manager',
         executable='spawner',
@@ -84,15 +90,25 @@ def generate_launch_description():
         )
     )
 
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_robot_controller_spawner_after_controller = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=robot_controller_spawner,
+            on_exit=[robot_controller_forward_spawner],
+        )
+    )
+
 
     # Run the node
     return LaunchDescription([
         gazebo,
-        #control_node,
+        control_node,
         robot_state_publisher_node,
         joint_broad_spawner,
         spawn_entity,
+        #robot_controller_forward_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
+        delay_robot_controller_spawner_after_controller,
     ])
 
 
