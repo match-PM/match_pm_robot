@@ -102,7 +102,7 @@ def generate_launch_description():
     # Run the node
     return LaunchDescription([
         gazebo,
-        control_node,
+        #control_node,
         robot_state_publisher_node,
         joint_broad_spawner,
         spawn_entity,

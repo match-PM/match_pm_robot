@@ -4,7 +4,7 @@
   xmlns:xacro="https://ros.org/wiki/xacro">
 
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot.urdf" />
-  <!-- <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" /> -->
+  <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" />
 
 </robot>
