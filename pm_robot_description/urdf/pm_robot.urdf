@@ -13,9 +13,9 @@
     <origin xyz="0 0 0" rpy="0 0 0" />
   </joint>
 
-  <!-- <gazebo reference="Nest">
-    <material>Gazebo/Black</material>
-</gazebo> -->
+  <!-- <gazebo reference="base_link">
+    <material>Gazebo/Blue</material>
+  </gazebo> -->
 
   <!-- <gazebo reference="Component">
     <material>Gazebo/White</material>
@@ -38,6 +38,9 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/base_link.STL" />
       </geometry>
+      <material name="">
+        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
     </collision>
   </link>
 
@@ -162,9 +165,9 @@
 
   <link name="Gripper">
     <inertial>
-      <origin xyz="0.000135108807628681 -1.05111383998813E-05 -0.0292448632131201" rpy="0 0 0" />
-      <mass value="0.127647896986229" />
-      <inertia ixx="2.5142711578718E-05" ixy="-1.59474432850153E-08" ixz="3.3525019883474E-09" iyy="2.54173373628528E-05" iyz="4.55516572819561E-10" izz="4.13581383274998E-05" />
+      <origin xyz="-3.43029364781033E-05 -2.0382712019356E-05 0.0426309002703344" rpy="0 0 0" />
+      <mass value="0.123801210587509" />
+      <inertia ixx="2.48847691501343E-05" ixy="-1.96701975168782E-08" ixz="3.35250198834726E-09" iyy="2.52844539238953E-05" iyz="4.55516572819596E-10" izz="4.09732369514151E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -185,136 +188,136 @@
   </gazebo>
 
   <joint name="Gripper_Joint" type="fixed">
-    <origin xyz="0 0 -0.0255000000000101" rpy="0 0 0" />
+    <origin xyz="0 0 -0.096" rpy="0 0 0" />
     <parent link="Gripper_Rot_Plate" />
     <child link="Gripper" />
     <axis xyz="0 0 0" />
   </joint>
 
-  <link name="Glue_Cartridge_Flap">
+  <link name="1K_Dispenser_Flap">
     <inertial>
-      <origin xyz="0.0700781843320127 0.0170691077164346 -0.0129807443134584" rpy="0 0 0" />
+      <origin xyz="0.0700781843320345 0.0170691077164346 -0.0129807443134493" rpy="0 0 0" />
       <mass value="0.0179277924431146" />
       <inertia ixx="4.17419773394052E-06" ixy="1.29835566651964E-07" ixz="-6.29537316660378E-08" iyy="5.0332526265048E-06" iyz="-9.02306176061445E-09" izz="4.11888432036329E-06" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser_Flap.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser_Flap.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Glue_Cartridge_Flap">
+  <gazebo reference="1K_Dispenser_Flap">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Glue_Cartridge_Flap_Joint" type="prismatic">
-    <origin xyz="0.0750000000000233 0.0545000062570286 -0.412499999999991" rpy="0 0 0" />
+  <joint name="1K_Dispenser_Flap_Joint" type="prismatic">
+    <origin xyz="0.075 0.0545 -0.4125" rpy="0 0 0" />
     <parent link="Z_Axis" />
-    <child link="Glue_Cartridge_Flap" />
+    <child link="1K_Dispenser_Flap" />
     <axis xyz="-1 0 0" />
     <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
   </joint>
 
-  <link name="Glue_Cartridge">
+  <link name="1K_Dispenser">
     <inertial>
-      <origin xyz="0.00252184437967673 0.0162311247825426 -0.0902228052383323" rpy="0 0 0" />
-      <mass value="0.0725671789065893" />
-      <inertia ixx="3.42933852013293E-05" ixy="-1.91967791577504E-07" ixz="5.62664387056898E-08" iyy="3.4047535660396E-05" iyz="-5.6636413986979E-07" izz="1.14639175061085E-05" />
+      <origin xyz="0.00152170573859456 -0.0155689227694598 0.0732771947044504" rpy="0 0 0" />
+      <mass value="0.0725671789847037" />
+      <inertia ixx="3.42933852018174E-05" ixy="-1.9196779157754E-07" ixz="5.6266438742732E-08" iyy="3.40475356608841E-05" iyz="-5.66364139854928E-07" izz="1.14639175060998E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Glue_Cartridge">
+  <gazebo reference="1K_Dispenser">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Glue_Cartridge_Joint" type="prismatic">
-    <origin xyz="0.171500000000024 0.0582000062570286 -0.341999999999991" rpy="0 0 0" />
+  <joint name="1K_Dispenser_Joint" type="prismatic">
+    <origin xyz="0.1725 0.09 -0.4655" rpy="0 0 0" />
     <parent link="Z_Axis" />
-    <child link="Glue_Cartridge" />
-    <axis xyz="0 0 1" />
+    <child link="1K_Dispenser" />
+    <axis xyz="0 0 -1" />
     <limit lower="0" upper="0.04" effort="100" velocity="0.05" />
   </joint>
 
-  <link name="EQ">
+  <link name="2K_Dispenser">
     <inertial>
-      <origin xyz="-0.000295411016381641 0.0248543962427798 0.0574291260378159" rpy="0 0 0" />
-      <mass value="0.398291319329287" />
-      <inertia ixx="0.00156701563987073" ixy="-4.41604324049231E-06" ixz="9.92168040657486E-08" iyy="0.00155258685914303" iyz="1.49787524994666E-06" izz="0.000122318061840883" />
+      <origin xyz="-7.70076275026232E-05 -0.00407732001221047 0.227924914909323" rpy="0 0 0" />
+      <mass value="0.313852053537918" />
+      <inertia ixx="0.00144466288151759" ixy="-1.68460920250166E-06" ixz="4.60612004407554E-08" iyy="0.00144815492756172" iyz="6.36164062970036E-07" izz="7.84175515924672E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/EQ.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/2K_Dispenser.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/EQ.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/2K_Dispenser.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="EQ">
+  <gazebo reference="2K_Dispenser">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="EQ_Joint" type="prismatic">
-    <origin xyz="0.236500000000024 0.0322575758254202 -0.310499999999992" rpy="0 0 0" />
+  <joint name="2K_Dispenser_Joint" type="prismatic">
+    <origin xyz="0.2365 0.0618 -0.4695" rpy="0 0 0" />
     <parent link="Z_Axis" />
-    <child link="EQ" />
+    <child link="2K_Dispenser" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
   </joint>
 
-  <link name="Camera_Module_Z_Axis">
+  <link name="Camera_Top_View">
     <inertial>
-      <origin xyz="0.0116313616057115 0.0214231207637281 -0.0632876276111702" rpy="0 0 0" />
+      <origin xyz="-0.00836863839426638 -7.6879236264973E-05 0.0937623632384506" rpy="0 0 0" />
       <mass value="0.0744906107551854" />
-      <inertia ixx="3.47731720414153E-05" ixy="6.43752140750256E-10" ixz="3.28409092724849E-07" iyy="3.75323274030922E-05" iyz="1.11954348594254E-07" izz="9.810378338093E-06" />
+      <inertia ixx="3.47731720414153E-05" ixy="6.43752140750263E-10" ixz="3.28409092724849E-07" iyy="3.75323274030922E-05" iyz="1.11954348594254E-07" izz="9.81037833809299E-06" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Module_Z_Axis.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Top_View.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Module_Z_Axis.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Top_View.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Camera_Module_Z_Axis">
+  <gazebo reference="Camera_Top_View">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Camera_Module_Z_Axis_Joint" type="fixed">
+  <joint name="Camera_Top_View_Joint" type="fixed">
     <origin xyz="0.0795000000000243 0.068500020970708 -0.233999999999991" rpy="0 0 0" />
     <parent link="Z_Axis" />
-    <child link="Camera_Module_Z_Axis" />
+    <child link="Camera_Top_View" />
     <axis xyz="0 0 0" />
   </joint>
 
@@ -345,152 +348,152 @@
     <axis xyz="0 0 0" />
   </joint>
 
-  <link name="Gonio_Base_Rigth">
+  <link name="Gonio_Right">
     <inertial>
-      <origin xyz="-0.443310661236087 0.0330000000000467 -0.10131041089702" rpy="0 0 0" />
+      <origin xyz="0.0449999999999999 0.0325 0.0840750321735946" rpy="0 0 0" />
       <mass value="0.735149712395274" />
-      <inertia ixx="0.00216091772202082" ixy="1.66756120275789E-18" ixz="2.02637515337738E-06" iyy="0.00218184071743384" iyz="8.52621696064458E-20" izz="0.000537837036237896" />
+      <inertia ixx="0.00216092025189497" ixy="-1.87538337450467E-19" ixz="3.93169924044221E-19" iyy="0.00218184071743384" iyz="-2.42183278976623E-19" izz="0.000537834506363752" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Rigth.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Rigth.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right.STL" />
       </geometry>
     </collision>
   </link>
 
-  <joint name="Gonio_base_Rigth_Joint" type="fixed">
-    <origin xyz="0.843436798933783 0.769499999999991 0.297531903269611" rpy="0 0.00124847209373138 0" />
+  <joint name="Gonio_Right_Joint" type="fixed">
+    <origin xyz="0.355 0.77 0.1127" rpy="0 0 0" />
     <parent link="base_link" />
-    <child link="Gonio_Base_Rigth" />
+    <child link="Gonio_Right" />
     <axis xyz="0 0 0" />
   </joint>
 
-  <link name="Stage_1_Gonio_Right">
+  <link name="Gonio_Right_Stage_1_Bottom">
     <inertial>
-      <origin xyz="0.0450000285629691 0.0154464744552945 0.180028793226625" rpy="0 0 0" />
+      <origin xyz="0.032500028562969 0.0154464744552945 0.0080287932266252" rpy="0 0 0" />
       <mass value="0.0706349432835735" />
-      <inertia ixx="3.36962706733939E-05" ixy="-7.72258833183303E-11" ixz="-1.91981813462905E-11" iyy="1.8004068123271E-05" iyz="-1.39266767162838E-07" izz="4.86217530226209E-05" />
+      <inertia ixx="3.3696270673394E-05" ixy="-7.72258833163221E-11" ixz="-1.9198181347533E-11" iyy="1.8004068123271E-05" iyz="-1.39266767162837E-07" izz="4.86217530226209E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Stage_1_Gonio_Right.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Bottom.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Stage_1_Gonio_Right.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Bottom.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Stage_1_Gonio_Right">
+  <gazebo reference="Gonio_Right_Stage_1_Bottom">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Stage_1_Gonio_Right_Joint" type="fixed">
-    <origin xyz="-0.488205660861556 0.00050000000005054 -0.185441558777103" rpy="0 -0.00124847209373138 0" />
-    <parent link="Gonio_Base_Rigth" />
-    <child link="Stage_1_Gonio_Right" />
+  <joint name="Gonio_Right_Stage_1_Bottom_Joint" type="fixed">
+    <origin xyz="0.0125 0 0.172" rpy="0 0 0" />
+    <parent link="Gonio_Right" />
+    <child link="Gonio_Right_Stage_1_Bottom" />
     <axis xyz="0 0 0" />
   </joint>
 
-  <link name="Gonio_Right_Stage_1_Upper">
+  <link name="Gonio_Right_Stage_1_Top">
     <inertial>
-      <origin xyz="0.0236093552066096 0.000777611453360041 -0.07883096150979" rpy="0 0 0" />
-      <mass value="0.135485840705969" />
-      <inertia ixx="4.16210427703093E-05" ixy="1.17487642350012E-09" ixz="-1.10761881698597E-07" iyy="6.29240886667246E-05" iyz="-3.38034194495186E-07" izz="9.71875209897851E-05" />
+      <origin xyz="0.0236093539945057 -1.22301523672319E-07 -0.0788347959618205" rpy="0 0 0" />
+      <mass value="0.13548582818363" />
+      <inertia ixx="4.16210408086868E-05" ixy="8.20165430498813E-11" ixz="-1.10768531937264E-07" iyy="6.29207513367842E-05" iyz="3.62318914641735E-11" izz="9.71908514123069E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Top.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_1_Top.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Gonio_Right_Stage_1_Upper">
+  <gazebo reference="Gonio_Right_Stage_1_Top">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Gonio_Right_Stage_1_Upper_Joint" type="revolute">
-    <origin xyz="0.0125000000000001 0.0325000000000001 0.281999999999999" rpy="0 0 0" />
-    <parent link="Stage_1_Gonio_Right" />
-    <child link="Gonio_Right_Stage_1_Upper" />
+  <joint name="Gonio_Right_Stage_1_Top_Joint" type="revolute">
+    <origin xyz="0 0.0325 0.11" rpy="0 0 0" />
+    <parent link="Gonio_Right_Stage_1_Bottom" />
+    <child link="Gonio_Right_Stage_1_Top" />
     <axis xyz="1 0 0" />
     <limit lower="-0.087266" upper="0.087266" effort="100" velocity="0.1" />
   </joint>
 
-  <link name="Gonio_Right_Stage_2_Upper">
+  <link name="Gonio_Right_Stage_2_Bottom">
     <inertial>
-      <origin xyz="-6.53148646279078E-10 -0.0325000008448236 -0.0578599602398864" rpy="0 0 0" />
-      <mass value="0.0546397592722759" />
-      <inertia ixx="2.38958843339078E-05" ixy="-1.0219765031195E-11" ixz="8.98389909344655E-13" iyy="1.83573881738552E-05" iyz="-3.15839883014258E-13" izz="3.93608769988889E-05" />
+      <origin xyz="-7.70699615237902E-10 -0.0325000008115904 -0.0578599597513434" rpy="0 0 0" />
+      <mass value="0.0546397543064686" />
+      <inertia ixx="2.38958828661972E-05" ixy="-1.02198811905052E-11" ixz="8.61195749809568E-13" iyy="1.83573872586573E-05" iyz="-3.0349864733646E-13" izz="3.9360874992296E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_2_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_2_Bottom.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_2_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Stage_2_Bottom.STL" />
       </geometry>
     </collision>
   </link>
 
-  <joint name="Gonio_Right_Stage_2_Upper_Joint" type="revolute">
-    <origin xyz="0.0325 0.0324984184257152 0.000320624121260105" rpy="0.00986554689296988 0.00243647716593582 2.40379358152113E-05" />
-    <parent link="Gonio_Right_Stage_1_Upper" />
-    <child link="Gonio_Right_Stage_2_Upper" />
+  <joint name="Gonio_Right_Stage_2_Bottom_Joint" type="revolute">
+    <origin xyz="0.0325 0.0325 0" rpy="0 0 0" />
+    <parent link="Gonio_Right_Stage_1_Top" />
+    <child link="Gonio_Right_Stage_2_Bottom" />
     <axis xyz="0 -1 0" />
     <limit lower="-0.17453" upper="0.17453" effort="100" velocity="0.1" />
   </joint>
 
-  <link name="Nest">
+  <link name="Gonio_Right_Holder">
     <inertial>
-      <origin xyz="0.032450872460221 0.0324929107955899 0.0216564841431486" rpy="0 0 0" />
-      <mass value="0.133934804260549" />
-      <inertia ixx="3.05433990945617E-05" ixy="-2.55507778379188E-10" ixz="-1.74866992826515E-08" iyy="4.8078789038224E-05" iyz="2.24246440407081E-09" izz="7.18729232272563E-05" />
+      <origin xyz="0.0324508724608161 0.0324929107965058 0.0216564841336893" rpy="0 0 0" />
+      <mass value="0.133934804202608" />
+      <inertia ixx="3.05433990945279E-05" ixy="-2.55507616626323E-10" ixz="-1.74866993077662E-08" iyy="4.80787890381725E-05" iyz="2.24246430304669E-09" izz="7.18729232269435E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Nest.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Holder.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Nest.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Holder.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Nest">
+  <gazebo reference="Gonio_Right_Holder">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Nest_Joint" type="fixed">
-    <origin xyz="-0.0324999999999999 -0.065 -0.0499999999999998" rpy="0 0 0" />
-    <parent link="Gonio_Right_Stage_2_Upper" />
-    <child link="Nest" />
+  <joint name="Gonio_Right_Holder_Joint" type="fixed">
+    <origin xyz="-0.0325 -0.065 -0.05" rpy="0 0 0" />
+    <parent link="Gonio_Right_Stage_2_Bottom" />
+    <child link="Gonio_Right_Holder" />
     <axis xyz="0 0 0" />
   </joint>
   <!-- 
@@ -578,268 +581,238 @@
     <limit lower="-0.04" upper="0.0" effort="100" velocity="0.05" />
   </joint>
 
-  <link name="Gonio_Base_Left">
+  <link name="Gonio_Station_Left">
     <inertial>
-      <origin xyz="0.126941450046363 0.123518998015631 0.100678856473502" rpy="0 0 0" />
+      <origin xyz="0.126941450046374 0.123518998015631 0.1006788564735" rpy="0 0 0" />
       <mass value="4.82459847582554" />
-      <inertia ixx="0.011510655159352" ixy="-3.33565784736191E-05" ixz="1.45496624991337E-06" iyy="0.0188665286335149" iyz="2.60234058906314E-05" izz="0.0269849279870219" />
+      <inertia ixx="0.011510655159352" ixy="-3.33565784736203E-05" ixz="1.4549662499136E-06" iyy="0.0188665286335149" iyz="2.6023405890632E-05" izz="0.0269849279870219" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Left.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Station_Left.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Base_Left.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Station_Left.STL" />
       </geometry>
     </collision>
   </link>
 
-  <joint name="Gonio_Base_Left_Joint" type="fixed">
-    <origin xyz="0.752500000000035 0.684500000000037 0.100000000000003" rpy="0 0 0" />
+  <joint name="Gonio_Station_Left_Joint" type="fixed">
+    <origin xyz="0.7525 0.6845 0.1" rpy="0 0 0" />
     <parent link="base_link" />
-    <child link="Gonio_Base_Left" />
+    <child link="Gonio_Station_Left" />
     <axis xyz="0 0 0" />
   </joint>
 
-  <link name="Gonio_Left_Stage_1_Upper">
+  <link name="Gonio_Left_Stage_1_Top">
     <inertial>
-      <origin xyz="-0.0997824878967629 -0.00877925652714914 -0.0446785627316291" rpy="0 0 0" />
+      <origin xyz="0.441717512103237 0.0157207434728389 -0.0168785627316275" rpy="0 0 0" />
       <mass value="0.578798857286943" />
-      <inertia ixx="0.000400478324367352" ixy="-0.000129239522587823" ixz="-7.82346515363914E-07" iyy="0.00157904583991977" iyz="5.25968237719547E-06" izz="0.00188005175520343" />
+      <inertia ixx="0.000400478324367374" ixy="-0.000129239522587925" ixz="-7.82346515349789E-07" iyy="0.00157904583991975" iyz="5.25968237719649E-06" izz="0.00188005175520343" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_1_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_1_Top.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_1_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_1_Top.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Gonio_Left_Stage_1_Upper">
+  <gazebo reference="Gonio_Left_Stage_1_Top">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Gonio_Left_Stage_1_Upper_Joint" type="revolute">
-    <origin xyz="0.156499999999957 0.109999999999947 0.212499999999997" rpy="0 0 0" />
-    <parent link="Gonio_Base_Left" />
-    <child link="Gonio_Left_Stage_1_Upper" />
+  <joint name="Gonio_Left_Stage_1_Top_Joint" type="revolute">
+    <origin xyz="-0.385 0.0855 0.1847" rpy="0 0 0" />
+    <parent link="Gonio_Station_Left" />
+    <child link="Gonio_Left_Stage_1_Top" />
     <axis xyz="1 0 0" />
     <limit lower="-0.78539816339745" upper="0.78539816339745" effort="100" velocity="0.1" />
   </joint>
 
-  <link name="Gonio_Left_Stage_2_Upper">
+  <link name="Gonio_Left_Stage_2_Bottom">
     <inertial>
-      <origin xyz="-2.64677118601286E-05 -0.0250000000001234 -0.0212004406894863" rpy="0 0 0" />
-      <mass value="0.0270626702476323" />
-      <inertia ixx="6.08759497527378E-06" ixy="4.08430684508571E-14" ixz="4.39226594546324E-09" iyy="4.36785275766636E-06" iyz="-1.45383292013094E-16" izz="9.60639482996178E-06" />
+      <origin xyz="-2.64677118613499E-05 -0.0250000000001235 -0.0212004406894877" rpy="0 0 0" />
+      <mass value="0.0270626702476316" />
+      <inertia ixx="6.0875949752737E-06" ixy="4.0843086178767E-14" ixz="4.39226594548136E-09" iyy="4.3678527576662E-06" iyz="-1.45383756456795E-16" izz="9.60639482996156E-06" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_2_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_2_Bottom.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_2_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Stage_2_Bottom.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Gonio_Left_Stage_2_Upper">
+  <gazebo reference="Gonio_Left_Stage_2_Bottom">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Gonio_Left_Stage_2_Upper_Joint" type="revolute">
-    <origin xyz="-0.04 0.025 0" rpy="0 0 0" />
-    <parent link="Gonio_Left_Stage_1_Upper" />
-    <child link="Gonio_Left_Stage_2_Upper" />
+  <joint name="Gonio_Left_Stage_2_Bottom_Joint" type="revolute">
+    <origin xyz="0.5015 0.0495 0.0278" rpy="0 0 0" />
+    <parent link="Gonio_Left_Stage_1_Top" />
+    <child link="Gonio_Left_Stage_2_Bottom" />
     <axis xyz="0 -1 0" />
     <limit lower="-0.78539816339745" upper="0.78539816339745" effort="100" velocity="0.1" />
   </joint>
 
-  <link name="Gonio_Right_Mount_Lower">
+  <link name="Gonio_Left_Holder">
     <inertial>
-      <origin xyz="0.0162416232097771 0.0179266836523483 0.0446054201820039" rpy="0 0 0" />
-      <mass value="0.193859196114997" />
-      <inertia ixx="6.6965131704231E-05" ixy="1.79270793281868E-07" ixz="9.94006466314354E-07" iyy="0.000515179692751325" iyz="1.1170065098574E-06" izz="0.000471145863687032" />
+      <origin xyz="-8.16234952583095E-06 0.000868103725036456 0.0372986798808728" rpy="0 0 0" />
+      <mass value="0.0867575149913971" />
+      <inertia ixx="1.95387400200554E-05" ixy="-3.74468433384855E-08" ixz="2.11182940827672E-09" iyy="2.93438945343926E-05" iyz="-1.58397799890559E-06" izz="2.35055782299783E-05" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Lower.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Holder.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Lower.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left_Holder.STL" />
       </geometry>
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Gonio_Right_Mount_Lower">
+  <gazebo reference="Gonio_Left_Holder">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Gonio_Right_Mount_Lower_joint" type="fixed">
-    <origin xyz="-0.0255632010662045 -0.05 -0.0149680967303876" rpy="0 0.00124847209372143 0" />
-    <parent link="Gonio_Left_Stage_2_Upper" />
-    <child link="Gonio_Right_Mount_Lower" />
+  <joint name="Gonio_Left_Holder_Joint" type="fixed">
+    <origin xyz="-1.8727E-05 -0.025 -0.015" rpy="0 0.00124847209372143 0" />
+    <parent link="Gonio_Left_Stage_2_Bottom" />
+    <child link="Gonio_Left_Holder" />
     <axis xyz="0 0 0" />
   </joint>
 
-  <link name="Gonio_Right_Mount_Upper">
+  <link name="UV_Slider_X_Front">
     <inertial>
-      <origin xyz="0.0138876332089552 0.0253601886212102 0.0864002192139908" rpy="0 0 0" />
-      <mass value="0.0762325967846099" />
-      <inertia ixx="1.37177472529419E-05" ixy="-1.46120092158232E-07" ixz="-6.17955623619177E-07" iyy="0.000262744933743385" iyz="8.65502713401381E-08" izz="0.000253259614960968" />
+      <origin xyz="0.109018366442936 -0.0253104400388921 0.0106949485904499" rpy="0 0 0" />
+      <mass value="0.127959263611524" />
+      <inertia ixx="5.21591452075977E-05" ixy="6.20383441117002E-08" ixz="-1.12100819961411E-07" iyy="6.0558318727666E-05" iyz="5.20562066915974E-08" izz="0.0001087127585747" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Upper.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Slider_X_Front.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right_Mount_Upper.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <!---Gravity off-->
-  <gazebo reference="Gonio_Right_Mount_Upper">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-
-
-  <joint name="Gonio_Right_Mount_Upper_Joint" type="fixed">
-    <origin xyz="0.000544493897539577 0 0" rpy="0 -0.00124847209372143 0" />
-    <parent link="Gonio_Right_Mount_Lower" />
-    <child link="Gonio_Right_Mount_Upper" />
-    <axis xyz="0 0 0" />
-  </joint>
-
-  <link name="UV_Cart_Left">
-    <inertial>
-      <origin xyz="0.109018366442935 -0.0253104400388921 0.0106949485904486" rpy="0 0 0" />
-      <mass value="0.127959263611525" />
-      <inertia ixx="5.21591452075977E-05" ixy="6.20383441116901E-08" ixz="-1.12100819961438E-07" iyy="6.05583187276661E-05" iyz="5.20562066916109E-08" izz="0.0001087127585747" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Cart_Left.STL" />
-      </geometry>
-    </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Cart_Left.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Slider_X_Front.STL" />
       </geometry>
     </collision>
   </link>
 
-  <joint name="UV_Cart_Left_Joint" type="prismatic">
-    <origin xyz="0.00649999999276624 0.231179999755626 0.252599999998818" rpy="0 0 0" />
-    <parent link="Gonio_Base_Left" />
-    <child link="UV_Cart_Left" />
+  <joint name="UV_Slider_X_Front_Joint" type="prismatic">
+    <origin xyz="0.0065 0.23118 0.2526" rpy="0 0 0" />
+    <parent link="Gonio_Station_Left" />
+    <child link="UV_Slider_X_Front" />
     <axis xyz="-1 0 0" />
     <limit lower="-0.05" upper="0.095" effort="100" velocity="0.05" />
   </joint>
 
-  <link name="UV_Module_Left">
+  <link name="UV_LED_Front">
     <inertial>
-      <origin xyz="-0.00149625704690598 -0.0153546654161227 0.0150907885908851" rpy="0 0 0" />
-      <mass value="0.119915229322348" />
-      <inertia ixx="8.58688560134339E-05" ixy="-9.33412693374149E-06" ixz="-2.12947224034943E-07" iyy="1.98652847972192E-05" iyz="-9.66953808948319E-07" izz="0.000101234986556129" />
+      <origin xyz="-0.00149625704689468 -0.0153546654161202 0.015090788590886" rpy="0 0 0" />
+      <mass value="0.119915229322347" />
+      <inertia ixx="8.58688560134332E-05" ixy="-9.33412693374037E-06" ixz="-2.12947224034983E-07" iyy="1.98652847972186E-05" iyz="-9.669538089484E-07" izz="0.000101234986556127" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Module_Left.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_LED_Front.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Module_Left.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_LED_Front.STL" />
       </geometry>
     </collision>
   </link>
 
-  <joint name="UV_Module_Left_Joint" type="prismatic">
-    <origin xyz="0.109999999999999 0.0238200000000034 0.0276000000000078" rpy="0 0 0" />
-    <parent link="UV_Cart_Left" />
-    <child link="UV_Module_Left" />
+  <joint name="UV_LED_Front_Joint" type="prismatic">
+    <origin xyz="0.11 0.02382 0.0276" rpy="0 0 0" />
+    <parent link="UV_Slider_X_Front" />
+    <child link="UV_LED_Front" />
     <axis xyz="0 1 0" />
     <limit lower="0.045" upper="0.045" effort="100" velocity="0.05" />
   </joint>
 
-  <link name="UV_Cart_Right">
+  <link name="UV_Slider_X_Back">
     <inertial>
-      <origin xyz="0.110981633503817 -0.0370495599640397 0.0106949485927099" rpy="0 0 0" />
+      <origin xyz="0.110981633503817 -0.0370495599640397 0.0106949485927088" rpy="0 0 0" />
       <mass value="0.127959263593804" />
-      <inertia ixx="5.21591452058585E-05" ixy="6.20383442649097E-08" ixz="1.12100820140438E-07" iyy="6.05583187268144E-05" iyz="-5.20562063181683E-08" izz="0.000108712758573194" />
+      <inertia ixx="5.21591452058585E-05" ixy="6.20383442649052E-08" ixz="1.12100820140438E-07" iyy="6.05583187268144E-05" iyz="-5.20562063181683E-08" izz="0.000108712758573194" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Cart_Right.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Slider_X_Back.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Cart_Right.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Slider_X_Back.STL" />
       </geometry>
     </collision>
   </link>
 
-  <joint name="UV_Cart_Right_Joint" type="prismatic">
-    <origin xyz="0.00649999999276935 0.0511799999883173 0.252599999998818" rpy="0 0 0" />
-    <parent link="Gonio_Base_Left" />
-    <child link="UV_Cart_Right" />
+  <joint name="UV_Slider_X_Back_Joint" type="prismatic">
+    <origin xyz="0.0065 0.05118 0.2526" rpy="0 0 0" />
+    <parent link="Gonio_Station_Left" />
+    <child link="UV_Slider_X_Back" />
     <axis xyz="1 0 0" />
     <limit lower="-0.045" upper="0.045" effort="0.05" velocity="100" />
   </joint>
-  <link name="UV_Module_Right">
+
+  <link name="UV_LED_Back">
     <inertial>
-      <origin xyz="0.00149625704165013 0.0198723785842292 0.0150907885908851" rpy="0 0 0" />
+      <origin xyz="0.00149625704165024 0.0198723785842292 0.0150907885908849" rpy="0 0 0" />
       <mass value="0.119915229322348" />
-      <inertia ixx="8.58688560134346E-05" ixy="-9.33412693374251E-06" ixz="2.12947224034883E-07" iyy="1.98652847972198E-05" iyz="9.66953808948422E-07" izz="0.00010123498655613" />
+      <inertia ixx="8.58688560134346E-05" ixy="-9.33412693374251E-06" ixz="2.12947224034883E-07" iyy="1.98652847972198E-05" iyz="9.66953808948423E-07" izz="0.00010123498655613" />
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Module_Right.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_LED_Back.STL" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/UV_Module_Right.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/UV_LED_Back.STL" />
       </geometry>
     </collision>
   </link>
 
-  <joint name="UV_Module_Right_Joint" type="prismatic">
-    <origin xyz="0.109999999941829 -0.0861800000000014 0.0276000000000078" rpy="0 0 0" />
-    <parent link="UV_Cart_Right" />
-    <child link="UV_Module_Right" />
+  <joint name="UV_LED_Back_Joint" type="prismatic">
+    <origin xyz="0.11 -0.08618 0.0276" rpy="0 0 0" />
+    <parent link="UV_Slider_X_Back" />
+    <child link="UV_LED_Back" />
     <axis xyz="0 -1 0" />
     <limit lower="0" upper="0.05" effort="100" velocity="0.05" />
   </joint>
+
 </robot>

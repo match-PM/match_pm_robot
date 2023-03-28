@@ -3,6 +3,7 @@ from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+# launch file for pm_robot_forward_position_publisher to test forword_position_controller 
 
 def generate_launch_description():
 

@@ -16,8 +16,8 @@ controller_manager:
 forward_position_controller:
   ros__parameters:
     joints:
-      - Glue_Cartridge_Flap_Joint
-      - Glue_Cartridge_Joint
+      - 1K_Dispenser_Flap_Joint
+      - 1K_Dispenser_Joint
       # - EQ_Joint
       # - Camera_Calibartion_Joint
       # - UV_Cart_Left_Joint
@@ -35,10 +35,10 @@ joint_trajectory_controller:
       - Y_Axis_Joint
       - Z_Axis_Joint
       - Gripper_Rot_Plate_Joint
-      - Gonio_Right_Stage_1_Upper_Joint
-      - Gonio_Right_Stage_2_Upper_Joint
-      - Gonio_Left_Stage_1_Upper_Joint
-      - Gonio_Left_Stage_2_Upper_Joint
+      - Gonio_Right_Stage_1_Top_Joint
+      - Gonio_Right_Stage_2_Bottom_Joint
+      - Gonio_Left_Stage_1_Top_Joint
+      - Gonio_Left_Stage_2_Bottom_Joint
 
     command_interfaces:
       - position
