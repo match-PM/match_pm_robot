@@ -7,14 +7,14 @@ ROS Framework for the Precision Assembly Robot
 * `pm_robot_submodules`: Contains submodules for e.g. Basler cameras
 
 ## 2. Installation 
-Start by changing directory to your catkin workspace!
+Start by changing directory to your workspace!
 
 ### Clone package
 ```
 git clone https://github.com/match-PM/match_pm_robot.git
 ```
 ### Install dependencies
-Browse to `your_catkin_workspace/src/match_pm_robot` and execute
+Browse to `your_workspace/src/match_pm_robot` and execute
 ```
 git submodule update --init --recursive
 cd ../..
