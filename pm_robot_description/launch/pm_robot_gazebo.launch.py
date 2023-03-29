@@ -106,7 +106,6 @@ def generate_launch_description():
         robot_state_publisher_node,
         joint_broad_spawner,
         spawn_entity,
-        #robot_controller_forward_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_controller,
     ])
