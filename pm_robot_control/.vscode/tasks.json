@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "catkin build",
+            "type": "process",
+            "command": "catkin",
+            "args": [
+                "build",
+                "pm_robot_control"
+            ]
+        }
+    ]
+}

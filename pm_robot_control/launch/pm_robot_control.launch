@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="pm_robot_control" name="pm_robot_control" type="pm_robot_control">
+    </node>
+</launch>

@@ -1,0 +1,37 @@
+{
+    // "editor.formatOnSave": false,
+    // "editor.formatOnPaste": false,
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "files.associations": {
+        "*.h": "c",
+        "*.pl": "prolog",
+        ".gdbinit": "plaintext",
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "string_view": "cpp",
+        "optional": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp"
+    },
+    "python.analysis.extraPaths": [
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/build/pm_robot_control_test",
+        "/home/pmlab/pm_ros2_ws/install/pm_robot_control_test/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/build/listener",
+        "/home/pmlab/pm_ros2_ws/install/listener/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/build/lab",
+        "/home/pmlab/pm_ros2_ws/install/lab/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
