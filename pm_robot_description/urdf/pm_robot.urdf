@@ -4,6 +4,10 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot name="pm_robot">
 
+  <material name="white">
+    <color rgba="1 1 0.5 1"/>
+  </material>
+
   <link name="world">
   </link>
 
@@ -21,6 +25,7 @@
     <material>Gazebo/White</material>
 </gazebo> -->
 
+ <!--%%%%%%%%%%%%% Base Link Definitions %%%%%%%%%%%%%-->
   <link name="base_link">
     <inertial>
       <origin xyz="0.625821801363778 0.570133136306886 0.131114542394431" rpy="0 0 0" />
@@ -43,7 +48,7 @@
       </material>
     </collision>
   </link>
-
+ <!--%%%%%%%%%%%%% X Axis Definitions %%%%%%%%%%%%%-->
   <link name="X_Axis">
     <inertial>
       <origin xyz="0.16919895741484 -0.139025494621401 0.0270399805740182" rpy="0 0 0" />
@@ -71,7 +76,7 @@
     <axis xyz="-1 0 0" />
     <limit lower="-0.745" upper="0.055" effort="1" velocity="100" />
   </joint>
-
+ <!--%%%%%%%%%%%%% Y Axis Definitions %%%%%%%%%%%%%-->
   <link name="Y_Axis">
     <inertial>
       <origin xyz="0.0644731605204091 0.335953761487189 0.0959734258135516" rpy="0 0 0" />
@@ -99,7 +104,7 @@
     <axis xyz="0 -1 0" />
     <limit lower="-0.425" upper="0.2505" effort="100" velocity="100" />
   </joint>
-
+ <!--%%%%%%%%%%%%% Z Axis Definitions %%%%%%%%%%%%%-->
   <link name="Z_Axis">
     <inertial>
       <origin xyz="0.0549049098594834 0.0430017751887579 -0.271974089543362" rpy="0 0 0" />
@@ -131,6 +136,8 @@
     <axis xyz="0 0 -1" />
     <limit lower="-0.05262" upper="0.055" effort="100" velocity="0.05" />
   </joint>
+
+   <!--%%%%%%%%%%%%% T Axis Definitions %%%%%%%%%%%%%-->
   <link name="Gripper_Rot_Plate">
     <inertial>
       <origin xyz="2.0103346298761E-07 1.7706926014327E-07 -0.0164220765723002" rpy="0 0 0" />
@@ -162,7 +169,8 @@
     <axis xyz="0 0 1" />
     <limit lower="0" upper="628319" effort="100" velocity="0.05" />
   </joint>
-
+  <!--
+  Gripper Definitions
   <link name="Gripper">
     <inertial>
       <origin xyz="-3.43029364781033E-05 -2.0382712019356E-05 0.0426309002703344" rpy="0 0 0" />
@@ -182,7 +190,7 @@
       </geometry>
     </collision>
   </link>
-  <!---Gravity off-->
+
   <gazebo reference="Gripper">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
@@ -193,7 +201,79 @@
     <child link="Gripper" />
     <axis xyz="0 0 0" />
   </joint>
+-->
 
+  <!--%%%%%%%%%%%%% MPG 10-plus Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
+  <link name="Tool_Gripper_MPG_10_Body">
+    <inertial>
+      <origin xyz="-3.43029364781033E-05 -2.0382712019356E-05 0.0426309002703344" rpy="0 0 0" />
+      <mass value="0.123801210587509" />
+      <inertia ixx="2.48847691501343E-05" ixy="-1.96701975168782E-08" ixz="3.35250198834726E-09" iyy="2.52844539238953E-05" iyz="4.55516572819596E-10" izz="4.09732369514151E-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Tool_MPG_10_Base.STL" />
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Tool_MPG_10_Base.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!---Gravity off-->
+  <gazebo reference="Tool_Gripper_MPG_10_Body">
+    <turnGravityOff>true</turnGravityOff>
+    <color>1.0 0 0.5 1.0</color> 
+  </gazebo>
+
+  <joint name="Tool_Gripper_MPG_10_Body_Joint" type="fixed">
+    <origin xyz="0 0 -0.06" rpy="1.5708 0 0" />
+    <parent link="Gripper_Rot_Plate" />
+    <child link="Tool_Gripper_MPG_10_Body" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+<!--%%%%%%%%%%%%% MPG 10-plus Jaw 1 Parallel Gripper Definitions %%%%%%%%%%%%%-->
+  <link name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1">
+    <inertial>
+      <origin xyz="-3.43029364781033E-05 -2.0382712019356E-05 0.0426309002703344" rpy="0 0 0" />
+      <mass value="0.123801210587509" />
+      <inertia ixx="2.48847691501343E-05" ixy="-1.96701975168782E-08" ixz="3.35250198834726E-09" iyy="2.52844539238953E-05" iyz="4.55516572819596E-10" izz="4.09732369514151E-05" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/SCHUNK_MPG-plus_Gripper_Jaw_3MM_Lens_1_Part_scaled.STL" />
+      </geometry>
+      <color rgba="1 1 0.5 1"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/SCHUNK_MPG-plus_Gripper_Jaw_3MM_Lens_1_Part_scaled.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!---Gravity off-->
+  <gazebo reference="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+  <joint name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1_Joint" type="prismatic">
+    <origin xyz="0 -0.04 0" rpy="0 0 3.1416" />
+    <parent link="Tool_Gripper_MPG_10_Body" />
+    <child link="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1" />
+    <axis xyz="-1 0 0" />
+    <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
+  </joint>
+
+   <!--%%%%%%%%%%%%% 1K Dispenser Flap Definitions %%%%%%%%%%%%%-->
   <link name="1K_Dispenser_Flap">
     <inertial>
       <origin xyz="0.0700781843320345 0.0170691077164346 -0.0129807443134493" rpy="0 0 0" />
@@ -226,6 +306,7 @@
     <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
   </joint>
 
+   <!--%%%%%%%%%%%%% 1K Dispenser Definitions %%%%%%%%%%%%%-->
   <link name="1K_Dispenser">
     <inertial>
       <origin xyz="0.00152170573859456 -0.0155689227694598 0.0732771947044504" rpy="0 0 0" />
@@ -258,6 +339,7 @@
     <limit lower="0" upper="0.04" effort="100" velocity="0.05" />
   </joint>
 
+   <!--%%%%%%%%%%%%% 2K Dispenser Definitions-->
   <link name="2K_Dispenser">
     <inertial>
       <origin xyz="-7.70076275026232E-05 -0.00407732001221047 0.227924914909323" rpy="0 0 0" />
@@ -290,6 +372,7 @@
     <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
   </joint>
 
+   <!--%%%%%%%%%%%%% Top Camera Definitions-->
   <link name="Camera_Top_View">
     <inertial>
       <origin xyz="-0.00836863839426638 -7.6879236264973E-05 0.0937623632384506" rpy="0 0 0" />
@@ -321,6 +404,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Test Station Definitions-->
   <link name="Test_Station">
     <inertial>
       <origin xyz="0.0375 0.109867595364853 0.143148862667039" rpy="0 0 0" />
@@ -348,6 +432,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Gonio_Right Definitions-->
   <link name="Gonio_Right">
     <inertial>
       <origin xyz="0.0449999999999999 0.0325 0.0840750321735946" rpy="0 0 0" />
@@ -375,6 +460,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Gonio_Right Stage Bottom Definitions-->
   <link name="Gonio_Right_Stage_1_Bottom">
     <inertial>
       <origin xyz="0.032500028562969 0.0154464744552945 0.0080287932266252" rpy="0 0 0" />
@@ -406,6 +492,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Gonio_Right Stage 1 Top Definitions-->
   <link name="Gonio_Right_Stage_1_Top">
     <inertial>
       <origin xyz="0.0236093539945057 -1.22301523672319E-07 -0.0788347959618205" rpy="0 0 0" />
@@ -438,6 +525,7 @@
     <limit lower="-0.087266" upper="0.087266" effort="100" velocity="0.1" />
   </joint>
 
+   <!--%%%%%%%%%%%%% Gonio_Right Stage 2 Bottom Definitions-->
   <link name="Gonio_Right_Stage_2_Bottom">
     <inertial>
       <origin xyz="-7.70699615237902E-10 -0.0325000008115904 -0.0578599597513434" rpy="0 0 0" />
@@ -466,6 +554,7 @@
     <limit lower="-0.17453" upper="0.17453" effort="100" velocity="0.1" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Gonio Right Holder Definitions-->
   <link name="Gonio_Right_Holder">
     <inertial>
       <origin xyz="0.0324508724608161 0.0324929107965058 0.0216564841336893" rpy="0 0 0" />
@@ -526,6 +615,7 @@
     <axis xyz="0 0 0" />
   </joint> -->
 
+  <!--%%%%%%%%%%%%% Camera Definitions-->
   <link name="Camera_System">
     <inertial>
       <origin xyz="0.0505028321627497 0.194735930802516 0.146786757354195" rpy="0 0 0" />
@@ -553,6 +643,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Camera Calibration Definitions-->
   <link name="Camera_Calibration">
     <inertial>
       <origin xyz="-2.23806848806962E-05 -0.0716494371536874 0.0040939089037404" rpy="0 0 0" />
@@ -581,6 +672,7 @@
     <limit lower="-0.04" upper="0.0" effort="100" velocity="0.05" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Gonio Station Left Definitions-->
   <link name="Gonio_Station_Left">
     <inertial>
       <origin xyz="0.126941450046374 0.123518998015631 0.1006788564735" rpy="0 0 0" />
@@ -608,6 +700,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
+<!--%%%%%%%%%%%%% Gonio Left Stage 1 Top Definitions-->
   <link name="Gonio_Left_Stage_1_Top">
     <inertial>
       <origin xyz="0.441717512103237 0.0157207434728389 -0.0168785627316275" rpy="0 0 0" />
@@ -640,6 +733,7 @@
     <limit lower="-0.78539816339745" upper="0.78539816339745" effort="100" velocity="0.1" />
   </joint>
 
+<!--%%%%%%%%%%%%% Gonio Left Stage 2 Bottom Definitions-->
   <link name="Gonio_Left_Stage_2_Bottom">
     <inertial>
       <origin xyz="-2.64677118613499E-05 -0.0250000000001235 -0.0212004406894877" rpy="0 0 0" />
@@ -672,6 +766,7 @@
     <limit lower="-0.78539816339745" upper="0.78539816339745" effort="100" velocity="0.1" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Gonio Left Holder Definitions-->
   <link name="Gonio_Left_Holder">
     <inertial>
       <origin xyz="-8.16234952583095E-06 0.000868103725036456 0.0372986798808728" rpy="0 0 0" />
@@ -703,6 +798,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% UV Slider X Front Definitions-->
   <link name="UV_Slider_X_Front">
     <inertial>
       <origin xyz="0.109018366442936 -0.0253104400388921 0.0106949485904499" rpy="0 0 0" />
@@ -731,6 +827,7 @@
     <limit lower="-0.05" upper="0.095" effort="100" velocity="0.05" />
   </joint>
 
+  <!--%%%%%%%%%%%%% UV LED Front Definitions-->
   <link name="UV_LED_Front">
     <inertial>
       <origin xyz="-0.00149625704689468 -0.0153546654161202 0.015090788590886" rpy="0 0 0" />
@@ -759,6 +856,7 @@
     <limit lower="0.045" upper="0.045" effort="100" velocity="0.05" />
   </joint>
 
+  <!--%%%%%%%%%%%%% UV Slider X Back Definitions-->
   <link name="UV_Slider_X_Back">
     <inertial>
       <origin xyz="0.110981633503817 -0.0370495599640397 0.0106949485927088" rpy="0 0 0" />
@@ -787,6 +885,7 @@
     <limit lower="-0.045" upper="0.045" effort="0.05" velocity="100" />
   </joint>
 
+   <!--%%%%%%%%%%%%% UV LED Back Definitions-->
   <link name="UV_LED_Back">
     <inertial>
       <origin xyz="0.00149625704165024 0.0198723785842292 0.0150907885908849" rpy="0 0 0" />
