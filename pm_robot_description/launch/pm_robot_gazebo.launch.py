@@ -20,11 +20,16 @@ def generate_launch_description():
     # Specify the name of the package and path to xacro file within the package
     pkg_name = 'pm_robot_description'
     file_subpath = 'urdf/main.xacro'
+    file_subpath_Gripper = 'urdf/main_gripper.xacro'    
 
 
     # Use xacro to process the file
     xacro_file = os.path.join(get_package_share_directory(pkg_name),file_subpath)
     robot_description_raw = xacro.process_file(xacro_file).toxml()
+
+    xacro_file_Gripper = os.path.join(get_package_share_directory(pkg_name),file_subpath_Gripper)
+    robot_description_raw_Gripper = xacro.process_file(xacro_file_Gripper).toxml()
+
 
     robot_controllers = PathJoinSubstitution(
         [
@@ -43,6 +48,16 @@ def generate_launch_description():
         'use_sim_time': True}] # add other parameters here if required
     )
 
+    robot_state_publisher_node_Gripper = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher_gripper',
+        namespace="pm_robot_gripper",
+        output='screen',
+        parameters=[{'robot_description': robot_description_raw_Gripper,
+        'use_sim_time': True}] # add other parameters here if required
+    )
+
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
@@ -51,6 +66,12 @@ def generate_launch_description():
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                     arguments=['-topic', 'robot_description',
                                 '-entity', 'pm_robot'],
+                    output='screen')
+    
+    spawn_entity_Gripper = Node(package='gazebo_ros', executable='spawn_entity.py',
+                    namespace="pm_robot_gripper",         
+                    arguments=['-topic', 'robot_description',
+                                '-entity', 'pm_robot_gripper'],
                     output='screen')
 
     control_node = Node(
@@ -78,9 +99,15 @@ def generate_launch_description():
     joint_broad_spawner = Node(
         package='controller_manager',
         executable='spawner',
+        #namespace='pm_robot',
         arguments= ["joint_state_broadcaster"],
     )
 
+    joint_broad_spawner2 = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments= ["joint_state_broadcaster2"],
+    )
 
     # Delay start of robot_controller after `joint_state_broadcaster`
     delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
@@ -98,7 +125,21 @@ def generate_launch_description():
         )
     )
 
+   # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_spawn_entity_1 = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=spawn_entity,
+            on_exit=[robot_state_publisher_node],
+        )
+    )
 
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_spawn_entity_2 = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=spawn_entity_Gripper,
+            on_exit=[robot_state_publisher_node_Gripper],
+        )
+    )
     # Run the node
     return LaunchDescription([
         gazebo,
@@ -106,8 +147,14 @@ def generate_launch_description():
         robot_state_publisher_node,
         joint_broad_spawner,
         spawn_entity,
+        #joint_broad_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_controller,
+        
+        #robot_state_publisher_node_Gripper,
+        #spawn_entity_Gripper,
+        #joint_broad_spawner2,
+
     ])
 
 

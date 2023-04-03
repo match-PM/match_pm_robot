@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot name="pm_robot_MPG_10_Lens_Gripper">
+
+ <!--%%%%%%%%%%%%% MPG 10-plus Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
+  <link name="Tool_Gripper_MPG_10_Body">
+    <inertial>
+      <origin
+        xyz="0.000101128411094533 -0.00698774124732414 -0.000154729180138781"        rpy="0 0 0" />
+      <mass
+        value="0.0170176265651372" />
+      <inertia
+        ixx="1.54178737780816E-06"        ixy="-2.35521659468819E-09"        ixz="3.1554491871113E-11"        iyy="3.46317147568875E-06"        iyz="-1.97026266518089E-08"        izz="2.12949561867474E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Tool_MPG_10_Base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Tool_MPG_10_Base.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!---Gravity off-->
+  <gazebo reference="Tool_Gripper_MPG_10_Body">
+    <turnGravityOff>true</turnGravityOff>
+    <color>1.0 0 0.5 1.0</color> 
+  </gazebo>
+
+  <joint name="Tool_Gripper_MPG_10_Body_Joint" type="fixed">
+    <origin xyz="0 0 -0.06" rpy="0 0 0" />
+    <parent link="Gripper_Rot_Plate" />
+    <child link="Tool_Gripper_MPG_10_Body" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+<!--%%%%%%%%%%%%% MPG 10-plus Jaw 1 Parallel Gripper Definitions %%%%%%%%%%%%%-->
+  <link name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1">
+    <inertial>
+      <origin
+        xyz="0.00091329 -0.0073345 0.0015974"        rpy="0 0 0" />
+      <mass
+        value="0.00026385" />
+      <inertia
+        ixx="2.5369E-09"        ixy="1.5551E-10"        ixz="1.0802E-10"        iyy="1.3845E-09"        iyz="-1.0547E-10"        izz="1.9264E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_3MM_Lens_Jaw_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_3MM_Lens_Jaw_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+  <!---Gravity off-->
+  <gazebo reference="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+  <joint name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1_Joint" type="prismatic">
+    <origin xyz="-0.005 -0.00135 -0.0248"      rpy="1.5708 0 1.5708" />
+    <parent link="Tool_Gripper_MPG_10_Body" />
+    <child link="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="0.002" effort="100" velocity="0.05" />
+  </joint>
+
+
+<!--%%%%%%%%%%%%% MPG 10-plus Jaw 2 Parallel Gripper Definitions %%%%%%%%%%%%%-->
+  <link name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_2">
+    <inertial>
+      <origin
+        xyz="0.00091238 -0.0073338 0.0016104"
+        rpy="0 0 0" />
+      <mass
+        value="0.00026336" />
+      <inertia
+        ixx="2.4976E-09"        ixy="1.5551E-10"        ixz="1.0802E-10"        iyy="1.3373E-09"        iyz="-1.5782E-10"        izz="1.9325E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_3MM_Lens_Jaw_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_3MM_Lens_Jaw_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!---Gravity off-->
+  <gazebo reference="Tool_Gripper_MPG_10_3mm_Lens_Jaw_2">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+  <joint name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_2_Joint" type="prismatic">
+    <origin      xyz="0.005 0.00135 -0.0248"      rpy="1.5708 0 -1.5708" />
+    <parent link="Tool_Gripper_MPG_10_Body" />
+    <child link="Tool_Gripper_MPG_10_3mm_Lens_Jaw_2" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="0.002" effort="100" velocity="0.05" />
+  </joint>
+
+</robot>
+
+

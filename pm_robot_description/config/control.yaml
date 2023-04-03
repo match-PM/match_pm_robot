@@ -39,6 +39,8 @@ joint_trajectory_controller:
       - Gonio_Right_Stage_2_Bottom_Joint
       - Gonio_Left_Stage_1_Top_Joint
       - Gonio_Left_Stage_2_Bottom_Joint
+      - Tool_Gripper_MPG_10_3mm_Lens_Jaw_1_Joint
+      - Tool_Gripper_MPG_10_3mm_Lens_Jaw_2_Joint
 
     command_interfaces:
       - position

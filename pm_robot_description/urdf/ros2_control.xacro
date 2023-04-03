@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<robot name="pm_robot">
 
     <ros2_control name="GazeboSystem" type="system">
         <hardware>
@@ -22,11 +22,6 @@
             <state_interface name="position"/>
         </joint>
         <joint name="Gripper_Rot_Plate_Joint">
-            <command_interface name="position">
-            </command_interface>
-            <state_interface name="position"/>
-        </joint>
-        <joint name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1_Joint">
             <command_interface name="position">
             </command_interface>
             <state_interface name="position"/>
@@ -91,6 +86,18 @@
             </command_interface>
             <state_interface name="position"/>
         </joint>
+        <!--
+        <joint name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_1_Joint">
+            <command_interface name="position">
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
+
+        <joint name="Tool_Gripper_MPG_10_3mm_Lens_Jaw_2_Joint">
+            <command_interface name="position">
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>-->
     </ros2_control>
 
     <gazebo>
