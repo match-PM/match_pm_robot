@@ -4,12 +4,25 @@
   xmlns:xacro="https://ros.org/wiki/xacro">
 
   <!-- Configurations -->
-  <xacro:arg name="with_Tool_MPG_10" default="true" />
+  <xacro:arg name="with_Tool_MPG_10"  default="false" />
+  <xacro:arg name="with_Gonio_Left"   default="false" />
+  <xacro:arg name="with_Gonio_Right"  default="true" />
+
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot.xacro" />
 
   <!-- Tool Defines-->
     <xacro:if value="$(arg with_Tool_MPG_10)">
       <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" /> 
+    </xacro:if>
+
+    <!-- Gonio Right Defines-->
+    <xacro:if value="$(arg with_Gonio_Right)">
+      <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_right.xacro" /> 
+    </xacro:if>
+
+    <!-- Gonio Right Defines-->
+    <xacro:if value="$(arg with_Gonio_Left)">
+      <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_left.xacro" /> 
     </xacro:if>
 
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" />

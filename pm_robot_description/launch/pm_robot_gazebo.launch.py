@@ -19,16 +19,23 @@ def generate_launch_description():
 
     # Specify the name of the package and path to xacro file within the package
     pkg_name = 'pm_robot_description'
-    file_subpath = 'urdf/main.xacro'
+    file_subpath = 'urdf/pm_robot_main.xacro'
 
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name),file_subpath)
 
-    robot_configuration = {'with_Tool_MPG_10':'true'}
+    pm_robot_configuration = {  'with_Tool_MPG_10'  :'true',
+                                'with_Gonio_Right'  :'true',
+                                'with_Gonio_Left'   :'true',
+                           }
 
-    #robot_description_raw = xacro.process_file(xacro_file, mappings={'with_Tool_MPG_10': str(robot_configuration['with_Tool_MPG_10'])}).toxml()
-    robot_description_raw = xacro.process_file(pm_main_xacro_file).toxml()
-
+    robot_description_raw = xacro.process_file(pm_main_xacro_file, 
+                                               mappings={
+                                                'with_Tool_MPG_10': str(pm_robot_configuration['with_Tool_MPG_10']),
+                                                'with_Gonio_Left': str(pm_robot_configuration['with_Gonio_Left']), 
+                                                'with_Gonio_Right': str(pm_robot_configuration['with_Gonio_Right']),       
+                                                }).toxml()
+    
 
     robot_controllers = PathJoinSubstitution(
         [
@@ -37,10 +44,6 @@ def generate_launch_description():
             "control.yaml",
         ]
     )
-
-    # use_Tool_MPG_10 = LaunchConfiguration('with_Tool_MPG_10', default='false')
-    # robot_description_config = Command(['xaco', xacro_file, 'with_Tool_MPG_10:=', use_Tool_MPG_10])
-    # pm_robot_params={'robot_description': robot_description_config, 'use_sim_time':True}
 
     # Configure the node
     robot_state_publisher_node = Node(
