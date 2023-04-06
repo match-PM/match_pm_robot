@@ -4,14 +4,14 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription 
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration, TextSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 
 from launch_ros.actions import Node
-from launch_ros.substitutions import FindPackageShare
+from launch_ros.substitutions import FindPackageShare 
 import xacro
 
 
@@ -20,15 +20,14 @@ def generate_launch_description():
     # Specify the name of the package and path to xacro file within the package
     pkg_name = 'pm_robot_description'
     file_subpath = 'urdf/main.xacro'
-    file_subpath_Gripper = 'urdf/main_gripper.xacro'    
-
 
     # Use xacro to process the file
-    xacro_file = os.path.join(get_package_share_directory(pkg_name),file_subpath)
-    robot_description_raw = xacro.process_file(xacro_file).toxml()
+    pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name),file_subpath)
 
-    xacro_file_Gripper = os.path.join(get_package_share_directory(pkg_name),file_subpath_Gripper)
-    robot_description_raw_Gripper = xacro.process_file(xacro_file_Gripper).toxml()
+    robot_configuration = {'with_Tool_MPG_10':'true'}
+
+    #robot_description_raw = xacro.process_file(xacro_file, mappings={'with_Tool_MPG_10': str(robot_configuration['with_Tool_MPG_10'])}).toxml()
+    robot_description_raw = xacro.process_file(pm_main_xacro_file).toxml()
 
 
     robot_controllers = PathJoinSubstitution(
@@ -39,22 +38,16 @@ def generate_launch_description():
         ]
     )
 
+    # use_Tool_MPG_10 = LaunchConfiguration('with_Tool_MPG_10', default='false')
+    # robot_description_config = Command(['xaco', xacro_file, 'with_Tool_MPG_10:=', use_Tool_MPG_10])
+    # pm_robot_params={'robot_description': robot_description_config, 'use_sim_time':True}
+
     # Configure the node
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
         parameters=[{'robot_description': robot_description_raw,
-        'use_sim_time': True}] # add other parameters here if required
-    )
-
-    robot_state_publisher_node_Gripper = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher_gripper',
-        namespace="pm_robot_gripper",
-        output='screen',
-        parameters=[{'robot_description': robot_description_raw_Gripper,
         'use_sim_time': True}] # add other parameters here if required
     )
 
@@ -133,13 +126,6 @@ def generate_launch_description():
         )
     )
 
-    # Delay start of robot_controller after `joint_state_broadcaster`
-    delay_spawn_entity_2 = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=spawn_entity_Gripper,
-            on_exit=[robot_state_publisher_node_Gripper],
-        )
-    )
     # Run the node
     return LaunchDescription([
         gazebo,
@@ -147,7 +133,6 @@ def generate_launch_description():
         robot_state_publisher_node,
         joint_broad_spawner,
         spawn_entity,
-        #joint_broad_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_controller,
         

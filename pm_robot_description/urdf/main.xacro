@@ -3,8 +3,15 @@
 <robot name="pm_robot"
   xmlns:xacro="https://ros.org/wiki/xacro">
 
+  <!-- Configurations -->
+  <xacro:arg name="with_Tool_MPG_10" default="true" />
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot.xacro" />
-  <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" />
+
+  <!-- Tool Defines-->
+    <xacro:if value="$(arg with_Tool_MPG_10)">
+      <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" /> 
+    </xacro:if>
+
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" />
   <!--xacro:include filename="$(find pm_robot_description)/urdf/MPG_10_plus_control.xacro" /-->
   <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />

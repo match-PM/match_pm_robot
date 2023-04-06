@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<robot name="pm_robot_gripper"
-  xmlns:xacro="https://ros.org/wiki/xacro">
-  <!--xacro:include filename="$(find pm_robot_description)/urdf/pm_robot.xacro" /-->
-  <!--xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" /-->
-  <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" />
-  <xacro:include filename="$(find pm_robot_description)/urdf/MPG_10_plus_control.xacro" />
-</robot>

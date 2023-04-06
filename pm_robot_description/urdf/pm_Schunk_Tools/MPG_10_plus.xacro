@@ -3,7 +3,7 @@
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 
-<robot name="pm_robot_MPG_10_Lens_Gripper">
+<robot name="pm_robot">
 
  <!--%%%%%%%%%%%%% MPG 10-plus Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
   <link name="Tool_Gripper_MPG_10_Body">
@@ -129,7 +129,6 @@
     </collision>
   </link>
 
-  <!---Gravity off-->
   <gazebo reference="Tool_Gripper_MPG_10_3mm_Lens_Jaw_2">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
@@ -140,7 +139,7 @@
     <child link="Tool_Gripper_MPG_10_3mm_Lens_Jaw_2" />
     <axis xyz="0 0 1" />
     <limit lower="0" upper="0.002" effort="100" velocity="0.05" />
-  </joint>
+  </joint> 
 
 </robot>
 

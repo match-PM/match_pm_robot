@@ -12,6 +12,11 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+    # joint_trajectory_controller_Gripper:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+
+    # joint_state_broadcaster_Gripper:
+    #   type: joint_state_broadcaster/JointStateBroadcaster
 
 forward_position_controller:
   ros__parameters:
@@ -39,8 +44,6 @@ joint_trajectory_controller:
       - Gonio_Right_Stage_2_Bottom_Joint
       - Gonio_Left_Stage_1_Top_Joint
       - Gonio_Left_Stage_2_Bottom_Joint
-      - Tool_Gripper_MPG_10_3mm_Lens_Jaw_1_Joint
-      - Tool_Gripper_MPG_10_3mm_Lens_Jaw_2_Joint
 
     command_interfaces:
       - position
@@ -48,7 +51,7 @@ joint_trajectory_controller:
     state_interfaces:
       - position
 
-    state_publish_rate: 200.0 # Defaults to 50
+    state_publish_rate: 220.0 # Defaults to 50
     action_monitor_rate: 20.0 # Defaults to 20
 
     allow_partial_joints_goal: false # Defaults to false
@@ -61,4 +64,24 @@ joint_trajectory_controller:
       Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
       Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
 
+# joint_trajectory_controller_Gripper:
+#    ros__parameters:
+#     joints:
+#       - Tool_Gripper_MPG_10_3mm_Lens_Jaw_1_Joint
+#       - Tool_Gripper_MPG_10_3mm_Lens_Jaw_2_Joint
 
+#     command_interfaces:
+#       - position
+
+#     state_interfaces:
+#       - position
+
+#     state_publish_rate: 200.0 # Defaults to 50
+#     action_monitor_rate: 20.0 # Defaults to 20
+
+#     allow_partial_joints_goal: false # Defaults to false
+#     #open_loop_control: true
+#     #allow_integration_in_goal_trajectories: true
+#     constraints:
+#       stopped_velocity_tolerance: 0.2 # Defaults to 0.01
+#       goal_time: 0.0 # Defaults to 0.0 (start immediately)
