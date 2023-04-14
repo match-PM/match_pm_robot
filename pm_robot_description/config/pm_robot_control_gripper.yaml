@@ -14,7 +14,7 @@ joint_trajectory_controller_gripper:
    ros__parameters:
     joints:
       - Tool_Gripper_MPG_10_Jaw_1_Joint
-      - Tool_Gripper_MPG_10_Jaw_2_Joint
+      #- Tool_Gripper_MPG_10_Jaw_2_Joint
 
     command_interfaces:
       - position

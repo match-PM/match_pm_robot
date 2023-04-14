@@ -5,7 +5,7 @@
 
   <!-- Configurations -->
   <xacro:arg name="with_Tool_MPG_10"                default="false" />
-  <xacro:arg name="with_Tool_MPG_10_Jaw_3mm_Lens"   default="true"/>
+  <xacro:arg name="with_Tool_MPG_10_Jaw_3mm_Lens"   default="false"/>
   <xacro:arg name="with_Gonio_Left"                 default="false" />
   <xacro:arg name="with_Gonio_Right"                default="true" />
 
@@ -23,7 +23,7 @@
 
     <xacro:if value="$(arg with_Tool_MPG_10)">
       <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" />
-      <xacro:mpg_10_plus use_three_mm_lens="false"/>
+      <xacro:mpg_10_plus use_three_mm_lens="$(arg with_Tool_MPG_10_Jaw_3mm_Lens)" />
     </xacro:if>
 
     <!-- Gonio Right Defines-->

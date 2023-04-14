@@ -40,17 +40,14 @@ joint_trajectory_controller:
       - Y_Axis_Joint
       - Z_Axis_Joint
       - Gripper_Rot_Plate_Joint
-      # - Gonio_Right_Stage_1_Top_Joint
-      # - Gonio_Right_Stage_2_Bottom_Joint
-      # - Gonio_Left_Stage_1_Top_Joint
-      # - Gonio_Left_Stage_2_Bottom_Joint
+
 
     command_interfaces:
       - position
 
     state_interfaces:
       - position
-
+      - velocity
     state_publish_rate: 220.0 # Defaults to 50
     action_monitor_rate: 20.0 # Defaults to 20
 

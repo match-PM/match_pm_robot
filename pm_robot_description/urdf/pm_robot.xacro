@@ -71,7 +71,7 @@
     <parent link="base_link" />
     <child link="X_Axis" />
     <axis xyz="-1 0 0" />
-    <limit lower="-0.745" upper="0.055" effort="1" velocity="100" />
+    <limit lower="-0.745" upper="0.055" effort="0.1" velocity="100" />
   </joint>
  <!--%%%%%%%%%%%%% Y Axis Definitions %%%%%%%%%%%%%-->
   <link name="Y_Axis">
@@ -99,7 +99,7 @@
     <parent link="X_Axis" />
     <child link="Y_Axis" />
     <axis xyz="0 -1 0" />
-    <limit lower="-0.425" upper="0.2505" effort="100" velocity="100" />
+    <limit lower="-0.134000" upper="-0.019700" effort="100" velocity="100" />
   </joint>
  <!--%%%%%%%%%%%%% Z Axis Definitions %%%%%%%%%%%%%-->
   <link name="Z_Axis">
