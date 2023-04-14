@@ -19,7 +19,7 @@ import xacro
 def generate_launch_description():
     # Process the URDF file
     pkg_path = os.path.join(get_package_share_directory('pm_robot_description'))
-    xacro_file = os.path.join(pkg_path,'urdf','main.xacro')
+    xacro_file = os.path.join(pkg_path,'urdf','pm_robot_main.xacro')
     #robot_description = xacro.process_file(xacro_file)
     
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
@@ -27,8 +27,10 @@ def generate_launch_description():
 
     gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
                                     description='Flag to enable joint_state_publisher_gui')
+    
     model_arg = DeclareLaunchArgument(name='pm_robot', default_value=str(xacro_file),
                                       description='Absolute path to robot urdf file')
+    
     rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(pkg_rviz),
                                      description='Absolute path to rviz config file')
 
