@@ -23,6 +23,7 @@
 
     <xacro:if value="$(arg with_Tool_MPG_10)">
       <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" />
+      <xacro:mpg_10_plus use_three_mm_lens="false"/>
     </xacro:if>
 
     <!-- Gonio Right Defines-->

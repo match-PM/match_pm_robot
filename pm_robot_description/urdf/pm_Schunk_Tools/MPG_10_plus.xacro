@@ -3,14 +3,9 @@
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 
-<!-- <robot name="pm_robot_tool_gripper_mpg_10"> -->
-<robot xmlns:xacro="https://ros.org/wiki/xacro">
-  
-
-  <!--%%%%%%%%%%%%% Arguments %%%%%%%%%%%%%-->
-  <xacro:arg name="testi" default="true"/>
-  
-  <!--%%%%%%%%%%%%% MPG 10-plus Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="mpg_10_plus" params="use_three_mm_lens:=false">
+ <!--%%%%%%%%%%%%% MPG 10-plus Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
   <link name="Tool_Gripper_MPG_10_Body">
     <inertial>
           <origin
@@ -236,8 +231,8 @@
   
 
 <!--%%%%%%%%%%%%% Jaw Definitions %%%%%%%%%%%%%-->
-  <xacro:if value="$(arg test)">
- 
+  <xacro:if value="$(use_three_mm_lens)">
+
     <!--%%%%%%%%%%%%% 3MM Lens Jaw 1 Definitions %%%%%%%%%%%%%-->
 
       <link
@@ -354,7 +349,7 @@
           link="Tool_Gripper_Jaw_2_3MM_Lens" />
       </joint>
   </xacro:if>
-
+  </xacro:macro>
 </robot>
 
 
