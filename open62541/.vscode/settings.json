@@ -1,0 +1,24 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/build/pm_robot_control_test",
+        "/home/pmlab/pm_ros2_ws/install/pm_robot_control_test/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/build/listener",
+        "/home/pmlab/pm_ros2_ws/install/listener/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/build/lab",
+        "/home/pmlab/pm_ros2_ws/install/lab/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/build/pm_robot_control_test",
+        "/home/pmlab/pm_ros2_ws/install/pm_robot_control_test/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/build/listener",
+        "/home/pmlab/pm_ros2_ws/install/listener/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/build/lab",
+        "/home/pmlab/pm_ros2_ws/install/lab/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

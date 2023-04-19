@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
-#include "open62541.h"
+#include "open62541/open62541.h"
 
-#include "robot.hpp"
+#include "pm_client/robot.hpp"
 
 namespace PMClient
 {

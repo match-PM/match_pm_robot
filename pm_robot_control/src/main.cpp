@@ -7,7 +7,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv)
 {
     PMClient::Client client;
 
-    client.connect("opc.tcp://10.145.4.143:4840");
+    client.connect("opc.tcp://localhost:4840");
     auto robot = client.get_robot();
     std::cout << "Axis X: \n"
               << "\tActual Position: " << robot->x_axis->get_position() << "\n"

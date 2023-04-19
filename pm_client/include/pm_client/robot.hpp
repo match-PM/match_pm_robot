@@ -2,8 +2,9 @@
 
 #include <memory>
 
-#include "aerotech_axis.hpp"
-#include "open62541.h"
+#include "open62541/open62541.h"
+
+#include "pm_client/aerotech_axis.hpp"
 
 namespace PMClient
 {

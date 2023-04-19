@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(opcua_test_server)
+project(opcua_server)
 
 # set(CMAKE_C_STANDARD 99)
 # set(CMAKE_CXX_STANDARD 98)
@@ -23,7 +23,7 @@ ament_package()
 # -------
 
 # cmake_minimum_required(VERSION 3.16)
-# project(opcua_test_server)
+# project(opcua_server)
 
 # add_library(open62541 open62541/open62541.c open62541/open62541.h)
 

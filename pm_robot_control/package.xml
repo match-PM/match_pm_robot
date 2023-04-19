@@ -11,6 +11,8 @@
   <buildtool_depend>std_msgs</buildtool_depend>
   <buildtool_depend>sensor_msgs</buildtool_depend>
 
+  <depend>pm_client</depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

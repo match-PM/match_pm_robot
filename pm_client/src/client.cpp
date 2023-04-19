@@ -7,7 +7,7 @@
 #include "pm_client/client.hpp"
 #include "pm_client/robot.hpp"
 
-#include "open62541.h"
+#include "open62541/open62541.h"
 
 namespace PMClient
 {

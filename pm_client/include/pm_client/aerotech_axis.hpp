@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "open62541.h"
+#include "open62541/open62541.h"
 
 namespace PMClient
 {
