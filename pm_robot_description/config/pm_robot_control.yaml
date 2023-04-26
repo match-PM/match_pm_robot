@@ -12,6 +12,11 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+    # joint_trajectory_controller_Gripper:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+
+    # joint_state_broadcaster_Gripper:
+    #   type: joint_state_broadcaster/JointStateBroadcaster
 
 forward_position_controller:
   ros__parameters:
@@ -35,18 +40,15 @@ joint_trajectory_controller:
       - Y_Axis_Joint
       - Z_Axis_Joint
       - Gripper_Rot_Plate_Joint
-      - Gonio_Right_Stage_1_Top_Joint
-      - Gonio_Right_Stage_2_Bottom_Joint
-      - Gonio_Left_Stage_1_Top_Joint
-      - Gonio_Left_Stage_2_Bottom_Joint
+
 
     command_interfaces:
       - position
 
     state_interfaces:
       - position
-
-    state_publish_rate: 200.0 # Defaults to 50
+      - velocity
+    state_publish_rate: 220.0 # Defaults to 50
     action_monitor_rate: 20.0 # Defaults to 20
 
     allow_partial_joints_goal: false # Defaults to false
@@ -58,5 +60,3 @@ joint_trajectory_controller:
       X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
       Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
       Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-
-

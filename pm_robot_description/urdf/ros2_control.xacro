@@ -1,30 +1,35 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<robot name="pm_robot">
 
     <ros2_control name="GazeboSystem" type="system">
         <hardware>
             <plugin>gazebo_ros2_control/GazeboSystem</plugin>
         </hardware>
         <joint name="X_Axis_Joint">
-            <command_interface name="position">
-            </command_interface>
+            <command_interface name="position"/>
+            <!-- <command_interface name="velocity"/> -->
             <state_interface name="position"/>
+            <state_interface name="velocity"/>
         </joint>
         <joint name="Y_Axis_Joint">
             <command_interface name="position">
             </command_interface>
             <state_interface name="position"/>
+            <state_interface name="velocity"/>
+
         </joint>
         <joint name="Z_Axis_Joint">
             <command_interface name="position">
             </command_interface>
             <state_interface name="position"/>
+            <state_interface name="velocity"/>
         </joint>
         <joint name="Gripper_Rot_Plate_Joint">
             <command_interface name="position">
             </command_interface>
             <state_interface name="position"/>
+            <state_interface name="velocity"/>
         </joint>
         <joint name="1K_Dispenser_Flap_Joint">
             <command_interface name="position">
@@ -86,11 +91,32 @@
             </command_interface>
             <state_interface name="position"/>
         </joint>
+
+        <joint name="Tool_Gripper_MPG_10_Jaw_1_Joint">
+            <command_interface name="position">
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
+
+        <joint name="Tool_Gripper_MPG_10_Jaw_2_Joint">
+            <param name="mimic">Tool_Gripper_MPG_10_Jaw_1_Joint</param>
+            <param name="mulltiplier">1</param>
+            <command_interface name="position">
+            </command_interface>
+            <state_interface name="position"/>
+        </joint>
     </ros2_control>
 
     <gazebo>
         <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-            <parameters>$(find pm_robot_description)/config/control.yaml</parameters>
+            <parameters>$(find pm_robot_description)/config/pm_robot_control.yaml</parameters>
+            <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right.yaml</parameters>
+            <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
+            <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
+
+            <!--robot_param>robot_description</robot_param--> <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
+            <!--robot_param_node>robot_state_publisher</robot_param_node--> <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
+            <!--robotNamespace>${arm_id}</robotNamespace-->
         </plugin>
     </gazebo>
 
