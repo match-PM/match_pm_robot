@@ -49,6 +49,9 @@ ros2 launch pm_robot_description pm_robot_gazebo.rviz.py
 
 ## 5. Comments
 install ros-humble-xacro
+```
 sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control
+```
 sudo apt install ros-humble-rqt*
+```
 ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller --force-discover
