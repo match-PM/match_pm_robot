@@ -48,7 +48,9 @@ ros2 launch pm_robot_description pm_robot_gazebo.rviz.py
 [Building a robot with ROS2](https://www.youtube.com/@ArticulatedRobotics/playlists)
 
 ## 5. Comments
-install ros-humble-xacro
+sudo apt install ros-humble-desktop-full
+```
+sudo aptinstall ros-humble-xacro
 ```
 sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control
 ```
