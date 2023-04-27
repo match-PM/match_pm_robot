@@ -25,10 +25,12 @@ def generate_launch_description():
     pm_main_xacro_file = os.path.join(
         get_package_share_directory(pkg_name), file_subpath)
 
-    pm_robot_configuration = {'with_Tool_MPG_10': 'true',
-                              'with_Tool_MPG_10_Jaw_3mm_Lens': 'true',
-                              'with_Gonio_Right': 'true',
-                              'with_Gonio_Left': 'true',
+    pm_robot_configuration = {'with_Tool_MPG_10':               'false',
+                              'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
+                              'with_Gonio_Right':               'true',
+                              'with_Gonio_Left':                'true',
+                              'with_Tool_SPT_Holder':           'true',
+                              'with_SPT_R_A1000_I500':          'true',
                               }
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file,
@@ -37,6 +39,8 @@ def generate_launch_description():
                                                    'with_Gonio_Left': str(pm_robot_configuration['with_Gonio_Left']),
                                                    'with_Gonio_Right': str(pm_robot_configuration['with_Gonio_Right']),
                                                    'with_Tool_MPG_10_Jaw_3mm_Lens': str(pm_robot_configuration['with_Tool_MPG_10_Jaw_3mm_Lens']),
+                                                   'with_Tool_SPT_Holder': str(pm_robot_configuration['with_Tool_SPT_Holder']),
+                                                   'with_SPT_R_A1000_I500': str(pm_robot_configuration['with_SPT_R_A1000_I500']),
                                                }).toxml()
 
     # Configure the node

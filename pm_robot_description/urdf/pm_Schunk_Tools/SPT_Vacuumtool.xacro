@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="SPT_Vacuumtool" params="use_R_A1000_I500:=false">
+        <!--%%%%%%%%%%%%% SPT-Vacuumgripper Definitions %%%%%%%%%%%%%-->
+        <link name="Tool_Schunk_SPT_Toolholder">
+            <inertial>
+                <origin xyz="-7.164E-05 -0.00023278 -0.0080915" rpy="0 0 0" />
+                <mass value="0.018506" />
+                <inertia ixx="1.8166E-06" ixy="9.9412E-09" ixz="-1.9571E-08" iyy="2.3687E-06" iyz="-6.9137E-09" izz="3.4745E-06" />
+            </inertial>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tool_Schunk_base_link.STL" />
+                </geometry>
+                <material name="">
+                    <color rgba="0.75294 0.75294 0.75294 1" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tool_Schunk_base_link.STL" />
+                </geometry>
+            </collision>
+        </link>
+
+        <!---Gravity off-->
+        <gazebo reference="SPT_Vacuumtool">
+            <turnGravityOff>true</turnGravityOff>
+            <color>1.0 0 0.5 1.0</color>
+        </gazebo>
+
+        <joint name="Tool_Schunk_SPT_Toolholder_joint" type="fixed">
+            <origin xyz="0 0 -0.06" rpy="0 0 0" />
+            <parent link="Gripper_Rot_Plate" />
+            <child link="Tool_Schunk_SPT_Toolholder" />
+            <axis xyz="0 0 0" />
+        </joint>
+
+        <!--%%%%%%%%%%%%% SPT-Vacuumgripper Tool Link Definitions %%%%%%%%%%%%%-->
+        <link name="Tool_SPT_base_link">
+        </link>
+
+        <joint name="Tool_SPT_base_link_joint" type="fixed">
+            <origin xyz="0 0 -0.012" rpy="0 0 0" />
+            <parent link="Tool_Schunk_SPT_Toolholder" />
+            <child link="Tool_SPT_base_link" />
+            <axis xyz="0 0 0" />
+        </joint>
+
+
+        <!--%%%%%%%%%%%%% SPT Tool Definitions %%%%%%%%%%%%%-->
+        <xacro:if value="${use_R_A1000_I500}">
+
+            <!--%%%%%%%%%%%% Tool_TCP_SPT_R_A1000_I500 %%%%%%%%%%%%%-->
+            <link name="Tool_SPT_TCP_link">
+                <inertial>
+                    <origin xyz="7.6024E-20 1.2919E-21 0.0088106" rpy="0 0 0" />
+                    <mass value="0.0001063" />
+                    <inertia ixx="2.116E-09" ixy="-8.1367E-43" ixz="1.8508E-26" iyy="2.116E-09" iyz="-6.0306E-28" izz="1.3734E-10" />
+                </inertial>
+                <visual>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                    <geometry>
+                        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tools/Tool_TCP_SPT_R_A1000_I500.STL" />
+                    </geometry>
+                    <material name="">
+                        <color rgba="0.79216 0.81961 0.93333 1" />
+                    </material>
+                </visual>
+                <collision>
+                    <origin xyz="0 0 0" rpy="0 0 0" />
+                    <geometry>
+                        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tools/Tool_TCP_SPT_R_A1000_I500.STL" />
+                    </geometry>
+                </collision>
+            </link>
+
+            <!--Gravity off-->
+            <gazebo reference="Tool_SPT_TCP_link">
+                <turnGravityOff>true</turnGravityOff>
+                <color>1.0 0 0.5 1.0</color>
+            </gazebo>
+
+            <joint name="Tool_SPT_TCP_link_joint" type="fixed">
+                <origin xyz="0 0 -0.036" rpy="0 0 0" />
+                <parent link="Tool_Schunk_SPT_Toolholder" />
+                <child link="Tool_SPT_TCP_link" />
+                <axis xyz="0 0 0" />
+            </joint>
+        </xacro:if>
+    </xacro:macro>
+
+</robot>
+
+
