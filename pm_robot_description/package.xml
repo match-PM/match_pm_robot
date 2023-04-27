@@ -12,6 +12,13 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
+  <depend>xacro</depend>
+  <depend>ros2-control</depend>
+  <depend>gazebo-ros-pkgs</depend>
+  <depend>ros2-controllers</depend>
+  <depend>gazebo-ros2-control</depend>
+  <depend>joint-state-publisher-gui</depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
