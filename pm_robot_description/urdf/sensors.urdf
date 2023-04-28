@@ -2,24 +2,24 @@
 
 <robot name="pm_robot">
 
-  <!-- Cam1 -->
-  <link name="camera_link"></link>
+  <!--%%%%%%%%%% Camera_Top_View -->
+  <link name="Camera_Top_View_Link"></link>
 
-  <joint name="camera_joint" type="fixed">
+  <joint name="Camera_Top_View_Link_Joint" type="fixed">
     <parent link="Camera_Top_View"/>
-    <child link="camera_link"/>
+    <child link="Camera_Top_View_Link"/>
     <origin xyz="0.02 0.021 -0.16" rpy="0 1.570796 0 "/>
   </joint>
 
-  <link name="camera_link_optical"></link>
+  <link name="Camera_Top_View_Link_Optical"></link>
 
-  <joint name="camera_optical_joint" type="fixed">
-    <parent link="Camera_Top_View"/>
-    <child link="camera_link_optical"/>
+  <joint name="Camera_Top_View_Link_Optical_Joint" type="fixed">
+    <parent link="Camera_Top_View_Link"/>
+    <child link="Camera_Top_View_Link_Optical"/>
     <origin xyz="0 0 0" rpy="-1.570796 0 -1.570796 "/>
   </joint>
 
-  <gazebo reference="camera_link">
+  <gazebo reference="Camera_Top_View_Link">
     <sensor type="camera" name="Cam1">
       <pose>0 0 0 0 0 0 </pose>
       <visualize>true</visualize>
@@ -36,12 +36,55 @@
           <far>0.114</far>
         </clip>
       </camera>
-      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <plugin name="camera_controller_cam1" filename="libgazebo_ros_camera.so">
         <topicName>pm_robot_description/cam1</topicName>
-        <frameName>camera_link_optical</frameName>
+        <frameName>Camera_Top_View_Link_Optical</frameName>
       </plugin>
     </sensor>
   </gazebo>
+
+
+<!--%%%%%%%%%% Camera_Bottom_View -->
+  <link name="Camera_Bottom_View_Link"></link>
+
+  <joint name="Camera_Bottom_View_Joint" type="fixed">
+    <parent link="Camera_System"/>
+    <child link="Camera_Bottom_View_Link"/>
+    <origin xyz="0.0645 0.287 0.246" rpy="0 -1.570796 0 "/>
+  </joint>
+
+  <link name="Camera_Bottom_View_Link_Optical"></link>
+
+  <joint name="Camera_Bottom_View_Link_Optical_Joint" type="fixed">
+    <parent link="Camera_Bottom_View_Link"/>
+    <child link="Camera_Bottom_View_Link_Optical"/>
+    <origin xyz="0 0 0" rpy="-1.570796 0 -1.570796 "/>
+  </joint>
+
+  <gazebo reference="Camera_Bottom_View_Link">
+    <sensor type="camera" name="Cam2">
+      <pose>0 0 0 0 0 0 </pose>
+      <visualize>true</visualize>
+      <update_rate>14.6</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.050453012</horizontal_fov>
+        <image>
+          <width>2592</width>
+          <height>1942</height>
+          <format>L8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>0.114</far>
+        </clip>
+      </camera>
+      <plugin name="camera_controller_cam2" filename="libgazebo_ros_camera.so">
+        <topicName>pm_robot_description/cam2</topicName>
+        <frameName>Camera_Bottom_View_Link_Optical</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
 
   <!-- Laser -->
   <link name="laser_top_link"></link>
