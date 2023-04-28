@@ -1,0 +1,31 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    testgroup_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+testgroup_controller:
+  ros__parameters:
+    joints:
+      - Gonio_Right_Stage_1_Top_Joint
+      - Gonio_Right_Stage_2_Bottom_Joint
+      - Gonio_Left_Stage_1_Top_Joint
+      - Gonio_Left_Stage_2_Bottom_Joint
+      - X_Axis_Joint
+      - Y_Axis_Joint
+      - Z_Axis_Joint
+      - 1K_Dispenser_Flap_Joint
+      - Gripper_Rot_Plate_Joint
+
+    command_interfaces:
+      - position  #added by Terei
+
+    state_interfaces:
+      - position #added by Terei
+      - velocity #added by Terei

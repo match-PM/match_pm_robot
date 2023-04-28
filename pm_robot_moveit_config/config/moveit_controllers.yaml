@@ -1,0 +1,23 @@
+# MoveIt uses this configuration for controller management
+
+moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
+
+moveit_simple_controller_manager:
+  controller_names:
+    - testgroup_controller
+
+  testgroup_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - Gonio_Right_Stage_1_Top_Joint
+      - Gonio_Right_Stage_2_Bottom_Joint
+      - Gonio_Left_Stage_1_Top_Joint
+      - Gonio_Left_Stage_2_Bottom_Joint
+      - X_Axis_Joint
+      - Y_Axis_Joint
+      - Z_Axis_Joint
+      - Gripper_Rot_Plate_Joint
+    action_ns: follow_joint_trajectory
+    default: true

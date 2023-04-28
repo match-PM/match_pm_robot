@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: pm_robot_description
+    relative_path: urdf/pm_robot_main.xacro
+    xacro_args: "\"with_Gonio_Left:=true\""
+  srdf:
+    relative_path: config/pm_robot.srdf
+  package_settings:
+    author_name: Niklas Terei
+    author_email: terei@match.uni-hannover.de
+    generated_timestamp: 1682677875

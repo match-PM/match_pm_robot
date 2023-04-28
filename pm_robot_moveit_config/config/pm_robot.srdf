@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="pm_robot">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="testgroup">
+        <joint name="test"/>
+        <joint name="world_joint"/>
+        <joint name="Camera_System_Joint"/>
+        <joint name="Camera_Calibartion_Joint"/>
+        <joint name="Gonio_Right_Joint"/>
+        <joint name="Gonio_Right_Stage_1_Bottom_Joint"/>
+        <joint name="Gonio_Right_Stage_1_Top_Joint"/>
+        <joint name="Gonio_Right_Stage_2_Bottom_Joint"/>
+        <joint name="Gonio_Right_Chuck_Joint"/>
+        <joint name="Test_Station_Joint"/>
+        <joint name="X_Axis_Joint"/>
+        <joint name="Y_Axis_Joint"/>
+        <joint name="Z_Axis_Joint"/>
+        <joint name="1K_Dispenser_Flap_Joint"/>
+        <joint name="1K_Dispenser_Joint"/>
+        <joint name="2K_Dispenser_Joint"/>
+        <joint name="Camera_Top_View_Joint"/>
+        <joint name="camera_joint"/>
+        <joint name="camera_optical_joint"/>
+        <joint name="Gripper_Rot_Plate_Joint"/>
+        <joint name="laser_top_joint"/>
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="default" group="testgroup">
+        <joint name="1K_Dispenser_Flap_Joint" value="0"/>
+        <joint name="1K_Dispenser_Joint" value="0"/>
+        <joint name="2K_Dispenser_Joint" value="0"/>
+        <joint name="Camera_Calibartion_Joint" value="0"/>
+        <joint name="Gonio_Right_Stage_1_Top_Joint" value="-0.0313"/>
+        <joint name="Gonio_Right_Stage_2_Bottom_Joint" value="0"/>
+        <joint name="Gripper_Rot_Plate_Joint" value="0"/>
+        <joint name="X_Axis_Joint" value="-0.3251"/>
+        <joint name="Y_Axis_Joint" value="-0.07685"/>
+        <joint name="Z_Axis_Joint" value="0"/>
+    </group_state>
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="test" type="fixed" parent_frame="world" child_link="base_link"/>
+    <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
+    <passive_joint name="2K_Dispenser_Joint"/>
+    <passive_joint name="1K_Dispenser_Joint"/>
+    <passive_joint name="Camera_Calibartion_Joint"/>
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="1K_Dispenser" link2="2K_Dispenser" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Camera_Top_View" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Gonio_Right" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Z_Axis" reason="Adjacent"/>
+    <disable_collisions link1="1K_Dispenser" link2="base_link" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="2K_Dispenser" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Camera_Top_View" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Gonio_Right" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Z_Axis" reason="Adjacent"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="base_link" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Camera_Top_View" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Gonio_Right" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Gonio_Right_Chuck" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser" link2="Z_Axis" reason="Adjacent"/>
+    <disable_collisions link1="2K_Dispenser" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Camera_System" reason="Adjacent"/>
+    <disable_collisions link1="Camera_Calibration" link2="Camera_Top_View" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Gonio_Right" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Gonio_Right_Chuck" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Camera_Top_View" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Gonio_Right" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Gonio_Right_Chuck" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Camera_System" link2="base_link" reason="Adjacent"/>
+    <disable_collisions link1="Camera_Top_View" link2="Gonio_Right" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Gonio_Right_Chuck" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Camera_Top_View" link2="Z_Axis" reason="Adjacent"/>
+    <disable_collisions link1="Camera_Top_View" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="Gonio_Right_Chuck" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="Gonio_Right_Stage_1_Bottom" reason="Adjacent"/>
+    <disable_collisions link1="Gonio_Right" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right" link2="base_link" reason="Adjacent"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="Gonio_Right_Stage_2_Bottom" reason="Adjacent"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Gonio_Right_Stage_1_Top" reason="Adjacent"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Gonio_Right_Stage_2_Bottom" reason="Adjacent"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Gripper_Rot_Plate" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="Test_Station" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="Z_Axis" reason="Adjacent"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="base_link" reason="Adjacent"/>
+    <disable_collisions link1="X_Axis" link2="Y_Axis" reason="Adjacent"/>
+    <disable_collisions link1="X_Axis" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="X_Axis" link2="base_link" reason="Adjacent"/>
+    <disable_collisions link1="Y_Axis" link2="Z_Axis" reason="Adjacent"/>
+    <disable_collisions link1="Y_Axis" link2="base_link" reason="Never"/>
+    <disable_collisions link1="Z_Axis" link2="base_link" reason="Never"/>
+</robot>
