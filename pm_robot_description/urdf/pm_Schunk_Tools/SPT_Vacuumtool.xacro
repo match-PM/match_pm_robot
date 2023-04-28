@@ -18,9 +18,7 @@
                 <geometry>
                     <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tool_Schunk_base_link.STL" />
                 </geometry>
-                <material name="">
-                    <color rgba="0.75294 0.75294 0.75294 1" />
-                </material>
+                <material name="orange"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
@@ -70,9 +68,7 @@
                     <geometry>
                         <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tools/Tool_TCP_SPT_R_A1000_I500.STL" />
                     </geometry>
-                    <material name="">
-                        <color rgba="0.79216 0.81961 0.93333 1" />
-                    </material>
+                    <material name="grey"/>
                 </visual>
                 <collision>
                     <origin xyz="0 0 0" rpy="0 0 0" />
@@ -98,5 +94,3 @@
     </xacro:macro>
 
 </robot>
-
-

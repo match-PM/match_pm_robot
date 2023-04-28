@@ -29,8 +29,8 @@ def generate_launch_description():
                               'with_Tool_MPG_10_Jaw_3mm_Lens':  'true',
                               'with_Gonio_Right':               'true',
                               'with_Gonio_Left':                'true',
-                              'with_Tool_SPT_Holder':           'true',
-                              'with_SPT_R_A1000_I500':          'true',
+                              'with_Tool_SPT_Holder':           'false',
+                              'with_SPT_R_A1000_I500':          'false',
                               }
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file,

@@ -33,9 +33,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/base_link.STL" />
       </geometry>
-      <material name="">
-        <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -57,6 +55,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
       </geometry>
+      <material name="orange"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -85,6 +84,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
       </geometry>
+      <material name="brown"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -113,6 +113,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
       </geometry>
+      <material name="blue"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -146,6 +147,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
       </geometry>
+      <material name="black"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -212,6 +214,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser_Flap.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -245,6 +248,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
       </geometry>
+      <material name="red"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -278,6 +282,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/2K_Dispenser.STL" />
       </geometry>
+      <material name="orange"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -311,6 +316,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Top_View.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -343,6 +349,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -400,6 +407,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Camera_System.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -428,6 +436,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Calibration.STL" />
       </geometry>
+      <material name="green"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
