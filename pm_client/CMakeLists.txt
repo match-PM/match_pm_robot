@@ -9,7 +9,7 @@ find_package(ament_cmake REQUIRED)
 find_package(open62541 REQUIRED)
 
 add_library(
-  pm_client
+  pm_client SHARED
   src/client.cpp
   src/aerotech_axis.cpp
   include/pm_client/client.hpp

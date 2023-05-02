@@ -4,7 +4,7 @@ project(open62541)
 find_package(ament_cmake REQUIRED)
 
 add_library(
-  open62541
+  open62541 SHARED
   src/open62541.c
   include/open62541/open62541.h
 )

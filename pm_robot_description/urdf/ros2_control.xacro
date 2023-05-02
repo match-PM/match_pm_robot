@@ -3,8 +3,10 @@
 <robot name="pm_robot">
 
     <ros2_control name="GazeboSystem" type="system">
+        <!-- <ros2_control name="PMSystem" type="system"> -->
         <hardware>
             <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            <!-- <plugin>pm_hardware_interface/PMSystem</plugin> -->
         </hardware>
         <joint name="X_Axis_Joint">
             <command_interface name="position"/>
@@ -114,8 +116,8 @@
             <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
             <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
 
-            <!--robot_param>robot_description</robot_param--> <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
-            <!--robot_param_node>robot_state_publisher</robot_param_node--> <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
+            <!--robot_param>robot_description</robot_param-->            <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
+            <!--robot_param_node>robot_state_publisher</robot_param_node-->            <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
             <!--robotNamespace>${arm_id}</robotNamespace-->
         </plugin>
     </gazebo>

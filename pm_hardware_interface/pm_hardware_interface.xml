@@ -1,0 +1,7 @@
+<library path="pm_hardware_interface">
+    <class name="pm_hardware_interface/PMSystem" type="pm_hardware_interface::PMSystem" base_class_type="hardware_interface::SystemInterface">
+        <description>
+            ROS2 Hardware Interface for PM Robot.
+        </description>
+    </class>
+</library>
