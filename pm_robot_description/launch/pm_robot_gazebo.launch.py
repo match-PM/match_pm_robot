@@ -25,12 +25,12 @@ def generate_launch_description():
     pm_main_xacro_file = os.path.join(
         get_package_share_directory(pkg_name), file_subpath)
 
-    pm_robot_configuration = {'with_Tool_MPG_10':               'true',
-                              'with_Tool_MPG_10_Jaw_3mm_Lens':  'true',
+    pm_robot_configuration = {'with_Tool_MPG_10':               'false',
+                              'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                               'with_Gonio_Right':               'true',
                               'with_Gonio_Left':                'true',
-                              'with_Tool_SPT_Holder':           'false',
-                              'with_SPT_R_A1000_I500':          'false',
+                              'with_Tool_SPT_Holder':           'true',
+                              'with_SPT_R_A1000_I500':          'true',
                               }
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file,
