@@ -4,8 +4,9 @@
   xmlns:xacro="https://ros.org/wiki/xacro">
 
   <!-- Configurations -->
+  <xacro:include filename="$(find pm_robot_description)/urdf/materials.xacro" />
 
-  <xacro:arg name="with_Gonio_Left"                 default="false" />
+  <xacro:arg name="with_Gonio_Left"                 default="true" />
   <xacro:arg name="with_Gonio_Right"                default="true" />
     <!-- Tools -->
     <xacro:arg name="with_Tool_MPG_10"                default="false" />

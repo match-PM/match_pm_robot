@@ -1,0 +1,12 @@
+# Default initial positions for pm_robot's ros2_control fake system
+
+initial_positions:
+  1K_Dispenser_Flap_Joint: 0
+  Gonio_Left_Stage_1_Top_Joint: 0
+  Gonio_Left_Stage_2_Bottom_Joint: 0
+  Gonio_Right_Stage_1_Top_Joint: 0
+  Gonio_Right_Stage_2_Bottom_Joint: 0
+  Gripper_Rot_Plate_Joint: 1
+  X_Axis_Joint: 0
+  Y_Axis_Joint: -1
+  Z_Axis_Joint: 0
