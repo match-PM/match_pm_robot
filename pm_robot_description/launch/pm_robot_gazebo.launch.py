@@ -43,6 +43,21 @@ def generate_launch_description():
                                                    'with_SPT_R_A1000_I500': str(pm_robot_configuration['with_SPT_R_A1000_I500']),
                                                }).toxml()
 
+    robot_controllers = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control.yaml",
+        ]
+    )
+
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[robot_description_raw, robot_controllers],
+        output="both",
+    )
+
     # Configure the node
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
@@ -99,6 +114,7 @@ def generate_launch_description():
 
     # Run the node
     return LaunchDescription([
+        control_node,
         gazebo,
         robot_state_publisher_node,
         joint_broad_spawner,

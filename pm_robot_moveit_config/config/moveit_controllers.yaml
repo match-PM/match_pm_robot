@@ -18,6 +18,6 @@ moveit_simple_controller_manager:
       - X_Axis_Joint
       - Y_Axis_Joint
       - Z_Axis_Joint
-      - Gripper_Rot_Plate_Joint
+      - T_Axis_Joint
     action_ns: follow_joint_trajectory
     default: true

@@ -64,10 +64,10 @@
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="Gripper_Rot_Plate_Joint">
+            <joint name="T_Axis_Joint">
                 <command_interface name="position"/>
                 <state_interface name="position">
-                  <param name="initial_value">${initial_positions['Gripper_Rot_Plate_Joint']}</param>
+                  <param name="initial_value">${initial_positions['T_Axis_Joint']}</param>
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>

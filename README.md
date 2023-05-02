@@ -60,6 +60,8 @@ sudo apt install ros-humble-rqt*
 ```
 ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller --force-discover
 
+Add these commands to the .bashrc file: 
+
 source /opt/ros/humble/setup.bash
 ```
 source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash

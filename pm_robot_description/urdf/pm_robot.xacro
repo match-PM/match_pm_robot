@@ -162,7 +162,7 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-  <joint name="Gripper_Rot_Plate_Joint" type="revolute">
+  <joint name="T_Axis_Joint" type="revolute">
     <origin xyz="0.00750000000002338 0.0900000062570287 -0.389499999999991" rpy="0 0 0" />
     <parent link="Z_Axis" />
     <child link="Gripper_Rot_Plate" />

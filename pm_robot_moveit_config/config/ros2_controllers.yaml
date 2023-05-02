@@ -21,7 +21,7 @@ testgroup_controller:
       - Y_Axis_Joint
       - Z_Axis_Joint
       - 1K_Dispenser_Flap_Joint
-      - Gripper_Rot_Plate_Joint
+      - T_Axis_Joint
 
     command_interfaces:
       - position  #added by Terei
