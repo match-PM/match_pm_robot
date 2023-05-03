@@ -1,7 +1,7 @@
 publisher_forward_position_controller:
   ros__parameters:
 
-    controller_name: "forward_position_controller"
+    controller_name: "pm_robot_forward_position_controller"
     wait_sec_between_publish: 5
 
     # Position for controller in sequential order

@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="pm_robot_ros2_control_hw_sim" params="name initial_positions_file">
+    <xacro:macro name="pm_robot_ros2_control_hw_fake" params="name initial_positions_file">
 
         <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 
-        <ros2_control name="GazeboSystem" type="system">
+        <ros2_control name="${name}" type="system">
             <hardware>
-                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+                <!-- By default, set up controllers for simulation. This won't work on real hardware -->
+                <plugin>mock_components/GenericSystem</plugin>
             </hardware>
-
+            
             <joint name="X_Axis_Joint">
                 <command_interface name="position"/>
                 <!-- <command_interface name="velocity"/> -->
@@ -95,37 +96,6 @@
                 <state_interface name="position"/>
             </joint>
 
-            <xacro:if value="$(arg with_Tool_MPG_10)">
-                <joint name="Tool_Gripper_MPG_10_Jaw_1_Joint">
-                        <command_interface name="position">
-                        </command_interface>
-                        <state_interface name="position"/>
-                    </joint>
-
-                    <joint name="Tool_Gripper_MPG_10_Jaw_2_Joint">
-                        <param name="mimic">Tool_Gripper_MPG_10_Jaw_1_Joint</param>
-                        <param name="mulltiplier">1</param>
-                        <command_interface name="position">
-                        </command_interface>
-                        <state_interface name="position"/>
-                    </joint>
-            </xacro:if>
- 
         </ros2_control>
-
-            <gazebo>
-                <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control.yaml</parameters>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right.yaml</parameters>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
-                    <xacro:if value="$(arg with_Tool_MPG_10)">
-                        <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
-                    </xacro:if>
-                    
-                    <!--robot_param>robot_description</robot_param-->            <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
-                    <!--robot_param_node>robot_state_publisher</robot_param_node-->            <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
-                    <!--robotNamespace>${arm_id}</robotNamespace-->
-                </plugin>
-            </gazebo>
     </xacro:macro>
 </robot>

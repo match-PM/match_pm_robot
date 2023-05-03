@@ -40,7 +40,6 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/base_link.STL" />
       </geometry>
-
     </collision>
   </link>
  <!--%%%%%%%%%%%%% X Axis Definitions %%%%%%%%%%%%%-->
@@ -349,7 +348,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
       </geometry>
-      <material name="grey"/>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />

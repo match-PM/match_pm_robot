@@ -8,6 +8,7 @@
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
                 <plugin>mock_components/GenericSystem</plugin>
             </hardware>
+            
             <joint name="Gonio_Right_Stage_1_Top_Joint">
                 <command_interface name="position"/>
                 <state_interface name="position">

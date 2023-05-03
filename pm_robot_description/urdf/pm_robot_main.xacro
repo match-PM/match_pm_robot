@@ -6,7 +6,12 @@
   <!-- Configurations -->
   <xacro:include filename="$(find pm_robot_description)/urdf/materials.xacro" />
 
-  <xacro:arg name="sim_mode"                 default="true" />
+  <!-- <xacro:arg name="launch_mode"                default="fake_HW" /> -->
+  <!-- <xacro:arg name="launch_mode"                default="real_HW" /> -->
+  <xacro:arg name="launch_mode"                     default="sim_HW" />
+  <!-- <xacro:arg name="launch_mode"                default="real_sim_HW" /> -->
+
+  <xacro:arg name="initial_positions_file"          default="pm_robot_initial_positions.yaml" />
 
   <xacro:arg name="with_Gonio_Left"                 default="true" />
   <xacro:arg name="with_Gonio_Right"                default="true" />
@@ -39,14 +44,31 @@
       <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_left.xacro" /> 
     </xacro:if>
 
-  <!-- Switch between Gazebo-Simulation and Real Robot -->
-    <xacro:if value="$(arg sim_mode)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_gazebo.xacro" />
-    </xacro:if>
-    <xacro:unless value="$(arg sim_mode)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" />
-    </xacro:unless>
+    <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
 
-  <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
+  <!-- Switch between Gazebo-Simulation and Real Robot -->
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_fake.xacro" />
+    <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_gazebo.xacro" />
+    <!-- <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_real.xacro" /> -->
+
+    <xacro:property name="launch_mode" value="$(arg launch_mode)"/>
+
+    <xacro:if value="${launch_mode == 'fake_HW'}">
+      <xacro:pm_robot_ros2_control_hw_fake name="Fake_HW" initial_positions_file="$(arg initial_positions_file)"/>
+    </xacro:if>
+
+    <xacro:if value="${launch_mode == 'real_HW'}">
+      <xacro:pm_robot_ros2_control_hw_real name="Real_HW"/>
+    </xacro:if>
+
+    <xacro:if value="${launch_mode == 'sim_HW'}">
+      <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW" initial_positions_file="$(arg initial_positions_file)"/>
+    </xacro:if>   
+
+    <xacro:if value="${launch_mode == 'real_sim_HW'}">
+      <!-- <xacro:pm_robot_ros2_control_hw_fake name="Real_Sim_HW" initial_positions_file="$(arg initial_positions_file)"/> -->
+    </xacro:if>   
 
 </robot>
