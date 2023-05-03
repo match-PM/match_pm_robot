@@ -8,5 +8,5 @@ initial_positions:
   Gonio_Right_Stage_2_Bottom_Joint: 0
   T_Axis_Joint: 1
   X_Axis_Joint: 0
-  Y_Axis_Joint: -1
+  Y_Axis_Joint: -0.1
   Z_Axis_Joint: 0

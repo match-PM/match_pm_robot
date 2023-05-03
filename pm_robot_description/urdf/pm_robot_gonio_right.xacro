@@ -17,6 +17,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -45,6 +46,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Stage_1_Bottom.STL" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -77,6 +79,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Stage_1_Top.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -110,6 +113,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Stage_2_Bottom.STL" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -144,6 +148,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chucks/Chuck_Siemens_UFC_Gonio_Right.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
