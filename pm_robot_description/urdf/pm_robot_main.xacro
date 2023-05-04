@@ -6,10 +6,7 @@
   <!-- Configurations -->
   <xacro:include filename="$(find pm_robot_description)/urdf/materials.xacro" />
 
-  <!-- <xacro:arg name="launch_mode"                default="fake_HW" /> -->
-  <!-- <xacro:arg name="launch_mode"                default="real_HW" /> -->
   <xacro:arg name="launch_mode"                     default="sim_HW" />
-  <!-- <xacro:arg name="launch_mode"                default="real_sim_HW" /> -->
 
   <xacro:arg name="initial_positions_file"          default="pm_robot_initial_positions.yaml" />
 

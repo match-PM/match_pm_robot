@@ -44,17 +44,17 @@ pm_robot_joint_trajectory_controller:
       - position
       - velocity
 
-    state_publish_rate: 220.0 # Defaults to 50
-    action_monitor_rate: 20.0 # Defaults to 20
+    # state_publish_rate: 220.0 # Defaults to 50
+    # action_monitor_rate: 20.0 # Defaults to 20
 
-    allow_partial_joints_goal: false # Defaults to false
-    #open_loop_control: true
-    #allow_integration_in_goal_trajectories: true
-    constraints:
-      stopped_velocity_tolerance: 0.2 # Defaults to 0.01
-      goal_time: 0.0 # Defaults to 0.0 (start immediately)
-      X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-      Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-      Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+    # allow_partial_joints_goal: false # Defaults to false
+    # #open_loop_control: true
+    # #allow_integration_in_goal_trajectories: true
+    # constraints:
+    #   stopped_velocity_tolerance: 0.2 # Defaults to 0.01
+    #   goal_time: 0.0 # Defaults to 0.0 (start immediately)
+    #   X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+    #   Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+    #   Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
 
 
