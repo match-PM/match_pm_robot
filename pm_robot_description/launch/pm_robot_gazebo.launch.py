@@ -27,15 +27,22 @@ def generate_launch_description():
         get_package_share_directory(pkg_name), file_subpath)
 
     pm_robot_configuration = {
-                                'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
+                                'launch_mode':                    'real_HW',              #real_HW sim_HW fake_HW real_sim_HW
                                 'with_Tool_MPG_10':               'false',
-                                'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
+                                'with_Tool_MPG_10_Jaw_3mm_Lens':  'true',
                                 'with_Gonio_Right':               'true',
                                 'with_Gonio_Left':                'true',
                                 'with_Tool_SPT_Holder':           'true',
                                 'with_SPT_R_A1000_I500':          'false',
                               }
+    
+    # sim_time condition
+    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW'):
+        sim_time = True
+    elif (str(pm_robot_configuration['launch_mode']) == 'real_HW' or str(pm_robot_configuration['launch_mode']) == 'fake_HW'):
+        sim_time = False
 
+    
     robot_description_raw = xacro.process_file(pm_main_xacro_file,
                                                mappings={
                                                    'launch_mode': str(pm_robot_configuration['launch_mode']),
@@ -84,7 +91,7 @@ def generate_launch_description():
         #"publish_state_updates": should_publish,
         #"publish_transforms_updates": should_publish,
         #"monitor_dynamics": False,
-        "use_sim_time": True,
+        "use_sim_time": sim_time,
     }    
 
     move_group_params = [
@@ -129,7 +136,7 @@ def generate_launch_description():
         name="robot_state_publisher",
         output='both',
         parameters=[{'robot_description': robot_description_raw,
-                     'use_sim_time': True}]  # add other parameters here if required
+                     'use_sim_time': sim_time}]  # add other parameters here if required
         #parameters=[moveit_config.robot_description],
     )
 
@@ -157,13 +164,6 @@ def generate_launch_description():
             "config",
             "pm_robot_control.yaml",
         ]
-    )
-
-    # ros2_control using FakeSystem as hardware
-    ros2_controllers_path_mov = os.path.join(
-        get_package_share_directory("pm_robot_moveit_config"),
-        "config",
-        "ros2_controllers.yaml",
     )
 
     control_node = Node(
@@ -230,12 +230,11 @@ def generate_launch_description():
     ld.add_action(rviz_node)
     if (str(pm_robot_configuration['launch_mode']) == 'sim_HW'):
         ld.add_action(gazebo)
+        ld.add_action(spawn_entity)
     ld.add_action(robot_state_publisher_node_mov)
     ld.add_action(run_move_group_node)
     ld.add_action(control_node)
-    ld.add_action(joint_broad_spawner)
-    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW'):
-        ld.add_action(spawn_entity)
+    ld.add_action(joint_broad_spawner)  
     ld.add_action(delay_robot_controller_spawner_after_joint_state_broadcaster_spawner)
     ld.add_action(delay_robot_controller_spawner_after_controller)
 

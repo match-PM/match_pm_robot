@@ -121,6 +121,7 @@
                     <xacro:if value="$(arg with_Tool_MPG_10)">
                         <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
                     </xacro:if>
+                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gazebo_param.yaml</parameters>
                     
                     <!--robot_param>robot_description</robot_param-->            <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
                     <!--robot_param_node>robot_state_publisher</robot_param_node-->            <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->

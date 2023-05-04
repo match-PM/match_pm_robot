@@ -1,7 +1,6 @@
 controller_manager:
   ros__parameters:
     update_rate: 100
-    use_sim_time: true
 
     pm_robot_forward_position_controller:
      type: position_controllers/JointGroupPositionController
