@@ -40,7 +40,7 @@ joint_limits:
     max_acceleration: 0
   T_Axis_Joint:
     has_velocity_limits: true
-    max_velocity: 2.0
+    max_velocity: 10.0
     has_acceleration_limits: false
     max_acceleration: 0
   X_Axis_Joint:
@@ -55,6 +55,6 @@ joint_limits:
     max_acceleration: 0
   Z_Axis_Joint:
     has_velocity_limits: true
-    max_velocity: 0.050000000000000003
+    max_velocity: 100.0
     has_acceleration_limits: false
     max_acceleration: 0

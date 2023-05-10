@@ -27,7 +27,7 @@ def generate_launch_description():
         get_package_share_directory(pkg_name), file_subpath)
 
     pm_robot_configuration = {
-                                'launch_mode':                    'real_HW',              #real_HW sim_HW fake_HW real_sim_HW
+                                'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
                                 'with_Tool_MPG_10':               'false',
                                 'with_Tool_MPG_10_Jaw_3mm_Lens':  'true',
                                 'with_Gonio_Right':               'true',
