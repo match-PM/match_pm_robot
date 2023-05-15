@@ -1,0 +1,35 @@
+<?xml version="1.0"?> 
+<sdf version="1.4">
+
+  <world name="default">
+        <!-- Ground Plane -->
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <model name="light_model">
+            <pose>0 0 1 0 0 0</pose>
+            
+            <link name="link_1">                            
+
+                <gravity>0</gravity>
+        
+                <light name='user_spot_light_1' type='spot'>      
+                </light>
+            </link>
+            
+            <plugin name="light_control" filename="libFlashLightPlugin.so">
+                <enable>true</enable>
+                <light>
+                    <id>link_1/user_spot_light_1</id>
+                    <duration>0.5</duration>
+                    <interval>0.5</interval>
+                </light>
+            </plugin>
+        </model>        
+  </world>
+</sdf>
