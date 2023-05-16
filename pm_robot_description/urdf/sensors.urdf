@@ -50,7 +50,7 @@
   <joint name="Camera_Bottom_View_Joint" type="fixed">
     <parent link="Camera_System"/>
     <child link="Camera_Bottom_View_Link"/>
-    <origin xyz="0.0645 0.287 -2.754" rpy="0 -1.570796 0 "/>
+    <origin xyz="0.0645 0.287 -0.754" rpy="0 -1.570796 0 "/>
   </joint>
 
   <link name="Camera_Bottom_View_Link_Optical"></link>
@@ -67,15 +67,15 @@
       <visualize>true</visualize>
       <update_rate>14.6</update_rate>
       <camera name="head">
-        <horizontal_fov>0.010453012</horizontal_fov>
+        <horizontal_fov>0.01</horizontal_fov>
         <image>
           <width>2592</width>
           <height>1942</height>
           <format>L8</format>
         </image>
         <clip>
-          <near>3.09</near>
-          <far>3.13</far>
+          <near>1.09</near>
+          <far>1.13</far>
         </clip>
       </camera>
       <plugin name="camera_controller_cam2" filename="libgazebo_ros_camera.so">
