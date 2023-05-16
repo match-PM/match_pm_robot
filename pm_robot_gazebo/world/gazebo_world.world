@@ -12,9 +12,9 @@
         </include>
 
         <model name="box">
-            <pose>0 0 1 0 0 0</pose>
+            <pose>0.667 0.795 0.347 3.142 0 0</pose>
             <link name="link_1">                            
-                <collision name="collision">
+                <!-- <collision name="collision">
                     <geometry>
                         <box>
                             <size>0.01 0.01 0.01</size>
@@ -28,7 +28,7 @@
                             <size>0.01 0.01 0.01</size>
                         </box>
                     </geometry>
-                </visual>
+                </visual> -->
 
                 <gravity>0</gravity>
         
@@ -52,7 +52,7 @@
                 </light>
             </link>
             
-            <plugin name="my_model_plugin" filename="liblight_move_model_plugin.so"/>
+            <!-- <plugin name="my_model_plugin" filename="liblight_move_model_plugin.so"/> -->
         </model>        
   </world>
 </sdf>
