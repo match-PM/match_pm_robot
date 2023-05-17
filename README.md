@@ -13,26 +13,43 @@ Start by changing directory to your workspace!
 ```
 git clone https://github.com/match-PM/match_pm_robot.git
 ```
-### Install dependencies
-Browse to `your_workspace/src/match_pm_robot` and execute
+## 3. Install packages
+Make sure that you have installed the following packages:
+
 ```
-git submodule update --init --recursive
-cd ../..
-rosdep install -i --from-path src --rosdistro humble -y
+sudo apt install ros-humble-desktop-full
 ```
-If the last `rosdep install` command is not working, please try the following:
 ```
-rosdep install --from-paths src --ignore-src -r -y
+sudo aptinstall ros-humble-xacro
+```
+```
+sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control
+```
+```
+sudo apt install ros-humble-rqt*
+```
+```
+ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller --force-discover
+```
+Add these commands to the .bashrc file: 
+```
+source /opt/ros/humble/setup.bash
+```
+```
+source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
+```
+```
+source ~/ros2_ws/install/setup.bash
 ```
 
-### Build packages
+### 4. Build packages
 Use your standard build tools to build the downloaded packages e.g. : 
 ```
 colcon build  --symlink-install
 ```
 
 
-## 3. Usage
+## 4. Usage
 To use the robot in gazebo or rviz, you can launch the model
 
 ```
@@ -43,26 +60,8 @@ or
 ros2 launch pm_robot_description pm_robot_gazebo.rviz.py 
 ```
 
-## 4. External documentation
+## 5. External documentation
 [ROS 2 - Humble - Documentation and Tutorial](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html)
 [Building a robot with ROS2](https://www.youtube.com/@ArticulatedRobotics/playlists)
 
-## 5. Comments
-Make sure that you have installed the following packages:
-
-sudo apt install ros-humble-desktop-full
-```
-sudo aptinstall ros-humble-xacro
-```
-sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control
-```
-sudo apt install ros-humble-rqt*
-```
-ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller --force-discover
-
-source /opt/ros/humble/setup.bash
-```
-source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
-```
-source ~/ros2_ws/install/setup.bash
 

@@ -22,7 +22,7 @@
         "/opt/ros/humble/include/**",
         "/home/pmlab/pm_ros2_ws/src/match_pm_robot/open62541/include/**",
         "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_client/include/**",
-        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_hardware_interface/include/**",
+        "/home/mll/ros2_ws/src/match_pm_robot/pm_hardware_interface/include/**",
         "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/camera_calibration_parsers/include/**",
         "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/camera_info_manager/include/**",
         "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/image_transport/include/**",

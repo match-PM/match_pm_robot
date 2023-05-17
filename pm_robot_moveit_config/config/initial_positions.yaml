@@ -6,7 +6,7 @@ initial_positions:
   Gonio_Left_Stage_2_Bottom_Joint: 0
   Gonio_Right_Stage_1_Top_Joint: 0
   Gonio_Right_Stage_2_Bottom_Joint: 0
-  Gripper_Rot_Plate_Joint: 1
+  T_Axis_Joint: 1
   X_Axis_Joint: 0
-  Y_Axis_Joint: -1
+  Y_Axis_Joint: -0.1
   Z_Axis_Joint: 0

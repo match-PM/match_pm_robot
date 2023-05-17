@@ -38,7 +38,7 @@ joint_limits:
     max_velocity: 0.10000000000000001
     has_acceleration_limits: false
     max_acceleration: 0
-  Gripper_Rot_Plate_Joint:
+  T_Axis_Joint:
     has_velocity_limits: true
     max_velocity: 2.0
     has_acceleration_limits: false

@@ -17,6 +17,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/Gonio_Station_Left.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -45,6 +46,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/Gonio_Left_Stage_1_Top.STL" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -78,6 +80,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/Gonio_Left_Stage_2_Bottom.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -111,6 +114,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Carrier_Gonio_Left.STL" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -143,6 +147,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/UV_Slider_X_Front.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -172,6 +177,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/UV_LED_Front.STL" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -201,6 +207,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/UV_Slider_X_Back.STL" />
       </geometry>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -230,6 +237,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/UV_LED_Back.STL" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />

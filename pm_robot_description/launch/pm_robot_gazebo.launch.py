@@ -25,12 +25,12 @@ def generate_launch_description():
     pm_main_xacro_file = os.path.join(
         get_package_share_directory(pkg_name), file_subpath)
 
-    pm_robot_configuration = {'with_Tool_MPG_10':               'false',
+    pm_robot_configuration = {'with_Tool_MPG_10':               'true',
                               'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                               'with_Gonio_Right':               'true',
                               'with_Gonio_Left':                'true',
-                              'with_Tool_SPT_Holder':           'true',
-                              'with_SPT_R_A1000_I500':          'true',
+                              'with_Tool_SPT_Holder':           'false',
+                              'with_SPT_R_A1000_I500':          'false',
                               }
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file,
@@ -42,6 +42,21 @@ def generate_launch_description():
                                                    'with_Tool_SPT_Holder': str(pm_robot_configuration['with_Tool_SPT_Holder']),
                                                    'with_SPT_R_A1000_I500': str(pm_robot_configuration['with_SPT_R_A1000_I500']),
                                                }).toxml()
+
+    robot_controllers = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control.yaml",
+        ]
+    )
+
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[robot_description_raw, robot_controllers],
+        output="both",
+    )
 
     # Configure the node
     robot_state_publisher_node = Node(
@@ -99,6 +114,7 @@ def generate_launch_description():
 
     # Run the node
     return LaunchDescription([
+        control_node,
         gazebo,
         robot_state_publisher_node,
         joint_broad_spawner,

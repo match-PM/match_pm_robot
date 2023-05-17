@@ -40,12 +40,12 @@
     </xacro:if>
 
   <!-- Switch between Gazebo-Simulation and Real Robot -->
-    <xacro:if value="$(arg sim_mode)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_gazebo.xacro" />
-    </xacro:if>
-    <xacro:unless value="$(arg sim_mode)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" />
-    </xacro:unless>
+    <!-- <xacro:if value="$(arg sim_mode)"> -->
+      <!-- <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_gazebo.xacro" /> -->
+    <!-- </xacro:if> -->
+    <!-- <xacro:unless value="$(arg sim_mode)"> -->
+      <!-- <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" /> -->
+    <!-- </xacro:unless> -->
 
   <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
 
