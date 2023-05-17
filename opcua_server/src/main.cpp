@@ -8,14 +8,16 @@
 
 #include "open62541.h"
 
-typedef UA_StatusCode (*VariableReadFunc
-)(UA_Server *server, const UA_NodeId *session_id, void *session_context, const UA_NodeId *node_id,
-  void *node_context, UA_Boolean source_time_stamp, const UA_NumericRange *range,
-  UA_DataValue *data_value);
+typedef UA_StatusCode (*VariableReadFunc)(
+    UA_Server *server, const UA_NodeId *session_id, void *session_context, const UA_NodeId *node_id,
+    void *node_context, UA_Boolean source_time_stamp, const UA_NumericRange *range,
+    UA_DataValue *data_value
+);
 
-typedef UA_StatusCode (*VariableWriteFunc
-)(UA_Server *server, const UA_NodeId *session_id, void *session_context, const UA_NodeId *node_id,
-  void *node_context, const UA_NumericRange *range, const UA_DataValue *data_value);
+typedef UA_StatusCode (*VariableWriteFunc)(
+    UA_Server *server, const UA_NodeId *session_id, void *session_context, const UA_NodeId *node_id,
+    void *node_context, const UA_NumericRange *range, const UA_DataValue *data_value
+);
 
 enum AxisId
 {
@@ -27,21 +29,42 @@ enum AxisId
 
 struct AxisDescriptor
 {
-    UA_NodeId parent_id = UA_NODEID_NULL;
-    UA_NodeId speed_node_id = UA_NODEID_NULL;
-    UA_NodeId max_speed_node_id = UA_NODEID_NULL;
-    UA_NodeId acceleration_node_id = UA_NODEID_NULL;
-    UA_NodeId max_acceleration_node_id = UA_NODEID_NULL;
-    UA_NodeId servo_node_id = UA_NODEID_NULL;
-    UA_NodeId tolerance_node_id = UA_NODEID_NULL;
-    UA_NodeId end_move_node_id = UA_NODEID_NULL;
-    UA_NodeId has_error_node_id = UA_NODEID_NULL;
-    UA_NodeId error_id_node_id = UA_NODEID_NULL;
-    UA_NodeId actual_position_node_id = UA_NODEID_NULL;
-    UA_NodeId target_position_node_id = UA_NODEID_NULL;
-    UA_NodeId min_position_node_id = UA_NODEID_NULL;
-    UA_NodeId max_position_node_id = UA_NODEID_NULL;
-    UA_NodeId is_initialized_node_id = UA_NODEID_NULL;
+    UA_NodeId parent_id;
+    UA_NodeId speed_node_id;
+    UA_NodeId max_speed_node_id;
+    UA_NodeId acceleration_node_id;
+    UA_NodeId max_acceleration_node_id;
+    UA_NodeId servo_node_id;
+    UA_NodeId tolerance_node_id;
+    UA_NodeId end_move_node_id;
+    UA_NodeId has_error_node_id;
+    UA_NodeId error_id_node_id;
+    UA_NodeId actual_position_node_id;
+    UA_NodeId target_position_node_id;
+    UA_NodeId min_position_node_id;
+    UA_NodeId max_position_node_id;
+    UA_NodeId is_initialized_node_id;
+    UA_NodeId units_per_increment_node_id;
+
+    AxisDescriptor()
+    {
+        parent_id = UA_NODEID_NULL;
+        speed_node_id = UA_NODEID_NULL;
+        max_speed_node_id = UA_NODEID_NULL;
+        acceleration_node_id = UA_NODEID_NULL;
+        max_acceleration_node_id = UA_NODEID_NULL;
+        servo_node_id = UA_NODEID_NULL;
+        tolerance_node_id = UA_NODEID_NULL;
+        end_move_node_id = UA_NODEID_NULL;
+        has_error_node_id = UA_NODEID_NULL;
+        error_id_node_id = UA_NODEID_NULL;
+        actual_position_node_id = UA_NODEID_NULL;
+        target_position_node_id = UA_NODEID_NULL;
+        min_position_node_id = UA_NODEID_NULL;
+        max_position_node_id = UA_NODEID_NULL;
+        is_initialized_node_id = UA_NODEID_NULL;
+        units_per_increment_node_id = UA_NODEID_NULL;
+    }
 };
 
 struct RobotDescriptor
@@ -152,6 +175,7 @@ static void RegisterRobotAxisType(UA_Server *server)
         "IsInitialized",
         "Whether or not this axis has been initialized."
     );
+    RegisterRobotAxisTypeVariable(server, "UnitsPerIncrement", "");
 }
 
 template<typename ValueType>
@@ -230,7 +254,7 @@ static UA_StatusCode RobotAxisTypeReadVariable(
     READ(else if, z_axis, error_id, long, UA_TYPES_INT32, 0)
     READ(else if, t_axis, error_id, long, UA_TYPES_INT32, 0)
 
-    READ(else if, x_axis, actual_position, long, UA_TYPES_INT32, 0)
+    READ(else if, x_axis, actual_position, long, UA_TYPES_INT32, 10000)
     READ(else if, y_axis, actual_position, long, UA_TYPES_INT32, 0)
     READ(else if, z_axis, actual_position, long, UA_TYPES_INT32, 0)
     READ(else if, t_axis, actual_position, long, UA_TYPES_INT32, 0)
@@ -255,6 +279,11 @@ static UA_StatusCode RobotAxisTypeReadVariable(
     READ(else if, z_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
     READ(else if, t_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
 
+    READ(else if, x_axis, units_per_increment, double, UA_TYPES_DOUBLE, 1)
+    READ(else if, y_axis, units_per_increment, double, UA_TYPES_DOUBLE, 1)
+    READ(else if, z_axis, units_per_increment, double, UA_TYPES_DOUBLE, 1)
+    READ(else if, t_axis, units_per_increment, double, UA_TYPES_DOUBLE, 1)
+
     else
     {
         return UA_STATUSCODE_BADNOTFOUND;
@@ -264,12 +293,16 @@ static UA_StatusCode RobotAxisTypeReadVariable(
 }
 
 template<typename ValueType>
+void DoNothing(ValueType value)
+{
+    (void)value;
+}
+
+template<typename ValueType>
 UA_StatusCode RobotAxisTypeWriteVariableHelper(
     const UA_DataValue *data_value, ValueType *value, std::size_t UA_TYPE
 )
 {
-    (void)value;
-
     if (!UA_Variant_hasScalarType(&data_value->value, &UA_TYPES[UA_TYPE]))
     {
         return UA_STATUSCODE_BAD;
@@ -295,6 +328,7 @@ static UA_StatusCode RobotAxisTypeWriteVariable(
     {                                                                                              \
         ty value;                                                                                  \
         UA_StatusCode status = RobotAxisTypeWriteVariableHelper<ty>(data_value, &value, uaty);     \
+        func(value);                                                                               \
         if (status != UA_STATUSCODE_GOOD)                                                          \
         {                                                                                          \
             return status;                                                                         \
@@ -302,75 +336,80 @@ static UA_StatusCode RobotAxisTypeWriteVariable(
         return UA_STATUSCODE_GOOD;                                                                 \
     }
 
-    WRITE(if, x_axis, speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, speed, long, UA_TYPES_INT32, 0)
+    WRITE(if, x_axis, speed, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, speed, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, speed, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, speed, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, max_speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, max_speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, max_speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, max_speed, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, max_speed, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, max_speed, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, max_speed, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, max_speed, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, acceleration, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, acceleration, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, acceleration, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, acceleration, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, acceleration, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, max_acceleration, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, max_acceleration, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, max_acceleration, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, max_acceleration, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, max_acceleration, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, servo, bool, UA_TYPES_BOOLEAN, false)
+    WRITE(else if, x_axis, servo, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, y_axis, servo, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, z_axis, servo, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, t_axis, servo, bool, UA_TYPES_BOOLEAN, DoNothing)
 
-    WRITE(else if, x_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    WRITE(else if, y_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    WRITE(else if, z_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    WRITE(else if, t_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
+    WRITE(else if, x_axis, tolerance, unsigned char, UA_TYPES_BYTE, DoNothing)
+    WRITE(else if, y_axis, tolerance, unsigned char, UA_TYPES_BYTE, DoNothing)
+    WRITE(else if, z_axis, tolerance, unsigned char, UA_TYPES_BYTE, DoNothing)
+    WRITE(else if, t_axis, tolerance, unsigned char, UA_TYPES_BYTE, DoNothing)
 
-    WRITE(else if, x_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
+    WRITE(else if, x_axis, end_move, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, y_axis, end_move, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, z_axis, end_move, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, t_axis, end_move, bool, UA_TYPES_BOOLEAN, DoNothing)
 
-    WRITE(else if, x_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
+    WRITE(else if, x_axis, has_error, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, y_axis, has_error, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, z_axis, has_error, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, t_axis, has_error, bool, UA_TYPES_BOOLEAN, DoNothing)
 
-    WRITE(else if, x_axis, error_id, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, error_id, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, error_id, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, error_id, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, error_id, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, error_id, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, error_id, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, error_id, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, actual_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, actual_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, actual_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, actual_position, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, actual_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, actual_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, actual_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, actual_position, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, target_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, target_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, target_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, target_position, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, target_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, target_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, target_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, target_position, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, min_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, min_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, min_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, min_position, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, min_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, min_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, min_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, min_position, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, max_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, max_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, max_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, max_position, long, UA_TYPES_INT32, 0)
+    WRITE(else if, x_axis, max_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, y_axis, max_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, z_axis, max_position, long, UA_TYPES_INT32, DoNothing)
+    WRITE(else if, t_axis, max_position, long, UA_TYPES_INT32, DoNothing)
 
-    WRITE(else if, x_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
+    WRITE(else if, x_axis, is_initialized, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, y_axis, is_initialized, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, z_axis, is_initialized, bool, UA_TYPES_BOOLEAN, DoNothing)
+    WRITE(else if, t_axis, is_initialized, bool, UA_TYPES_BOOLEAN, DoNothing)
+
+    WRITE(else if, x_axis, units_per_increment, double, UA_TYPES_DOUBLE, DoNothing)
+    WRITE(else if, y_axis, units_per_increment, double, UA_TYPES_DOUBLE, DoNothing)
+    WRITE(else if, z_axis, units_per_increment, double, UA_TYPES_DOUBLE, DoNothing)
+    WRITE(else if, t_axis, units_per_increment, double, UA_TYPES_DOUBLE, DoNothing)
 
     else
     {
@@ -482,6 +521,7 @@ RegisterRobotAxisObject(UA_Server *server, AxisId axis_id, const char *display_n
     REGISTER(min_position, "MinPosition");
     REGISTER(max_position, "MaxPosition");
     REGISTER(is_initialized, "IsInitialized");
+    REGISTER(units_per_increment, "UnitsPerIncrement");
 
 #undef REGISTER
 

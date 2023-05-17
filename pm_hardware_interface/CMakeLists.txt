@@ -56,6 +56,11 @@ install(
   INCLUDES DESTINATION include
 )
 
+install(
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
 ament_export_targets(pm_hardware_interface HAS_LIBRARY_TARGET)
 ament_export_dependencies(
   rclcpp
