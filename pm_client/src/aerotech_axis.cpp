@@ -21,6 +21,7 @@ namespace PMClient
         &min_position_node_id,
         &max_position_node_id,
         &is_initialized_node_id,
+        &units_per_increment_node_id,
     };
 
     for (const auto &node_id : node_ids)
@@ -195,6 +196,20 @@ void AerotechAxis::initialize()
 {
     // TODO: See AerotechAxis::brake.
     throw std::runtime_error{"AerotechAxis::initialize is not implemented."};
+}
+
+[[nodiscard]] double AerotechAxis::increments_to_units(long increments) const
+{
+    auto units_per_increment =
+        m_client->read_node_value<double, UA_TYPES_DOUBLE>(this->units_per_increment_node_id);
+    return increments * units_per_increment;
+}
+
+[[nodiscard]] long AerotechAxis::units_to_increments(double units) const
+{
+    auto units_per_increment =
+        m_client->read_node_value<double, UA_TYPES_DOUBLE>(this->units_per_increment_node_id);
+    return static_cast<long>(units / units_per_increment);
 }
 
 } // namespace PMClient

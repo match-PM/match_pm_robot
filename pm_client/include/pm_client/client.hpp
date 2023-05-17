@@ -54,6 +54,8 @@ class Client
      */
     void connect(std::string endpoint);
 
+    void disconnect();
+
     /**
      * Initialisiert den Client. Danach können Anfragen an den Server gestellt werden.
      *

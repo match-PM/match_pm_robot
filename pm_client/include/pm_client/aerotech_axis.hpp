@@ -122,6 +122,11 @@ class AerotechAxis
     UA_NodeId is_initialized_node_id = UA_NODEID_NULL;
 
     /**
+     * NodeId for the units per increment ratio.
+     */
+    UA_NodeId units_per_increment_node_id = UA_NODEID_NULL;
+
+    /**
      * Check if all node ids are properly set.
      */
     [[nodiscard]] bool is_ok() const;
@@ -249,6 +254,16 @@ class AerotechAxis
      * Initialize the axis (non-blocking).
      */
     void initialize();
+
+    /**
+     * Convert increments to units.
+     */
+    [[nodiscard]] double increments_to_units(long increments) const;
+
+    /**
+     * Convert units to increments.
+     */
+    [[nodiscard]] long units_to_increments(double units) const;
 };
 
 } // namespace PMClient

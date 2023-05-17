@@ -19,7 +19,7 @@ Client::Client() : m_client{UA_Client_new()}, m_robot{std::make_unique<Robot>()}
 
 Client::~Client()
 {
-    UA_Client_disconnect(m_client);
+    disconnect();
     UA_Client_delete(m_client);
 }
 
@@ -31,6 +31,11 @@ void Client::connect(std::string endpoint)
     }
 
     init();
+}
+
+void Client::disconnect()
+{
+    UA_Client_disconnect(m_client);
 }
 
 void Client::init()

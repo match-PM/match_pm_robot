@@ -1,5 +1,5 @@
-#ifndef PM_HARDWARE_INTERFACE_H
-#define PM_HARDWARE_INTERFACE_H
+#ifndef PM_SYSTEM_H
+#define PM_SYSTEM_H
 
 #include <string>
 #include <vector>
@@ -23,8 +23,23 @@ using CommandInterface = hardware_interface::CommandInterface;
 
 class PMSystem : public hardware_interface::SystemInterface
 {
+    struct Config
+    {
+        std::string opcua_endpoint;
+    };
+
+    struct AxisState
+    {
+        double current_position;
+        double target_position;
+        double velocity;
+        double acceleration;
+    };
 
     PMClient::Client m_pm_client;
+    Config m_config;
+
+    AxisState m_x_axis, m_y_axis, m_z_axis, m_t_axis;
 
   public:
     PMSystem();
@@ -72,4 +87,4 @@ class PMSystem : public hardware_interface::SystemInterface
 
 } // namespace pm_hardware_interface
 
-#endif // PM_HARDWARE_INTERFACE_H
+#endif // PM_SYSTEM_H

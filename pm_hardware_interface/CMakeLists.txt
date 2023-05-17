@@ -27,8 +27,8 @@ endif()
 
 add_library(
   pm_hardware_interface SHARED
-  src/pm_hardware_interface.cpp
-  include/pm_hardware_interface/pm_hardware_interface.hpp
+  src/pm_system.cpp
+  include/pm_hardware_interface/pm_system.hpp
 )
 target_include_directories(pm_hardware_interface PRIVATE include/)
 
