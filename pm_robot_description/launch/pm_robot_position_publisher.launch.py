@@ -17,10 +17,20 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
+            # Node(
+            #     package="pm_robot_control_test",
+            #     executable="pm_robot_forward_position_publisher",
+            #     name="publisher_forward_position_controller",
+            #     parameters=[position_goals],
+            #     output={
+            #         "stdout": "screen",
+            #         "stderr": "screen",
+            #     },
+            # )
             Node(
                 package="pm_robot_control_test",
-                executable="pm_robot_forward_position_publisher",
-                name="publisher_forward_position_controller",
+                executable="pm_robot_joint_trajectory_publisher",
+                name="publisher_joint_trajectory_controller",
                 parameters=[position_goals],
                 output={
                     "stdout": "screen",

@@ -38,8 +38,8 @@ joint_trajectory_controller:
     joints:
       - X_Axis_Joint
       - Y_Axis_Joint
-      - Z_Axis_Joint
-      - T_Axis_Joint
+      # - Z_Axis_Joint
+      # - T_Axis_Joint
 
 
     command_interfaces:

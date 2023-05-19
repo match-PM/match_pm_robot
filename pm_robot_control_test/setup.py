@@ -21,7 +21,9 @@ setup(
     entry_points={
         'console_scripts': [
                 'pm_robot_forward_position_publisher = \
-                    pm_robot_control_test.pm_robot_forward_position_publisher:main'
+                    pm_robot_control_test.pm_robot_forward_position_publisher:main',
+                'pm_robot_joint_trajectory_publisher = \
+                    pm_robot_control_test.pm_robot_joint_trajectory_publisher:main'
         ],
     },
 )

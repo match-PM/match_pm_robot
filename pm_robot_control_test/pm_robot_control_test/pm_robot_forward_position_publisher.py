@@ -10,7 +10,7 @@ class PublisherForwardPosition(Node):
     def __init__(self):
         super().__init__("pm_robot_forward_position_publisher")
         # Declare all parameters
-        self.declare_parameter("controller_name", "forward_position_controller")
+        self.declare_parameter("controller_name", "joint_trajectory_controller")
         self.declare_parameter("wait_sec_between_publish", 5)
         self.declare_parameter("goal_names", ["pos1", "pos2"])
 
@@ -32,7 +32,7 @@ class PublisherForwardPosition(Node):
                 float_goal.append(float(value))
             self.goals.append(float_goal)
 
-        publish_topic = "/" + controller_name + "/" + "commands"
+        publish_topic = "/" + controller_name + "/" + "state"
 
         self.get_logger().info(
             f'Publishing {len(goal_names)} goals on topic "{publish_topic}"\
