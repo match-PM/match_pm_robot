@@ -13,26 +13,11 @@
 
         <model name="box">
             <pose>0.667 0.795 0.347 3.142 0 0</pose>
-            <link name="link_1">                            
-                <!-- <collision name="collision">
-                    <geometry>
-                        <box>
-                            <size>0.01 0.01 0.01</size>
-                        </box>
-                    </geometry>
-                </collision>
-
-                <visual name="visual">
-                    <geometry>
-                        <box>
-                            <size>0.01 0.01 0.01</size>
-                        </box>
-                    </geometry>
-                </visual> -->
+            <link name="light_bottom">                            
 
                 <gravity>0</gravity>
         
-                <light name='light_camera_top' type='spot'>      
+                <light name='light_camera_bottom' type='spot'>      
                     <pose frame=''>0 0 0 0 -0 0</pose>              
                     <diffuse>0.5 0.5 0.5 1</diffuse>
                     <specular>0.1 0.1 0.1 1</specular>
@@ -53,6 +38,13 @@
             </link>
             
             <!-- <plugin name="my_model_plugin" filename="liblight_move_model_plugin.so"/> -->
+            <plugin name="light_control" filename="libLedPlugin.so">
+                <light>
+                    <id>light_bottom/light_camera_bottom</id>
+                    <duration>2.5</duration>
+                    <interval>2.5</interval>
+                </light>
+            </plugin>
         </model>        
   </world>
 </sdf>

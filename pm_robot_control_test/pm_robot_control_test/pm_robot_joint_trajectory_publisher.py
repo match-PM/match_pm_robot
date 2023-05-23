@@ -23,20 +23,27 @@ class PublisherJointTrajectory(Node):
         goal_names = self.get_parameter("goal_names").value
         self.joints = self.get_parameter("joints").value
         self.check_starting_point = self.get_parameter("check_starting_point").value
-        self.starting_point = {}
+        self.starting_point = []
 
         if self.joints is None or len(self.joints) == 0:
             raise Exception('"joints" parameter is not set!')
 
+        #self.get_logger().info(f'Joints {self.joints}')
+
         # starting point stuff
         if self.check_starting_point:
+            
+            for name in self.joints:
+                param_name_tmp = "starting_point_limits" + "." + name
+                self.declare_parameter(param_name_tmp, [-2 * 3.14159, 2 * 3.14159])
+                self.starting_point[name] = self.get_parameter(param_name_tmp).value
 
             for name in self.joints:
-                if len(self.starting_point[name]) != 2:
+                if len(self.starting_point[name]) != 4:
                     raise Exception('"starting_point" parameter is not set correctly!')
-            self.joint_state_sub = self.create_subscription(
-                JointState, "joint_states", self.joint_state_callback, 10
-            )
+                self.joint_state_sub = self.create_subscription(
+                    JointState, "joint_states", self.joint_state_callback, 10
+                )
         # initialize starting point status
         self.starting_point_ok = not self.check_starting_point
 

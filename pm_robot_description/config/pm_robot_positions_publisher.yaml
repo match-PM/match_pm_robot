@@ -20,14 +20,16 @@ publisher_joint_trajectory_controller:
     goal_time_from_start: 3.0
     goal_names: ["pos1", "pos2", "pos3", "pos4"]
     pos1:
-      positions: [0.185, 0.285]
+      positions: [0.185, 0.285, 0.0, 0.0]
     pos2:
-      positions: [0.0, 0.0]
+      positions: [0.0, 0.0, 0.0, 0.0]
     pos3:
-      positions: [-0.285, -0.185]
+      positions: [-0.285, -0.185, 0.0, 0.0]
     pos4:
-      positions: [0.0, 0.0]
+      positions: [0.0, 0.0, 0.0, 0.0]
 
     joints:
       - X_Axis_Joint
       - Y_Axis_Joint
+      - Z_Axis_Joint
+      - T_Axis_Joint

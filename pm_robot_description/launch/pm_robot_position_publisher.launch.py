@@ -15,6 +15,14 @@ def generate_launch_description():
         ]
     )
 
+    controler_param = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control.yaml",
+        ]
+    )
+
     return LaunchDescription(
         [
             # Node(
@@ -27,11 +35,21 @@ def generate_launch_description():
             #         "stderr": "screen",
             #     },
             # )
+            # Node(
+            #     package="pm_robot_control_test",
+            #     executable="pm_robot_joint_trajectory_publisher",
+            #     name="publisher_joint_trajectory_controller",
+            #     parameters=[position_goals],
+            #     output={
+            #         "stdout": "screen",
+            #         "stderr": "screen",
+            #     },
+            # )
             Node(
                 package="pm_robot_control_test",
-                executable="pm_robot_joint_trajectory_publisher",
-                name="publisher_joint_trajectory_controller",
-                parameters=[position_goals],
+                executable="pm_robot_send_target",
+                name="joint_trajectory_controller",
+                parameters=[controler_param],
                 output={
                     "stdout": "screen",
                     "stderr": "screen",
