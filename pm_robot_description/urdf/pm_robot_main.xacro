@@ -10,8 +10,8 @@
 
   <xacro:arg name="initial_positions_file"          default="pm_robot_initial_positions.yaml" />
 
-  <xacro:arg name="with_Gonio_Left"                 default="true" />
-  <xacro:arg name="with_Gonio_Right"                default="true" />
+  <xacro:arg name="with_Gonio_Left"                 default="false" />
+  <xacro:arg name="with_Gonio_Right"                default="false" />
     <!-- Tools -->
     <xacro:arg name="with_Tool_MPG_10"                default="false" />
     <xacro:arg name="with_Tool_MPG_10_Jaw_3mm_Lens"   default="false"/>
@@ -19,6 +19,7 @@
     <xacro:arg name="with_SPT_R_A1000_I500"           default="false"/>
 
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot.xacro" />
+  <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_housing.xacro" />
 
   <!-- Tool Defines-->
     <xacro:if value="$(arg with_Tool_MPG_10)">
@@ -41,7 +42,7 @@
       <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_left.xacro" /> 
     </xacro:if>
 
-    <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
+    <!--xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" /-->
 
   <!-- Switch between Gazebo-Simulation and Real Robot -->
 

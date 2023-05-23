@@ -59,7 +59,7 @@
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-            <joint name="Camera_Calibartion_Joint">
+            <joint name="Camera_Calibration_Platelet_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -90,6 +90,12 @@
                 <state_interface name="position"/>
             </joint>
             <joint name="UV_LED_Back_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            
+            <joint name="Calibration_Qube_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>

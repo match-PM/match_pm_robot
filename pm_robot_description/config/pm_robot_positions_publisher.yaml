@@ -8,4 +8,4 @@ publisher_forward_position_controller:
 
     goal_names: ["pos1", "pos2"]
     pos1: [0, 0]
-    pos2: [-0.1, 0.02]
+    pos2: [-0.005, -0.005]
