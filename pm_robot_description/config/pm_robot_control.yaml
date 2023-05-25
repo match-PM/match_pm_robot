@@ -5,12 +5,17 @@ controller_manager:
     pm_robot_forward_position_controller:
      type: position_controllers/JointGroupPositionController
 
-    pm_robot_joint_trajectory_controller:
+    pm_robot_xyz_axis_JTC:
       type: joint_trajectory_controller/JointTrajectoryController
 
-    pm_robot_joint_state_broadcaster:
+    pm_robot_t_axis_JTC:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    pm_robot_xyz_axis_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+    pm_robot_t_axis_JSB:
+      type: joint_state_broadcaster/JointStateBroadcaster
 
 pm_robot_forward_position_controller:
   ros__parameters:
@@ -28,14 +33,24 @@ pm_robot_forward_position_controller:
 
     interface_name: position
 
+pm_robot_t_axis_JTC:
+  ros__parameters:
+    joints:
+      - T_Axis_Joint
 
-pm_robot_joint_trajectory_controller:
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+pm_robot_xyz_axis_JTC:
   ros__parameters:
     joints:
       - X_Axis_Joint
       - Y_Axis_Joint
       - Z_Axis_Joint
-      - T_Axis_Joint
 
     command_interfaces:
       - position

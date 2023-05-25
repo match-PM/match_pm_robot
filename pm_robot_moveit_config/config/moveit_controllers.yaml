@@ -4,20 +4,25 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 
 moveit_simple_controller_manager:
   controller_names:
-    - pm_robot_joint_trajectory_controller
+    - pm_robot_t_axis_JTC
+    - pm_robot_xyz_axis_JTC
 
-  pm_robot_joint_trajectory_controller:
+  pm_robot_t_axis_JTC:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
     joints:
-      #- Gonio_Right_Stage_1_Top_Joint
-      #- Gonio_Right_Stage_2_Bottom_Joint
-      #- Gonio_Left_Stage_1_Top_Joint
-      #- Gonio_Left_Stage_2_Bottom_Joint
+      - T_Axis_Joint
+    action_ns: follow_joint_trajectory
+    default: true
+
+  pm_robot_xyz_axis_JTC:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
       - X_Axis_Joint
       - Y_Axis_Joint
       - Z_Axis_Joint
-      - T_Axis_Joint
     action_ns: follow_joint_trajectory
     default: true

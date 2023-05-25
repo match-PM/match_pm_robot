@@ -10,8 +10,9 @@
 
   <xacro:arg name="initial_positions_file"          default="pm_robot_initial_positions.yaml" />
 
-  <xacro:arg name="with_Gonio_Left"                 default="false" />
-  <xacro:arg name="with_Gonio_Right"                default="false" />
+  <xacro:arg name="with_Gonio_Left"                 default="true" />
+  <xacro:arg name="with_Gonio_Right"                default="true" />
+
     <!-- Tools -->
     <xacro:arg name="with_Tool_MPG_10"                default="false" />
     <xacro:arg name="with_Tool_MPG_10_Jaw_3mm_Lens"   default="false"/>

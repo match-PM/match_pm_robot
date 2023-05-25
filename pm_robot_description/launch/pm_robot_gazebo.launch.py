@@ -26,10 +26,12 @@ def generate_launch_description():
     pm_main_xacro_file = os.path.join(
         get_package_share_directory(pkg_name), file_subpath)
 
+    launch_moveit = True
+
     pm_robot_configuration = {
                                 'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
                                 'with_Tool_MPG_10':               'true',
-                                'with_Tool_MPG_10_Jaw_3mm_Lens':  'true',
+                                'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                                 'with_Gonio_Right':               'true',
                                 'with_Gonio_Left':                'true',
                                 'with_Tool_SPT_Holder':           'false',
@@ -173,24 +175,49 @@ def generate_launch_description():
         output="both",
     )
 
-    joint_broad_spawner = Node(
+    # XYZ Axis Joint State Broadcaster
+    Spawn_pm_robot_xyz_axis_JSB = Node(
         package='controller_manager',
         executable='spawner',
         # namespace='pm_robot',
         #arguments=["joint_state_broadcaster"], previous
         arguments=[
-            "pm_robot_joint_state_broadcaster",
+            "pm_robot_xyz_axis_JSB",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+    # XYZ Axis Joint Trajectory Controller
+    Spawn_pm_robot_xyz_axis_JTC = Node(
+        package='controller_manager',
+        executable='spawner',
+        #arguments=["joint_trajectory_controller"], previous
+        arguments=[
+            "pm_robot_xyz_axis_JTC",
             "--controller-manager",
             "/controller_manager",
         ],
     )
 
-    robot_controller_spawner = Node(
+    # T Axis Joint State Broadcaster
+    Spawn_pm_robot_t_axis_JSB = Node(
+        package='controller_manager',
+        executable='spawner',
+        # namespace='pm_robot',
+        #arguments=["joint_state_broadcaster"], previous
+        arguments=[
+            "pm_robot_t_axis_JSB",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+    # T Axis Joint Trajectory Controller
+    Spawn_pm_robot_t_axis_JTC = Node(
         package='controller_manager',
         executable='spawner',
         #arguments=["joint_trajectory_controller"], previous
         arguments=[
-            "pm_robot_joint_trajectory_controller",
+            "pm_robot_t_axis_JTC",
             "--controller-manager",
             "/controller_manager",
         ],
@@ -207,19 +234,26 @@ def generate_launch_description():
         ],
     )
 
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_Spawn_pm_robot_xyz_JTC = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=Spawn_pm_robot_xyz_axis_JSB,
+            on_exit=[Spawn_pm_robot_xyz_axis_JTC],
+        )
+    )
 
     # Delay start of robot_controller after `joint_state_broadcaster`
-    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+    delay_Spawn_pm_robot_t_axis_JTC = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=joint_broad_spawner,
-            on_exit=[robot_controller_spawner],
+            target_action=Spawn_pm_robot_t_axis_JSB,
+            on_exit=[Spawn_pm_robot_t_axis_JTC],
         )
     )
 
     # Delay start of robot_controller after `joint_state_broadcaster`
     delay_robot_controller_spawner_after_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=robot_controller_spawner,
+            target_action=Spawn_pm_robot_xyz_axis_JTC,
             on_exit=[robot_controller_forward_spawner],
         )
     )
@@ -227,16 +261,20 @@ def generate_launch_description():
     # Define Launch Description
 
     ld = LaunchDescription()
-    #ld.add_action(rviz_node)
+
     if (str(pm_robot_configuration['launch_mode']) == 'sim_HW'):
         ld.add_action(gazebo)
         ld.add_action(spawn_entity)
-    ld.add_action(robot_state_publisher_node_mov)
-    #ld.add_action(robot_state_publisher_node)
-    #ld.add_action(run_move_group_node)
-    #ld.add_action(control_node)
-    ld.add_action(joint_broad_spawner)  
-    ld.add_action(delay_robot_controller_spawner_after_joint_state_broadcaster_spawner)
+    #ld.add_action(robot_state_publisher_node_mov)
+    ld.add_action(robot_state_publisher_node)
+    ld.add_action(control_node)
+    if launch_moveit:
+        ld.add_action(rviz_node)
+        ld.add_action(run_move_group_node)
+    ld.add_action(Spawn_pm_robot_xyz_axis_JSB)
+    ld.add_action(Spawn_pm_robot_t_axis_JSB)    
+    ld.add_action(delay_Spawn_pm_robot_xyz_JTC)
+    ld.add_action(delay_Spawn_pm_robot_t_axis_JTC)
     ld.add_action(delay_robot_controller_spawner_after_controller)
 
     return ld

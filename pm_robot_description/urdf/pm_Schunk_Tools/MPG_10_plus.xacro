@@ -106,7 +106,7 @@
   </gazebo>
 
   <joint
-    name="Tool_Gripper_MPG_10_Jaw_1_Joint"
+    name="pm_robot_Tool_Parallel_Joint"
     type="prismatic">
     <origin
       xyz="0.00135 -0.005 0.0125"
@@ -190,7 +190,7 @@
     </gazebo>
 
   <joint
-    name="Tool_Gripper_MPG_10_Jaw_2_Joint"
+    name="pm_robot_Tool_Parallel_Joint_mimic"
     type="prismatic">
     <origin
       xyz="-0.00135 0.005 0.0125"

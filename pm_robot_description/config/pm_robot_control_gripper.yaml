@@ -2,18 +2,17 @@ controller_manager:
   ros__parameters:
     update_rate: 100
 
-    joint_trajectory_controller_gripper:
+    pm_robot_prallel_gripper_JTC:
       type: joint_trajectory_controller/JointTrajectoryController
 
-    joint_state_broadcaster_gripper:
+    pm_robot_prallel_gripper_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 
-joint_trajectory_controller_gripper:
+pm_robot_prallel_gripper_JTC:
    ros__parameters:
     joints:
-      - Tool_Gripper_MPG_10_Jaw_1_Joint
-      #- Tool_Gripper_MPG_10_Jaw_2_Joint
+      - pm_robot_Tool_Parallel_Joint
 
     command_interfaces:
       - position
