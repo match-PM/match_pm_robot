@@ -2,706 +2,105 @@
 <!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
-<robot name="pm_robot">
 
-  <link name="world">
-  </link>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="pm_robot">
 
-  <joint name="world_joint" type="fixed">
-    <parent link="world"/>
-    <child link="base_link_empthy"/>
-    <origin xyz="0 0 0" rpy="0 0 0" />
-  </joint>
+    <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+    <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
 
-<!--%%%%%%%%%%%%% Base Link Definitions %%%%%%%%%%%%%-->
-  <link
-    name="base_link_empthy">
-  </link>
+    <link name="world">
+    </link>
 
-<!--%%%%%%%%%%%%% PM_Robot Base Link Definitions %%%%%%%%%%%%%-->
+    <joint name="world_joint" type="fixed">
+      <parent link="world"/>
+      <child link="base_link_empthy"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
 
- <link
-    name="pm_robot_base_link">
-    <inertial>
-      <origin
-        xyz="0.600186355261373 0.60024822812755 -0.0500803495201262"
-        rpy="0 0 0" />
-      <mass
-        value="143.433412382625" />
-      <inertia
-        ixx="17.331308476166"
-        ixy="-0.000173857700061693"
-        ixz="-0.00010330360577037"
-        iyy="17.3263788236508"
-        iyz="-0.00227792943650154"
-        izz="34.4189883960519" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/pm_robot_base_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="1 1 1 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/pm_robot_base_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-   <joint
-    name="pm_robot_base_link_joint"
-    type="fixed">
-    <origin
-      xyz="0 0 0.971"
-      rpy="0 0 0" />
-    <parent
-      link="base_link_empthy" />
-    <child
-      link="pm_robot_base_link" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  
-  <!--%%%%%%%%%%%%% Axis-Base Definitions %%%%%%%%%%%%%-->
-  <link
-    name="axis_base">
-    <inertial>
-      <origin
-        xyz="0.396220059353836 0.105196690337481 0.307909602405796"
-        rpy="0 0 0" />
-      <mass
-        value="43.6102590245999" />
-      <inertia
-        ixx="0.364950648797973"
-        ixy="-0.000379121082023338"
-        ixz="0.00337088160159615"
-        iyy="2.29090638523672"
-        iyz="0.000705385684699142"
-        izz="2.23411883185999" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/axis_base.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/axis_base.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="axis_base_joint"
-    type="fixed">
-    <origin
-      xyz="0.08001 0.632 1.000000000001E-05"
-      rpy="0 0 0" />
-    <parent
-      link="pm_robot_base_link" />
-    <child
-      link="axis_base" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  <!--%%%%%%%%%%%%% X Axis Definitions %%%%%%%%%%%%%-->
-
-  <link
-    name="X_Axis">
-    <inertial>
-      <origin
-        xyz="0.13867117656886 0.0294673421865695 0.0322225410424505"
-        rpy="0 0 0" />
-      <mass
-        value="3.46651857022574" />
-      <inertia
-        ixx="0.0263967056575219"
-        ixy="-0.000746452162875097"
-        ixz="-6.60103497268881E-06"
-        iyy="0.0104790265642698"
-        iyz="-0.000507544087069928"
-        izz="0.0342327102580871" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
-      </geometry>
-      <material name="orange"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="X_Axis_Joint"
-    type="prismatic">
-    <origin
-      xyz="0.64699 0.11775 0.47499"
-      rpy="0 0 0" />
-    <parent
-      link="axis_base" />
-    <child
-      link="X_Axis" />
-    <axis
-      xyz="1 0 0" />
-    <limit lower="-0.745" upper="0.055" effort="0.1" velocity="35" />
-  </joint>
-
- <!--%%%%%%%%%%%%% Y Axis Definitions %%%%%%%%%%%%%-->
-
-  <link
-    name="Y_Axis">
-    <inertial>
-      <origin
-        xyz="-0.00196813987548172 -0.3177998990051 0.113823941424653"
-        rpy="0 0 0" />
-      <mass
-        value="5.64847104935336" />
-      <inertia
-        ixx="0.0734343917353869"
-        ixy="-5.65230035141878E-06"
-        ixz="-0.000161953758832679"
-        iyy="0.0377139193260435"
-        iyz="0.00720112978111611"
-        izz="0.0598441739891415" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
-      </geometry>
-      <material name="brown"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="Y_Axis_Joint"
-    type="prismatic">
-    <origin
-      xyz="0.10865 0.25835 0.06525"
-      rpy="0 0 0" />
-    <parent
-      link="X_Axis" />
-    <child
-      link="Y_Axis" />
-    <axis
-      xyz="0 1 0" />
-    <limit lower="-0.134000" upper="-0.019700" effort="100" velocity="35" />
-  </joint>
-
- <!--%%%%%%%%%%%%% Z Axis Definitions %%%%%%%%%%%%%-->
-  <link
-    name="Z_Axis">
-    <inertial>
-      <origin
-        xyz="0.000627664293855634 -0.00434675424374531 -0.2726241124114"
-        rpy="0 0 0" />
-      <mass
-        value="2.64388477073549" />
-      <inertia
-        ixx="0.0168607348742555"
-        ixy="-1.50786678765243E-05"
-        ixz="-0.000199875277453675"
-        iyy="0.0218740034837586"
-        iyz="-8.24046242568125E-05"
-        izz="0.00606496678568248" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
-      </geometry>
-      <material name="blue"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
-      </geometry>
-    </collision>
-  </link>
-
-  <!---Gravity off-->
-  <gazebo reference="Z_Axis">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-
-  <joint
-    name="Z_Axis_Joint"
-    type="prismatic">
-    <origin
-      xyz="-0.00365 -0.499 0.33875"
-      rpy="0 0 0" />
-    <parent
-      link="Y_Axis" />
-    <child
-      link="Z_Axis" />
-    <axis
-      xyz="0 0 -1" />
-    <limit lower="-0.05262" upper="0.055" effort="100" velocity="35" />
-  </joint>
-
-  <!--%%%%%%%%%%%%% T Axis Definitions %%%%%%%%%%%%%-->
-  <link
-    name="Gripper_Rot_Plate">
-    <inertial>
-      <origin
-        xyz="-1.74281094778017E-07 2.03483659588777E-07 0.00907792340584457"
-        rpy="0 0 0" />
-      <mass
-        value="0.110297257842221" />
-      <inertia
-        ixx="8.79759467929701E-05"
-        ixy="1.90651210379881E-10"
-        ixz="1.25536613370482E-10"
-        iyy="8.79764882626525E-05"
-        iyz="-1.50065581017382E-10"
-        izz="0.00016565987032676" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
-      </geometry>
-      <material name="black"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
-      </geometry>
-    </collision>
-  </link>
-
-  <!---Gravity off-->
-  <gazebo reference="Gripper_Rot_Plate">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-
-  <joint
-    name="T_Axis_Joint"
-    type="revolute">
-    <origin
-      xyz="0.0600000000000017 -0.0580000000000003 -0.427500000000004"
-      rpy="0 0 0" />
-    <parent
-      link="Z_Axis" />
-    <child
-      link="Gripper_Rot_Plate" />
-    <axis
-      xyz="0 0 1" />
-    <limit lower="0" upper="12" effort="100" velocity="5" />
-  </joint>
-  
-  <link
-    name="t_axis_toolchanger">
-    <inertial>
-      <origin
-        xyz="2.66657822625138E-05 -6.51697797860451E-05 -0.0173989628147272"
-        rpy="0 0 0" />
-      <mass
-        value="0.0770166396645032" />
-      <inertia
-        ixx="1.38724675369177E-05"
-        ixy="-2.81065278601148E-08"
-        ixz="-4.32931581160332E-09"
-        iyy="1.28173377099281E-05"
-        iyz="-3.69738102041932E-10"
-        izz="2.32495071670115E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/t_axis_tool.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.75294 0.75294 0.75294 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/t_axis_tool.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <!---Gravity off-->
-  <gazebo reference="t_axis_toolchanger">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <joint
-    name="t_axis_toolchanger_joint"
-    type="fixed">
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
-    <parent
-      link="Gripper_Rot_Plate" />
-    <child
-      link="t_axis_toolchanger" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-
-  <link
-    name="PM_Robot_Tool_TCP">
-  </link>
-
-  <joint
-    name="PM_Robot_Tool_TCP_Joint"
-    type="fixed">
-    <!--Hier spaeter Variable-->
-    <origin
-      xyz="0 0 -0.08142" 
-      rpy="0 0 0" />
-    <parent
-      link="Gripper_Rot_Plate" />
-    <child
-      link="PM_Robot_Tool_TCP" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  
-
-  <!--%%%%%%%%%%%%% 1K Dispenser Flap Definitions %%%%%%%%%%%%%-->
-
-  <link
-    name="1K_Dispenser_Flap">
-    <inertial>
-      <origin
-        xyz="-0.0475534171935499 -0.0152444446246764 -0.0129366605877314"
-        rpy="0 0 0" />
-      <mass
-        value="0.0179075605864254" />
-      <inertia
-        ixx="4.17413884237766E-06"
-        ixy="1.29835566651944E-07"
-        ixz="6.2953731666034E-08"
-        iyy="5.03313568637311E-06"
-        iyz="9.02306176060272E-09"
-        izz="4.11882542880041E-06" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
-      </geometry>
-      <material name="white"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <!---Gravity off-->
-  <gazebo reference="1K_Dispenser_Flap">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <joint
-    name="1K_Dispenser_Flap_Joint"
-    type="prismatic">
-    <origin
-      xyz="-0.0315 -0.02479 -0.424"
-      rpy="0 0 0" />
-    <parent
-      link="Z_Axis" />
-    <child
-      link="1K_Dispenser_Flap" />
-    <axis
-      xyz="1 0 0" />
-    <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
-  </joint>
-
-
-  <!--%%%%%%%%%%%%% 1K Dispenser Definitions %%%%%%%%%%%%%-->
-  <link
-    name="1K_Dispenser">
-    <inertial>
-      <origin
-        xyz="-0.00291125760198996 -0.0158910684396169 -0.0486744620635529"
-        rpy="0 0 0" />
-      <mass
-        value="0.0741292037954837" />
-      <inertia
-        ixx="3.4337175367919E-05"
-        ixy="-1.91908706800505E-07"
-        ixz="-5.62664674872138E-08"
-        iyy="3.41011193217523E-05"
-        iyz="5.66364181173195E-07"
-        izz="1.14904781429849E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
-      </geometry>
-      <material name="grey"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
-      </geometry>
-    </collision>
-  </link>
-
-  <!---Gravity off-->
-  <gazebo reference="1K_Dispenser">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-
-  <joint
-    name="1K_Dispenser_Joint"
-    type="prismatic">
-    <origin
-      xyz="-0.104 -0.0262 -0.3545"
-      rpy="0 0 0" />
-    <parent
-      link="Z_Axis" />
-    <child
-      link="1K_Dispenser" />
-    <axis
-      xyz="0 0 -1" />
-    <limit lower="0" upper="0.04" effort="100" velocity="0.05" />
-  </joint>
-
-  <link
-    name="1K_Dispenser_TCP">
-  </link>
-
-  <joint
-    name="1K_Dispenser_TCP_Joint"
-    type="fixed">
-    <origin
-      xyz="-0.001 -0.0318 -0.1285"
-      rpy="0 0 0" />
-    <parent
-      link="1K_Dispenser" />
-    <child
-      link="1K_Dispenser_TCP" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  <!--%%%%%%%%%%%%% 2K Dispenser Definitions-->
-
-  <link
-    name="2K_Dispenser_Cartridge">
-    <inertial>
-      <origin
-        xyz="0.000286904622212703 -0.0363382955214142 0.157114812049142"
-        rpy="0 0 0" />
-      <mass
-        value="0.410111177184055" />
-      <inertia
-        ixx="0.00156205497813664"
-        ixy="-4.41612447012715E-06"
-        ixz="-9.93222982118684E-08"
-        iyy="0.00154767600658026"
-        iyz="-1.49654417442962E-06"
-        izz="0.000122541965999881" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/2K_Glue_Cartridge.STL" />
-      </geometry>
-      <material name="white"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/2K_Glue_Cartridge.STL" />
-      </geometry>
-    </collision>
-  </link>
-
-  <!---Gravity off-->
-  <gazebo reference="2K_Dispenser_Cartridge">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-
-  <joint
-    name="2K_Dispenser_Joint"
-    type="prismatic">
-    <origin
-      xyz="-0.169 0.01176 -0.424"
-      rpy="0 0 0" />
-    <parent
-      link="Z_Axis" />
-    <child
-      link="2K_Dispenser_Cartridge" />
-    <axis
-      xyz="0 0 -1" />
-    <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
-  </joint>
-
-  <link
-    name="2K_Dispenser_TCP">
-  </link>
-
-  <joint
-    name="2K_Dispenser_TCP_Joint"
-    type="fixed">
-    <origin
-      xyz="0 -0.045 -0.04614"
-      rpy="0 0 0" />
-    <parent
-      link="2K_Dispenser_Cartridge" />
-    <child
-      link="2K_Dispenser_TCP" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  
-  <!--%%%%%%%%%%%%% Top Camera Definitions-->
-  <link
-    name="Cam1_Toolhead_TCP">
-    <inertial>
-      <origin
-        xyz="0.00294756628931103 0.0112908552453015 0.186544370768599"
-        rpy="0 0 0" />
-      <mass
-        value="0.222202026755256" />
-      <inertia
-        ixx="0.000198536268283264"
-        ixy="-2.57443493637635E-07"
-        ixz="-2.33028260890714E-06"
-        iyy="0.00020443076967091"
-        iyz="-8.54446341843522E-06"
-        izz="4.76896342979841E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Cam1_Toolhead_TCP.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Cam1_Toolhead_TCP.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <!---Gravity off-->
-  <gazebo reference="Cam1_Toolhead_TCP">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <joint
-    name="Cam1_Toolhead_TCP_Joint"
-    type="fixed">
-    <origin
-      xyz="-0.0320000000000003 -0.0579999999999998 -0.515338706"
-      rpy="0 0 0" />
-    <parent
-      link="Z_Axis" />
-    <child
-      link="Cam1_Toolhead_TCP" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  <!--%%%%%%%%%%%%% Laser Toolhead Definitions-->
+    <!--%%%%%%%%%%%%% Base Link Definitions %%%%%%%%%%%%%-->
     <link
-      name="Laser_Toolhead_TCP">
+      name="base_link_empthy">
+    </link>
+
+    <!--%%%%%%%%%%%%% PM_Robot Base Link Definitions %%%%%%%%%%%%%-->
+
+    <link
+      name="pm_robot_base_link">
       <inertial>
         <origin
-          xyz="0.00141971945625508 0.0148011051892054 0.0588118094043311"
+          xyz="0.600186355261373 0.60024822812755 -0.0500803495201262"
           rpy="0 0 0" />
         <mass
-          value="0.185632781644417" />
+          value="143.433412382625" />
         <inertia
-          ixx="0.00018384097226268"
-          ixy="5.39428478530615E-09"
-          ixz="-6.26322611599089E-07"
-          iyy="0.000136967759808617"
-          iyz="6.13082513214026E-07"
-          izz="7.65210217467237E-05" />
+          ixx="17.331308476166"
+          ixy="-0.000173857700061693"
+          ixz="-0.00010330360577037"
+          iyy="17.3263788236508"
+          iyz="-0.00227792943650154"
+          izz="34.4189883960519" />
       </inertial>
       <visual>
         <origin
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Laser_Kopf_TCP.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/pm_robot_base_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/pm_robot_base_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="pm_robot_base_link_joint"
+      type="fixed">
+      <origin
+        xyz="0 0 0.971"
+        rpy="0 0 0" />
+      <parent
+        link="base_link_empthy" />
+      <child
+        link="pm_robot_base_link" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+    
+    <!--%%%%%%%%%%%%% Axis-Base Definitions %%%%%%%%%%%%%-->
+    <link
+      name="axis_base">
+      <inertial>
+        <origin
+          xyz="0.396220059353836 0.105196690337481 0.307909602405796"
+          rpy="0 0 0" />
+        <mass
+          value="43.6102590245999" />
+        <inertia
+          ixx="0.364950648797973"
+          ixy="-0.000379121082023338"
+          ixz="0.00337088160159615"
+          iyy="2.29090638523672"
+          iyz="0.000705385684699142"
+          izz="2.23411883185999" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/axis_base.STL" />
         </geometry>
         <material
           name="">
@@ -714,167 +113,543 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Laser_Kopf_TCP.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/axis_base.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="axis_base_joint"
+      type="fixed">
+      <origin
+        xyz="0.08001 0.632 1.000000000001E-05"
+        rpy="0 0 0" />
+      <parent
+        link="pm_robot_base_link" />
+      <child
+        link="axis_base" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+    <!--%%%%%%%%%%%%% X Axis Definitions %%%%%%%%%%%%%-->
+
+    <link
+      name="X_Axis">
+      <inertial>
+        <origin
+          xyz="0.13867117656886 0.0294673421865695 0.0322225410424505"
+          rpy="0 0 0" />
+        <mass
+          value="3.46651857022574" />
+        <inertia
+          ixx="0.0263967056575219"
+          ixy="-0.000746452162875097"
+          ixz="-6.60103497268881E-06"
+          iyy="0.0104790265642698"
+          iyz="-0.000507544087069928"
+          izz="0.0342327102580871" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
+        </geometry>
+        <material name="orange"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="X_Axis_Joint"
+      type="prismatic">
+      <origin
+        xyz="0.64699 0.11775 0.47499"
+        rpy="0 0 0" />
+      <parent
+        link="axis_base" />
+      <child
+        link="X_Axis" />
+      <axis
+        xyz="1 0 0" />
+      <limit lower="-0.745" upper="0.055" effort="0.1" velocity="35" />
+    </joint>
+
+  <!--%%%%%%%%%%%%% Y Axis Definitions %%%%%%%%%%%%%-->
+
+    <link
+      name="Y_Axis">
+      <inertial>
+        <origin
+          xyz="-0.00196813987548172 -0.3177998990051 0.113823941424653"
+          rpy="0 0 0" />
+        <mass
+          value="5.64847104935336" />
+        <inertia
+          ixx="0.0734343917353869"
+          ixy="-5.65230035141878E-06"
+          ixz="-0.000161953758832679"
+          iyy="0.0377139193260435"
+          iyz="0.00720112978111611"
+          izz="0.0598441739891415" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
+        </geometry>
+        <material name="brown"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="Y_Axis_Joint"
+      type="prismatic">
+      <origin
+        xyz="0.10865 0.25835 0.06525"
+        rpy="0 0 0" />
+      <parent
+        link="X_Axis" />
+      <child
+        link="Y_Axis" />
+      <axis
+        xyz="0 1 0" />
+      <limit lower="-0.134000" upper="-0.019700" effort="100" velocity="35" />
+    </joint>
+
+  <!--%%%%%%%%%%%%% Z Axis Definitions %%%%%%%%%%%%%-->
+    <link
+      name="Z_Axis">
+      <inertial>
+        <origin
+          xyz="0.000627664293855634 -0.00434675424374531 -0.2726241124114"
+          rpy="0 0 0" />
+        <mass
+          value="2.64388477073549" />
+        <inertia
+          ixx="0.0168607348742555"
+          ixy="-1.50786678765243E-05"
+          ixz="-0.000199875277453675"
+          iyy="0.0218740034837586"
+          iyz="-8.24046242568125E-05"
+          izz="0.00606496678568248" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
+        </geometry>
+        <material name="blue"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
         </geometry>
       </collision>
     </link>
 
     <!---Gravity off-->
-    <gazebo reference="Laser_Toolhead_TCP">
+    <gazebo reference="Z_Axis">
       <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <joint
-      name="Laser_Toolhead_TCP_Joint"
-      type="fixed">
+      name="Z_Axis_Joint"
+      type="prismatic">
       <origin
-        xyz="0.147498952947696 -0.0899999732334101 -0.495500000000011"
+        xyz="-0.00365 -0.499 0.33875"
         rpy="0 0 0" />
       <parent
-        link="Z_Axis" />
+        link="Y_Axis" />
       <child
-        link="Laser_Toolhead_TCP" />
+        link="Z_Axis" />
       <axis
-        xyz="0 0 0" />
+        xyz="0 0 -1" />
+      <limit lower="-0.05262" upper="0.055" effort="100" velocity="35" />
     </joint>
 
-  <!--%%%%%%%%%%%%% Test Station Definitions-->
-  <link
-    name="Test_Station">
-    <inertial>
-      <origin
-        xyz="0.0250000000000002 0.0791274046351475 -0.154851137332961"
-        rpy="0 0 0" />
-      <mass
-        value="1.39099524679326" />
-      <inertia
-        ixx="0.00780193904512034"
-        ixy="-2.61717009512019E-14"
-        ixz="-4.79910370720457E-20"
-        iyy="0.00547600691976027"
-        iyz="9.87499782602546E-10"
-        izz="0.00281708795214926" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
-      </geometry>
-      <material name="white"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="Test_Station_Joint"
-    type="fixed">
-    <origin
-      xyz="0.075 0.3265 0.298"
-      rpy="0 0 0" />
-    <parent
-      link="pm_robot_base_link" />
-    <child
-      link="Test_Station" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  <!--%%%%%%%%%%%%% Camera Station Definitions-->
-  <link
-    name="Camera_Station">
-    <inertial>
-      <origin
-        xyz="0.0886413519365855 0.189925462464436 0.138483690350839"
-        rpy="0 0 0" />
-      <mass
-        value="2.70231148841738" />
-      <inertia
-        ixx="0.0183035942970588"
-        ixy="1.26351026901094E-05"
-        ixz="-2.79575355635167E-06"
-        iyy="0.00441812287973743"
-        iyz="5.22848888698871E-05"
-        izz="0.0193956330708548" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Station.STL" />
-      </geometry>
-      <material name="white"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Station.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="Camera_Station_Joint"
-    type="fixed">
-    <origin
-      xyz="0.4525 0.3125 0"
-      rpy="0 0 0" />
-    <parent
-      link="pm_robot_base_link" />
-    <child
-      link="Camera_Station" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  <link
-    name="Camera_Station_TCP">
-  </link>
-
-  <joint
-    name="Camera_Station_TCP_Joint"
-    type="fixed">
-    <origin
-      xyz="0.08 0.092783 0.3045"
-      rpy="0 0 0" />
-    <parent
-      link="Camera_Station" />
-    <child
-      link="Camera_Station_TCP" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  <link
-      name="Station_Laser_Bottom_TCP">
+    <!--%%%%%%%%%%%%% T Axis Definitions %%%%%%%%%%%%%-->
+    <link
+      name="Gripper_Rot_Plate">
       <inertial>
         <origin
-          xyz="0.00141971945625008 -0.0148011051892056 -0.0588118094043316"
+          xyz="-1.74281094778017E-07 2.03483659588777E-07 0.00907792340584457"
           rpy="0 0 0" />
         <mass
-          value="0.185632781644417" />
+          value="0.110297257842221" />
         <inertia
-          ixx="0.000183840972262678"
-          ixy="-5.39428478522435E-09"
-          ixz="6.26322611589981E-07"
-          iyy="0.000136967759808615"
-          iyz="6.13082513215402E-07"
-          izz="7.65210217467232E-05" />
+          ixx="8.79759467929701E-05"
+          ixy="1.90651210379881E-10"
+          ixz="1.25536613370482E-10"
+          iyy="8.79764882626525E-05"
+          iyz="-1.50065581017382E-10"
+          izz="0.00016565987032676" />
       </inertial>
       <visual>
         <origin
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!---Gravity off-->
+    <gazebo reference="Gripper_Rot_Plate">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+
+    <joint
+      name="T_Axis_Joint"
+      type="revolute">
+      <origin
+        xyz="0.0600000000000017 -0.0580000000000003 -0.427500000000004"
+        rpy="0 0 0" />
+      <parent
+        link="Z_Axis" />
+      <child
+        link="Gripper_Rot_Plate" />
+      <axis
+        xyz="0 0 1" />
+      <limit lower="0" upper="12" effort="100" velocity="5" />
+    </joint>
+    
+    <link
+      name="t_axis_toolchanger">
+      <inertial>
+        <origin
+          xyz="2.66657822625138E-05 -6.51697797860451E-05 -0.0173989628147272"
+          rpy="0 0 0" />
+        <mass
+          value="0.0770166396645032" />
+        <inertia
+          ixx="1.38724675369177E-05"
+          ixy="-2.81065278601148E-08"
+          ixz="-4.32931581160332E-09"
+          iyy="1.28173377099281E-05"
+          iyz="-3.69738102041932E-10"
+          izz="2.32495071670115E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/t_axis_tool.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/t_axis_tool.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <!---Gravity off-->
+    <gazebo reference="t_axis_toolchanger">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+    <joint
+      name="t_axis_toolchanger_joint"
+      type="fixed">
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <parent
+        link="Gripper_Rot_Plate" />
+      <child
+        link="t_axis_toolchanger" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+
+    <link
+      name="PM_Robot_Tool_TCP">
+    </link>
+
+    <joint
+      name="PM_Robot_Tool_TCP_Joint"
+      type="fixed">
+      <!--Hier spaeter Variable-->
+      <origin
+        xyz="0 0 -0.08142" 
+        rpy="0 0 0" />
+      <parent
+        link="Gripper_Rot_Plate" />
+      <child
+        link="PM_Robot_Tool_TCP" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    
+
+    <!--%%%%%%%%%%%%% 1K Dispenser Flap Definitions %%%%%%%%%%%%%-->
+
+    <link
+      name="1K_Dispenser_Flap">
+      <inertial>
+        <origin
+          xyz="-0.0475534171935499 -0.0152444446246764 -0.0129366605877314"
+          rpy="0 0 0" />
+        <mass
+          value="0.0179075605864254" />
+        <inertia
+          ixx="4.17413884237766E-06"
+          ixy="1.29835566651944E-07"
+          ixz="6.2953731666034E-08"
+          iyy="5.03313568637311E-06"
+          iyz="9.02306176060272E-09"
+          izz="4.11882542880041E-06" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
+        </geometry>
+        <material name="white"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <!---Gravity off-->
+    <gazebo reference="1K_Dispenser_Flap">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+    <joint
+      name="1K_Dispenser_Flap_Joint"
+      type="prismatic">
+      <origin
+        xyz="-0.0315 -0.02479 -0.424"
+        rpy="0 0 0" />
+      <parent
+        link="Z_Axis" />
+      <child
+        link="1K_Dispenser_Flap" />
+      <axis
+        xyz="1 0 0" />
+      <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
+    </joint>
+
+
+    <!--%%%%%%%%%%%%% 1K Dispenser Definitions %%%%%%%%%%%%%-->
+    <link
+      name="1K_Dispenser">
+      <inertial>
+        <origin
+          xyz="-0.00291125760198996 -0.0158910684396169 -0.0486744620635529"
+          rpy="0 0 0" />
+        <mass
+          value="0.0741292037954837" />
+        <inertia
+          ixx="3.4337175367919E-05"
+          ixy="-1.91908706800505E-07"
+          ixz="-5.62664674872138E-08"
+          iyy="3.41011193217523E-05"
+          iyz="5.66364181173195E-07"
+          izz="1.14904781429849E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
+        </geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!---Gravity off-->
+    <gazebo reference="1K_Dispenser">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+
+    <joint
+      name="1K_Dispenser_Joint"
+      type="prismatic">
+      <origin
+        xyz="-0.104 -0.0262 -0.3545"
+        rpy="0 0 0" />
+      <parent
+        link="Z_Axis" />
+      <child
+        link="1K_Dispenser" />
+      <axis
+        xyz="0 0 -1" />
+      <limit lower="0" upper="0.04" effort="100" velocity="0.05" />
+    </joint>
+
+    <link
+      name="1K_Dispenser_TCP">
+    </link>
+
+    <joint
+      name="1K_Dispenser_TCP_Joint"
+      type="fixed">
+      <origin
+        xyz="-0.001 -0.0318 -0.1285"
+        rpy="0 0 0" />
+      <parent
+        link="1K_Dispenser" />
+      <child
+        link="1K_Dispenser_TCP" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+    <!--%%%%%%%%%%%%% 2K Dispenser Definitions-->
+
+    <link
+      name="2K_Dispenser_Cartridge">
+      <inertial>
+        <origin
+          xyz="0.000286904622212703 -0.0363382955214142 0.157114812049142"
+          rpy="0 0 0" />
+        <mass
+          value="0.410111177184055" />
+        <inertia
+          ixx="0.00156205497813664"
+          ixy="-4.41612447012715E-06"
+          ixz="-9.93222982118684E-08"
+          iyy="0.00154767600658026"
+          iyz="-1.49654417442962E-06"
+          izz="0.000122541965999881" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/2K_Glue_Cartridge.STL" />
+        </geometry>
+        <material name="white"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/2K_Glue_Cartridge.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!---Gravity off-->
+    <gazebo reference="2K_Dispenser_Cartridge">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+
+    <joint
+      name="2K_Dispenser_Joint"
+      type="prismatic">
+      <origin
+        xyz="-0.169 0.01176 -0.424"
+        rpy="0 0 0" />
+      <parent
+        link="Z_Axis" />
+      <child
+        link="2K_Dispenser_Cartridge" />
+      <axis
+        xyz="0 0 -1" />
+      <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
+    </joint>
+
+    <link
+      name="2K_Dispenser_TCP">
+    </link>
+
+    <joint
+      name="2K_Dispenser_TCP_Joint"
+      type="fixed">
+      <origin
+        xyz="0 -0.045 -0.04614"
+        rpy="0 0 0" />
+      <parent
+        link="2K_Dispenser_Cartridge" />
+      <child
+        link="2K_Dispenser_TCP" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    
+    <!--%%%%%%%%%%%%% Top Camera Definitions-->
+    <link
+      name="Cam1_Toolhead_TCP">
+      <inertial>
+        <origin
+          xyz="0.00294756628931103 0.0112908552453015 0.186544370768599"
+          rpy="0 0 0" />
+        <mass
+          value="0.222202026755256" />
+        <inertia
+          ixx="0.000198536268283264"
+          ixy="-2.57443493637635E-07"
+          ixz="-2.33028260890714E-06"
+          iyy="0.00020443076967091"
+          iyz="-8.54446341843522E-06"
+          izz="4.76896342979841E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Cam1_Toolhead_TCP.STL" />
         </geometry>
         <material
           name="">
@@ -887,128 +662,367 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Cam1_Toolhead_TCP.STL" />
         </geometry>
       </collision>
     </link>
+    <!---Gravity off-->
+    <gazebo reference="Cam1_Toolhead_TCP">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
     <joint
-      name="Station_Laser_Bottom_TCP_Joint"
+      name="Cam1_Toolhead_TCP_Joint"
       type="fixed">
       <origin
-        xyz="0.1799989100971 0.0939999732334095 0.328499853483917"
+        xyz="-0.0320000000000003 -0.0579999999999998 -0.515338706"
         rpy="0 0 0" />
       <parent
-        link="Camera_Station" />
+        link="Z_Axis" />
       <child
-        link="Station_Laser_Bottom_TCP" />
+        link="Cam1_Toolhead_TCP" />
       <axis
         xyz="0 0 0" />
     </joint>
 
-  <!--%%%%%%%%%%%%% Camera Calibration Definitions-->
-  <link
-    name="Camera_Calibration_Platelet">
-    <inertial>
-      <origin
-        xyz="-0.000344499007125409 0.0696122748122424 0.000295151280628292"
-        rpy="0 0 0" />
-      <mass
-        value="0.0334016358510876" />
-      <inertia
-        ixx="2.05104945364406E-05"
-        ixy="-1.61006130053269E-08"
-        ixz="-7.42638002033627E-11"
-        iyy="2.64967112268826E-06"
-        iyz="4.64472618194223E-07"
-        izz="2.23824646029018E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Calibration_Platelet.STL" />
-      </geometry>
-      <material name="green"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Calibration_Platelet.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="Camera_Calibration_Platelet_Joint"
-    type="prismatic">
-    <origin
-      xyz="0.08 -0.0805 0.293"
-      rpy="0 0 0" />
-    <parent
-      link="Camera_Station" />
-    <child
-      link="Camera_Calibration_Platelet" />
-    <axis
-      xyz="0 -1 0" />
-    <limit lower="-0.04" upper="0.0" effort="100" velocity="0.05" />
-  </joint>
-  
-  <!--%%%%%%%%%%%%% Calibration Qube Definitions-->
-  <link
-    name="Calibration_Qube">
-    <inertial>
-      <origin
-        xyz="0 -5.55111512312578E-17 -0.007418215969486"
-        rpy="0 0 0" />
-      <mass
-        value="0.000608132735199849" />
-      <inertia
-        ixx="3.05434929012605E-04"
-        ixy="2.70098962651108E-25"
-        ixz="-1.09265340380468E-24"
-        iyy="3.05434929012605E-04"
-        iyz="6.45610037231024E-25"
-        izz="5.52989859299796E-04" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Calibration_Qube.STL" />
-      </geometry>
-      <material name="green"/>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Calibration_Qube.STL" />
-      </geometry>
-    </collision>
-  </link>
+    <!--%%%%%%%%%%%%% Laser Toolhead Definitions-->
+      <link
+        name="Laser_Toolhead_TCP">
+        <inertial>
+          <origin
+            xyz="0.00141971945625508 0.0148011051892054 0.0588118094043311"
+            rpy="0 0 0" />
+          <mass
+            value="0.185632781644417" />
+          <inertia
+            ixx="0.00018384097226268"
+            ixy="5.39428478530615E-09"
+            ixz="-6.26322611599089E-07"
+            iyy="0.000136967759808617"
+            iyz="6.13082513214026E-07"
+            izz="7.65210217467237E-05" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh filename="file://$(find pm_robot_description)/meshes/Laser_Kopf_TCP.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh filename="file://$(find pm_robot_description)/meshes/Laser_Kopf_TCP.STL" />
+          </geometry>
+        </collision>
+      </link>
 
-  <!---Gravity off-->
-  <gazebo reference="Calibration_Qube">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
+      <!---Gravity off-->
+      <gazebo reference="Laser_Toolhead_TCP">
+        <turnGravityOff>true</turnGravityOff>
+      </gazebo>
 
-  <joint
-    name="Calibration_Qube_Joint"
-    type="prismatic">
-    <origin
-      xyz="0.152 0.108 0.326"
-      rpy="0 0 0" />
-    <parent
-      link="Camera_Station" />
-    <child
-      link="Calibration_Qube" />
-    <axis
-      xyz="0 0 1" />
-    <limit lower="-0.008" upper="0" effort="0" velocity="0.005" />
-  </joint>
+      <xacro:property name="Laser_Toolhead_TCP_Joint_Cal_x" value="${calibration_dict['Laser_Toolhead_TCP_Joint']['x_offset']}"/>
+      <xacro:property name="Laser_Toolhead_TCP_Joint_Cal_y" value="${calibration_dict['Laser_Toolhead_TCP_Joint']['y_offset']}"/>
+      <xacro:property name="Laser_Toolhead_TCP_Joint_Cal_z" value="${calibration_dict['Laser_Toolhead_TCP_Joint']['z_offset']}"/>
 
-</robot> 
+      <joint
+        name="Laser_Toolhead_TCP_Joint"
+        type="fixed">
+        <origin
+          xyz="
+          ${0.147498952947696 + Laser_Toolhead_TCP_Joint_Cal_x*0.000001} 
+          ${-0.0899999732334101 + Laser_Toolhead_TCP_Joint_Cal_y*0.000001} 
+          ${-0.495500000000011+ Laser_Toolhead_TCP_Joint_Cal_z*0.000001}"
+          rpy="0 0 0" />
+        <parent
+          link="Z_Axis" />
+        <child
+          link="Laser_Toolhead_TCP" />
+        <axis
+          xyz="0 0 0" />
+      </joint>
+
+    <!--%%%%%%%%%%%%% Test Station Definitions-->
+    <link
+      name="Test_Station">
+      <inertial>
+        <origin
+          xyz="0.0250000000000002 0.0791274046351475 -0.154851137332961"
+          rpy="0 0 0" />
+        <mass
+          value="1.39099524679326" />
+        <inertia
+          ixx="0.00780193904512034"
+          ixy="-2.61717009512019E-14"
+          ixz="-4.79910370720457E-20"
+          iyy="0.00547600691976027"
+          iyz="9.87499782602546E-10"
+          izz="0.00281708795214926" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
+        </geometry>
+        <material name="white"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Test_Station.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="Test_Station_Joint"
+      type="fixed">
+      <origin
+        xyz="0.075 0.3265 0.298"
+        rpy="0 0 0" />
+      <parent
+        link="pm_robot_base_link" />
+      <child
+        link="Test_Station" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+    <!--%%%%%%%%%%%%% Camera Station Definitions-->
+    <link
+      name="Camera_Station">
+      <inertial>
+        <origin
+          xyz="0.0886413519365855 0.189925462464436 0.138483690350839"
+          rpy="0 0 0" />
+        <mass
+          value="2.70231148841738" />
+        <inertia
+          ixx="0.0183035942970588"
+          ixy="1.26351026901094E-05"
+          ixz="-2.79575355635167E-06"
+          iyy="0.00441812287973743"
+          iyz="5.22848888698871E-05"
+          izz="0.0193956330708548" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Station.STL" />
+        </geometry>
+        <material name="white"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Station.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="Camera_Station_Joint"
+      type="fixed">
+      <origin
+        xyz="0.4525 0.3125 0"
+        rpy="0 0 0" />
+      <parent
+        link="pm_robot_base_link" />
+      <child
+        link="Camera_Station" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+    <link
+      name="Camera_Station_TCP">
+    </link>
+
+    <joint
+      name="Camera_Station_TCP_Joint"
+      type="fixed">
+      <origin
+        xyz="0.08 0.092783 0.3045"
+        rpy="0 0 0" />
+      <parent
+        link="Camera_Station" />
+      <child
+        link="Camera_Station_TCP" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+    <link
+        name="Station_Laser_Bottom_TCP">
+        <inertial>
+          <origin
+            xyz="0.00141971945625008 -0.0148011051892056 -0.0588118094043316"
+            rpy="0 0 0" />
+          <mass
+            value="0.185632781644417" />
+          <inertia
+            ixx="0.000183840972262678"
+            ixy="-5.39428478522435E-09"
+            ixz="6.26322611589981E-07"
+            iyy="0.000136967759808615"
+            iyz="6.13082513215402E-07"
+            izz="7.65210217467232E-05" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
+          </geometry>
+        </collision>
+      </link>
+      <joint
+        name="Station_Laser_Bottom_TCP_Joint"
+        type="fixed">
+        <origin
+          xyz="0.1799989100971 0.0939999732334095 0.328499853483917"
+          rpy="0 0 0" />
+        <parent
+          link="Camera_Station" />
+        <child
+          link="Station_Laser_Bottom_TCP" />
+        <axis
+          xyz="0 0 0" />
+      </joint>
+
+    <!--%%%%%%%%%%%%% Camera Calibration Definitions-->
+    <link
+      name="Camera_Calibration_Platelet">
+      <inertial>
+        <origin
+          xyz="-0.000344499007125409 0.0696122748122424 0.000295151280628292"
+          rpy="0 0 0" />
+        <mass
+          value="0.0334016358510876" />
+        <inertia
+          ixx="2.05104945364406E-05"
+          ixy="-1.61006130053269E-08"
+          ixz="-7.42638002033627E-11"
+          iyy="2.64967112268826E-06"
+          iyz="4.64472618194223E-07"
+          izz="2.23824646029018E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Calibration_Platelet.STL" />
+        </geometry>
+        <material name="green"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Calibration_Platelet.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <joint
+      name="Camera_Calibration_Platelet_Joint"
+      type="prismatic">
+      <origin
+        xyz="0.08 -0.0805 0.293"
+        rpy="0 0 0" />
+      <parent
+        link="Camera_Station" />
+      <child
+        link="Camera_Calibration_Platelet" />
+      <axis
+        xyz="0 -1 0" />
+      <limit lower="-0.04" upper="0.0" effort="100" velocity="0.05" />
+    </joint>
+    
+    <!--%%%%%%%%%%%%% Calibration Qube Definitions-->
+    <link
+      name="Calibration_Qube">
+      <inertial>
+        <origin
+          xyz="0 -5.55111512312578E-17 -0.007418215969486"
+          rpy="0 0 0" />
+        <mass
+          value="0.000608132735199849" />
+        <inertia
+          ixx="3.05434929012605E-04"
+          ixy="2.70098962651108E-25"
+          ixz="-1.09265340380468E-24"
+          iyy="3.05434929012605E-04"
+          iyz="6.45610037231024E-25"
+          izz="5.52989859299796E-04" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Calibration_Qube.STL" />
+        </geometry>
+        <material name="green"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Calibration_Qube.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!---Gravity off-->
+    <gazebo reference="Calibration_Qube">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+
+    <joint
+      name="Calibration_Qube_Joint"
+      type="prismatic">
+      <origin
+        xyz="0.152 0.108 0.326"
+        rpy="0 0 0" />
+      <parent
+        link="Camera_Station" />
+      <child
+        link="Calibration_Qube" />
+      <axis
+        xyz="0 0 1" />
+      <limit lower="-0.008" upper="0" effort="0" velocity="0.005" />
+    </joint>
+
+  </xacro:macro>
+
+</robot>
