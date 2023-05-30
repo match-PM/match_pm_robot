@@ -20,7 +20,7 @@
     <xacro:arg name="with_SPT_R_A1000_I500"           default="false"/>
 
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot.xacro" />
-  <xacro:pm_robot />
+  <xacro:pm_robot launch_mode="$(arg launch_mode)"/>
   
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_housing.xacro" />
 
