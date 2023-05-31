@@ -13,6 +13,16 @@
 namespace pm_hardware_interface
 {
 
+static double increments_to_meters(PMClient::AerotechAxis &axis, long increments)
+{
+    return axis.increments_to_units(increments) * 1000000.0;
+}
+
+static long meters_to_increments(PMClient::AerotechAxis &axis, double units)
+{
+    return axis.units_to_increments(units / 1000000.0);
+}
+
 PMSystem::PMSystem()
 {
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "PMSystem instantiated.");
@@ -260,8 +270,14 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     };
     for (const auto &[pm_axis, ros_axis] : axis)
     {
-        ros_axis.current_position = pm_axis->increments_to_units(pm_axis->get_position());
-        ros_axis.velocity = pm_axis->increments_to_units(pm_axis->get_speed());
+        // RCLCPP_INFO(
+        //     rclcpp::get_logger("PMSystem"),
+        //     "current_position: %ld (%f)",
+        //     pm_axis->get_position(),
+        //     pm_axis->increments_to_units(pm_axis->get_position())
+        // );
+        ros_axis.current_position = increments_to_meters(*pm_axis, pm_axis->get_position());
+        ros_axis.velocity = increments_to_meters(*pm_axis, pm_axis->get_speed());
     }
 
     return hardware_interface::return_type::OK;
@@ -284,9 +300,9 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     };
     for (const auto &[pm_axis, ros_axis] : axis)
     {
-        // pm_axis->move(pm_axis->units_to_increments(ros_axis.target_position));
-        // pm_axis->set_speed(pm_axis->units_to_increments(ros_axis.velocity));
-        // pm_axis->set_acceleration(pm_axis->units_to_increments(ros_axis.acceleration));
+        pm_axis->move(meters_to_increments(*pm_axis, ros_axis.target_position));
+        pm_axis->set_speed(meters_to_increments(*pm_axis, ros_axis.velocity));
+        pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
     }
 
     return hardware_interface::return_type::OK;
