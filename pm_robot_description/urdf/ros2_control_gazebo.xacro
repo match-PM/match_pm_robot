@@ -106,6 +106,7 @@
                     <command_interface name="position">
                     </command_interface>
                     <state_interface name="position"/>
+                    <state_interface name="velocity"/>
                 </joint>
 
                 <joint name="pm_robot_Tool_Parallel_Joint_mimic">
@@ -114,6 +115,7 @@
                     <command_interface name="position">
                     </command_interface>
                     <state_interface name="position"/>
+                    <state_interface name="velocity"/>
                 </joint>
             </xacro:if>
  

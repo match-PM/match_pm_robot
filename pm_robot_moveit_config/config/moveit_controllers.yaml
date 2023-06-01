@@ -6,6 +6,7 @@ moveit_simple_controller_manager:
   controller_names:
     - pm_robot_t_axis_JTC
     - pm_robot_xyz_axis_JTC
+    - pm_robot_parallel_gripper_GAC
 
   pm_robot_t_axis_JTC:
     type: FollowJointTrajectory
@@ -26,3 +27,10 @@ moveit_simple_controller_manager:
       - Z_Axis_Joint
     action_ns: follow_joint_trajectory
     default: true
+
+  pm_robot_parallel_gripper_GAC:
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - pm_robot_Tool_Parallel_Joint

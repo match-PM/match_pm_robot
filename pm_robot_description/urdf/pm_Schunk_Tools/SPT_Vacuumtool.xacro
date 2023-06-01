@@ -74,7 +74,7 @@
         <xacro:if value="${use_R_A1000_I500}">
 
             <!--%%%%%%%%%%%% Tool_TCP_SPT_R_A1000_I500 %%%%%%%%%%%%%-->
-            <link name="Tool_SPT_TCP_link">
+            <link name="Tool_SPT_changeable">
                 <inertial>
                     <origin
                         xyz="-1.29186788957441E-21 7.60244056032738E-20 0.00881061215391388"
@@ -107,15 +107,15 @@
             </link>
 
             <!--Gravity off-->
-            <gazebo reference="Tool_SPT_TCP_link">
+            <gazebo reference="Tool_SPT_changeable">
                 <turnGravityOff>true</turnGravityOff>
                 <color>1.0 0 0.5 1.0</color>
             </gazebo>
 
-            <joint name="Tool_SPT_TCP_link_joint" type="fixed">
+            <joint name="Tool_SPT_changeable_joint" type="fixed">
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <parent link="PM_Robot_Tool_TCP" />
-                <child link="Tool_SPT_TCP_link" />
+                <child link="Tool_SPT_changeable" />
                 <axis xyz="0 0 0" />
             </joint>
         </xacro:if>

@@ -108,19 +108,22 @@
 
             <xacro:if value="$(arg with_Tool_MPG_10)">
                 <joint name="pm_robot_Tool_Parallel_Joint">
-                        <command_interface name="position">
-                        </command_interface>
-                        <state_interface name="position"/>
-                    </joint>
+                    <command_interface name="position">
+                    </command_interface>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
 
-                    <joint name="pm_robot_Tool_Parallel_Joint_mimic">
-                        <param name="mimic">pm_robot_Tool_Parallel_Joint</param>
-                        <param name="mulltiplier">1</param>
-                        <command_interface name="position">
-                        </command_interface>
-                        <state_interface name="position"/>
-                    </joint>
+                <joint name="pm_robot_Tool_Parallel_Joint_2">
+                    <param name="mimic">pm_robot_Tool_Parallel_Joint</param>
+                    <param name="mulltiplier">1</param>
+                    <command_interface name="position">
+                    </command_interface>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
             </xacro:if>
+            
         </ros2_control>
 
             <gazebo>

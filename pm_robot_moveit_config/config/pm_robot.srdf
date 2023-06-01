@@ -39,10 +39,18 @@
         <chain base_link="pm_robot_base_link" tip_link="Laser_Toolhead_TCP" />
     </group>
 
-    <group name="end_effector_toolhead">
+    <group name="PM_Robot_Parallel_Gripper">
+        <link name="Tool_Gripper_MPG_10_Body"/>
+        <link name="Tool_Gripper_MPG_10_Jaw_1"/>
+        <link name="Tool_Gripper_MPG_10_Jaw_2"/>
+        <joint name="pm_robot_Tool_Parallel_Joint"/>
+        <passive_joint name="pm_robot_Tool_Parallel_Joint_2"/>
+    </group>
+
+    <!-- <group name="end_effector_toolhead">
         <group name="PM_Robot_Tool_TCP" />
         <group name="PM_Robot_Cam1_TCP" />
-    </group>
+    </group> -->
     
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <!-- <end_effector name="PM_Robot_Tool_TCP" parent_link="pm_robot_base_link" group="end_effector_toolhead"/> -->
@@ -56,7 +64,14 @@
         <joint name="Z_Axis_Joint" value="0"/>
     </group_state>
 
-
+    <group_state group="PM_Robot_Parallel_Gripper" name="closed">
+        <joint name="pm_robot_Tool_Parallel_Joint" value="0.001"/>
+        <joint name="pm_robot_Tool_Parallel_Joint_2" value="0.001"/>
+    </group_state>
+    <group_state group="PM_Robot_Parallel_Gripper" name="opened">
+        <joint name="pm_robot_Tool_Parallel_Joint" value="0"/>
+        <joint name="pm_robot_Tool_Parallel_Joint_2" value="0"/>
+    </group_state>
 
     <virtual_joint name="world_base" type="fixed" parent_frame="world" child_link="base_link_empthy" />
 
@@ -77,9 +92,8 @@
     <disable_collisions link1="1K_Dispenser" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="UV_LED_Back" reason="Never"/>
@@ -115,9 +129,8 @@
     <disable_collisions link1="1K_Dispenser_Flap" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="UV_LED_Back" reason="Never"/>
@@ -152,9 +165,8 @@
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="UV_LED_Back" reason="Never"/>
@@ -218,9 +230,8 @@
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="UV_LED_Back" reason="Never"/>
@@ -252,9 +263,8 @@
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="UV_LED_Back" reason="Never"/>
@@ -284,7 +294,6 @@
     <disable_collisions link1="Camera_Station" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="Station_Laser_Bottom_TCP" reason="Adjacent"/>
     <disable_collisions link1="Camera_Station" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Camera_Station" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="UV_LED_Back" reason="Never"/>
@@ -314,9 +323,8 @@
     <disable_collisions link1="Gonio_Base_Right" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="UV_LED_Back" reason="Never"/>
@@ -345,9 +353,8 @@
     <disable_collisions link1="Gonio_Left_Base" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="UV_LED_Back" reason="Never"/>
@@ -375,7 +382,6 @@
     <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Example_Chuck" link2="UV_LED_Back" reason="Never"/>
@@ -401,9 +407,8 @@
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="UV_LED_Back" reason="Never"/>
@@ -429,9 +434,8 @@
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="UV_LED_Back" reason="Never"/>
@@ -456,9 +460,8 @@
     <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Example_Chuck" link2="UV_LED_Back" reason="Never"/>
@@ -482,9 +485,8 @@
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="UV_LED_Back" reason="Never"/>
@@ -507,9 +509,8 @@
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="UV_LED_Back" reason="Never"/>
@@ -531,9 +532,8 @@
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="UV_LED_Back" reason="Never"/>
@@ -554,9 +554,8 @@
     <disable_collisions link1="Gripper_Rot_Plate" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_MPG_10_Body" reason="Adjacent"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="UV_LED_Back" reason="Never"/>
@@ -576,9 +575,8 @@
     <disable_collisions link1="Gripper_Rot_Plate" link2="t_axis_toolchanger" reason="Adjacent"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="UV_LED_Back" reason="Never"/>
@@ -612,9 +610,8 @@
     <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_vr" reason="Never"/>
     <disable_collisions link1="Station_Laser_Bottom_TCP" link2="pm_robot_base_link" reason="Never"/>
     <disable_collisions link1="Station_Laser_Bottom_TCP" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Gripper_Jaw_1_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="Tool_Gripper_MPG_10_Jaw_1_changeable" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="UV_LED_Back" reason="Never"/>
@@ -632,60 +629,41 @@
     <disable_collisions link1="Test_Station" link2="housing_vr" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="pm_robot_base_link" reason="Adjacent"/>
     <disable_collisions link1="Test_Station" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="Tool_Gripper_Jaw_2_3MM_Lens" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="UV_Slider_X_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="UV_Slider_X_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_1_3MM_Lens" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="UV_Slider_X_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="UV_Slider_X_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_Jaw_2_3MM_Lens" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_Slider_X_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_Slider_X_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="t_axis_toolchanger" reason="Default"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Adjacent"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="UV_LED_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="UV_LED_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="UV_Slider_X_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="UV_Slider_X_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="axis_base" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="housing" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="housing_hl" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="housing_hr" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="housing_vl" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="housing_vr" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="pm_robot_base_link" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="t_axis_toolchanger" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Adjacent"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="UV_LED_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="UV_LED_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="UV_Slider_X_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="UV_Slider_X_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="axis_base" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="housing" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="housing_hl" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="housing_hr" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="housing_vl" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="housing_vr" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="pm_robot_base_link" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="t_axis_toolchanger" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="UV_LED_Front" reason="Never"/>
@@ -821,4 +799,80 @@
     <disable_collisions link1="housing_vr" link2="pm_robot_base_link" reason="Adjacent"/>
     <disable_collisions link1="housing_vr" link2="t_axis_toolchanger" reason="Never"/>
     <disable_collisions link1="pm_robot_base_link" link2="t_axis_toolchanger" reason="Never"/>
+
+
+    <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Camera_Station" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Gripper_MPG_10_Body" reason="Adjacent"/>
+    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1_changeable" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="Tool_Gripper_MPG_10_Body" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Adjacent"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Adjacent"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_LED_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_LED_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_Slider_X_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="UV_Slider_X_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="axis_base" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_hl" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_hr" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_vl" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="housing_vr" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="pm_robot_base_link" reason="Never"/>
+    <disable_collisions link1="Tool_Gripper_MPG_10_Body" link2="t_axis_toolchanger" reason="Default"/>
+
+
+    <disable_collisions link1="1K_Dispenser" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Camera_Station" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Example_Chuck" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Example_Chuck" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Schunk_SPT_Toolholder" reason="Adjacent"/>
+    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_LED_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_LED_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_Slider_X_Back" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_Slider_X_Front" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="X_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="Y_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="Z_Axis" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="axis_base" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="housing" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="housing_hl" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="housing_hr" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="housing_vl" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="housing_vr" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="pm_robot_base_link" reason="Never"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="t_axis_toolchanger" reason="Default"/>
+    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="Tool_SPT_changeable" reason="Adjacent"/>
+
 </robot>
