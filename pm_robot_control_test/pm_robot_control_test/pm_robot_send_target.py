@@ -20,13 +20,15 @@ class SendPosition(Node):
 
         max_velocity = self.get_parameter("max_velocity").value
 
-        self.get_logger().info(
-            f'velocity: "{max_velocity}"'
-        )
+        self.get_logger().info(f'velocity: "{max_velocity}"')
+
+        self.current_position_ =  []
 
         # self.joint_state_sub = self.create_subscription(
         #     JointState, "joint_states", self.joint_state_callback, 10
         # )
+        
+        
         
 
     def send_target(self,points):
@@ -38,7 +40,7 @@ class SendPosition(Node):
 
         goal_msg = FollowJointTrajectory.Goal()
         
-        point.time_from_start = Duration(sec=1)
+        point.time_from_start = Duration(sec=4)
         
         goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint','Z_Axis_Joint','T_Axis_Joint']
 
@@ -48,11 +50,12 @@ class SendPosition(Node):
 
         self._send_goal_future = self._action_client.send_goal_async(goal_msg)
 
+        self.get_logger().info(f'Future: "{self._action_client._feedback_callbacks.values()}"')
+
         self._send_goal_future.add_done_callback(self.goal_response_callback)
 
-        self.get_logger().info(
-            f'Publishing goals "{point.positions}"'
-        )
+        self.get_logger().info(f'Publishing goals "{point.positions}"')
+
 
     def goal_response_callback(self, future):
         goal_handle = future.result()
@@ -65,6 +68,7 @@ class SendPosition(Node):
         self._get_result_future = goal_handle.get_result_async()
         self._get_result_future.add_done_callback(self.get_result_callback)
 
+
     def get_result_callback(self, future):
         error_code = future.result().result.error_code
         if error_code != 0:
@@ -74,11 +78,10 @@ class SendPosition(Node):
 
     
     def joint_state_callback(self, msg):
-        
         #self.lock.acquire()
         self.name = msg.name
-        self.position = msg.position
-        self.get_logger().info(f'Current position:')
+        self.current_position_ = msg.position
+        self.get_logger().info(f'Current position: "{self.current_position_}"')
 
     
     
@@ -86,7 +89,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     action_client = SendPosition()
-    action_client.send_target([-0.46, 0.20, 0.0, 0.0])
+    action_client.send_target([-0.046, 0.20, 0.0, 0.0])
     rclpy.spin(action_client)
 
 
