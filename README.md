@@ -6,11 +6,6 @@ ROS Framework for the Precision Assembly Robot
 * `pm_robot_description`: Contains the description of the robot and launch files for gazebo and rviz
 * `pm_robot_submodules`: Contains submodules for e.g. Basler cameras
 
-sudo apt-get update
-sudo apt-get install --reinstall gnome-control-center
-
-gnome-control-center display
-gnome-control-center
 
 ## 2. Installation 
 Start by changing directory to your workspace!

@@ -1,5 +1,5 @@
 <?xml version="1.0"?> 
-<sdf version="1.4">
+<sdf version="1.6">
 
   <world name="default">
         <!-- Ground Plane -->
@@ -35,14 +35,15 @@
                         <falloff>1</falloff>
                     </spot>
                 </light>
+
             </link>
             
             <!-- <plugin name="my_model_plugin" filename="liblight_move_model_plugin.so"/> -->
             <plugin name="light_control" filename="libLedPlugin.so">
                 <light>
                     <id>light_bottom/light_camera_bottom</id>
-                    <duration>2.5</duration>
-                    <interval>2.5</interval>
+                    <!-- <duration>2.5</duration>
+                    <interval>2.5</interval> -->
                 </light>
             </plugin>
         </model>        

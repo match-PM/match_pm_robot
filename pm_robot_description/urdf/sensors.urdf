@@ -22,8 +22,8 @@
   <gazebo reference="Camera_Top_View_Link">
     <sensor type="camera" name="Cam1">
       <pose>0 0 0 0 0 0 </pose>
-      <visualize>true</visualize>
-      <update_rate>14.6</update_rate>
+      <!-- <visualize>true</visualize> -->
+      <!-- <update_rate>14.6</update_rate> -->
       <camera name="head">
         <horizontal_fov>1.050453012</horizontal_fov>
         <image>
@@ -33,8 +33,12 @@
         </image>
         <clip>
           <near>0.1</near>
-          <far>0.114</far>
+          <far>0.214</far>
         </clip>
+        <lens>
+          <type>orthographic</type>
+          <scale_to_hfov>true</scale_to_hfov>
+        </lens>
       </camera>
       <plugin name="camera_controller_cam1" filename="libgazebo_ros_camera.so">
         <topicName>pm_robot_description/cam1</topicName>
@@ -66,7 +70,7 @@
       <pose>0 0 0 0 0 0 </pose>
       <visualize>true</visualize>
       <update_rate>14.6</update_rate>
-      <camera name="head">
+      <camera name="bottom">
         <horizontal_fov>0.01</horizontal_fov>
         <image>
           <width>2592</width>
@@ -77,6 +81,9 @@
           <near>1.09</near>
           <far>1.13</far>
         </clip>
+        <!-- <lens>
+          <type>orthographic</type>
+        </lens> -->
       </camera>
       <plugin name="camera_controller_cam2" filename="libgazebo_ros_camera.so">
         <topicName>pm_robot_description/cam2</topicName>
