@@ -40,3 +40,10 @@ controller_manager:
 pm_robot_parallel_gripper_GAC:
   ros__parameters:
     joint: pm_robot_Tool_Parallel_Joint
+
+    command_interfaces:
+    - position
+
+    state_interfaces:
+    - position
+    - effort

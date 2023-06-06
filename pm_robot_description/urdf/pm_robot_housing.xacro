@@ -221,7 +221,7 @@
       <geometry>
         <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing.STL" />
       </geometry>
-      <material name="black"/>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin

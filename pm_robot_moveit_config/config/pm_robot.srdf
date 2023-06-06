@@ -27,6 +27,14 @@
         <!-- <joint name="Cam1_Toolhead_TCP_Joint"/> -->
     </group>
 
+    <group name="PM_Robot_Gonio_Right">
+        <chain base_link="pm_robot_base_link" tip_link="Gonio_Right_Part_Origin" />
+    </group>
+
+    <group name="PM_Robot_Gonio_Left">
+        <chain base_link="pm_robot_base_link" tip_link="Gonio_Left_Part_Origin" />
+    </group>
+
     <group name="PM_Robot_1K_Dispenser_TCP">
         <chain base_link="pm_robot_base_link" tip_link="1K_Dispenser_TCP" />
     </group>
@@ -63,6 +71,23 @@
         <joint name="Y_Axis_Joint" value="-0.07685"/>
         <joint name="Z_Axis_Joint" value="0"/>
     </group_state>
+
+    <group_state name="Test Position" group="PM_Robot_Tool_TCP">
+        <joint name="T_Axis_Joint" value="0"/>
+        <joint name="X_Axis_Joint" value="-0.36"/>
+        <joint name="Y_Axis_Joint" value="-0.07685"/>
+        <joint name="Z_Axis_Joint" value="0"/>
+    </group_state>
+
+    <!-- <group_state name="Zero" group="PM_Robot_Gonio_Right">
+        <joint name="Gonio_Right_Stage_1_Joint" value="0"/>
+        <joint name="Gonio_Right_Stage_2_Joint" value="0"/>
+    </group_state>
+
+    <group_state name="Zero" group="PM_Robot_Gonio_Left">
+        <joint name="Gonio_Left_Stage_1_Joint" value="0"/>
+        <joint name="Gonio_Left_Stage_2_Joint" value="0"/>
+    </group_state> -->
 
     <group_state group="PM_Robot_Parallel_Gripper" name="closed">
         <joint name="pm_robot_Tool_Parallel_Joint" value="0.001"/>

@@ -48,12 +48,12 @@
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-            <joint name="Gonio_Right_Stage_1_Top_Joint">
+            <joint name="Gonio_Right_Stage_1_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-            <joint name="Gonio_Right_Stage_2_Bottom_Joint">
+            <joint name="Gonio_Right_Stage_2_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -63,12 +63,12 @@
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-            <joint name="Gonio_Left_Stage_1_Top_Joint">
+            <joint name="Gonio_Left_Stage_1_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-            <joint name="Gonio_Left_Stage_2_Bottom_Joint">
+            <joint name="Gonio_Left_Stage_2_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -93,18 +93,11 @@
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-
-            <joint name="Tool_Gripper_MPG_10_Jaw_1_Joint">
-                <command_interface name="position">
-                </command_interface>
-                <state_interface name="position"/>
-            </joint>
-
             <joint name="Calibration_Qube_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>            
+            </joint>          
 
             <xacro:if value="$(arg with_Tool_MPG_10)">
                 <joint name="pm_robot_Tool_Parallel_Joint">
