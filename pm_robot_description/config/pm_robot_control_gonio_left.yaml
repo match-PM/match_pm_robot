@@ -3,18 +3,18 @@ controller_manager:
     update_rate: 100
     use_sim_time: true
 
-    joint_trajectory_controller_gonio_left:
+    pm_robot_gonio_left_JTC:
       type: joint_trajectory_controller/JointTrajectoryController
 
-    joint_state_broadcaster_gonio_left:
+    pm_robot_gonio_left_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 
-joint_trajectory_controller_gonio_left:
+pm_robot_gonio_left_JTC:
   ros__parameters:
     joints:
-      - Gonio_Left_Stage_1_Top_Joint
-      - Gonio_Left_Stage_2_Bottom_Joint
+      - Gonio_Left_Stage_1_Joint
+      - Gonio_Left_Stage_2_Joint
 
     command_interfaces:
       - position

@@ -92,11 +92,92 @@
             <state_interface name="position"/>
         </joint>
 
+<<<<<<< HEAD
         <joint name="Tool_Gripper_MPG_10_Jaw_1_Joint">
             <command_interface name="position">
             </command_interface>
             <state_interface name="position"/>
         </joint>
+=======
+            </joint>
+            <joint name="Z_Axis_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="T_Axis_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="1K_Dispenser_Flap_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="1K_Dispenser_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="2K_Dispenser_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Right_Stage_1_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Right_Stage_2_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Camera_Calibration_Platelet_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Left_Stage_1_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Left_Stage_2_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_Slider_X_Front_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_LED_Front_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_Slider_X_Back_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_LED_Back_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Calibration_Qube_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+>>>>>>> f5d9834 (modular Launch Files, Axis renaming)
 
         <joint name="Tool_Gripper_MPG_10_Jaw_2_Joint">
             <param name="mimic">Tool_Gripper_MPG_10_Jaw_1_Joint</param>

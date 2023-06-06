@@ -20,4 +20,36 @@ moveit_simple_controller_manager:
       - Z_Axis_Joint
       - T_Axis_Joint
     action_ns: follow_joint_trajectory
+<<<<<<< HEAD
     default: true
+=======
+    default: true
+
+  pm_robot_gonio_left_JTC:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - Gonio_Left_Stage_1_Joint
+      - Gonio_Left_Stage_2_Joint
+    action_ns: follow_joint_trajectory
+    default: true
+    
+  pm_robot_gonio_right_JTC:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - Gonio_Right_Stage_1_Joint
+      - Gonio_Right_Stage_2_Joint
+    action_ns: follow_joint_trajectory
+    default: true
+
+
+  pm_robot_parallel_gripper_GAC:
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - pm_robot_Tool_Parallel_Joint
+>>>>>>> f5d9834 (modular Launch Files, Axis renaming)
