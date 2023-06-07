@@ -1,13 +1,13 @@
 controller_manager:
   ros__parameters:
     update_rate: 100
-    use_sim_time: true
+    # use_sim_time: true
 
-    # forward_position_controller:
-    #   type: position_controllers/JointGroupPositionController
+    forward_position_controller:
+      type: position_controllers/JointGroupPositionController
 
-    joint_trajectory_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
+    # joint_trajectory_controller:
+    #   type: joint_trajectory_controller/JointTrajectoryController
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -18,9 +18,10 @@ controller_manager:
     # joint_state_broadcaster_Gripper:
     #   type: joint_state_broadcaster/JointStateBroadcaster
 
-# forward_position_controller:
-#   ros__parameters:
-#     joints:
+forward_position_controller:
+  ros__parameters:
+    joints:
+      - X_Axis_Joint
       # - 1K_Dispenser_Flap_Joint
       # - 1K_Dispenser_Joint
       # - EQ_Joint
@@ -33,33 +34,36 @@ controller_manager:
     interface_name: position
 
 
-joint_trajectory_controller:
-  ros__parameters:
-    joints:
-      - X_Axis_Joint
-      - Y_Axis_Joint
-      - Z_Axis_Joint
-      - T_Axis_Joint
+# joint_trajectory_controller:
+#   ros__parameters:
+#     joints:
+#       - X_Axis_Joint
+#       - Y_Axis_Joint
+#       - Z_Axis_Joint
+#       - T_Axis_Joint
 
 
-    command_interfaces:
-      - position
+#     command_interfaces:
+#       - position
+#       # - velocity
+#       # - acceleration
 
-    state_interfaces:
-      - position
-      - velocity
-    state_publish_rate: 220.0 # Defaults to 50
-    action_monitor_rate: 20.0 # Defaults to 20
+#     state_interfaces:
+#       - position
+#       - velocity
 
-    allow_partial_joints_goal: false # Defaults to false
-    open_loop_control: true
-    allow_integration_in_goal_trajectories: true
-    constraints:
-      stopped_velocity_tolerance: 0.01 # Defaults to 0.01
-      goal_time: 0.0 # Defaults to 0.0 (start immediately)
-    #   X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-    #   Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-    #   Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+#     state_publish_rate: 220.0 # Defaults to 50
+#     action_monitor_rate: 20.0 # Defaults to 20
 
-    max_velocity: 1 # in m/s
+#     allow_partial_joints_goal: false # Defaults to false
+#     open_loop_control: true
+#     allow_integration_in_goal_trajectories: true
+#     constraints:
+#       stopped_velocity_tolerance: 0.01 # Defaults to 0.01
+#       goal_time: 0.0 # Defaults to 0.0 (start immediately)
+#       X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+#       Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+#       Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+
+#     max_velocity: 1 # in m/s
 

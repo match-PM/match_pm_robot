@@ -293,12 +293,6 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     };
     for (const auto &[pm_axis, ros_axis] : axis)
     {
-        // RCLCPP_INFO(
-        //     rclcpp::get_logger("PMSystem"),
-        //     "current_position: %ld (%f)",
-        //     pm_axis->get_position(),
-        //     pm_axis->increments_to_units(pm_axis->get_position())
-        // );
         ros_axis.current_position = increments_to_meters(*pm_axis, pm_axis->get_position());
         ros_axis.velocity = increments_to_meters(*pm_axis, pm_axis->get_speed());
     }
@@ -317,15 +311,21 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     auto *robot = m_pm_client.get_robot();
     std::vector<std::pair<PMClient::AerotechAxis *, AxisState &>> axis = {
         {robot->x_axis.get(), m_x_axis},
-        {robot->y_axis.get(), m_y_axis},
-        {robot->z_axis.get(), m_z_axis},
-        {robot->t_axis.get(), m_t_axis},
+        // {robot->y_axis.get(), m_y_axis},
+        // {robot->z_axis.get(), m_z_axis},
+        // {robot->t_axis.get(), m_t_axis},
     };
     for (const auto &[pm_axis, ros_axis] : axis)
     {
+        // RCLCPP_INFO(
+        //     rclcpp::get_logger("PMSystem"),
+        //     "target: %d (%f)",
+        //     (meters_to_increments(*pm_axis, ros_axis.target_position)),
+        //     ros_axis.target_position
+        // );
         pm_axis->move(meters_to_increments(*pm_axis, ros_axis.target_position));
-        pm_axis->set_speed(meters_to_increments(*pm_axis, ros_axis.velocity));
-        pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
+        // pm_axis->set_speed(meters_to_increments(*pm_axis, ros_axis.velocity));
+        // pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
     }
 
     return hardware_interface::return_type::OK;

@@ -33,10 +33,10 @@ class PMSystem : public hardware_interface::SystemInterface
 
     struct AxisState
     {
-        double current_position;
-        double target_position;
-        double velocity;
-        double acceleration;
+        double current_position = 0.0;
+        double target_position = 0.0;
+        double velocity = 0.0;
+        double acceleration = 0.0;
     };
 
     PMClient::Client m_pm_client;

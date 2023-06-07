@@ -53,16 +53,22 @@ def generate_launch_description():
         ],
     )
 
-    robot_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_trajectory_controller"],
-    )
+    # robot_controller_spawner = Node(
+    #     package="controller_manager",
+    #     executable="spawner",
+    #     arguments=[
+    #         "joint_trajectory_controller",
+    #         "--controller-manager",
+    #         "/controller_manager",
+    #     ],
+    # )
 
     robot_controller_forward_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["forward_position_controller"],
+        arguments=[
+            "forward_position_controller",
+        ],
     )
 
     # rviz_config = PathJoinSubstitution(
@@ -89,8 +95,9 @@ def generate_launch_description():
             control_node,
             joint_state_broadcaster_spawner,
             robot_state_pub_node,
-            robot_controller_spawner,
-            #robot_controller_forward_spawner,
+            # robot_controller_spawner,
+            robot_controller_forward_spawner
+            # robot_controller_forward_spawner,
             # delay_rviz_after_joint_state_broadcaster_spawner,
         ]
     )
