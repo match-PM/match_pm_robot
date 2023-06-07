@@ -90,7 +90,7 @@ def generate_launch_description():
             joint_state_broadcaster_spawner,
             robot_state_pub_node,
             robot_controller_spawner,
-            robot_controller_forward_spawner,
+            #robot_controller_forward_spawner,
             # delay_rviz_after_joint_state_broadcaster_spawner,
         ]
     )

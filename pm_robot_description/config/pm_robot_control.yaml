@@ -3,8 +3,8 @@ controller_manager:
     update_rate: 100
     use_sim_time: true
 
-    forward_position_controller:
-      type: position_controllers/JointGroupPositionController
+    # forward_position_controller:
+    #   type: position_controllers/JointGroupPositionController
 
     joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -18,11 +18,11 @@ controller_manager:
     # joint_state_broadcaster_Gripper:
     #   type: joint_state_broadcaster/JointStateBroadcaster
 
-forward_position_controller:
-  ros__parameters:
-    joints:
-      - 1K_Dispenser_Flap_Joint
-      - 1K_Dispenser_Joint
+# forward_position_controller:
+#   ros__parameters:
+#     joints:
+      # - 1K_Dispenser_Flap_Joint
+      # - 1K_Dispenser_Joint
       # - EQ_Joint
       # - Camera_Calibartion_Joint
       # - UV_Cart_Left_Joint
@@ -52,11 +52,14 @@ joint_trajectory_controller:
     action_monitor_rate: 20.0 # Defaults to 20
 
     allow_partial_joints_goal: false # Defaults to false
-    #open_loop_control: true
-    #allow_integration_in_goal_trajectories: true
+    open_loop_control: true
+    allow_integration_in_goal_trajectories: true
     constraints:
-      stopped_velocity_tolerance: 0.2 # Defaults to 0.01
+      stopped_velocity_tolerance: 0.01 # Defaults to 0.01
       goal_time: 0.0 # Defaults to 0.0 (start immediately)
-      X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-      Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-      Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+    #   X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+    #   Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+    #   Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+
+    max_velocity: 1 # in m/s
+
