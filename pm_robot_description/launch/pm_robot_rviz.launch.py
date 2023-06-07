@@ -49,6 +49,11 @@ def generate_launch_description():
     #     executable='joint_state_publisher',
     #     condition=UnlessCondition(LaunchConfiguration('gui'))
     # )
+    
+    save_urdf = Node(
+        package="pm_robot_control_test",
+        executable="pm_robot_save_urdf",
+    )
 
     joint_state_publisher_gui_node = Node(
         package='joint_state_publisher_gui',
@@ -80,7 +85,7 @@ def generate_launch_description():
     return LaunchDescription([
         gui_arg,
         model_arg,
-
+        save_urdf,
         rviz_arg,
         #joint_state_publisher_node,
         joint_state_publisher_gui_node,
