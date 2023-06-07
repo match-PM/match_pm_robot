@@ -94,6 +94,29 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
 
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "Activating PMSystem...");
 
+    auto *robot = m_pm_client.get_robot();
+    std::vector<std::pair<PMClient::AerotechAxis *, AxisState &>> axis = {
+        {robot->x_axis.get(), m_x_axis},
+        {robot->y_axis.get(), m_y_axis},
+        {robot->z_axis.get(), m_z_axis},
+        {robot->t_axis.get(), m_t_axis},
+    };
+    for (const auto &[pm_axis, ros_axis] : axis)
+    {
+        // RCLCPP_INFO(
+        //     rclcpp::get_logger("PMSystem"),
+        //     "Initial values:\n  Position: %d\n  Target: %d\n  Speed: %d\n  Acceleration: %d\n",
+        //     pm_axis->get_position(),
+        //     pm_axis->get_target(),
+        //     pm_axis->get_speed(),
+        //     pm_axis->get_acceleration()
+        // );
+        ros_axis.current_position = increments_to_meters(*pm_axis, pm_axis->get_position());
+        ros_axis.target_position = increments_to_meters(*pm_axis, pm_axis->get_target());
+        ros_axis.velocity = increments_to_meters(*pm_axis, pm_axis->get_speed());
+        ros_axis.acceleration = increments_to_meters(*pm_axis, pm_axis->get_acceleration());
+    }
+
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "Successfully activated PMSystem.");
     return CallbackReturn::SUCCESS;
 }
