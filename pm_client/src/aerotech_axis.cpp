@@ -35,34 +35,34 @@ namespace PMClient
     return true;
 }
 
-void AerotechAxis::set_speed(long speed)
+void AerotechAxis::set_speed(int speed)
 {
-    m_client->write_node_value<long, UA_TYPES_INT32>(this->speed_node_id, speed);
+    m_client->write_node_value<int, UA_TYPES_INT32>(this->speed_node_id, speed);
 }
 
-[[nodiscard]] long AerotechAxis::get_speed() const
+[[nodiscard]] int AerotechAxis::get_speed() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->speed_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->speed_node_id);
 }
 
-[[nodiscard]] long AerotechAxis::get_max_speed() const
+[[nodiscard]] int AerotechAxis::get_max_speed() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->max_speed_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->max_speed_node_id);
 }
 
-void AerotechAxis::set_acceleration(long acceleration)
+void AerotechAxis::set_acceleration(int acceleration)
 {
-    m_client->write_node_value<long, UA_TYPES_INT32>(this->acceleration_node_id, acceleration);
+    m_client->write_node_value<int, UA_TYPES_INT32>(this->acceleration_node_id, acceleration);
 }
 
-[[nodiscard]] long AerotechAxis::get_acceleration() const
+[[nodiscard]] int AerotechAxis::get_acceleration() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->acceleration_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->acceleration_node_id);
 }
 
-[[nodiscard]] long AerotechAxis::get_max_acceleration() const
+[[nodiscard]] int AerotechAxis::get_max_acceleration() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->max_acceleration_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->max_acceleration_node_id);
 }
 
 void AerotechAxis::set_servo(bool enable)
@@ -117,9 +117,9 @@ void AerotechAxis::set_tolerance(AxisTolerance tolerance)
     }
 }
 
-void AerotechAxis::move(long target)
+void AerotechAxis::move(int target)
 {
-    m_client->write_node_value<long, UA_TYPES_INT32>(this->target_position_node_id, target);
+    m_client->write_node_value<int, UA_TYPES_INT32>(this->target_position_node_id, target);
 }
 
 void AerotechAxis::brake()
@@ -139,9 +139,9 @@ void AerotechAxis::brake()
     return m_client->read_node_value<bool, UA_TYPES_BOOLEAN>(this->has_error_node_id);
 }
 
-[[nodiscard]] long AerotechAxis::get_error_id() const
+[[nodiscard]] int AerotechAxis::get_error_id() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->error_id_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->error_id_node_id);
 }
 
 void AerotechAxis::clear_error() const
@@ -157,34 +157,34 @@ std::string AerotechAxis::get_error_message() const
     throw std::runtime_error("AerotechAxis::get_error_message is not implemented.");
 }
 
-[[nodiscard]] long AerotechAxis::get_position() const
+[[nodiscard]] int AerotechAxis::get_position() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->actual_position_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->actual_position_node_id);
 }
 
-[[nodiscard]] long AerotechAxis::get_target() const
+[[nodiscard]] int AerotechAxis::get_target() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->target_position_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->target_position_node_id);
 }
 
-void AerotechAxis::set_min_position(long position)
+void AerotechAxis::set_min_position(int position)
 {
-    m_client->write_node_value<long, UA_TYPES_INT32>(this->min_position_node_id, position);
+    m_client->write_node_value<int, UA_TYPES_INT32>(this->min_position_node_id, position);
 }
 
-void AerotechAxis::set_max_position(long position)
+void AerotechAxis::set_max_position(int position)
 {
-    m_client->write_node_value<long, UA_TYPES_INT32>(this->max_position_node_id, position);
+    m_client->write_node_value<int, UA_TYPES_INT32>(this->max_position_node_id, position);
 }
 
-[[nodiscard]] long AerotechAxis::get_min_position() const
+[[nodiscard]] int AerotechAxis::get_min_position() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->min_position_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->min_position_node_id);
 }
 
-[[nodiscard]] long AerotechAxis::get_max_position() const
+[[nodiscard]] int AerotechAxis::get_max_position() const
 {
-    return m_client->read_node_value<long, UA_TYPES_INT32>(this->max_position_node_id);
+    return m_client->read_node_value<int, UA_TYPES_INT32>(this->max_position_node_id);
 }
 
 [[nodiscard]] bool AerotechAxis::get_initialized() const
@@ -198,18 +198,18 @@ void AerotechAxis::initialize()
     throw std::runtime_error{"AerotechAxis::initialize is not implemented."};
 }
 
-[[nodiscard]] double AerotechAxis::increments_to_units(long increments) const
+[[nodiscard]] double AerotechAxis::increments_to_units(int increments) const
 {
     auto units_per_increment =
         m_client->read_node_value<double, UA_TYPES_DOUBLE>(this->units_per_increment_node_id);
     return increments * units_per_increment;
 }
 
-[[nodiscard]] long AerotechAxis::units_to_increments(double units) const
+[[nodiscard]] int AerotechAxis::units_to_increments(double units) const
 {
     auto units_per_increment =
         m_client->read_node_value<double, UA_TYPES_DOUBLE>(this->units_per_increment_node_id);
-    return static_cast<long>(units / units_per_increment);
+    return static_cast<int>(units / units_per_increment);
 }
 
 } // namespace PMClient
