@@ -13,14 +13,14 @@
 namespace pm_hardware_interface
 {
 
-static double increments_to_meters(PMClient::AerotechAxis &axis, long increments)
+static double increments_to_meters(PMClient::AerotechAxis &axis, int increments)
 {
-    return axis.increments_to_units(increments) * 1000000.0;
+    return axis.increments_to_units(increments) / 1e6;
 }
 
-static long meters_to_increments(PMClient::AerotechAxis &axis, double units)
+static int meters_to_increments(PMClient::AerotechAxis &axis, double units)
 {
-    return axis.units_to_increments(units / 1000000.0);
+    return axis.units_to_increments(units * 1e6);
 }
 
 PMSystem::PMSystem()
