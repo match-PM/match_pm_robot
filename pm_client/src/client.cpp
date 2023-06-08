@@ -19,18 +19,22 @@ Client::Client() : m_client{UA_Client_new()}, m_robot{std::make_unique<Robot>()}
 
 Client::~Client()
 {
-    UA_Client_disconnect(m_client);
+    disconnect();
     UA_Client_delete(m_client);
 }
 
 void Client::connect(std::string endpoint)
 {
-    if (!UA_Client_connect(m_client, endpoint.c_str()) == UA_STATUSCODE_GOOD)
+    auto status = UA_Client_connect(m_client, endpoint.c_str());
+    if (status != UA_STATUSCODE_GOOD)
     {
-        throw std::runtime_error{"Failed to connect to OPCUA server."};
+        throw std::runtime_error{UA_StatusCode_name(status)};
     }
+}
 
-    init();
+void Client::disconnect()
+{
+    UA_Client_disconnect(m_client);
 }
 
 void Client::init()
@@ -90,6 +94,7 @@ void Client::init()
                     get_node_id_from_ref("MinPosition", &axis->min_position_node_id);
                     get_node_id_from_ref("MaxPosition", &axis->max_position_node_id);
                     get_node_id_from_ref("IsInitialized", &axis->is_initialized_node_id);
+                    get_node_id_from_ref("UnitsPerIncrement", &axis->units_per_increment_node_id);
                 }
             }
 

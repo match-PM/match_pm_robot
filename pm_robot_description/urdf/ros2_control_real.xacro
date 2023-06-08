@@ -6,6 +6,8 @@
             <hardware>
                 <!-- <plugin>gazebo_ros2_control/GazeboSystem</plugin> -->
                 <plugin>pm_hardware_interface/PMSystem</plugin>
+                <param name="opcua_endpoint">opc.tcp://PC1M0484-1:4840</param>
+                <!-- <param name="opcua_endpoint">opc.tcp://localhost:4840</param> -->
             </hardware>
 
             <joint name="X_Axis_Joint">
@@ -97,7 +99,7 @@
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>          
+            </joint>
 
             <xacro:if value="$(arg with_Tool_MPG_10)">
                 <joint name="pm_robot_Tool_Parallel_Joint">
@@ -116,20 +118,20 @@
                     <state_interface name="velocity"/>
                 </joint>
             </xacro:if>
-            
+
         </ros2_control>
 
-            <gazebo>
-                <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control.yaml</parameters>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right.yaml</parameters>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
+        <gazebo>
+            <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+                <parameters>$(find pm_robot_description)/config/pm_robot_control.yaml</parameters>
+                <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right.yaml</parameters>
+                <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
+                <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
 
-                    <!--robot_param>robot_description</robot_param-->            <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
-                    <!--robot_param_node>robot_state_publisher</robot_param_node-->            <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
-                    <!--robotNamespace>${arm_id}</robotNamespace-->
-                </plugin>
-            </gazebo>
+                <!--robot_param>robot_description</robot_param-->                <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
+                <!--robot_param_node>robot_state_publisher</robot_param_node-->                <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
+                <!--robotNamespace>${arm_id}</robotNamespace-->
+            </plugin>
+        </gazebo>
     </xacro:macro>
 </robot>

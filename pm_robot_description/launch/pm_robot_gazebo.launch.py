@@ -25,10 +25,10 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = True
+    launch_moveit = False
 
     pm_robot_configuration = {
-                                'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
+                                'launch_mode':                    'real_HW',              #real_HW sim_HW fake_HW real_sim_HW
                                 'with_Tool_MPG_10':               'true',
                                 'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                                 'with_Gonio_Right':               'true',
@@ -145,13 +145,27 @@ def generate_launch_description():
                                    '-entity', 'pm_robot'],
                         output='screen')
 
-    robot_controllers_path = PathJoinSubstitution(
+    robot_controllers_fake_HW_path = PathJoinSubstitution(
         [
             FindPackageShare("pm_robot_description"),
             "config",
-            "pm_robot_control.yaml",
+            "pm_robot_control_fakeHW.yaml",
         ]
     )
+
+    robot_controllers_real_HW_path = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_realHW.yaml",
+        ]
+    )
+
+    # sim_time condition
+    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW' or str(pm_robot_configuration['launch_mode']) == 'fake_HW'):
+        robot_controllers_path = robot_controllers_fake_HW_path
+    elif (str(pm_robot_configuration['launch_mode']) == 'real_HW' ):
+        sim_time = robot_controllers_real_HW_path
 
     control_node = Node(
         package="controller_manager",
