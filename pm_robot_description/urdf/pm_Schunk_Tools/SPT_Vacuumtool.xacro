@@ -9,62 +9,90 @@
         <!--%%%%%%%%%%%%% SPT-Vacuumgripper Definitions %%%%%%%%%%%%%-->
         <link name="Tool_Schunk_SPT_Toolholder">
             <inertial>
-                <origin xyz="-7.164E-05 -0.00023278 -0.0080915" rpy="0 0 0" />
-                <mass value="0.018506" />
-                <inertia ixx="1.8166E-06" ixy="9.9412E-09" ixz="-1.9571E-08" iyy="2.3687E-06" iyz="-6.9137E-09" izz="3.4745E-06" />
-            </inertial>
-            <visual>
-                <origin xyz="0 0 0" rpy="0 0 0" />
+                <origin
+                    xyz="-1.29186788957441E-21 7.60244056032738E-20 0.00881061215391388"
+                    rpy="0 0 0" />
+                <mass
+                    value="0.000106303297474693" />
+                <inertia
+                    ixx="2.11600644479187E-09"
+                    ixy="8.13665451291654E-43"
+                    ixz="6.03059354626119E-28"
+                    iyy="2.11600644479187E-09"
+                    iyz="1.8508053225459E-26"
+                    izz="1.3734100235101E-10" />
+                </inertial>
+                <visual>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tool_Schunk_base_link.STL" />
+                    <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tool_Schunk_Holder_SPT.STL" />
                 </geometry>
                 <material name="orange"/>
-            </visual>
-            <collision>
-                <origin xyz="0 0 0" rpy="0 0 0" />
+                </visual>
+                <collision>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tool_Schunk_base_link.STL" />
+                    <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tool_Schunk_Holder_SPT.STL" />
                 </geometry>
-            </collision>
-        </link>
+                </collision>
+            </link>
 
         <!---Gravity off-->
-        <gazebo reference="SPT_Vacuumtool">
+        <gazebo reference="Tool_Schunk_SPT_Toolholder">
             <turnGravityOff>true</turnGravityOff>
             <color>1.0 0 0.5 1.0</color>
         </gazebo>
 
-        <joint name="Tool_Schunk_SPT_Toolholder_joint" type="fixed">
-            <origin xyz="0 0 -0.06" rpy="0 0 0" />
-            <parent link="Gripper_Rot_Plate" />
+        <joint name="Tool_Schunk_SPT_Toolholder_Joint" type="fixed">
+            <!-- <origin xyz="0 0 -0.06" rpy="0 0 0" /> -->
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="PM_Robot_Tool_TCP" />
             <child link="Tool_Schunk_SPT_Toolholder" />
             <axis xyz="0 0 0" />
         </joint>
 
-        <!--%%%%%%%%%%%%% SPT-Vacuumgripper Tool Link Definitions %%%%%%%%%%%%%-->
+        <!--
+        %%%%%%%%%%%%% SPT-Vacuumgripper Tool Link Definitions %%%%%%%%%%%%%
         <link name="Tool_SPT_base_link">
         </link>
 
         <joint name="Tool_SPT_base_link_joint" type="fixed">
             <origin xyz="0 0 -0.012" rpy="0 0 0" />
+
             <parent link="Tool_Schunk_SPT_Toolholder" />
             <child link="Tool_SPT_base_link" />
             <axis xyz="0 0 0" />
-        </joint>
+        </joint
+        -->
 
 
         <!--%%%%%%%%%%%%% SPT Tool Definitions %%%%%%%%%%%%%-->
         <xacro:if value="${use_R_A1000_I500}">
 
             <!--%%%%%%%%%%%% Tool_TCP_SPT_R_A1000_I500 %%%%%%%%%%%%%-->
-            <link name="Tool_SPT_TCP_link">
+            <link name="Tool_SPT_changeable">
                 <inertial>
-                    <origin xyz="7.6024E-20 1.2919E-21 0.0088106" rpy="0 0 0" />
-                    <mass value="0.0001063" />
-                    <inertia ixx="2.116E-09" ixy="-8.1367E-43" ixz="1.8508E-26" iyy="2.116E-09" iyz="-6.0306E-28" izz="1.3734E-10" />
-                </inertial>
-                <visual>
-                    <origin xyz="0 0 0" rpy="0 0 0" />
+                    <origin
+                        xyz="-1.29186788957441E-21 7.60244056032738E-20 0.00881061215391388"
+                        rpy="0 0 0" />
+                    <mass
+                        value="0.000106303297474693" />
+                    <inertia
+                        ixx="2.11600644479187E-09"
+                        ixy="8.13665451291654E-43"
+                        ixz="6.0305935462612E-28"
+                        iyy="2.11600644479187E-09"
+                        iyz="1.8508053225459E-26"
+                        izz="1.3734100235101E-10" />
+                    </inertial>
+                    <visual>
+                    <origin
+                        xyz="0 0 0"
+                        rpy="0 0 0" />
                     <geometry>
                         <mesh filename="file://$(find pm_robot_description)/meshes/Tools/SPT_Vacuumtools/Tools/Tool_TCP_SPT_R_A1000_I500.STL" />
                     </geometry>
@@ -79,15 +107,15 @@
             </link>
 
             <!--Gravity off-->
-            <gazebo reference="Tool_SPT_TCP_link">
+            <gazebo reference="Tool_SPT_changeable">
                 <turnGravityOff>true</turnGravityOff>
                 <color>1.0 0 0.5 1.0</color>
             </gazebo>
 
-            <joint name="Tool_SPT_TCP_link_joint" type="fixed">
-                <origin xyz="0 0 -0.036" rpy="0 0 0" />
-                <parent link="Tool_Schunk_SPT_Toolholder" />
-                <child link="Tool_SPT_TCP_link" />
+            <joint name="Tool_SPT_changeable_joint" type="fixed">
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <parent link="PM_Robot_Tool_TCP" />
+                <child link="Tool_SPT_changeable" />
                 <axis xyz="0 0 0" />
             </joint>
         </xacro:if>

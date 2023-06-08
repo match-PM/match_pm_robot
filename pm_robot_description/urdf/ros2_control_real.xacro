@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="pm_robot_ros2_control_hw_real">
+
+        <ros2_control name="PMSystem" type="system">
+            <hardware>
+                <!-- <plugin>gazebo_ros2_control/GazeboSystem</plugin> -->
+                <plugin>pm_hardware_interface/PMSystem</plugin>
+            </hardware>
+
+            <joint name="X_Axis_Joint">
+                <command_interface name="position"/>
+                <!-- <command_interface name="velocity"/> -->
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="Y_Axis_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+
+            </joint>
+            <joint name="Z_Axis_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="T_Axis_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+            <joint name="1K_Dispenser_Flap_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="1K_Dispenser_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="2K_Dispenser_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Right_Stage_1_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Right_Stage_2_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Camera_Calibration_Platelet_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Left_Stage_1_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Gonio_Left_Stage_2_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_Slider_X_Front_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_LED_Front_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_Slider_X_Back_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="UV_LED_Back_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>
+            <joint name="Calibration_Qube_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position"/>
+            </joint>          
+
+            <xacro:if value="$(arg with_Tool_MPG_10)">
+                <joint name="pm_robot_Tool_Parallel_Joint">
+                    <command_interface name="position">
+                    </command_interface>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+
+                <joint name="pm_robot_Tool_Parallel_Joint_2">
+                    <param name="mimic">pm_robot_Tool_Parallel_Joint</param>
+                    <param name="mulltiplier">1</param>
+                    <command_interface name="position">
+                    </command_interface>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+            </xacro:if>
+            
+        </ros2_control>
+
+            <gazebo>
+                <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+                    <parameters>$(find pm_robot_description)/config/pm_robot_control.yaml</parameters>
+                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right.yaml</parameters>
+                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
+                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
+
+                    <!--robot_param>robot_description</robot_param-->            <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
+                    <!--robot_param_node>robot_state_publisher</robot_param_node-->            <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
+                    <!--robotNamespace>${arm_id}</robotNamespace-->
+                </plugin>
+            </gazebo>
+    </xacro:macro>
+</robot>
