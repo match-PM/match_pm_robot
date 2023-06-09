@@ -33,7 +33,7 @@ def generate_launch_description():
     launch_moveit = False
 
     pm_robot_configuration = {
-                                'launch_mode':                    'real_HW',              #real_HW sim_HW fake_HW real_sim_HW
+                                'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
                                 'with_Tool_MPG_10':               'true',
                                 'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                                 'with_Gonio_Right':               'true',

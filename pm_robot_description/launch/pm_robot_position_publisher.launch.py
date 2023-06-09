@@ -19,7 +19,7 @@ def generate_launch_description():
         [
             FindPackageShare("pm_robot_description"),
             "config",
-            "pm_robot_control.yaml",
+            "pm_robot_control_fakeHW.yaml",
         ]
     )
 
@@ -48,7 +48,7 @@ def generate_launch_description():
             Node(
                 package="pm_robot_control_test",
                 executable="pm_robot_send_target",
-                name="joint_trajectory_controller",
+                name="pm_robot_xyz_axis_JTC",
                 parameters=[controler_param],
                 output={
                     "stdout": "screen",
