@@ -122,7 +122,7 @@
 
             <gazebo>
                 <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control.yaml</parameters>
+                    <parameters>$(find pm_robot_description)/config/pm_robot_control_fakeHW.yaml</parameters>
                     <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right.yaml</parameters>
                     <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
                     <xacro:if value="$(arg with_Tool_MPG_10)">
