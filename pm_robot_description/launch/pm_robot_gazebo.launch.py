@@ -132,4 +132,3 @@ def generate_launch_description():
         delay_robot_controller_spawner_after_controller,
 
     ])
-
