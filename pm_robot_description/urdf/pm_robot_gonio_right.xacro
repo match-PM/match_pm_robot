@@ -92,27 +92,12 @@
   <gazebo reference="Gonio_Right_Stage_1_Top">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
-<<<<<<< HEAD
 
   <joint name="Gonio_Right_Stage_1_Top_Joint" type="revolute">
     <origin xyz="0 0.0325 0.11" rpy="0 0 0" />
     <parent link="Gonio_Right_Stage_1_Bottom" />
     <child link="Gonio_Right_Stage_1_Top" />
     <axis xyz="1 0 0" />
-=======
-  <joint
-    name="Gonio_Right_Stage_1_Joint"
-    type="revolute">
-    <origin
-      xyz="0.0324999999999993 0.0326774999999999 0.11"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Right_Stage_1_Bottom" />
-    <child
-      link="Gonio_Right_Stage_1_Top" />
-    <axis
-      xyz="0 -1 0" />
->>>>>>> f5d9834 (modular Launch Files, Axis renaming)
     <limit lower="-0.087266" upper="0.087266" effort="100" velocity="0.1" />
   </joint>
 
@@ -143,26 +128,11 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-<<<<<<< HEAD
   <joint name="Gonio_Right_Stage_2_Bottom_Joint" type="revolute">
     <origin xyz="0.0325 0.0325 0" rpy="0 0 0" />
     <parent link="Gonio_Right_Stage_1_Top" />
     <child link="Gonio_Right_Stage_2_Bottom" />
     <axis xyz="0 -1 0" />
-=======
-  <joint
-    name="Gonio_Right_Stage_2_Joint"
-    type="revolute">
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Right_Stage_1_Top" />
-    <child
-      link="Gonio_Right_Stage_2_Bottom" />
-    <axis
-      xyz="-1 0 0" />
->>>>>>> f5d9834 (modular Launch Files, Axis renaming)
     <limit lower="-0.17453" upper="0.17453" effort="100" velocity="0.1" />
   </joint>
 

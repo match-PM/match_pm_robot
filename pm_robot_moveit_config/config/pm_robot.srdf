@@ -32,56 +32,6 @@
         <joint name="T_Axis_Joint"/>
         <!-- <joint name="laser_top_joint"/> -->
     </group>
-<<<<<<< HEAD
-=======
-
-    <group name="PM_Robot_Cam1_TCP">
-        <chain base_link="pm_robot_base_link" tip_link="Cam1_Toolhead_TCP" />
-        <!-- <link name="Cam1_Toolhead_TCP"/> -->
-        <!-- <joint name="X_Axis_Joint"/>
-        <joint name="Y_Axis_Joint"/>
-        <joint name="Z_Axis_Joint"/> -->
-        <!-- <joint name="Cam1_Toolhead_TCP_Joint"/> -->
-    </group>
-
-    <group name="PM_Robot_Gonio_Right">
-        <chain base_link="pm_robot_base_link" tip_link="Gonio_Right_Part_Origin" />
-    </group>
-
-    <group name="PM_Robot_Gonio_Left">
-        <chain base_link="pm_robot_base_link" tip_link="Gonio_Left_Part_Origin" />
-    </group>
-
-    <group name="PM_Robot_1K_Dispenser_TCP">
-        <chain base_link="pm_robot_base_link" tip_link="1K_Dispenser_TCP" />
-    </group>
-
-    <group name="PM_Robot_2K_Dispenser_TCP">
-        <chain base_link="pm_robot_base_link" tip_link="2K_Dispenser_TCP" />
-    </group>
-
-    <group name="PM_Robot_Laser_TCP">
-        <chain base_link="pm_robot_base_link" tip_link="Laser_Toolhead_TCP" />
-    </group>
-
-    <group name="PM_Robot_Parallel_Gripper">
-        <link name="Tool_Gripper_MPG_10_Body"/>
-        <link name="Tool_Gripper_MPG_10_Jaw_1"/>
-        <link name="Tool_Gripper_MPG_10_Jaw_2"/>
-        <joint name="pm_robot_Tool_Parallel_Joint"/>
-        <passive_joint name="pm_robot_Tool_Parallel_Joint_2"/>
-    </group>
-
-    <!-- <group name="end_effector_toolhead">
-        <group name="PM_Robot_Tool_TCP" />
-        <group name="PM_Robot_Cam1_TCP" />
-    </group> -->
-    
-    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <!-- <end_effector name="PM_Robot_Tool_TCP" parent_link="pm_robot_base_link" group="end_effector_toolhead"/> -->
-
-
->>>>>>> f5d9834 (modular Launch Files, Axis renaming)
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
     <group_state name="default" group="testgroup">
         <!-- <joint name="1K_Dispenser_Flap_Joint" value="0"/> -->
@@ -105,49 +55,10 @@
     <passive_joint name="Gonio_Right_Stage_1_Top_Joint"/>
     <passive_joint name="Gonio_Right_Stage_2_Bottom_Joint"/>
 
-<<<<<<< HEAD
     
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="1K_Dispenser" link2="2K_Dispenser" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Camera_Top_View" reason="Never"/>
-=======
-    <group_state name="Test Position" group="PM_Robot_Tool_TCP">
-        <joint name="T_Axis_Joint" value="0"/>
-        <joint name="X_Axis_Joint" value="-0.36"/>
-        <joint name="Y_Axis_Joint" value="-0.07685"/>
-        <joint name="Z_Axis_Joint" value="0"/>
-    </group_state>
-
-    <!-- <group_state name="Zero" group="PM_Robot_Gonio_Right">
-        <joint name="Gonio_Right_Stage_1_Joint" value="0"/>
-        <joint name="Gonio_Right_Stage_2_Joint" value="0"/>
-    </group_state>
-
-    <group_state name="Zero" group="PM_Robot_Gonio_Left">
-        <joint name="Gonio_Left_Stage_1_Joint" value="0"/>
-        <joint name="Gonio_Left_Stage_2_Joint" value="0"/>
-    </group_state> -->
-
-    <group_state group="PM_Robot_Parallel_Gripper" name="closed">
-        <joint name="pm_robot_Tool_Parallel_Joint" value="0.001"/>
-        <joint name="pm_robot_Tool_Parallel_Joint_2" value="0.001"/>
-    </group_state>
-    <group_state group="PM_Robot_Parallel_Gripper" name="opened">
-        <joint name="pm_robot_Tool_Parallel_Joint" value="0"/>
-        <joint name="pm_robot_Tool_Parallel_Joint_2" value="0"/>
-    </group_state>
-
-    <virtual_joint name="world_base" type="fixed" parent_frame="world" child_link="base_link_empthy" />
-
-    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. --> 
-    <disable_collisions link1="1K_Dispenser" link2="1K_Dispenser_Flap" reason="Always"/>
-    <disable_collisions link1="1K_Dispenser" link2="2K_Dispenser_Cartridge" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Cam1_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Camera_Calibration_Platelet" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Camera_Station" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Gonio_Base_Right" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Gonio_Left_Base" reason="Never"/>
->>>>>>> f5d9834 (modular Launch Files, Axis renaming)
     <disable_collisions link1="1K_Dispenser" link2="Gonio_Left_Stage_1_Top" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Gonio_Left_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Gonio_Right" reason="Never"/>

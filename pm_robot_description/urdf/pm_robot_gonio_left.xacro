@@ -60,26 +60,11 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-<<<<<<< HEAD
   <joint name="Gonio_Left_Stage_1_Top_Joint" type="revolute">
     <origin xyz="-0.385 0.0855 0.1847" rpy="0 0 0" />
     <parent link="Gonio_Station_Left" />
     <child link="Gonio_Left_Stage_1_Top" />
     <axis xyz="1 0 0" />
-=======
-  <joint
-    name="Gonio_Left_Stage_1_Joint"
-    type="revolute">
-    <origin
-      xyz="0.188500000000042 0.110000000000054 0.212499999999997"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Left_Base" />
-    <child
-      link="Gonio_Left_Stage_1_Top" />
-    <axis
-      xyz="1 0 0" />
->>>>>>> f5d9834 (modular Launch Files, Axis renaming)
     <limit lower="-0.17453" upper="0.17453" effort="100" velocity="0.1" />
   </joint>
 
@@ -105,11 +90,10 @@
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="Gonio_Left_Stage_2_Joint">
+  <gazebo reference="Gonio_Left_Stage_2_Bottom">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
 
-<<<<<<< HEAD
   <joint name="Gonio_Left_Stage_2_Bottom_Joint" type="revolute">
     <origin xyz="0.5015 0.0495 0.0278" rpy="0 0 0" />
     <parent link="Gonio_Left_Stage_1_Top" />
@@ -120,67 +104,6 @@
 
   <!--%%%%%%%%%%%%% Gonio Left Holder Definitions-->
   <link name="Gonio_Left_Holder">
-=======
-  <joint
-    name="Gonio_Left_Stage_2_Joint"
-    type="revolute">
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Left_Stage_1_Top" />
-    <child
-      link="Gonio_Left_Stage_2_Bottom" />
-    <axis
-      xyz="0.0334865202089474 -0.999439169216564 0" />
-    <limit lower="-0.17453" upper="0.17453" effort="100" velocity="0.1" />
-  </joint>
-
-
-  <!--%%%%%%%%%%%%% Gonio Left Chuck Definitions-->
-
-  <link
-    name="Gonio_Left_Chuck">
-  </link>
-
-  <joint
-    name="Gonio_Left_Chuck_Joint"
-    type="fixed">
-    <origin
-      xyz="0 0 -0.015"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Left_Stage_2_Bottom" />
-    <child
-      link="Gonio_Left_Chuck" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-  <link
-    name="Gonio_Left_Part_Origin">
-  </link>
-
-  <joint
-    name="Gonio_Left_Part_Origin_Joint"
-    type="fixed">
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Left_Chuck" />
-    <child
-      link="Gonio_Left_Part_Origin" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-
-  <!--%%%%%%%%%%%%% Gonio Left Example Chuck Definitions-->
-
-  <link
-    name="Gonio_Left_Example_Chuck">
->>>>>>> f5d9834 (modular Launch Files, Axis renaming)
     <inertial>
       <origin xyz="-8.16234952583095E-06 0.000868103725036456 0.0372986798808728" rpy="0 0 0" />
       <mass value="0.0867575149913971" />
