@@ -82,7 +82,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "joint_state_broadcaster",
+            "pm_robot_joint_state_broadcaster",
             "--controller-manager",
             "/controller_manager",
         ],
@@ -92,7 +92,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "testgroup_controller",
+            "pm_robot_joint_trajectory_controller",
             "--controller-manager",
             "/controller_manager",
         ],

@@ -1,0 +1,67 @@
+# x_offset, y_offset, z_offset in um
+# rx_offset, ry_offset, rz_offset in degree
+
+Laser_Toolhead_TCP_Joint:  
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+1K_Dispenser_TCP_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+2K_Dispenser_TCP_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+Cam1_Toolhead_TCP_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+Camera_Station_TCP_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+Station_Laser_Bottom_TCP_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+Calibration_Qube_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+PM_Robot_Tool_TCP_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+

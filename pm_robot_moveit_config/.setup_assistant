@@ -8,7 +8,7 @@ moveit_setup_assistant_config:
   package_settings:
     author_name: Niklas Terei
     author_email: terei@match.uni-hannover.de
-    generated_timestamp: 1683115413
+    generated_timestamp: 1685002887
   control_xacro:
     command:
       - position

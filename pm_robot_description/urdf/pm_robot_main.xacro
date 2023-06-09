@@ -6,47 +6,70 @@
   <!-- Configurations -->
   <xacro:include filename="$(find pm_robot_description)/urdf/materials.xacro" />
 
-  <xacro:arg name="sim_mode"                 default="true" />
+  <xacro:arg name="launch_mode" default="sim_HW" />
 
-  <xacro:arg name="with_Gonio_Left"                 default="true" />
-  <xacro:arg name="with_Gonio_Right"                default="true" />
-    <!-- Tools -->
-    <xacro:arg name="with_Tool_MPG_10"                default="false" />
-    <xacro:arg name="with_Tool_MPG_10_Jaw_3mm_Lens"   default="false"/>
-    <xacro:arg name="with_Tool_SPT_Holder"            default="false" />
-    <xacro:arg name="with_SPT_R_A1000_I500"           default="false"/>
+  <xacro:arg name="initial_positions_file" default="pm_robot_initial_positions.yaml" />
+
+  <xacro:arg name="with_Gonio_Left" default="true" />
+  <xacro:arg name="with_Gonio_Right" default="true" />
+
+  <!-- Tools -->
+  <xacro:arg name="with_Tool_MPG_10" default="false" />
+  <xacro:arg name="with_Tool_MPG_10_Jaw_3mm_Lens" default="false"/>
+  <xacro:arg name="with_Tool_SPT_Holder" default="false" />
+  <xacro:arg name="with_SPT_R_A1000_I500" default="false"/>
 
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot.xacro" />
+  <xacro:pm_robot launch_mode="$(arg launch_mode)"/>
+
+  <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_housing.xacro" />
 
   <!-- Tool Defines-->
-    <xacro:if value="$(arg with_Tool_MPG_10)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" />
-      <xacro:mpg_10_plus use_three_mm_lens="$(arg with_Tool_MPG_10_Jaw_3mm_Lens)" />
-    </xacro:if>
+  <xacro:if value="$(arg with_Tool_MPG_10)">
+    <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" />
+    <xacro:mpg_10_plus use_three_mm_lens="$(arg with_Tool_MPG_10_Jaw_3mm_Lens)" />
+  </xacro:if>
 
-    <xacro:if value="$(arg with_Tool_SPT_Holder)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/SPT_Vacuumtool.xacro" />
-      <xacro:SPT_Vacuumtool use_R_A1000_I500="$(arg with_SPT_R_A1000_I500)" />
-    </xacro:if>
+  <xacro:if value="$(arg with_Tool_SPT_Holder)">
+    <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/SPT_Vacuumtool.xacro" />
+    <xacro:SPT_Vacuumtool use_R_A1000_I500="$(arg with_SPT_R_A1000_I500)" />
+  </xacro:if>
 
-    <!-- Gonio Right Defines-->
-    <xacro:if value="$(arg with_Gonio_Right)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_right.xacro" /> 
-    </xacro:if>
+  <!-- Gonio Right Defines-->
+  <xacro:if value="$(arg with_Gonio_Right)">
+    <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_right.xacro" />
+  </xacro:if>
 
-    <!-- Gonio Right Defines-->
-    <xacro:if value="$(arg with_Gonio_Left)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_left.xacro" /> 
-    </xacro:if>
+  <!-- Gonio Right Defines-->
+  <xacro:if value="$(arg with_Gonio_Left)">
+    <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_left.xacro" />
+  </xacro:if>
+
+  <!--xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" /-->
 
   <!-- Switch between Gazebo-Simulation and Real Robot -->
-    <xacro:if value="$(arg sim_mode)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_gazebo.xacro" />
-    </xacro:if>
-    <xacro:unless value="$(arg sim_mode)">
-      <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control.xacro" />
-    </xacro:unless>
 
-  <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
+  <!-- Import control_xacro -->
+  <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_fake.xacro" />
+  <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_gazebo.xacro" />
+  <!-- <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_real.xacro" /> -->
+
+  <xacro:property name="launch_mode" value="$(arg launch_mode)"/>
+
+  <xacro:if value="${launch_mode == 'fake_HW'}">
+    <xacro:pm_robot_ros2_control_hw_fake name="Fake_HW" initial_positions_file="$(arg initial_positions_file)"/>
+  </xacro:if>
+
+  <xacro:if value="${launch_mode == 'real_HW'}">
+    <xacro:pm_robot_ros2_control_hw_real name="Real_HW"/>
+  </xacro:if>
+
+  <xacro:if value="${launch_mode == 'sim_HW'}">
+    <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW" initial_positions_file="$(arg initial_positions_file)"/>
+  </xacro:if>
+
+  <xacro:if value="${launch_mode == 'real_sim_HW'}">
+    <!-- <xacro:pm_robot_ros2_control_hw_fake name="Real_Sim_HW" initial_positions_file="$(arg initial_positions_file)"/> -->
+  </xacro:if>
 
 </robot>

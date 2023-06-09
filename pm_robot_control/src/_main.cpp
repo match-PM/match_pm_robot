@@ -21,8 +21,8 @@ class Controller : public rclcpp::Node
   public:
     Controller() : Node("controller")
     {
-        std::string endpoint{"opc.tcp://localhost:4840"};
-        // std::string endpoint{"opc.tcp://PC1M0484-1:4840"};
+        // std::string endpoint{"opc.tcp://localhost:4840"};
+        std::string endpoint{"opc.tcp://PC1M0484-1:4840"};
         auto status = m_client.connect(endpoint);
         if (status != 0)
         {

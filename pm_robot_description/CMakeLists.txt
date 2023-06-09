@@ -25,7 +25,7 @@ endif()
 
 
 install(
-  DIRECTORY config launch meshes urdf
+  DIRECTORY config launch meshes urdf calibration_config
   DESTINATION share/${PROJECT_NAME}
 )
 

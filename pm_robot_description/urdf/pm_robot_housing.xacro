@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="pm_robot">
+
+<!--%%%%%%%%%%%%% Housing Definitions %%%%%%%%%%%%%-->
+
+  <link
+    name="housing_vl">
+    <inertial>
+      <origin
+        xyz="0.106855071606918 -0.0365763858981578 0.4055"
+        rpy="0 0 0" />
+      <mass
+        value="15.7556351853533" />
+      <inertia
+        ixx="0.894316439132711"
+        ixy="0.0157593692116881"
+        ixz="2.27661474248145E-18"
+        iyy="0.894316439132711"
+        iyz="-6.86930254496152E-17"
+        izz="0.0614975233077981" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_vl.STL" />
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_vl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="housing_vl_joint"
+    type="fixed">
+    <origin
+      xyz="-0.198284271247462 -0.0548528137423858 0.11"
+      rpy="0 0 0" />
+    <parent
+      link="base_link_empthy" />
+    <child
+      link="housing_vl" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link
+    name="housing_vr">
+    <inertial>
+      <origin
+        xyz="0.0365763858981576 0.106855071606918 0.4055"
+        rpy="0 0 0" />
+      <mass
+        value="15.7556351853533" />
+      <inertia
+        ixx="0.894316439132712"
+        ixy="-0.0157593692116881"
+        ixz="-2.21308886639773E-18"
+        iyy="0.894316439132712"
+        iyz="-6.04673492304204E-17"
+        izz="0.0614975233077981" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_vr.STL" />
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_vr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="housing_vr_joint"
+    type="fixed">
+    <origin
+      xyz="1.25485281374239 -0.198284271247462 0.11"
+      rpy="0 0 0" />
+    <parent
+      link="base_link_empthy" />
+    <child
+      link="housing_vr" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link
+    name="housing_hr">
+    <inertial>
+      <origin
+        xyz="0.106855071606919 0.0365763858981576 -0.4055"
+        rpy="0 0 0" />
+      <mass
+        value="15.7556351853533" />
+      <inertia
+        ixx="0.894316439132712"
+        ixy="-0.015759369211688"
+        ixz="3.2198946826335E-17"
+        iyy="0.894316439132712"
+        iyz="-8.14379058383444E-17"
+        izz="0.0614975233077981" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_hr.STL" />
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_hr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="housing_hr_joint"
+    type="fixed">
+    <origin
+      xyz="1.39828427124746 1.25485281374239 0.11"
+      rpy="-3.14159265358979 0 3.14159265358979" />
+    <parent
+      link="base_link_empthy" />
+    <child
+      link="housing_hr" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link
+    name="housing_hl">
+    <inertial>
+      <origin
+        xyz="-0.0365763858981578 -0.106855071606918 0.4055"
+        rpy="0 0 0" />
+      <mass
+        value="15.7556351853533" />
+      <inertia
+        ixx="0.894316439132711"
+        ixy="-0.0157593692116881"
+        ixz="-5.63429353481997E-18"
+        iyy="0.894316439132711"
+        iyz="-1.83506172989189E-16"
+        izz="0.0614975233077981" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_hl.STL" />
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing_hl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="housing_hl_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0548528137423857 1.39828427124746 0.11"
+      rpy="0 0 0" />
+    <parent
+      link="base_link_empthy" />
+    <child
+      link="housing_hl" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link
+    name="housing">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing.STL" />
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Housing/housing.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="housing_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link_empthy" />
+    <child
+      link="housing" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+</robot> 

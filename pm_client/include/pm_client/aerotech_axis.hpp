@@ -122,6 +122,11 @@ class AerotechAxis
     UA_NodeId is_initialized_node_id = UA_NODEID_NULL;
 
     /**
+     * NodeId for the units per increment ratio.
+     */
+    UA_NodeId units_per_increment_node_id = UA_NODEID_NULL;
+
+    /**
      * Check if all node ids are properly set.
      */
     [[nodiscard]] bool is_ok() const;
@@ -129,32 +134,32 @@ class AerotechAxis
     /**
      * Set the speed of the axis, measured in TODO.
      */
-    void set_speed(long speed);
+    void set_speed(int speed);
 
     /**
      * The current speed of the axis, measured in TODO.
      */
-    [[nodiscard]] long get_speed() const;
+    [[nodiscard]] int get_speed() const;
 
     /**
      * Get the maximum speed of the axis, measured in TODO.
      */
-    [[nodiscard]] long get_max_speed() const;
+    [[nodiscard]] int get_max_speed() const;
 
     /**
      * Set the acceleration of the axis, measured in TODO.
      */
-    void set_acceleration(long acceleration);
+    void set_acceleration(int acceleration);
 
     /**
      * The current acceleration of the axis, measured in TODO.
      */
-    [[nodiscard]] long get_acceleration() const;
+    [[nodiscard]] int get_acceleration() const;
 
     /**
      * Get the maximum acceleration of the axis, measured in TODO.
      */
-    [[nodiscard]] long get_max_acceleration() const;
+    [[nodiscard]] int get_max_acceleration() const;
 
     /**
      * Enable or disable the servo of the axis.
@@ -179,7 +184,7 @@ class AerotechAxis
     /**
      * Set a new target position of the axis, measured in increments.
      */
-    void move(long target);
+    void move(int target);
 
     /**
      * Brake the axis.
@@ -199,7 +204,7 @@ class AerotechAxis
     /**
      * If the axis has encountered an error, get the error id.
      */
-    [[nodiscard]] long get_error_id() const;
+    [[nodiscard]] int get_error_id() const;
 
     /**
      * If the axis has encountered an error, clear it.
@@ -213,32 +218,32 @@ class AerotechAxis
     /**
      * The current, actual position of the axis, measured in increments.
      */
-    [[nodiscard]] long get_position() const;
+    [[nodiscard]] int get_position() const;
 
     /**
      * The target position of the axis, measured in increments.
      */
-    [[nodiscard]] long get_target() const;
+    [[nodiscard]] int get_target() const;
 
     /**
      * Set the minimum allowed position for this axis.
      */
-    void set_min_position(long position);
+    void set_min_position(int position);
 
     /**
      * Set the maximum allowed position for this axis.
      */
-    void set_max_position(long position);
+    void set_max_position(int position);
 
     /**
      * Get the minimum allowed position for this axis.
      */
-    [[nodiscard]] long get_min_position() const;
+    [[nodiscard]] int get_min_position() const;
 
     /**
      * Get the maximum allowed position for this axis.
      */
-    [[nodiscard]] long get_max_position() const;
+    [[nodiscard]] int get_max_position() const;
 
     /**
      * Whether the axis has been initialized.
@@ -249,6 +254,16 @@ class AerotechAxis
      * Initialize the axis (non-blocking).
      */
     void initialize();
+
+    /**
+     * Convert increments to units.
+     */
+    [[nodiscard]] double increments_to_units(int increments) const;
+
+    /**
+     * Convert units to increments.
+     */
+    [[nodiscard]] int units_to_increments(double units) const;
 };
 
 } // namespace PMClient

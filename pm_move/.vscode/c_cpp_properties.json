@@ -1,0 +1,35 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_component/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_hardware_interface/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_client/include/**",
+        "/home/pmlab/pm_ros2_ws/install/open62541/include/**",
+        "/home/pmlab/pm_ros2_ws/install/image_transport/include/**",
+        "/home/pmlab/pm_ros2_ws/install/camera_info_manager/include/**",
+        "/home/pmlab/pm_ros2_ws/install/camera_calibration_parsers/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/open62541/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_client/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_hardware_interface/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/camera_calibration_parsers/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/camera_info_manager/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/image_transport/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/pylon-ros-camera/pylon_ros2_camera_component/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

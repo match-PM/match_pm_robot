@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pm_robot">
+
+    <!-- Import pm_robot urdf file -->
+    <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_main.xacro" />
+
+</robot>

@@ -8,51 +8,9 @@
 
 #include "open62541.h"
 
-typedef UA_StatusCode (*VariableReadFunc
-)(UA_Server *server, const UA_NodeId *session_id, void *session_context, const UA_NodeId *node_id,
-  void *node_context, UA_Boolean source_time_stamp, const UA_NumericRange *range,
-  UA_DataValue *data_value);
+#include "defs.hpp"
 
-typedef UA_StatusCode (*VariableWriteFunc
-)(UA_Server *server, const UA_NodeId *session_id, void *session_context, const UA_NodeId *node_id,
-  void *node_context, const UA_NumericRange *range, const UA_DataValue *data_value);
-
-enum AxisId
-{
-    AXIS_X,
-    AXIS_Y,
-    AXIS_Z,
-    AXIS_T,
-};
-
-struct AxisDescriptor
-{
-    UA_NodeId parent_id = UA_NODEID_NULL;
-    UA_NodeId speed_node_id = UA_NODEID_NULL;
-    UA_NodeId max_speed_node_id = UA_NODEID_NULL;
-    UA_NodeId acceleration_node_id = UA_NODEID_NULL;
-    UA_NodeId max_acceleration_node_id = UA_NODEID_NULL;
-    UA_NodeId servo_node_id = UA_NODEID_NULL;
-    UA_NodeId tolerance_node_id = UA_NODEID_NULL;
-    UA_NodeId end_move_node_id = UA_NODEID_NULL;
-    UA_NodeId has_error_node_id = UA_NODEID_NULL;
-    UA_NodeId error_id_node_id = UA_NODEID_NULL;
-    UA_NodeId actual_position_node_id = UA_NODEID_NULL;
-    UA_NodeId target_position_node_id = UA_NODEID_NULL;
-    UA_NodeId min_position_node_id = UA_NODEID_NULL;
-    UA_NodeId max_position_node_id = UA_NODEID_NULL;
-    UA_NodeId is_initialized_node_id = UA_NODEID_NULL;
-};
-
-struct RobotDescriptor
-{
-    UA_NodeId robot_axis_type_id;
-
-    AxisDescriptor x_axis;
-    AxisDescriptor y_axis;
-    AxisDescriptor z_axis;
-    AxisDescriptor t_axis;
-} g_robot_descriptor;
+RobotDescriptor g_robot_descriptor;
 
 UA_Boolean running = true;
 static void stop_handler(int sig)
@@ -62,14 +20,27 @@ static void stop_handler(int sig)
     running = false;
 }
 
-static void
-RegisterRobotAxisTypeVariable(UA_Server *server, const char *display_name, const char *description)
+static void RegisterRobotAxisTypeVariable(
+    UA_Server *server, const char *display_name, const char *description, std::size_t ua_data_type,
+    bool read_only
+)
 {
     UA_VariableAttributes attr = UA_VariableAttributes_default;
     attr.displayName =
         UA_LOCALIZEDTEXT(const_cast<char *>("en-US"), const_cast<char *>(display_name));
     attr.description =
         UA_LOCALIZEDTEXT(const_cast<char *>("en-US"), const_cast<char *>(description));
+    attr.dataType = UA_TYPES[ua_data_type].typeId;
+    if (!read_only)
+    {
+        std::cout << display_name << " allow writes !!!!!!\n";
+        attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;
+    }
+    else
+    {
+
+        attr.accessLevel = UA_ACCESSLEVELMASK_READ;
+    }
 
     UA_NodeId node_id;
     UA_Server_addVariableNode(
@@ -110,59 +81,27 @@ static void RegisterRobotAxisType(UA_Server *server)
         &g_robot_descriptor.robot_axis_type_id
     );
 
-    RegisterRobotAxisTypeVariable(server, "Speed", "The current speed of this axis.");
-    RegisterRobotAxisTypeVariable(server, "MaxSpeed", "The maximum speed of this axis.");
-    RegisterRobotAxisTypeVariable(server, "Acceleration", "The current acceleration of this axis.");
-    RegisterRobotAxisTypeVariable(
-        server,
-        "MaxAcceleration",
-        "The maximum allowed acceleration of this axis."
-    );
-    RegisterRobotAxisTypeVariable(server, "Servo", "Whether or not the axis servo is enabled.");
-    RegisterRobotAxisTypeVariable(server, "Tolerance", "The current axis tolerance.");
-    RegisterRobotAxisTypeVariable(
-        server,
-        "EndMove",
-        "Whether or not the axis has reached its target position."
-    );
-    RegisterRobotAxisTypeVariable(
-        server,
-        "HasError",
-        "Whether or not the axis has encountered an error."
-    );
-    RegisterRobotAxisTypeVariable(server, "ErrorId", "If there is an error, gives the error id.");
-    RegisterRobotAxisTypeVariable(server, "ActualPosition", "The current position of the axis.");
-    RegisterRobotAxisTypeVariable(
-        server,
-        "TargetPosition",
-        "The current target position of the axis."
-    );
-    RegisterRobotAxisTypeVariable(
-        server,
-        "MinPosition",
-        "The minimum allowed position for this axis."
-    );
-    RegisterRobotAxisTypeVariable(
-        server,
-        "MaxPosition",
-        "The maximum allowed position for this axis."
-    );
-    RegisterRobotAxisTypeVariable(
-        server,
-        "IsInitialized",
-        "Whether or not this axis has been initialized."
-    );
+#define VAR_ENTRY(display_name, description, ua_data_type, read_only, var_id, node)                \
+    RegisterRobotAxisTypeVariable(server, display_name, description, ua_data_type, read_only);
+
+    VAR_TABLE
+#undef VAR_ENTRY
 }
 
-template<typename ValueType>
-void RobotAxisTypeReadVariableHelper(
-    UA_DataValue *data_value_out, ValueType value, std::size_t UA_TYPE
+UA_StatusCode RobotAxisTypeHandleReadVariable(
+    UA_DataValue *data_value, AxisId axis_id, AxisVariableId variable_id, std::size_t ua_data_type
 )
 {
-    UA_Variant_setScalarCopy(&data_value_out->value, &value, &UA_TYPES[UA_TYPE]);
-    data_value_out->hasValue = true;
-    data_value_out->hasStatus = true;
-    data_value_out->status = UA_STATUSCODE_GOOD;
+    (void)axis_id;
+    (void)variable_id;
+
+    // double value = 123.456;
+    // UA_Variant_setScalarCopy(&data_value->value, nullptr, &UA_TYPES[ua_data_type]);
+    // data_value->hasValue = true;
+    // data_value->hasStatus = true;
+    // data_value->status = UA_STATUSCODE_GOOD;
+
+    return UA_STATUSCODE_GOOD;
 }
 
 static UA_StatusCode RobotAxisTypeReadVariable(
@@ -178,104 +117,66 @@ static UA_StatusCode RobotAxisTypeReadVariable(
     (void)source_time_stamp;
     (void)range;
 
-#define READ(elsif, axis, node, ty, uaty, value)                                                   \
-    elsif(UA_NodeId_equal(node_id, &g_robot_descriptor.axis.node##_node_id))                       \
-    {                                                                                              \
-        RobotAxisTypeReadVariableHelper<ty>(data_value, value, uaty);                              \
-        return UA_STATUSCODE_GOOD;                                                                 \
-    }
+    static std::vector<std::pair<const AxisDescriptor &, AxisId>> axes = {
+#define AXIS_ENTRY(display_name, id, desc) {g_robot_descriptor.desc, id},
+        AXIS_TABLE
+#undef AXIS_ENTRY
+    };
 
-    READ(if, x_axis, speed, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, speed, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, speed, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, speed, long, UA_TYPES_INT32, 0)
+    static std::vector<std::pair<const UA_NodeId AxisDescriptor::*, AxisVariableId>> vars = {
+#define VAR_ENTRY(display_name, description, ua_data_type, read_only, var_id, node)                \
+    {&AxisDescriptor::node, var_id},
+        VAR_TABLE
+#undef VAR_ENTRY
+    };
 
-    READ(else if, x_axis, max_speed, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, max_speed, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, max_speed, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, max_speed, long, UA_TYPES_INT32, 0)
+    static std::vector<std::size_t> var_ua_data_types = {
+#define VAR_ENTRY(display_name, description, ua_data_type, read_only, var_id, node) ua_data_type,
+        VAR_TABLE
+#undef VAR_ENTRY
+    };
 
-    READ(else if, x_axis, acceleration, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, acceleration, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, acceleration, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, acceleration, long, UA_TYPES_INT32, 0)
-
-    READ(else if, x_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-
-    READ(else if, x_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, y_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, z_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, t_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-
-    READ(else if, x_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    READ(else if, y_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    READ(else if, z_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    READ(else if, t_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-
-    READ(else if, x_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, y_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, z_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, t_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-
-    READ(else if, x_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, y_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, z_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, t_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-
-    READ(else if, x_axis, error_id, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, error_id, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, error_id, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, error_id, long, UA_TYPES_INT32, 0)
-
-    READ(else if, x_axis, actual_position, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, actual_position, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, actual_position, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, actual_position, long, UA_TYPES_INT32, 0)
-
-    READ(else if, x_axis, target_position, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, target_position, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, target_position, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, target_position, long, UA_TYPES_INT32, 0)
-
-    READ(else if, x_axis, min_position, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, min_position, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, min_position, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, min_position, long, UA_TYPES_INT32, 0)
-
-    READ(else if, x_axis, max_position, long, UA_TYPES_INT32, 0)
-    READ(else if, y_axis, max_position, long, UA_TYPES_INT32, 0)
-    READ(else if, z_axis, max_position, long, UA_TYPES_INT32, 0)
-    READ(else if, t_axis, max_position, long, UA_TYPES_INT32, 0)
-
-    READ(else if, x_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, y_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, z_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    READ(else if, t_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-
-    else
+    for (std::size_t axis_idx = 0; axis_idx < axes.size(); axis_idx += 1)
     {
-        return UA_STATUSCODE_BADNOTFOUND;
+        for (std::size_t var_idx = 0; var_idx < vars.size(); var_idx += 1)
+        {
+            const AxisDescriptor &axis_desc = axes[axis_idx].first;
+            const AxisId axis_id = axes[axis_idx].second;
+
+            const UA_NodeId AxisDescriptor::*node_id_ptr = vars[var_idx].first;
+            const UA_NodeId *this_node_id = &(axis_desc.*node_id_ptr);
+
+            const AxisVariableId var_id = vars[var_idx].second;
+
+            const std::size_t ua_data_type = var_ua_data_types[var_idx];
+
+            if (UA_NodeId_equal(node_id, this_node_id))
+            {
+                return RobotAxisTypeHandleReadVariable(data_value, axis_id, var_id, ua_data_type);
+            }
+        }
     }
 
-#undef READ
+    return UA_STATUSCODE_BADNOTFOUND;
 }
 
-template<typename ValueType>
-UA_StatusCode RobotAxisTypeWriteVariableHelper(
-    const UA_DataValue *data_value, ValueType *value, std::size_t UA_TYPE
+UA_StatusCode RobotAxisTypeHandleWriteVariable(
+    const UA_DataValue *data_value, AxisId axis_id, AxisVariableId variable_id
 )
 {
-    (void)value;
+    (void)axis_id;
+    (void)variable_id;
 
-    if (!UA_Variant_hasScalarType(&data_value->value, &UA_TYPES[UA_TYPE]))
+    std::cout << "WRITING\n";
+
+    if (!UA_Variant_hasScalarType(&data_value->value, &UA_TYPES[UA_TYPES_DOUBLE]))
     {
         return UA_STATUSCODE_BAD;
     }
 
-    *value = *(ValueType *)data_value->value.data;
+    double value = *(double *)data_value->value.data;
+    std::cout << "WROTE VALUE = " << value << '\n';
+
     return UA_STATUSCODE_GOOD;
 }
 
@@ -290,94 +191,39 @@ static UA_StatusCode RobotAxisTypeWriteVariable(
     (void)node_context;
     (void)range;
 
-#define WRITE(elsif, axis, node, ty, uaty, func)                                                   \
-    elsif(UA_NodeId_equal(node_id, &g_robot_descriptor.axis.node##_node_id))                       \
-    {                                                                                              \
-        ty value;                                                                                  \
-        UA_StatusCode status = RobotAxisTypeWriteVariableHelper<ty>(data_value, &value, uaty);     \
-        if (status != UA_STATUSCODE_GOOD)                                                          \
-        {                                                                                          \
-            return status;                                                                         \
-        }                                                                                          \
-        return UA_STATUSCODE_GOOD;                                                                 \
-    }
+    static std::vector<std::pair<const AxisDescriptor &, AxisId>> axes = {
+#define AXIS_ENTRY(display_name, id, desc) {g_robot_descriptor.desc, id},
+        AXIS_TABLE
+#undef AXIS_ENTRY
+    };
 
-    WRITE(if, x_axis, speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, speed, long, UA_TYPES_INT32, 0)
+    static std::vector<std::pair<const UA_NodeId AxisDescriptor::*, AxisVariableId>> vars = {
+#define VAR_ENTRY(display_name, description, ua_data_type, read_only, var_id, node)                \
+    {&AxisDescriptor::node, var_id},
+        VAR_TABLE
+#undef VAR_ENTRY
+    };
 
-    WRITE(else if, x_axis, max_speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, max_speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, max_speed, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, max_speed, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, acceleration, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, max_acceleration, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, servo, bool, UA_TYPES_BOOLEAN, false)
-
-    WRITE(else if, x_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    WRITE(else if, y_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    WRITE(else if, z_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-    WRITE(else if, t_axis, tolerance, unsigned char, UA_TYPES_BYTE, 0)
-
-    WRITE(else if, x_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, end_move, bool, UA_TYPES_BOOLEAN, false)
-
-    WRITE(else if, x_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, has_error, bool, UA_TYPES_BOOLEAN, false)
-
-    WRITE(else if, x_axis, error_id, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, error_id, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, error_id, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, error_id, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, actual_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, actual_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, actual_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, actual_position, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, target_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, target_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, target_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, target_position, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, min_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, min_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, min_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, min_position, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, max_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, y_axis, max_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, z_axis, max_position, long, UA_TYPES_INT32, 0)
-    WRITE(else if, t_axis, max_position, long, UA_TYPES_INT32, 0)
-
-    WRITE(else if, x_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, y_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, z_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-    WRITE(else if, t_axis, is_initialized, bool, UA_TYPES_BOOLEAN, false)
-
-    else
+    for (std::size_t axis_idx = 0; axis_idx < axes.size(); axis_idx += 1)
     {
-        return UA_STATUSCODE_BADNOTFOUND;
+        for (std::size_t var_idx = 0; var_idx < vars.size(); var_idx += 1)
+        {
+            const AxisDescriptor &axis_desc = axes[axis_idx].first;
+            const AxisId axis_id = axes[axis_idx].second;
+
+            const UA_NodeId AxisDescriptor::*node_id_ptr = vars[var_idx].first;
+            const UA_NodeId *this_node_id = &(axis_desc.*node_id_ptr);
+
+            const AxisVariableId var_id = vars[var_idx].second;
+
+            if (UA_NodeId_equal(node_id, this_node_id))
+            {
+                return RobotAxisTypeHandleWriteVariable(data_value, axis_id, var_id);
+            }
+        }
     }
 
-#undef WRITE
+    return UA_STATUSCODE_BADNOTFOUND;
 }
 
 static UA_StatusCode RegisterReadWriteFuncForRobotAxisVariable(
@@ -426,18 +272,14 @@ RegisterRobotAxisObject(UA_Server *server, AxisId axis_id, const char *display_n
     AxisDescriptor *axis_desc;
     switch (axis_id)
     {
-        case AXIS_X:
-            axis_desc = &g_robot_descriptor.x_axis;
-            break;
-        case AXIS_Y:
-            axis_desc = &g_robot_descriptor.y_axis;
-            break;
-        case AXIS_Z:
-            axis_desc = &g_robot_descriptor.z_axis;
-            break;
-        case AXIS_T:
-            axis_desc = &g_robot_descriptor.t_axis;
-            break;
+#define AXIS_ENTRY(display_name, id, desc)                                                         \
+    case id:                                                                                       \
+        axis_desc = &g_robot_descriptor.desc;                                                      \
+        break;
+
+        AXIS_TABLE
+#undef AXIS_ENTRY
+
         default:
             throw std::runtime_error("RegisterRobotAxisObject: Invalid axis id");
     }
@@ -456,34 +298,20 @@ RegisterRobotAxisObject(UA_Server *server, AxisId axis_id, const char *display_n
 
     UA_StatusCode status;
 
-#define REGISTER(varname, human_name)                                                              \
+#define VAR_ENTRY(display_name, description, ua_data_type, read_only, var_id, node)                \
     status = RegisterReadWriteFuncForRobotAxisVariable(                                            \
         server,                                                                                    \
         &axis_desc->parent_id,                                                                     \
-        &axis_desc->varname##_node_id,                                                             \
-        human_name                                                                                 \
+        &axis_desc->node,                                                                          \
+        display_name                                                                               \
     );                                                                                             \
     if (status != UA_STATUSCODE_GOOD)                                                              \
     {                                                                                              \
         return status;                                                                             \
     }
 
-    REGISTER(speed, "Speed");
-    REGISTER(max_speed, "MaxSpeed");
-    REGISTER(acceleration, "Acceleration");
-    REGISTER(max_acceleration, "MaxAcceleration");
-    REGISTER(servo, "Servo");
-    REGISTER(tolerance, "Tolerance");
-    REGISTER(end_move, "EndMove");
-    REGISTER(has_error, "HasError");
-    REGISTER(error_id, "ErrorId");
-    REGISTER(actual_position, "ActualPosition");
-    REGISTER(target_position, "TargetPosition");
-    REGISTER(min_position, "MinPosition");
-    REGISTER(max_position, "MaxPosition");
-    REGISTER(is_initialized, "IsInitialized");
-
-#undef REGISTER
+    VAR_TABLE
+#undef ENTRY
 
     return UA_STATUSCODE_GOOD;
 }
@@ -500,10 +328,10 @@ int main(int argc, char **argv)
     UA_ServerConfig_setDefault(UA_Server_getConfig(server));
 
     RegisterRobotAxisType(server);
-    RegisterRobotAxisObject(server, AXIS_X, "RobotAxisX");
-    RegisterRobotAxisObject(server, AXIS_Y, "RobotAxisY");
-    RegisterRobotAxisObject(server, AXIS_Z, "RobotAxisZ");
-    RegisterRobotAxisObject(server, AXIS_T, "RobotAxisT");
+
+#define AXIS_ENTRY(display_name, id, desc) RegisterRobotAxisObject(server, id, display_name);
+    AXIS_TABLE
+#undef AXIS_ENTRY
 
     UA_StatusCode status = UA_Server_run(server, &running);
 
