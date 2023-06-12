@@ -12,11 +12,11 @@
 
     <!-- If launch_mode 'real' a local path can be specified for the calibration file -->
     <xacro:if value="${launch_mode == 'real_HW'}">
-      <!-- <xacro:property name="local_calibration_file_path__file" value="$(find pm_robot_description)/calibration_config/pm_robot_calibration_path.yaml" />
+      <xacro:property name="local_calibration_file_path__file" value="$(find pm_robot_description)/calibration_config/pm_robot_calibration_path.yaml" />
       <xacro:property name="path_dict" value="${xacro.load_yaml(local_calibration_file_path__file)}"/>
       <xacro:property name="local_calibration_file_path" value="${path_dict['pm_robot_calibration_file_path']}"/>
-      <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" /> -->
-      <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" /> -->
     </xacro:if>
 
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>

@@ -4,11 +4,11 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 
 moveit_simple_controller_manager:
   controller_names:
-    - pm_robot_t_axis_JTC
-    - pm_robot_xyz_axis_JTC
+    - pm_robot_t_axis_controller
+    - pm_robot_xyz_axis_controller
     - pm_robot_parallel_gripper_GAC
 
-  pm_robot_t_axis_JTC:
+  pm_robot_t_axis_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
@@ -17,7 +17,7 @@ moveit_simple_controller_manager:
     action_ns: follow_joint_trajectory
     default: true
 
-  pm_robot_xyz_axis_JTC:
+  pm_robot_xyz_axis_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
@@ -28,7 +28,7 @@ moveit_simple_controller_manager:
     action_ns: follow_joint_trajectory
     default: true
 
-  pm_robot_gonio_left_JTC:
+  pm_robot_gonio_left_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
@@ -38,7 +38,7 @@ moveit_simple_controller_manager:
     action_ns: follow_joint_trajectory
     default: true
     
-  pm_robot_gonio_right_JTC:
+  pm_robot_gonio_right_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true

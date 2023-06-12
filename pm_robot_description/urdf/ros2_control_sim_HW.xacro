@@ -1,9 +1,8 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <!-- <xacro:macro name="pm_robot_ros2_control_hw_sim" params="name initial_positions_file"> -->
-    <xacro:macro name="pm_robot_ros2_control_hw_sim">
+    <xacro:macro name="pm_robot_ros2_control_hw_sim" params="name initial_positions_file">
 
-        <!-- <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/> -->
+        <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 
         <ros2_control name="GazeboSystem" type="system">
             <hardware>

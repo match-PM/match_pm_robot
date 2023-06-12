@@ -37,7 +37,7 @@
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="1K_Dispenser_Flap_Joint">
+            <!-- <joint name="1K_Dispenser_Flap_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -119,7 +119,7 @@
                     <state_interface name="position"/>
                     <state_interface name="velocity"/>
                 </joint>
-            </xacro:if>
+            </xacro:if> -->
 
         </ros2_control>
 

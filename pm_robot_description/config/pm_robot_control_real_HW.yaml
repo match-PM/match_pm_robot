@@ -3,20 +3,20 @@ controller_manager:
     update_rate: 100
     use_sim_time: false
 
-    # pm_robot_IO_Axis_FPC:
+    # pm_robot_IO_Axis_controller:
     #  type: position_controllers/JointGroupPositionController
 
-    pm_robot_xyz_axis_FPC:
+    pm_robot_xyz_axis_controller:
       type: position_controllers/JointGroupPositionController
 
-    # pm_robot_t_axis_FPC:
-    #   type: position_controllers/JointGroupPositionController
+    pm_robot_t_axis_controller:
+      type: position_controllers/JointGroupPositionController
 
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
 
-# pm_robot_IO_Axis_FPC:
+# pm_robot_IO_Axis_controller:
 #   ros__parameters:
 #     joints:
 #       - 1K_Dispenser_Flap_Joint
@@ -32,14 +32,14 @@ controller_manager:
 
 #     interface_name: position
 
-# pm_robot_t_axis_FPC:
-#   ros__parameters:
-#     joints:
-#       - T_Axis_Joint
+pm_robot_t_axis_controller:
+  ros__parameters:
+    joints:
+      - T_Axis_Joint
 
-#     interface_name: position
+    interface_name: position
 
-pm_robot_xyz_axis_FPC:
+pm_robot_xyz_axis_controller:
   ros__parameters:
     joints:
       - X_Axis_Joint
