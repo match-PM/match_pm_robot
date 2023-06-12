@@ -11,12 +11,14 @@ from launch.event_handlers import OnProcessExit
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 import xacro
 import sys
+from launch.substitutions import Command 
 
 def generate_launch_description():
+
 
     # Specify the name of the package and path to xacro file within the package
     pkg_name = 'pm_robot_description'
@@ -25,11 +27,11 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = True
+    launch_moveit = False
 
     pm_robot_configuration = {
-                                'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
-                                'with_Tool_MPG_10':               'true',
+                                'launch_mode':                    'real_HW',              #real_HW sim_HW fake_HW real_sim_HW
+                                'with_Tool_MPG_10':               'false',                  # Fix Needed !!!!!!!!!!!!!!
                                 'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                                 'with_Gonio_Right':               'true',
                                 'with_Gonio_Left':                'true',
@@ -37,11 +39,7 @@ def generate_launch_description():
                                 'with_SPT_R_A1000_I500':          'false',
                               }
     
-    # sim_time condition
-    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW' or str(pm_robot_configuration['launch_mode']) == 'fake_HW'):
-        sim_time = True
-    elif (str(pm_robot_configuration['launch_mode']) == 'real_HW' ):
-        sim_time = False
+    sim_time = False
 
     mappings={
         'launch_mode': str(pm_robot_configuration['launch_mode']),
@@ -135,52 +133,39 @@ def generate_launch_description():
         parameters=[moveit_config.robot_description],
     )
 
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([os.path.join(
-            get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-    )
-
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
-                        arguments=['-topic', 'robot_description',
-                                   '-entity', 'pm_robot'],
-                        output='screen')
-
-    robot_controllers_fake_HW_path = PathJoinSubstitution(
+    robot_controllers_path = PathJoinSubstitution(
         [
             FindPackageShare("pm_robot_description"),
             "config",
-            "pm_robot_control_fakeHW.yaml",
+            "pm_robot_control_real_HW.yaml",
         ]
     )
 
-    robot_controllers_real_HW_path = PathJoinSubstitution(
-        [
-            FindPackageShare("pm_robot_description"),
-            "config",
-            "pm_robot_control_realHW.yaml",
-        ]
-    )
+    robot_description_command = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
+    
+    # control_manager = Node(
+    #     package="controller_manager",
+    #     executable="ros2_control_node",
+    #     parameters=[robot_description_raw, robot_controllers_path],
+    #     output="both",
+    # )
 
-    # sim_time condition
-    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW' or str(pm_robot_configuration['launch_mode']) == 'fake_HW'):
-        robot_controllers_path = robot_controllers_fake_HW_path
-        
-    elif (str(pm_robot_configuration['launch_mode']) == 'real_HW' ):
-        robot_controllers_path = robot_controllers_real_HW_path
-
-    control_node = Node(
+    control_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[moveit_config.robot_description, robot_controllers_path],
+        parameters=[{'robot_description':robot_description_command},
+                    robot_controllers_path],
         output="both",
     )
+
+    delayed_controller_manager = TimerAction(period=3.0, actions=[control_manager])
 
     launch_XYZT_controllers = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
                 FindPackageShare(pkg_name),
                 'launch',
-                'pm_robot_launch_XYZT_controller.launch.py'
+                'pm_robot_launch_XYZT_controller_REAL.launch.py'
                 ])
         ])#,
             #launch_arguments={                 # das muesste so funktionieren, noch nicht getestet; Ros2 control braucht aber use_sim_time nicht, da in yaml gegeben
@@ -218,20 +203,18 @@ def generate_launch_description():
     # Define Launch Description
     ld = LaunchDescription()
 
-    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW'):
-        ld.add_action(gazebo)
-        ld.add_action(spawn_entity)
-    #ld.add_action(robot_state_publisher_node_mov)
     ld.add_action(robot_state_publisher_node)
-    ld.add_action(control_node)
+    #ld.add_action(control_manager)
+    ld.add_action(delayed_controller_manager)
     if launch_moveit:
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
-    if (str(pm_robot_configuration['with_Gonio_Left']) == 'true'):
-        ld.add_action(launch_gonio_left_controller)
-    if (str(pm_robot_configuration['with_Gonio_Right']) == 'true'):
-        ld.add_action(launch_gonio_right_controller)
-    if (str(pm_robot_configuration['with_Tool_MPG_10']) == 'true'):
-        ld.add_action(launch_gonio_parallel_gripper_controller)
+
+    # if (str(pm_robot_configuration['with_Gonio_Left']) == 'true'):
+    #     ld.add_action(launch_gonio_left_controller)
+    # if (str(pm_robot_configuration['with_Gonio_Right']) == 'true'):
+    #     ld.add_action(launch_gonio_right_controller)
+    # if (str(pm_robot_configuration['with_Tool_MPG_10']) == 'true'):
+    #     ld.add_action(launch_gonio_parallel_gripper_controller)
     return ld

@@ -21,22 +21,22 @@ def generate_launch_description():
     )
 
     # XYZ Axis Joint Trajectory Controller
-    Spawn_pm_robot_xyz_axis_JTC = Node(
+    Spawn_pm_robot_xyz_axis_FPC = Node(
         package='controller_manager',
         executable='spawner',
         arguments=[
-            "pm_robot_xyz_axis_JTC",
+            "pm_robot_xyz_axis_FPC",
             "--controller-manager",
             "/controller_manager",
         ],
     )
 
     # T Axis Joint Trajectory Controller
-    Spawn_pm_robot_t_axis_JTC = Node(
+    Spawn_pm_robot_t_axis_FPC = Node(
         package='controller_manager',
         executable='spawner',
         arguments=[
-            "pm_robot_t_axis_JTC",
+            "pm_robot_xyz_axis_FPC",
             "--controller-manager",
             "/controller_manager",
         ],
@@ -53,18 +53,18 @@ def generate_launch_description():
     )
 
     # Delay start of robot_controller after `joint_state_broadcaster`
-    delay_Spawn_pm_robot_xyz_JTC = RegisterEventHandler(
+    delay_Spawn_pm_robot_xyz_FPC = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=Spawn_pm_robot_JSB,
-            on_exit=[Spawn_pm_robot_xyz_axis_JTC],
+            on_exit=[Spawn_pm_robot_xyz_axis_FPC],
         )
     )
 
     # Delay start of robot_controller after `joint_state_broadcaster`
-    delay_Spawn_pm_robot_t_axis_JTC = RegisterEventHandler(
+    delay_Spawn_pm_robot_t_axis_FPC = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=Spawn_pm_robot_JSB,
-            on_exit=[Spawn_pm_robot_t_axis_JTC],
+            on_exit=[Spawn_pm_robot_t_axis_FPC],
         )
     )
 
@@ -81,8 +81,8 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ld.add_action(Spawn_pm_robot_JSB)    
-    ld.add_action(delay_Spawn_pm_robot_xyz_JTC)
-    ld.add_action(delay_Spawn_pm_robot_t_axis_JTC)
-    ld.add_action(delay_robot_controller_spawner_after_controller)
+    ld.add_action(delay_Spawn_pm_robot_xyz_FPC)
+    # ld.add_action(delay_Spawn_pm_robot_t_axis_FPC)
+    # ld.add_action(delay_robot_controller_spawner_after_controller)
 
     return ld

@@ -1,6 +1,7 @@
 controller_manager:
   ros__parameters:
     update_rate: 100
+    use_sim_time: true
 
     pm_robot_parallel_gripper_GAC:
       type: position_controllers/GripperActionController

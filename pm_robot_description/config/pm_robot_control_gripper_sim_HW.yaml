@@ -1,0 +1,50 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+    use_sim_time: true
+
+    pm_robot_parallel_gripper_GAC:
+      type: position_controllers/GripperActionController
+    
+    pm_robot_parallel_gripper_JSB:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    # pm_robot_prallel_gripper_JTC:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+
+    # pm_robot_prallel_gripper_JSB:
+    #   type: joint_state_broadcaster/JointStateBroadcaster
+
+
+# pm_robot_prallel_gripper_JTC:
+#    ros__parameters:
+#     joints:
+#       - pm_robot_Tool_Parallel_Joint
+
+#     command_interfaces:
+#       - position
+
+#     state_interfaces:
+#       - position
+
+#     state_publish_rate: 200.0 # Defaults to 50
+#     action_monitor_rate: 20.0 # Defaults to 20
+
+#     allow_partial_joints_goal: false # Defaults to false
+#     #open_loop_control: true
+#     #allow_integration_in_goal_trajectories: true
+#     constraints:
+#       stopped_velocity_tolerance: 0.2 # Defaults to 0.01
+#       goal_time: 0.0 # Defaults to 0.0 (start immediately)
+
+
+pm_robot_parallel_gripper_GAC:
+  ros__parameters:
+    joint: pm_robot_Tool_Parallel_Joint
+
+    command_interfaces:
+    - position
+
+    state_interfaces:
+    - position
+    - effort
