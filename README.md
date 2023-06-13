@@ -1,9 +1,12 @@
 # match Precision Assembly Robot 
 ROS Framework for the Precision Assembly Robot
 ## 1. Repository overview
+* `pm_hardware_interface`: Contains the hardware interface for the precision assembly robot
 * `pm_robot_control`: Contains the control of the robot via OPC UA
-* `pm_robot_control_test`: Contains a publisher to control the in gazebo
-* `pm_robot_description`: Contains the description of the robot and launch files for gazebo and rviz
+* `pm_robot_bringup`: Contains the launch files to bringup the robot in real or simulation
+* `pm_robot_control_test`: Contains a nodes to sample nodes to control the robot
+* `pm_robot_description`: Contains the description of the robot 
+* `pm_robot_moveit_config`: Contains the moveit config 
 * `pm_robot_submodules`: Contains submodules for e.g. Basler cameras
 
 ## 2. Installation 
