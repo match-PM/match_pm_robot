@@ -20,6 +20,7 @@ import sys
 
 def generate_launch_description():
 
+
     # Specify the name of the package and path to xacro file within the package
     pkg_name = 'pm_robot_description'
     file_subpath = 'urdf/pm_robot_main.xacro'
@@ -30,11 +31,11 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = False
+    launch_moveit = True
 
     pm_robot_configuration = {
                                 'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
-                                'with_Tool_MPG_10':               'true',
+                                'with_Tool_MPG_10':               'false',                  # Fix Needed !!!!!!!!!!!!!!
                                 'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                                 'with_Gonio_Right':               'true',
                                 'with_Gonio_Left':                'true',
@@ -42,11 +43,7 @@ def generate_launch_description():
                                 'with_SPT_R_A1000_I500':          'false',
                               }
     
-    # sim_time condition
-    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW' or str(pm_robot_configuration['launch_mode']) == 'fake_HW'):
-        sim_time = True
-    elif (str(pm_robot_configuration['launch_mode']) == 'real_HW' ):
-        sim_time = False
+    sim_time = True
 
     mappings={
         'launch_mode': str(pm_robot_configuration['launch_mode']),
@@ -162,27 +159,13 @@ def generate_launch_description():
                                    '-entity', 'pm_robot'],
                         output='screen')
 
-    robot_controllers_fake_HW_path = PathJoinSubstitution(
+    robot_controllers_path = PathJoinSubstitution(
         [
             FindPackageShare("pm_robot_description"),
             "config",
-            "pm_robot_control_fakeHW.yaml",
+            "pm_robot_control_sim_HW.yaml",
         ]
     )
-
-    robot_controllers_real_HW_path = PathJoinSubstitution(
-        [
-            FindPackageShare("pm_robot_description"),
-            "config",
-            "pm_robot_control_realHW.yaml",
-        ]
-    )
-
-    # sim_time condition
-    if (str(pm_robot_configuration['launch_mode']) == 'sim_HW' or str(pm_robot_configuration['launch_mode']) == 'fake_HW'):
-        robot_controllers_path = robot_controllers_fake_HW_path
-    elif (str(pm_robot_configuration['launch_mode']) == 'real_HW' ):
-        sim_time = robot_controllers_real_HW_path
 
     control_node = Node(
         package="controller_manager",

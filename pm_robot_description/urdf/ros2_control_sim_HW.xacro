@@ -117,23 +117,22 @@
                     <state_interface name="velocity"/>
                 </joint>
             </xacro:if>
- 
+
         </ros2_control>
 
-            <gazebo>
-                <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_fakeHW.yaml</parameters>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right.yaml</parameters>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left.yaml</parameters>
-                    <xacro:if value="$(arg with_Tool_MPG_10)">
-                        <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper.yaml</parameters>
-                    </xacro:if>
-                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gazebo_param.yaml</parameters>
-                    
-                    <!--robot_param>robot_description</robot_param-->            <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
-                    <!--robot_param_node>robot_state_publisher</robot_param_node-->            <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
-                    <!--robotNamespace>${arm_id}</robotNamespace-->
-                </plugin>
-            </gazebo>
+        <gazebo>
+            <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+                <parameters>$(find pm_robot_description)/config/pm_robot_control_sim_HW.yaml</parameters>
+                <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_right_sim_HW.yaml</parameters>
+                <parameters>$(find pm_robot_description)/config/pm_robot_control_gonio_left_sim_HW.yaml</parameters>
+                <xacro:if value="$(arg with_Tool_MPG_10)">
+                    <parameters>$(find pm_robot_description)/config/pm_robot_control_gripper_sim_HW.yaml</parameters>
+                </xacro:if>
+
+                <!--robot_param>robot_description</robot_param-->                <!--The location of the robot_description (URDF) on the parameter server, defaults to robot_description-->
+                <!--robot_param_node>robot_state_publisher</robot_param_node-->                <!-- Name of the node where the robot_param is located, defauls to robot_state_publisher-->
+                <!--robotNamespace>${arm_id}</robotNamespace-->
+            </plugin>
+        </gazebo>
     </xacro:macro>
 </robot>

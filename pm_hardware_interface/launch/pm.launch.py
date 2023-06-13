@@ -26,7 +26,7 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_description_content}
 
     robot_controllers = PathJoinSubstitution(
-        [FindPackageShare("pm_robot_description"), "config", "pm_robot_control.yaml"]
+        [FindPackageShare("pm_robot_description"), "config", "pm_robot_control_realHW.yaml"]
     )
 
     control_node = Node(
