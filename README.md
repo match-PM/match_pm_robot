@@ -66,7 +66,7 @@ To use the real hardware (robot), the robot has to be switched on and the functi
 ```
 ros2 launch pm_robot_bringup pm_robot_real_HW.launch.py 
 ```
-### Simulation
+### Simulation:
 Using the simualtion, the robot is spawned in gazebo. You can control the robot axis via joint_trajectory_controller. To plan trajectories, you can use Moveit. 
 ```
 ros2 launch pm_robot_bringup pm_robot_sim_HW.launch.py 
