@@ -60,6 +60,9 @@ def generate_launch_description():
         .robot_description(file_path=pm_main_xacro_file,mappings=mappings)
         .robot_description_semantic(file_path="config/pm_robot.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .robot_description_kinematics(file_path="config/kinematics.yaml")
+        .planning_pipelines(
+            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
         .to_moveit_configs()
     )
 
@@ -105,7 +108,7 @@ def generate_launch_description():
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
-        name="rviz2",
+        name="move_group",
         output="log",
         arguments=["-d", rviz_full_config],
         parameters=[
@@ -113,6 +116,7 @@ def generate_launch_description():
             moveit_config.robot_description_semantic,
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
+            {"use_sim_time":sim_time}
         ],
     )
 
