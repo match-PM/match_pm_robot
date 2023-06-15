@@ -7,6 +7,7 @@
 #include "open62541/open62541.h"
 
 #include "pm_client/robot.hpp"
+#include "pm_client/util.hpp"
 
 namespace PMClient
 {
@@ -74,9 +75,11 @@ class Client
     /**
      * Helper function to read scalar node values.
      */
-    template<typename T, std::size_t UA_TYPE>
+    template<typename T>
     T read_node_value(UA_NodeId node_id)
     {
+        constexpr std::size_t UA_TYPE = type_to_ua<T>::value;
+
         UA_Variant value;
         UA_Variant_init(&value);
 
@@ -103,9 +106,11 @@ class Client
     /**
      * Helper function to read array node values.
      */
-    template<typename T, std::size_t count, std::size_t UA_TYPE>
+    template<typename T, std::size_t count>
     std::array<T, count> read_node_values(UA_NodeId node_id)
     {
+        constexpr std::size_t UA_TYPE = type_to_ua<T>::value;
+
         UA_Variant value;
         UA_Variant_init(&value);
 
@@ -116,7 +121,7 @@ class Client
             throw std::runtime_error{UA_StatusCode_name(status)};
         }
 
-        if (!UA_Variant_hasArrayType(&value, &UA_TYPES[UA_TYPE]))
+        if (!UA_Variant_hasArrayType(&value, &UA_TYPES[UA_TYPE]) || value.arrayLength != count)
         {
             throw std::runtime_error{
                 "Tried to read value from node but node did not have expected type."};
@@ -137,9 +142,11 @@ class Client
     /**
      * Helper function to write scalar node values.
      */
-    template<typename T, std::size_t UA_TYPE>
+    template<typename T>
     void write_node_value(UA_NodeId node_id, T value)
     {
+        constexpr std::size_t UA_TYPE = type_to_ua<T>::value;
+
         UA_Variant *variant = UA_Variant_new();
         UA_Variant_setScalarCopy(variant, &value, &UA_TYPES[UA_TYPE]);
 
@@ -156,9 +163,11 @@ class Client
     /**
      * Helper function to write array node values.
      */
-    template<typename T, std::size_t count, std::size_t UA_TYPE>
+    template<typename T, std::size_t count>
     void write_node_values(UA_NodeId node_id, std::array<T, count> values)
     {
+        constexpr std::size_t UA_TYPE = type_to_ua<T>::value;
+
         UA_Variant *variant = UA_Variant_new();
         UA_Variant_setArrayCopy(variant, values.data(), count, &UA_TYPES[UA_TYPE]);
 

@@ -27,24 +27,23 @@ namespace PMClient
 
 void Camera1::set_coax_light(bool on)
 {
-    m_client->write_node_value<bool, UA_TYPES_BOOLEAN>(this->coax_light, on);
+    m_client->write_node_value<bool>(this->coax_light, on);
 }
 
 [[nodiscard]] bool Camera1::get_coax_light() const
 {
-    return m_client->read_node_value<bool, UA_TYPES_BOOLEAN>(this->coax_light);
+    return m_client->read_node_value<bool>(this->coax_light);
 }
 
 void Camera1::set_ring_light(bool segment1, bool segment2, bool segment3, bool segment4)
 {
     std::array<bool, 4> data = {segment1, segment2, segment3, segment4};
-    m_client->write_node_values<bool, 4, UA_TYPES_BOOLEAN>(this->ring_light, data);
+    m_client->write_node_values<bool, 4>(this->ring_light, data);
 }
 
 void Camera1::get_right_light(bool &segment1, bool &segment2, bool &segment3, bool &segment4) const
 {
-    std::array<bool, 4> data =
-        m_client->read_node_values<bool, 4, UA_TYPES_BOOLEAN>(this->ring_light);
+    std::array<bool, 4> data = m_client->read_node_values<bool, 4>(this->ring_light);
     segment1 = data[0];
     segment2 = data[1];
     segment3 = data[2];
@@ -54,12 +53,12 @@ void Camera1::get_right_light(bool &segment1, bool &segment2, bool &segment3, bo
 void Camera1::set_ring_light_color(int red, int green, int blue)
 {
     std::array<int, 3> data = {red, green, blue};
-    m_client->write_node_values<int, 3, UA_TYPES_INT32>(this->ring_light, data);
+    m_client->write_node_values<int, 3>(this->ring_light_rgb, data);
 }
 
 void Camera1::get_ring_light_color(int &red, int &green, int &blue) const
 {
-    std::array<int, 3> data = m_client->read_node_values<int, 3, UA_TYPES_INT32>(this->ring_light);
+    std::array<int, 3> data = m_client->read_node_values<int, 3>(this->ring_light_rgb);
     red = data[0];
     green = data[1];
     blue = data[2];
@@ -77,12 +76,12 @@ void Camera1::get_ring_light_color(int &red, int &green, int &blue) const
 
 void Camera2::set_light(int intensity)
 {
-    m_client->write_node_value<int, UA_TYPES_INT32>(this->light, intensity);
+    m_client->write_node_value<int>(this->light, intensity);
 }
 
 [[nodiscard]] int Camera2::get_light() const
 {
-    return m_client->read_node_value<int, UA_TYPES_INT32>(this->light);
+    return m_client->read_node_value<int>(this->light);
 }
 
 } // namespace PMClient
