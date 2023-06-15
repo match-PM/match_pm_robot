@@ -72,7 +72,7 @@ class Client
     }
 
     /**
-     * Helper function to read node values.
+     * Helper function to read scalar node values.
      */
     template<typename T, std::size_t UA_TYPE>
     T read_node_value(UA_NodeId node_id)
@@ -101,13 +101,66 @@ class Client
     }
 
     /**
-     * Helper function to write node values.
+     * Helper function to read array node values.
+     */
+    template<typename T, std::size_t count, std::size_t UA_TYPE>
+    std::array<T, count> read_node_values(UA_NodeId node_id)
+    {
+        UA_Variant value;
+        UA_Variant_init(&value);
+
+        UA_StatusCode status = UA_Client_readValueAttribute(m_client, node_id, &value);
+
+        if (status != UA_STATUSCODE_GOOD)
+        {
+            throw std::runtime_error{UA_StatusCode_name(status)};
+        }
+
+        if (!UA_Variant_hasArrayType(&value, &UA_TYPES[UA_TYPE]))
+        {
+            throw std::runtime_error{
+                "Tried to read value from node but node did not have expected type."};
+        }
+
+        T *data = reinterpret_cast<T *>(value.data);
+        std::array<T, count> return_data;
+        for (std::size_t i = 0; i < count; ++i)
+        {
+            return_data[i] = data[i];
+        }
+
+        UA_Variant_clear(&value);
+
+        return return_data;
+    }
+
+    /**
+     * Helper function to write scalar node values.
      */
     template<typename T, std::size_t UA_TYPE>
     void write_node_value(UA_NodeId node_id, T value)
     {
         UA_Variant *variant = UA_Variant_new();
         UA_Variant_setScalarCopy(variant, &value, &UA_TYPES[UA_TYPE]);
+
+        UA_StatusCode status = UA_Client_writeValueAttribute(m_client, node_id, variant);
+
+        if (status != UA_STATUSCODE_GOOD)
+        {
+            throw std::runtime_error{UA_StatusCode_name(status)};
+        }
+
+        UA_Variant_delete(variant);
+    }
+
+    /**
+     * Helper function to write array node values.
+     */
+    template<typename T, std::size_t count, std::size_t UA_TYPE>
+    void write_node_values(UA_NodeId node_id, std::array<T, count> values)
+    {
+        UA_Variant *variant = UA_Variant_new();
+        UA_Variant_setArrayCopy(variant, values.data(), count, &UA_TYPES[UA_TYPE]);
 
         UA_StatusCode status = UA_Client_writeValueAttribute(m_client, node_id, variant);
 

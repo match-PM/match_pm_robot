@@ -5,6 +5,7 @@
 #include "open62541/open62541.h"
 
 #include "pm_client/aerotech_axis.hpp"
+#include "pm_client/camera.hpp"
 
 namespace PMClient
 {
@@ -36,6 +37,16 @@ class Robot
     std::unique_ptr<AerotechAxis> t_axis;
 
     /**
+     * Top camera.
+     */
+    std::unique_ptr<Camera1> camera1;
+
+    /**
+     * Bottom camera.
+     */
+    std::unique_ptr<Camera2> camera2;
+
+    /**
      * Check if all axis references are properly set.
      *
      * \returns `true` if yes, otherwise `false`.
@@ -50,7 +61,7 @@ class Robot
                 return false;
             }
         }
-        return true;
+        return camera1->is_ok() && camera2->is_ok();
     }
 };
 
