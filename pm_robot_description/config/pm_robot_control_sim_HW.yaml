@@ -19,10 +19,10 @@ controller_manager:
 pm_robot_IO_Axis_controller:
   ros__parameters:
     joints:
-      - 1K_Dispenser_Flap_Joint
+      #- 1K_Dispenser_Flap_Joint
       #- 2K_Dispenser_Joint
       - Calibration_Qube_Joint
-      #- 1K_Dispenser_Joint
+      - 1K_Dispenser_Joint
       # - EQ_Joint
       # - Camera_Calibartion_Joint
       # - UV_Cart_Left_Joint

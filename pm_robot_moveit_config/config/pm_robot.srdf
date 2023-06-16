@@ -3,7 +3,8 @@
     This is a format for representing semantic information about the robot structure.
     A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
 -->
-<robot name="pm_robot">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pm_robot">
+
     <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
     <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
@@ -27,33 +28,33 @@
         <!-- <joint name="Cam1_Toolhead_TCP_Joint"/> -->
     </group>
 
-    <group name="PM_Robot_Gonio_Right">
+    <!-- <group name="PM_Robot_Gonio_Right">
         <chain base_link="pm_robot_base_link" tip_link="Gonio_Right_Part_Origin" />
     </group>
 
     <group name="PM_Robot_Gonio_Left">
         <chain base_link="pm_robot_base_link" tip_link="Gonio_Left_Part_Origin" />
-    </group>
+    </group>-->
 
-    <group name="PM_Robot_1K_Dispenser_TCP">
+    <!-- <group name="PM_Robot_1K_Dispenser_TCP">
         <chain base_link="pm_robot_base_link" tip_link="1K_Dispenser_TCP" />
-    </group>
+    </group> -->
 
-    <group name="PM_Robot_2K_Dispenser_TCP">
+    <!-- <group name="PM_Robot_2K_Dispenser_TCP">
         <chain base_link="pm_robot_base_link" tip_link="2K_Dispenser_TCP" />
     </group>
 
     <group name="PM_Robot_Laser_TCP">
         <chain base_link="pm_robot_base_link" tip_link="Laser_Toolhead_TCP" />
-    </group>
+    </group>  -->
 
-    <group name="PM_Robot_Parallel_Gripper">
+    <!-- <group name="PM_Robot_Parallel_Gripper">
         <link name="Tool_Gripper_MPG_10_Body"/>
         <link name="Tool_Gripper_MPG_10_Jaw_1"/>
         <link name="Tool_Gripper_MPG_10_Jaw_2"/>
         <joint name="pm_robot_Tool_Parallel_Joint"/>
         <passive_joint name="pm_robot_Tool_Parallel_Joint_2"/>
-    </group>
+    </group> -->
 
     <!-- <group name="end_effector_toolhead">
         <group name="PM_Robot_Tool_TCP" />
@@ -65,7 +66,7 @@
 
 
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
-    <group_state name="Savety_Position" group="PM_Robot_Tool_TCP">
+    <!-- <group_state name="Savety_Position" group="PM_Robot_Tool_TCP">
         <joint name="T_Axis_Joint" value="0"/>
         <joint name="X_Axis_Joint" value="-0.3251"/>
         <joint name="Y_Axis_Joint" value="-0.07685"/>
@@ -77,7 +78,7 @@
         <joint name="X_Axis_Joint" value="-0.36"/>
         <joint name="Y_Axis_Joint" value="-0.07685"/>
         <joint name="Z_Axis_Joint" value="0"/>
-    </group_state>
+    </group_state> -->
 
     <!-- <group_state name="Zero" group="PM_Robot_Gonio_Right">
         <joint name="Gonio_Right_Stage_1_Joint" value="0"/>
@@ -88,7 +89,7 @@
         <joint name="Gonio_Left_Stage_1_Joint" value="0"/>
         <joint name="Gonio_Left_Stage_2_Joint" value="0"/>
     </group_state> -->
-
+<!-- 
     <group_state group="PM_Robot_Parallel_Gripper" name="closed">
         <joint name="pm_robot_Tool_Parallel_Joint" value="0.001"/>
         <joint name="pm_robot_Tool_Parallel_Joint_2" value="0.001"/>
@@ -96,7 +97,7 @@
     <group_state group="PM_Robot_Parallel_Gripper" name="opened">
         <joint name="pm_robot_Tool_Parallel_Joint" value="0"/>
         <joint name="pm_robot_Tool_Parallel_Joint_2" value="0"/>
-    </group_state>
+    </group_state> -->
 
     <virtual_joint name="world_base" type="fixed" parent_frame="world" child_link="base_link_empthy" />
 

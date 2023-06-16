@@ -6,7 +6,19 @@ moveit_simple_controller_manager:
   controller_names:
     - pm_robot_t_axis_controller
     - pm_robot_xyz_axis_controller
-    - pm_robot_parallel_gripper_GAC
+    # - pm_robot_IO_Axis_controller
+    # - pm_robot_gonio_left_controller
+    # - pm_robot_gonio_right_controller
+    #- pm_robot_parallel_gripper_GAC
+
+  # pm_robot_IO_Axis_controller:
+  #   type: FollowJointTrajectory
+  #   action_ns: follow_joint_trajectory
+  #   default: true
+  #   joints:
+  #     - 1K_Dispenser_Joint
+  #   action_ns: follow_joint_trajectory
+  #   default: true
 
   pm_robot_t_axis_controller:
     type: FollowJointTrajectory
@@ -28,30 +40,30 @@ moveit_simple_controller_manager:
     action_ns: follow_joint_trajectory
     default: true
 
-  pm_robot_gonio_left_controller:
-    type: FollowJointTrajectory
-    action_ns: follow_joint_trajectory
-    default: true
-    joints:
-      - Gonio_Left_Stage_1_Joint
-      - Gonio_Left_Stage_2_Joint
-    action_ns: follow_joint_trajectory
-    default: true
+  # pm_robot_gonio_left_controller:
+  #   type: FollowJointTrajectory
+  #   action_ns: follow_joint_trajectory
+  #   default: true
+  #   joints:
+  #     - Gonio_Left_Stage_1_Joint
+  #     - Gonio_Left_Stage_2_Joint
+  #   action_ns: follow_joint_trajectory
+  #   default: true
     
-  pm_robot_gonio_right_controller:
-    type: FollowJointTrajectory
-    action_ns: follow_joint_trajectory
-    default: true
-    joints:
-      - Gonio_Right_Stage_1_Joint
-      - Gonio_Right_Stage_2_Joint
-    action_ns: follow_joint_trajectory
-    default: true
+  # pm_robot_gonio_right_controller:
+  #   type: FollowJointTrajectory
+  #   action_ns: follow_joint_trajectory
+  #   default: true
+  #   joints:
+  #     - Gonio_Right_Stage_1_Joint
+  #     - Gonio_Right_Stage_2_Joint
+  #   action_ns: follow_joint_trajectory
+  #   default: true
 
 
-  pm_robot_parallel_gripper_GAC:
-    action_ns: gripper_cmd
-    type: GripperCommand
-    default: true
-    joints:
-      - pm_robot_Tool_Parallel_Joint
+  # pm_robot_parallel_gripper_GAC:
+  #   action_ns: gripper_cmd
+  #   type: GripperCommand
+  #   default: true
+  #   joints:
+  #     - pm_robot_Tool_Parallel_Joint

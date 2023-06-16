@@ -31,7 +31,7 @@ def generate_launch_description():
     pm_robot_configuration = {
                                 'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
                                 'with_Tool_MPG_10':               'false',                  # Fix Needed !!!!!!!!!!!!!!
-                                'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
+                                'with_Tool_MPG_10_Jaw_3mm_Lens':  'true',
                                 'with_Gonio_Right':               'true',
                                 'with_Gonio_Left':                'true',
                                 'with_Tool_SPT_Holder':           'false',
@@ -57,6 +57,8 @@ def generate_launch_description():
         .robot_description(file_path=pm_main_xacro_file,mappings=mappings)
         .robot_description_semantic(file_path="config/pm_robot.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .planning_pipelines(
+            pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
         .to_moveit_configs()
     )
 
@@ -153,10 +155,10 @@ def generate_launch_description():
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[moveit_config.robot_description, robot_controllers_path],
+        parameters=[moveit_config.robot_description],
         output="both",
     )
-
+    #, robot_controllers_path
     launch_XYZT_controllers = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([
