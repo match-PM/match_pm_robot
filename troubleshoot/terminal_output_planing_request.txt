@@ -1,0 +1,10 @@
+
+
+[move_group-7] [INFO] [1686905421.771838032] [moveit_move_group_default_capabilities.move_action_capability]: Received request
+[move_group-7] [INFO] [1686905421.771966649] [moveit_move_group_default_capabilities.move_action_capability]: executing..
+[move_group-7] [INFO] [1686905421.772043455] [moveit_move_group_default_capabilities.move_action_capability]: Planning request received for MoveGroup action. Forwarding to planning pipeline.
+[move_group-7] [INFO] [1686905421.772920375] [moveit.ompl_planning.model_based_planning_context]: Planner configuration 'PM_Robot_Cam1_TCP' will use planner 'geometric::RRTConnect'. Additional configuration parameters will be set when the planner is constructed.
+[move_group-7] [ERROR] [1686905431.775821250] [ompl]: ./src/ompl/geometric/planners/rrt/src/RRTConnect.cpp:252 - PM_Robot_Cam1_TCP/PM_Robot_Cam1_TCP: Unable to sample any valid states for goal tree
+[move_group-7] [WARN] [1686905431.775864690] [moveit.ompl_planning.model_based_planning_context]: Timed out
+[move_group-7] [INFO] [1686905431.834494840] [moveit.ompl_planning.model_based_planning_context]: Unable to solve the planning problem
+[move_group-7] [INFO] [1686905431.834547527] [moveit_move_group_default_capabilities.move_action_capability]: Timeout reached

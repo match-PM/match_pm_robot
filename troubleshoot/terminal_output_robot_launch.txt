@@ -1,0 +1,1241 @@
+mll@mll-desktop:~/ws_moveit2$ ros2 launch pm_robot_bringup pm_robot_sim_HW.launch.py 
+[INFO] [launch]: All log files can be found below /home/mll/.ros/log/2023-06-16-10-45-46-445204-mll-desktop-20607
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [gzserver-1]: process started with pid [20609]
+[INFO] [gzclient-2]: process started with pid [20611]
+[INFO] [spawn_entity.py-3]: process started with pid [20613]
+[INFO] [robot_state_publisher-4]: process started with pid [20615]
+[INFO] [rviz2-5]: process started with pid [20617]
+[INFO] [move_group-6]: process started with pid [20619]
+[INFO] [spawner-7]: process started with pid [20621]
+[INFO] [spawner-8]: process started with pid [20623]
+[INFO] [spawner-9]: process started with pid [20635]
+[robot_state_publisher-4] [INFO] [1686905148.616542688] [robot_state_publisher]: got segment 1K_Dispenser
+[robot_state_publisher-4] [INFO] [1686905148.616751192] [robot_state_publisher]: got segment 1K_Dispenser_Flap
+[robot_state_publisher-4] [INFO] [1686905148.616766028] [robot_state_publisher]: got segment 1K_Dispenser_TCP
+[robot_state_publisher-4] [INFO] [1686905148.616774380] [robot_state_publisher]: got segment 2K_Dispenser_Cartridge
+[robot_state_publisher-4] [INFO] [1686905148.616782737] [robot_state_publisher]: got segment 2K_Dispenser_TCP
+[robot_state_publisher-4] [INFO] [1686905148.616790472] [robot_state_publisher]: got segment Calibration_Qube
+[robot_state_publisher-4] [INFO] [1686905148.616798254] [robot_state_publisher]: got segment Cam1_Toolhead_TCP
+[robot_state_publisher-4] [INFO] [1686905148.616806169] [robot_state_publisher]: got segment Camera_Calibration_Platelet
+[robot_state_publisher-4] [INFO] [1686905148.616813919] [robot_state_publisher]: got segment Camera_Station
+[robot_state_publisher-4] [INFO] [1686905148.616821835] [robot_state_publisher]: got segment Camera_Station_TCP
+[robot_state_publisher-4] [INFO] [1686905148.616830028] [robot_state_publisher]: got segment Gonio_Base_Right
+[robot_state_publisher-4] [INFO] [1686905148.616837870] [robot_state_publisher]: got segment Gonio_Left_Base
+[robot_state_publisher-4] [INFO] [1686905148.616845773] [robot_state_publisher]: got segment Gonio_Left_Chuck
+[robot_state_publisher-4] [INFO] [1686905148.616853335] [robot_state_publisher]: got segment Gonio_Left_Example_Chuck
+[robot_state_publisher-4] [INFO] [1686905148.616861263] [robot_state_publisher]: got segment Gonio_Left_Part_Origin
+[robot_state_publisher-4] [INFO] [1686905148.616869046] [robot_state_publisher]: got segment Gonio_Left_Stage_1_Top
+[robot_state_publisher-4] [INFO] [1686905148.616876666] [robot_state_publisher]: got segment Gonio_Left_Stage_2_Bottom
+[robot_state_publisher-4] [INFO] [1686905148.616884359] [robot_state_publisher]: got segment Gonio_Right_Chuck
+[robot_state_publisher-4] [INFO] [1686905148.616891928] [robot_state_publisher]: got segment Gonio_Right_Example_Chuck
+[robot_state_publisher-4] [INFO] [1686905148.616899842] [robot_state_publisher]: got segment Gonio_Right_Part_Origin
+[robot_state_publisher-4] [INFO] [1686905148.616907552] [robot_state_publisher]: got segment Gonio_Right_Stage_1_Bottom
+[robot_state_publisher-4] [INFO] [1686905148.616915071] [robot_state_publisher]: got segment Gonio_Right_Stage_1_Top
+[robot_state_publisher-4] [INFO] [1686905148.616922747] [robot_state_publisher]: got segment Gonio_Right_Stage_2_Bottom
+[robot_state_publisher-4] [INFO] [1686905148.616930262] [robot_state_publisher]: got segment Gripper_Rot_Plate
+[robot_state_publisher-4] [INFO] [1686905148.616937911] [robot_state_publisher]: got segment Laser_Toolhead_TCP
+[robot_state_publisher-4] [INFO] [1686905148.616945513] [robot_state_publisher]: got segment PM_Robot_Tool_TCP
+[robot_state_publisher-4] [INFO] [1686905148.616953070] [robot_state_publisher]: got segment Station_Laser_Bottom_TCP
+[robot_state_publisher-4] [INFO] [1686905148.616960576] [robot_state_publisher]: got segment Test_Station
+[robot_state_publisher-4] [INFO] [1686905148.616968318] [robot_state_publisher]: got segment UV_LED_Back
+[robot_state_publisher-4] [INFO] [1686905148.616976200] [robot_state_publisher]: got segment UV_LED_Front
+[robot_state_publisher-4] [INFO] [1686905148.616983889] [robot_state_publisher]: got segment UV_Slider_X_Back
+[robot_state_publisher-4] [INFO] [1686905148.616991665] [robot_state_publisher]: got segment UV_Slider_X_Front
+[robot_state_publisher-4] [INFO] [1686905148.616999769] [robot_state_publisher]: got segment X_Axis
+[robot_state_publisher-4] [INFO] [1686905148.617007539] [robot_state_publisher]: got segment Y_Axis
+[robot_state_publisher-4] [INFO] [1686905148.617015031] [robot_state_publisher]: got segment Z_Axis
+[robot_state_publisher-4] [INFO] [1686905148.617022416] [robot_state_publisher]: got segment axis_base
+[robot_state_publisher-4] [INFO] [1686905148.617030058] [robot_state_publisher]: got segment base_link_empthy
+[robot_state_publisher-4] [INFO] [1686905148.617037816] [robot_state_publisher]: got segment housing
+[robot_state_publisher-4] [INFO] [1686905148.617045149] [robot_state_publisher]: got segment housing_hl
+[robot_state_publisher-4] [INFO] [1686905148.617051834] [robot_state_publisher]: got segment housing_hr
+[robot_state_publisher-4] [INFO] [1686905148.617058722] [robot_state_publisher]: got segment housing_vl
+[robot_state_publisher-4] [INFO] [1686905148.617064819] [robot_state_publisher]: got segment housing_vr
+[robot_state_publisher-4] [INFO] [1686905148.617160623] [robot_state_publisher]: got segment pm_robot_base_link
+[robot_state_publisher-4] [INFO] [1686905148.617170012] [robot_state_publisher]: got segment t_axis_toolchanger
+[robot_state_publisher-4] [INFO] [1686905148.617177719] [robot_state_publisher]: got segment world
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[move_group-6]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[move_group-6] [INFO] [1686905148.667892060] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0 seconds
+[move_group-6] [INFO] [1686905148.667975098] [moveit_robot_model.robot_model]: Loading robot model 'pm_robot'...
+[spawn_entity.py-3] [INFO] [1686905149.247999226] [spawn_entity]: Spawn Entity started
+[spawn_entity.py-3] [INFO] [1686905149.248323923] [spawn_entity]: Loading entity published on topic robot_description
+[spawn_entity.py-3] /opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/qos.py:307: UserWarning: DurabilityPolicy.RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL is deprecated. Use DurabilityPolicy.TRANSIENT_LOCAL instead.
+[spawn_entity.py-3]   warnings.warn(
+[spawn_entity.py-3] [INFO] [1686905149.250107959] [spawn_entity]: Waiting for entity xml on robot_description
+[spawn_entity.py-3] [INFO] [1686905149.261720101] [spawn_entity]: Waiting for service /spawn_entity, timeout = 30
+[spawn_entity.py-3] [INFO] [1686905149.262018689] [spawn_entity]: Waiting for service /spawn_entity
+[rviz2-5] [INFO] [1686905149.581846615] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-5] [INFO] [1686905149.582152306] [rviz2]: OpenGl version: 4.6 (GLSL 4.6)
+[rviz2-5] [INFO] [1686905149.612312384] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-5] Warning: class_loader.impl: SEVERE WARNING!!! A namespace collision has occurred with plugin factory for class rviz_default_plugins::displays::InteractiveMarkerDisplay. New factory will OVERWRITE existing one. This situation occurs when libraries containing plugins are directly linked against an executable (the one running right now generating this message). Please separate plugins out into their own library or just don't link against the library and use either class_loader::ClassLoader/MultiLibraryClassLoader to open.
+[rviz2-5]          at line 253 in /opt/ros/humble/include/class_loader/class_loader/class_loader_core.hpp
+[spawn_entity.py-3] [INFO] [1686905151.018301530] [spawn_entity]: Calling service /spawn_entity
+[gzclient-2] ../src/intel/isl/isl.c:2216: FINISHME: ../src/intel/isl/isl.c:isl_surf_supports_ccs: CCS for 3D textures is disabled, but a workaround is available.
+[spawner-7] [INFO] [1686905151.194731105] [spawner_pm_robot_JSB]: Waiting for '/controller_manager' node to exist
+[spawner-8] [INFO] [1686905151.234898167] [spawner_pm_robot_gonio_left_JSB]: Waiting for '/controller_manager' node to exist
+[spawner-9] [INFO] [1686905151.263525411] [spawner_pm_robot_gonio_right_JSB]: Waiting for '/controller_manager' node to exist
+[spawn_entity.py-3] [INFO] [1686905151.654531039] [spawn_entity]: Spawn status: SpawnEntity: Successfully spawned entity [pm_robot]
+[INFO] [spawn_entity.py-3]: process has finished cleanly [pid 20613]
+[rviz2-5] [ERROR] [1686905152.740314745] [moveit_ros_visualization.motion_planning_frame]: Action server: /recognize_objects not available
+[rviz2-5] [INFO] [1686905152.760625161] [moveit_ros_visualization.motion_planning_frame]: MoveGroup namespace changed: / -> . Reloading params.
+[gzserver-1] [INFO] [1686905152.848511259] [gazebo_ros2_control]: Loading gazebo_ros2_control plugin
+[gzserver-1] [INFO] [1686905152.854436571] [gazebo_ros2_control]: Starting gazebo_ros2_control plugin in namespace: /
+[gzserver-1] [INFO] [1686905152.855247897] [gazebo_ros2_control]: Starting gazebo_ros2_control plugin in ros 2 node: gazebo_ros2_control
+[gzserver-1] [INFO] [1686905152.855348642] [gazebo_ros2_control]: Loading parameter files /home/mll/ws_moveit2/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_sim_HW.yaml
+[gzserver-1] [INFO] [1686905152.855371569] [gazebo_ros2_control]: Loading parameter files /home/mll/ws_moveit2/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_gonio_right_sim_HW.yaml
+[gzserver-1] [INFO] [1686905152.855383253] [gazebo_ros2_control]: Loading parameter files /home/mll/ws_moveit2/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_gonio_left_sim_HW.yaml
+[gzserver-1] [INFO] [1686905152.860655188] [gazebo_ros2_control]: connected to service!! robot_state_publisher
+[gzserver-1] [INFO] [1686905152.863452140] [gazebo_ros2_control]: Recieved urdf from param server, parsing...
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+[rviz2-5]          at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[rviz2-5] [INFO] [1686905152.873622649] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.0560339 seconds
+[rviz2-5] [INFO] [1686905152.873736272] [moveit_robot_model.robot_model]: Loading robot model 'pm_robot'...
+[gzserver-1] [INFO] [1686905152.880181091] [gazebo_ros2_control]: Loading joint: X_Axis_Joint
+[gzserver-1] [INFO] [1686905152.880273577] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.880293104] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880312232] [gazebo_ros2_control]: 			 found initial value: -0.400000
+[gzserver-1] [INFO] [1686905152.880334524] [gazebo_ros2_control]: 		 velocity
+[gzserver-1] [INFO] [1686905152.880347355] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.880359657] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880448904] [gazebo_ros2_control]: Loading joint: Y_Axis_Joint
+[gzserver-1] [INFO] [1686905152.880473424] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.880484579] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880496075] [gazebo_ros2_control]: 			 found initial value: -0.100000
+[gzserver-1] [INFO] [1686905152.880509271] [gazebo_ros2_control]: 		 velocity
+[gzserver-1] [INFO] [1686905152.880519215] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.880529411] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880568522] [gazebo_ros2_control]: Loading joint: Z_Axis_Joint
+[gzserver-1] [INFO] [1686905152.880582367] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.880593267] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880603017] [gazebo_ros2_control]: 			 found initial value: 0.000000
+[gzserver-1] [INFO] [1686905152.880615785] [gazebo_ros2_control]: 		 velocity
+[gzserver-1] [INFO] [1686905152.880626450] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.880636995] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880675984] [gazebo_ros2_control]: Loading joint: T_Axis_Joint
+[gzserver-1] [INFO] [1686905152.880689876] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.880700315] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880710508] [gazebo_ros2_control]: 			 found initial value: 0.100000
+[gzserver-1] [INFO] [1686905152.880724091] [gazebo_ros2_control]: 		 velocity
+[gzserver-1] [INFO] [1686905152.880735510] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.880746599] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880772786] [gazebo_ros2_control]: Loading joint: 1K_Dispenser_Flap_Joint
+[gzserver-1] [INFO] [1686905152.880786730] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.880797944] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880810988] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.880822159] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880855723] [gazebo_ros2_control]: Loading joint: 1K_Dispenser_Joint
+[gzserver-1] [INFO] [1686905152.880869415] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.880880665] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880891502] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.880903098] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880934738] [gazebo_ros2_control]: Loading joint: 2K_Dispenser_Joint
+[gzserver-1] [INFO] [1686905152.880947406] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.880958298] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.880969138] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.880979621] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881010198] [gazebo_ros2_control]: Loading joint: Gonio_Right_Stage_1_Joint
+[gzserver-1] [INFO] [1686905152.881045266] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881058123] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881068623] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881078937] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881102107] [gazebo_ros2_control]: Loading joint: Gonio_Right_Stage_2_Joint
+[gzserver-1] [INFO] [1686905152.881114279] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881125507] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881136358] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881146401] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881164243] [gazebo_ros2_control]: Loading joint: Camera_Calibration_Platelet_Joint
+[gzserver-1] [INFO] [1686905152.881176813] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881187359] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881198161] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881208567] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881243621] [gazebo_ros2_control]: Loading joint: Gonio_Left_Stage_1_Joint
+[gzserver-1] [INFO] [1686905152.881259448] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881269675] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881280125] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881290924] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881311873] [gazebo_ros2_control]: Loading joint: Gonio_Left_Stage_2_Joint
+[gzserver-1] [INFO] [1686905152.881331650] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881343407] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881355086] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881366138] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881382758] [gazebo_ros2_control]: Loading joint: UV_Slider_X_Front_Joint
+[gzserver-1] [INFO] [1686905152.881395414] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881406860] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881419454] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881431119] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881469300] [gazebo_ros2_control]: Loading joint: UV_LED_Front_Joint
+[gzserver-1] [INFO] [1686905152.881483744] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881495101] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881506751] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881518178] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881550943] [gazebo_ros2_control]: Loading joint: UV_Slider_X_Back_Joint
+[gzserver-1] [INFO] [1686905152.881563862] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881575803] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881587869] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881599226] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881634736] [gazebo_ros2_control]: Loading joint: UV_LED_Back_Joint
+[gzserver-1] [INFO] [1686905152.881648598] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881660015] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881671520] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881682730] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881714298] [gazebo_ros2_control]: Loading joint: Calibration_Qube_Joint
+[gzserver-1] [INFO] [1686905152.881727979] [gazebo_ros2_control]: 	State:
+[gzserver-1] [INFO] [1686905152.881739168] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881750459] [gazebo_ros2_control]: 	Command:
+[gzserver-1] [INFO] [1686905152.881761632] [gazebo_ros2_control]: 		 position
+[gzserver-1] [INFO] [1686905152.881915217] [resource_manager]: Initialize hardware 'GazeboSystem' 
+[gzserver-1] [INFO] [1686905152.882148249] [resource_manager]: Successful initialization of hardware 'GazeboSystem'
+[gzserver-1] [INFO] [1686905152.882327705] [resource_manager]: 'configure' hardware 'GazeboSystem' 
+[gzserver-1] [INFO] [1686905152.882341336] [resource_manager]: Successful 'configure' of hardware 'GazeboSystem'
+[gzserver-1] [INFO] [1686905152.882359612] [resource_manager]: 'activate' hardware 'GazeboSystem' 
+[gzserver-1] [INFO] [1686905152.882368112] [resource_manager]: Successful 'activate' of hardware 'GazeboSystem'
+[gzserver-1] [INFO] [1686905152.882479903] [gazebo_ros2_control]: Loading controller_manager
+[move_group-6] [INFO] [1686905152.915292293] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-6] [INFO] [1686905152.915622425] [moveit.ros_planning_interface.moveit_cpp]: Listening to 'joint_states' for joint states
+[move_group-6] [INFO] [1686905152.917463981] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-6] [INFO] [1686905152.918412219] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/attached_collision_object' for attached collision objects
+[move_group-6] [INFO] [1686905152.918454505] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[move_group-6] [INFO] [1686905152.919232104] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/planning_scene'
+[move_group-6] [INFO] [1686905152.919264201] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-6] [INFO] [1686905152.920151886] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-6] [INFO] [1686905152.920997314] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[move_group-6] [WARN] [1686905152.922938066] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[gzserver-1] [WARN] [1686905152.924624619] [gazebo_ros2_control]:  Desired controller update period (0.01 s) is slower than the gazebo simulation period (0.001 s).
+[gzserver-1] [INFO] [1686905152.925123443] [gazebo_ros2_control]: Loaded gazebo_ros2_control.
+[gzserver-1] [INFO] [1686905153.020614320] [controller_manager]: Loading controller 'pm_robot_JSB'
+[gzserver-1] [INFO] [1686905153.038504670] [controller_manager]: Setting use_sim_time=True for pm_robot_JSB to match controller manager (see ros2_control#325 for details)
+[spawner-7] [INFO] [1686905153.047670112] [spawner_pm_robot_JSB]: Loaded pm_robot_JSB
+[gzserver-1] [INFO] [1686905153.068902942] [controller_manager]: Loading controller 'pm_robot_gonio_left_JSB'
+[gzserver-1] [INFO] [1686905153.083167340] [controller_manager]: Setting use_sim_time=True for pm_robot_gonio_left_JSB to match controller manager (see ros2_control#325 for details)
+[spawner-8] [INFO] [1686905153.092236128] [spawner_pm_robot_gonio_left_JSB]: Loaded pm_robot_gonio_left_JSB
+[gzserver-1] [INFO] [1686905153.095682016] [controller_manager]: Configuring controller 'pm_robot_gonio_left_JSB'
+[gzserver-1] [INFO] [1686905153.096688555] [pm_robot_gonio_left_JSB]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[gzserver-1] [INFO] [1686905153.108938304] [controller_manager]: Loading controller 'pm_robot_gonio_right_JSB'
+[gzserver-1] [INFO] [1686905153.121604271] [controller_manager]: Setting use_sim_time=True for pm_robot_gonio_right_JSB to match controller manager (see ros2_control#325 for details)
+[spawner-9] [INFO] [1686905153.127701912] [spawner_pm_robot_gonio_right_JSB]: Loaded pm_robot_gonio_right_JSB
+[gzserver-1] [INFO] [1686905153.149820648] [controller_manager]: Configuring controller 'pm_robot_JSB'
+[spawner-8] [INFO] [1686905153.150681552] [spawner_pm_robot_gonio_left_JSB]: Configured and activated pm_robot_gonio_left_JSB
+[gzserver-1] [INFO] [1686905153.150803191] [pm_robot_JSB]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[gzserver-1] [INFO] [1686905153.153722118] [controller_manager]: Configuring controller 'pm_robot_gonio_right_JSB'
+[gzserver-1] [INFO] [1686905153.153811291] [pm_robot_gonio_right_JSB]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[spawner-7] [INFO] [1686905153.174499174] [spawner_pm_robot_JSB]: Configured and activated pm_robot_JSB
+[spawner-9] [INFO] [1686905153.194772092] [spawner_pm_robot_gonio_right_JSB]: Configured and activated pm_robot_gonio_right_JSB
+[INFO] [spawner-8]: process has finished cleanly [pid 20623]
+[INFO] [spawner-10]: process started with pid [20946]
+[INFO] [spawner-9]: process has finished cleanly [pid 20635]
+[INFO] [spawner-11]: process started with pid [20949]
+[INFO] [spawner-7]: process has finished cleanly [pid 20621]
+[INFO] [spawner-12]: process started with pid [20951]
+[INFO] [spawner-13]: process started with pid [20953]
+[INFO] [spawner-14]: process started with pid [20955]
+[gzserver-1] [INFO] [1686905154.396697730] [controller_manager]: Loading controller 'pm_robot_gonio_left_controller'
+[gzserver-1] [INFO] [1686905154.437861949] [controller_manager]: Setting use_sim_time=True for pm_robot_gonio_left_controller to match controller manager (see ros2_control#325 for details)
+[spawner-10] [INFO] [1686905154.480241057] [spawner_pm_robot_gonio_left_controller]: Loaded pm_robot_gonio_left_controller
+[gzserver-1] [INFO] [1686905154.485220436] [controller_manager]: Configuring controller 'pm_robot_gonio_left_controller'
+[gzserver-1] [INFO] [1686905154.485548740] [pm_robot_gonio_left_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[gzserver-1] [INFO] [1686905154.485618641] [pm_robot_gonio_left_controller]: Command interfaces are [position] and state interfaces are [position].
+[gzserver-1] [INFO] [1686905154.485696355] [pm_robot_gonio_left_controller]: Using 'splines' interpolation method.
+[gzserver-1] [INFO] [1686905154.487853002] [pm_robot_gonio_left_controller]: Controller state will be published at 220.00 Hz.
+[gzserver-1] [INFO] [1686905154.494084933] [pm_robot_gonio_left_controller]: Action status changes will be monitored at 20.00 Hz.
+[gzserver-1] [INFO] [1686905154.527338951] [controller_manager]: Loading controller 'pm_robot_gonio_right_controller'
+[spawner-10] [INFO] [1686905154.528921595] [spawner_pm_robot_gonio_left_controller]: Configured and activated pm_robot_gonio_left_controller
+[gzserver-1] [INFO] [1686905154.549921603] [controller_manager]: Setting use_sim_time=True for pm_robot_gonio_right_controller to match controller manager (see ros2_control#325 for details)
+[spawner-11] [INFO] [1686905154.553810771] [spawner_pm_robot_gonio_right_controller]: Loaded pm_robot_gonio_right_controller
+[gzserver-1] [INFO] [1686905154.556283661] [controller_manager]: Loading controller 'pm_robot_t_axis_controller'
+[gzserver-1] [INFO] [1686905154.583263988] [controller_manager]: Setting use_sim_time=True for pm_robot_t_axis_controller to match controller manager (see ros2_control#325 for details)
+[spawner-13] [INFO] [1686905154.587508390] [spawner_pm_robot_t_axis_controller]: Loaded pm_robot_t_axis_controller
+[gzserver-1] [INFO] [1686905154.599843130] [controller_manager]: Loading controller 'pm_robot_xyz_axis_controller'
+[gzserver-1] [INFO] [1686905154.632154878] [controller_manager]: Setting use_sim_time=True for pm_robot_xyz_axis_controller to match controller manager (see ros2_control#325 for details)
+[spawner-14] [INFO] [1686905154.639064079] [spawner_pm_robot_xyz_axis_controller]: Loaded pm_robot_xyz_axis_controller
+[gzserver-1] [INFO] [1686905154.642021599] [controller_manager]: Configuring controller 'pm_robot_xyz_axis_controller'
+[gzserver-1] [INFO] [1686905154.642378741] [pm_robot_xyz_axis_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[gzserver-1] [INFO] [1686905154.642462113] [pm_robot_xyz_axis_controller]: Command interfaces are [position] and state interfaces are [position velocity].
+[gzserver-1] [INFO] [1686905154.642486759] [pm_robot_xyz_axis_controller]: Using 'splines' interpolation method.
+[gzserver-1] [INFO] [1686905154.643766919] [pm_robot_xyz_axis_controller]: Controller state will be published at 50.00 Hz.
+[gzserver-1] [INFO] [1686905154.646274760] [pm_robot_xyz_axis_controller]: Action status changes will be monitored at 20.00 Hz.
+[gzserver-1] [INFO] [1686905154.656229475] [controller_manager]: Loading controller 'pm_robot_IO_Axis_controller'
+[gzserver-1] [INFO] [1686905154.683763849] [controller_manager]: Setting use_sim_time=True for pm_robot_IO_Axis_controller to match controller manager (see ros2_control#325 for details)
+[gzserver-1] [INFO] [1686905154.689263341] [controller_manager]: Configuring controller 'pm_robot_gonio_right_controller'
+[gzserver-1] [INFO] [1686905154.689994312] [pm_robot_gonio_right_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[gzserver-1] [INFO] [1686905154.690061324] [pm_robot_gonio_right_controller]: Command interfaces are [position] and state interfaces are [position].
+[gzserver-1] [INFO] [1686905154.690080528] [pm_robot_gonio_right_controller]: Using 'splines' interpolation method.
+[gzserver-1] [INFO] [1686905154.691666569] [pm_robot_gonio_right_controller]: Controller state will be published at 220.00 Hz.
+[gzserver-1] [INFO] [1686905154.694668454] [pm_robot_gonio_right_controller]: Action status changes will be monitored at 20.00 Hz.
+[gzserver-1] [INFO] [1686905154.704499308] [controller_manager]: Configuring controller 'pm_robot_t_axis_controller'
+[gzserver-1] [INFO] [1686905154.704633902] [pm_robot_t_axis_controller]: No specific joint names are used for command interfaces. Using 'joints' parameter.
+[gzserver-1] [INFO] [1686905154.704677887] [pm_robot_t_axis_controller]: Command interfaces are [position] and state interfaces are [position velocity].
+[gzserver-1] [INFO] [1686905154.704694683] [pm_robot_t_axis_controller]: Using 'splines' interpolation method.
+[gzserver-1] [INFO] [1686905154.707777409] [pm_robot_t_axis_controller]: Controller state will be published at 50.00 Hz.
+[gzserver-1] [INFO] [1686905154.711183977] [pm_robot_t_axis_controller]: Action status changes will be monitored at 20.00 Hz.
+[spawner-12] [INFO] [1686905154.713043753] [spawner_pm_robot_IO_Axis_controller]: Loaded pm_robot_IO_Axis_controller
+[gzserver-1] [INFO] [1686905154.739441082] [controller_manager]: Configuring controller 'pm_robot_IO_Axis_controller'
+[spawner-14] [INFO] [1686905154.740132335] [spawner_pm_robot_xyz_axis_controller]: Configured and activated pm_robot_xyz_axis_controller
+[gzserver-1] [INFO] [1686905154.742894827] [pm_robot_IO_Axis_controller]: configure successful
+[spawner-11] [INFO] [1686905154.761738321] [spawner_pm_robot_gonio_right_controller]: Configured and activated pm_robot_gonio_right_controller
+[INFO] [spawner-10]: process has finished cleanly [pid 20946]
+[spawner-13] [INFO] [1686905154.789400669] [spawner_pm_robot_t_axis_controller]: Configured and activated pm_robot_t_axis_controller
+[gzserver-1] [INFO] [1686905154.805729870] [pm_robot_IO_Axis_controller]: activate successful
+[spawner-12] [INFO] [1686905154.826900146] [spawner_pm_robot_IO_Axis_controller]: Configured and activated pm_robot_IO_Axis_controller
+[INFO] [spawner-14]: process has finished cleanly [pid 20955]
+[INFO] [spawner-13]: process has finished cleanly [pid 20953]
+[INFO] [spawner-11]: process has finished cleanly [pid 20949]
+[INFO] [spawner-12]: process has finished cleanly [pid 20951]
+[rviz2-5] [INFO] [1686905158.625283334] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[rviz2-5] [INFO] [1686905158.626065688] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/monitored_planning_scene'
+[rviz2-5] [ERROR] [1686905160.776952061] [rviz2]: The link is static or has unrealistic inertia, so the equivalent inertia box will not be shown.
+[rviz2-5] 
+[rviz2-5] [ERROR] [1686905160.955856541] [rviz2]: The link is static or has unrealistic inertia, so the equivalent inertia box will not be shown.
+[rviz2-5] 
+[rviz2-5] [INFO] [1686905160.968323123] [interactive_marker_display_94670447112816]: Connected on namespace: /rviz_moveit_motion_planning_display/robot_interaction_interactive_marker_topic
+[rviz2-5] [ERROR] [1686905160.997284119] [rviz2]: The link is static or has unrealistic inertia, so the equivalent inertia box will not be shown.
+[rviz2-5] 
+[rviz2-5] [ERROR] [1686905161.032985277] [rviz2]: The link is static or has unrealistic inertia, so the equivalent inertia box will not be shown.
+[rviz2-5] 
+[rviz2-5] [INFO] [1686905161.083525833] [interactive_marker_display_94670447112816]: Sending request for interactive markers
+[rviz2-5] [INFO] [1686905161.117988370] [interactive_marker_display_94670447112816]: Service response received for initialization
+[rviz2-5] [INFO] [1686905166.051620933] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Failed to call service get_planning_scene, have you launched move_group or called psm.providePlanningSceneService()?
+[rviz2-5] [INFO] [1686905166.051781018] [moveit_ros_visualization.motion_planning_frame]: group PM_Robot_Cam1_TCP
+[rviz2-5] [INFO] [1686905166.051790233] [moveit_ros_visualization.motion_planning_frame]: Constructing new MoveGroup connection for group 'PM_Robot_Cam1_TCP' in namespace ''
+[move_group-6] [INFO] [1686905167.779236290] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'ompl'
+[move_group-6] [INFO] [1686905167.803131939] [moveit.ros_planning.planning_pipeline]: Using planning interface 'OMPL'
+[move_group-6] [INFO] [1686905167.808091885] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.path_tolerance' was not set. Using default value: 0.100000
+[move_group-6] [INFO] [1686905167.808129407] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.resample_dt' was not set. Using default value: 0.100000
+[move_group-6] [INFO] [1686905167.808135725] [moveit_ros.add_time_optimal_parameterization]: Param 'ompl.min_angle_change' was not set. Using default value: 0.001000
+[move_group-6] [INFO] [1686905167.808196903] [moveit_ros.fix_workspace_bounds]: Param 'ompl.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-6] [INFO] [1686905167.808221846] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_bounds_error' was set to 0.100000
+[move_group-6] [INFO] [1686905167.808232041] [moveit_ros.fix_start_state_bounds]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-6] [INFO] [1686905167.808256736] [moveit_ros.fix_start_state_collision]: Param 'ompl.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-6] [INFO] [1686905167.808265202] [moveit_ros.fix_start_state_collision]: Param 'ompl.jiggle_fraction' was not set. Using default value: 0.020000
+[move_group-6] [INFO] [1686905167.808296705] [moveit_ros.fix_start_state_collision]: Param 'ompl.max_sampling_attempts' was not set. Using default value: 100
+[move_group-6] [INFO] [1686905167.808316769] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-6] [INFO] [1686905167.808325225] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Resolve constraint frames to robot links'
+[move_group-6] [INFO] [1686905167.808330752] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-6] [INFO] [1686905167.808336104] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-6] [INFO] [1686905167.808341479] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-6] [INFO] [1686905167.808347163] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-6] [INFO] [1686905167.812594761] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'chomp'
+[move_group-6] [INFO] [1686905167.818933377] [moveit.ros_planning.planning_pipeline]: Using planning interface 'CHOMP'
+[move_group-6] [INFO] [1686905167.822023361] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.path_tolerance' was not set. Using default value: 0.100000
+[move_group-6] [INFO] [1686905167.822053382] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.resample_dt' was not set. Using default value: 0.100000
+[move_group-6] [INFO] [1686905167.822060831] [moveit_ros.add_time_optimal_parameterization]: Param 'chomp.min_angle_change' was not set. Using default value: 0.001000
+[move_group-6] [INFO] [1686905167.822084563] [moveit_ros.fix_workspace_bounds]: Param 'chomp.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-6] [INFO] [1686905167.822108247] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_bounds_error' was set to 0.100000
+[move_group-6] [INFO] [1686905167.822116570] [moveit_ros.fix_start_state_bounds]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-6] [INFO] [1686905167.822136423] [moveit_ros.fix_start_state_collision]: Param 'chomp.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-6] [INFO] [1686905167.822142734] [moveit_ros.fix_start_state_collision]: Param 'chomp.jiggle_fraction' was not set. Using default value: 0.020000
+[move_group-6] [INFO] [1686905167.822148530] [moveit_ros.fix_start_state_collision]: Param 'chomp.max_sampling_attempts' was not set. Using default value: 100
+[move_group-6] [INFO] [1686905167.822162927] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Add Time Optimal Parameterization'
+[move_group-6] [INFO] [1686905167.822168517] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-6] [INFO] [1686905167.822172721] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-6] [INFO] [1686905167.822177250] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-6] [INFO] [1686905167.822181836] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-6] [INFO] [1686905167.823216854] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'pilz_industrial_motion_planner'
+[move_group-6] [INFO] [1686905167.828641593] [moveit.pilz_industrial_motion_planner.joint_limits_aggregator]: Reading limits from namespace robot_description_planning
+[move_group-6] [INFO] [1686905167.848861359] [moveit.pilz_industrial_motion_planner]: Available plugins: pilz_industrial_motion_planner/PlanningContextLoaderCIRC pilz_industrial_motion_planner/PlanningContextLoaderLIN pilz_industrial_motion_planner/PlanningContextLoaderPTP 
+[move_group-6] [INFO] [1686905167.848896507] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderCIRC
+[move_group-6] [INFO] [1686905167.851057666] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [CIRC]
+[move_group-6] [INFO] [1686905167.851103408] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderLIN
+[move_group-6] [INFO] [1686905167.852867377] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [LIN]
+[move_group-6] [INFO] [1686905167.852904632] [moveit.pilz_industrial_motion_planner]: About to load: pilz_industrial_motion_planner/PlanningContextLoaderPTP
+[move_group-6] [INFO] [1686905167.854505147] [moveit.pilz_industrial_motion_planner]: Registered Algorithm [PTP]
+[move_group-6] [INFO] [1686905167.854575853] [moveit.ros_planning.planning_pipeline]: Using planning interface 'Pilz Industrial Motion Planner'
+[move_group-6] [INFO] [1686905167.859288679] [moveit_ros.fix_workspace_bounds]: Param 'pilz_industrial_motion_planner.default_workspace_bounds' was not set. Using default value: 10.000000
+[move_group-6] [INFO] [1686905167.859338815] [moveit_ros.fix_start_state_bounds]: Param 'pilz_industrial_motion_planner.start_state_max_bounds_error' was not set. Using default value: 0.050000
+[move_group-6] [INFO] [1686905167.859345491] [moveit_ros.fix_start_state_bounds]: Param 'pilz_industrial_motion_planner.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-6] [INFO] [1686905167.859360725] [moveit_ros.fix_start_state_collision]: Param 'pilz_industrial_motion_planner.start_state_max_dt' was not set. Using default value: 0.500000
+[move_group-6] [INFO] [1686905167.859366168] [moveit_ros.fix_start_state_collision]: Param 'pilz_industrial_motion_planner.jiggle_fraction' was not set. Using default value: 0.020000
+[move_group-6] [INFO] [1686905167.859397174] [moveit_ros.fix_start_state_collision]: Param 'pilz_industrial_motion_planner.max_sampling_attempts' was not set. Using default value: 100
+[move_group-6] [INFO] [1686905167.859413178] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Workspace Bounds'
+[move_group-6] [INFO] [1686905167.859418925] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Bounds'
+[move_group-6] [INFO] [1686905167.859422512] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State In Collision'
+[move_group-6] [INFO] [1686905167.859426148] [moveit.ros_planning.planning_pipeline]: Using planning request adapter 'Fix Start State Path Constraints'
+[move_group-6] [INFO] [1686905167.927067245] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for pm_robot_t_axis_controller
+[move_group-6] [INFO] [1686905167.930117160] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for pm_robot_xyz_axis_controller
+[move_group-6] [INFO] [1686905167.930382942] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-6] [INFO] [1686905167.930450362] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-6] [INFO] [1686905167.931040784] [moveit_ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-6] [INFO] [1686905167.931065574] [move_group.move_group]: MoveGroup debug mode is ON
+[move_group-6] [INFO] [1686905167.957947747] [move_group.move_group]: 
+[move_group-6] 
+[move_group-6] ********************************************************
+[move_group-6] * MoveGroup using: 
+[move_group-6] *     - ApplyPlanningSceneService
+[move_group-6] *     - ClearOctomapService
+[move_group-6] *     - CartesianPathService
+[move_group-6] *     - ExecuteTrajectoryAction
+[move_group-6] *     - GetPlanningSceneService
+[move_group-6] *     - KinematicsService
+[move_group-6] *     - MoveAction
+[move_group-6] *     - MotionPlanService
+[move_group-6] *     - QueryPlannersService
+[move_group-6] *     - StateValidationService
+[move_group-6] ********************************************************
+[move_group-6] 
+[move_group-6] [INFO] [1686905167.958040727] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context using planning plugin ompl_interface/OMPLPlanner
+[move_group-6] [INFO] [1686905167.958053008] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context initialization complete
+[move_group-6] Loading 'move_group/ApplyPlanningSceneService'...
+[move_group-6] Loading 'move_group/ClearOctomapService'...
+[move_group-6] Loading 'move_group/MoveGroupCartesianPathService'...
+[move_group-6] Loading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-6] Loading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-6] Loading 'move_group/MoveGroupKinematicsService'...
+[move_group-6] Loading 'move_group/MoveGroupMoveAction'...
+[move_group-6] Loading 'move_group/MoveGroupPlanService'...
+[move_group-6] Loading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-6] Loading 'move_group/MoveGroupStateValidationService'...
+[move_group-6] 
+[move_group-6] You can start planning now!
+[move_group-6] 
+[rviz2-5] [INFO] [1686905167.969820418] [move_group_interface]: Ready to take commands for planning group PM_Robot_Cam1_TCP.
+[rviz2-5] [INFO] [1686905167.971560408] [moveit_ros_visualization.motion_planning_frame]: group PM_Robot_Cam1_TCP
+[move_group-6] [INFO] [1686905176.167884501] [moveit_move_group_default_capabilities.move_action_capability]: Received request
+[rviz2-5] [INFO] [1686905176.168314799] [move_group_interface]: Plan and Execute request accepted
+[move_group-6] [INFO] [1686905176.168336615] [moveit_move_group_default_capabilities.move_action_capability]: executing..
+[move_group-6] [INFO] [1686905176.168556824] [moveit_move_group_default_capabilities.move_action_capability]: Combined planning and execution request received for MoveGroup action. Forwarding to planning and execution pipeline.
+[move_group-6] [INFO] [1686905176.168750334] [moveit_ros.plan_execution]: Planning attempt 1 of at most 1
+[move_group-6] [INFO] [1686905176.168783657] [moveit_move_group_capabilities_base.move_group_capability]: Using planning pipeline 'ompl'
+[move_group-6] [INFO] [1686905176.170195208] [moveit.ompl_planning.model_based_planning_context]: Planner configuration 'PM_Robot_Cam1_TCP' will use planner 'geometric::RRTConnect'. Additional configuration parameters will be set when the planner is constructed.
+[move_group-6] [WARN] [1686905176.261899084] [moveit_trajectory_processing.time_optimal_trajectory_generation]: Joint acceleration limits are not defined. Using the default 1 rad/s^2. You can define acceleration limits in the URDF or joint_limits.yaml.
+[move_group-6] [INFO] [1686905176.263923323] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-6] [INFO] [1686905176.263966774] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-6] [INFO] [1686905176.264042464] [moveit_ros.trajectory_execution_manager]: Validating trajectory with allowed_start_tolerance 0.01
+[move_group-6] [INFO] [1686905176.264107763] [moveit_ros.trajectory_execution_manager]: Starting trajectory execution ...
+[move_group-6] [INFO] [1686905176.264144007] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-6] [INFO] [1686905176.264184443] [moveit.plugins.moveit_simple_controller_manager]: Returned 2 controllers in list
+[move_group-6] [INFO] [1686905176.264398766] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: sending trajectory to pm_robot_xyz_axis_controller
+[gzserver-1] [INFO] [1686905176.265007963] [pm_robot_xyz_axis_controller]: Received new action goal
+[gzserver-1] [INFO] [1686905176.265139982] [pm_robot_xyz_axis_controller]: Accepted new action goal
+[move_group-6] [INFO] [1686905176.265368129] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: pm_robot_xyz_axis_controller started execution
+[move_group-6] [INFO] [1686905176.265407720] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: Goal request accepted!
+[gzserver-1] [INFO] [1686905177.222981562] [pm_robot_xyz_axis_controller]: Goal reached, success!
+[move_group-6] [INFO] [1686905177.266240637] [moveit.simple_controller_manager.follow_joint_trajectory_controller_handle]: Controller 'pm_robot_xyz_axis_controller' successfully finished
+[move_group-6] [INFO] [1686905177.266376427] [moveit_ros.trajectory_execution_manager]: Completed trajectory execution with status SUCCEEDED ...
+[move_group-6] [INFO] [1686905177.274303027] [moveit_move_group_default_capabilities.move_action_capability]: Solution was found and executed.
+[rviz2-5] [INFO] [1686905177.275568692] [move_group_interface]: Plan and Execute request complete!
+[rviz2-5] [WARN] [1686905177.955823727] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Maybe failed to update robot state, time diff: 1686905152.709s
+
+
+
+
+
+
+
+

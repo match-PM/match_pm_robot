@@ -1,0 +1,459 @@
+mll@mll-desktop:~/ws_moveit2$ ros2 run moveit_tests pm_moveit_tests
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_1_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Jaw_2_changeable' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Gripper_MPG_10_Body' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 594 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+Warning: Link 'Tool_Schunk_SPT_Toolholder' is not known to URDF. Cannot disable/enable collisons.
+         at line 589 in /home/mll/ws_moveit2/src/srdfdom/src/model.cpp
+[INFO] [1686905420.501379161] [moveit_rdf_loader.rdf_loader]: Loaded robot model in -1.68691e+09 seconds
+[INFO] [1686905420.501479980] [moveit_robot_model.robot_model]: Loading robot model 'pm_robot'...
+[WARN] [1686905421.744682122] [moveit_ros.robot_model_loader]: No kinematics plugins defined. Fill and load kinematics.yaml!
+[INFO] [1686905421.762348683] [move_group_interface]: Ready to take commands for planning group PM_Robot_Cam1_TCP.
+[INFO] [1686905421.762397312] [hello_moveit]: test
+[INFO] [1686905421.763140306] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[WARN] [1686905421.770783907] [hello_moveit]: Joint X_Axis_Joint: -0.400000
+[WARN] [1686905421.770824669] [hello_moveit]: Joint Y_Axis_Joint: -0.100000
+[WARN] [1686905421.770833818] [hello_moveit]: Joint Z_Axis_Joint: -0.000000
+[INFO] [1686905421.770840618] [hello_moveit]: Planning frame: world
+[INFO] [1686905421.770847266] [hello_moveit]: End effector link: Cam1_Toolhead_TCP
+[INFO] [1686905421.770854652] [hello_moveit]: Pose Reference Frame: world
+[INFO] [1686905421.770882230] [hello_moveit]: Planer ID: 
+[INFO] [1686905421.770891220] [hello_moveit]: Goal Position Tolerance: 0.000100
+[INFO] [1686905421.770898634] [hello_moveit]: Available Planning Groups:
+[WARN] [1686905421.770960857] [hello_moveit]: Current Pose
+[WARN] [1686905421.770969041] [hello_moveit]: Endeffector Pose: 0.400000
+[WARN] [1686905421.770977726] [hello_moveit]: Endeffector Pose: 0.351100
+[WARN] [1686905421.770986179] [hello_moveit]: Endeffector Pose: 1.334661
+[WARN] [1686905421.770993500] [hello_moveit]: Endeffector Orientation: 1.000000
+[WARN] [1686905421.771000915] [hello_moveit]: Changed State
+[WARN] [1686905421.771006671] [hello_moveit]: Endeffector Pose: 0.399900
+[WARN] [1686905421.771013569] [hello_moveit]: Endeffector Pose: 0.351100
+[WARN] [1686905421.771021130] [hello_moveit]: Endeffector Pose: 1.334661
+[WARN] [1686905421.771028277] [hello_moveit]: Endeffector Orientation: 1.000000
+[WARN] [1686905421.771110172] [hello_moveit]: Random Endeffector Pose
+[WARN] [1686905421.771118009] [hello_moveit]: Rand Endeffector Pose: 0.366681
+[WARN] [1686905421.771124934] [hello_moveit]: Rand Endeffector Pose: 0.377092
+[WARN] [1686905421.771132689] [hello_moveit]: Rand Endeffector Pose: 1.282965
+[WARN] [1686905421.771138922] [hello_moveit]: Rand Endeffector Orientation: 1.000000
+[INFO] [1686905421.771146127] [hello_moveit]: state received!
+[INFO] [1686905421.771152504] [hello_moveit]: 
+PM_Robot_Cam1_TCP, PM_Robot_Tool_TCP,    -0.74500	---------|---------- 	0.05500  	X_Axis_Joint current: -0.40000
+   -0.13400	------|-------------- 	-0.01970  	Y_Axis_Joint current: -0.10000
+   -0.05262	----------|---------- 	0.05500  	Z_Axis_Joint current: -0.00000
+[INFO] [1686905421.771194766] [hello_moveit]: Current state is valid
+[INFO] [1686905421.771215718] [hello_moveit]: Target Pose is 1
+[INFO] [1686905421.771343038] [move_group_interface]: MoveGroup action client/server ready
+[INFO] [1686905421.772191519] [move_group_interface]: Planning request accepted
+[INFO] [1686905431.835207220] [move_group_interface]: Planning request aborted
+[ERROR] [1686905431.835274087] [move_group_interface]: MoveGroupInterface::plan() failed or timeout reached
+[INFO] [1686905431.835313779] [hello_moveit]: Visualizing plan 1 (pose goal) FAILED
+[ERROR] [1686905431.835323226] [hello_moveit]: Planing failed!
+
+
+
+
+
