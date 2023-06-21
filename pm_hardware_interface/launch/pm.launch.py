@@ -20,13 +20,17 @@ def generate_launch_description():
                 ]
             ),
             " ",
-            "sim_mode:=false",
+            "launch_mode:=real_HW",
         ]
     )
     robot_description = {"robot_description": robot_description_content}
 
     robot_controllers = PathJoinSubstitution(
-        [FindPackageShare("pm_robot_description"), "config", "pm_robot_control_realHW.yaml"]
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_real_HW.yaml",
+        ]
     )
 
     control_node = Node(
@@ -43,61 +47,20 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
-    joint_state_broadcaster_spawner = Node(
+    pm_gpio_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "joint_state_broadcaster",
+            "pm_gpio_controller",
             "--controller-manager",
             "/controller_manager",
         ],
     )
 
-    # robot_controller_spawner = Node(
-    #     package="controller_manager",
-    #     executable="spawner",
-    #     arguments=[
-    #         "joint_trajectory_controller",
-    #         "--controller-manager",
-    #         "/controller_manager",
-    #     ],
-    # )
-
-    robot_controller_forward_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=[
-            "forward_position_controller",
-        ],
-    )
-
-    # rviz_config = PathJoinSubstitution(
-    #     [FindPackageShare("pm_robot_description"), "rviz", "config.rviz"]
-    # )
-
-    # rviz_node = Node(
-    #     package="rviz2",
-    #     executable="rviz2",
-    #     name="rviz2",
-    #     arguments=["-d", rviz_config],
-    #     output="log",
-    # )
-
-    # delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
-    #     event_handler=OnProcessExit(
-    #         target_action=joint_state_broadcaster_spawner,
-    #         on_exit=[rviz_node],
-    #     )
-    # )
-
     return LaunchDescription(
         [
             control_node,
-            joint_state_broadcaster_spawner,
+            pm_gpio_controller_spawner,
             robot_state_pub_node,
-            # robot_controller_spawner,
-            robot_controller_forward_spawner
-            # robot_controller_forward_spawner,
-            # delay_rviz_after_joint_state_broadcaster_spawner,
         ]
     )

@@ -117,6 +117,24 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
         ros_axis.acceleration = increments_to_meters(*pm_axis, pm_axis->get_acceleration());
     }
 
+    m_camera1_coax_light = static_cast<double>(robot->camera1->get_coax_light());
+
+    bool segments[4] = {0};
+    robot->camera1->get_ring_light(segments[0], segments[1], segments[2], segments[3]);
+    for (std::size_t i = 0; i < 4; i++)
+    {
+        m_camera1_ring_light[i] = static_cast<double>(segments[i]);
+    }
+
+    int rgb[3] = {0};
+    robot->camera1->get_ring_light_color(rgb[0], rgb[1], rgb[2]);
+    for (std::size_t i = 0; i < 4; i++)
+    {
+        m_camera1_ring_light_rgb[i] = static_cast<double>(rgb[i]);
+    }
+
+    m_camera2_light = static_cast<double>(robot->camera2->get_light());
+
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "Successfully activated PMSystem.");
     return CallbackReturn::SUCCESS;
 }
@@ -379,10 +397,10 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     }
 
     int rgb[3] = {0};
-    robot->camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
+    robot->camera1->get_ring_light_color(rgb[0], rgb[1], rgb[2]);
     for (std::size_t i = 0; i < 4; i++)
     {
-        m_camera1_ring_light[i] = static_cast<double>(rgb[i]);
+        m_camera1_ring_light_rgb[i] = static_cast<double>(rgb[i]);
     }
 
     m_camera2_light = static_cast<double>(robot->camera2->get_light());
@@ -433,6 +451,18 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
         rgb[i] = static_cast<int>(m_camera1_ring_light_rgb[i]);
     }
     robot->camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
+
+    RCLCPP_INFO(
+        rclcpp::get_logger("PMSystem"),
+        "Lights %d %d %d %d, Color %d %d %d",
+        segments[0],
+        segments[1],
+        segments[2],
+        segments[3],
+        rgb[0],
+        rgb[1],
+        rgb[2]
+    );
 
     robot->camera2->set_light(static_cast<int>(m_camera2_light));
 

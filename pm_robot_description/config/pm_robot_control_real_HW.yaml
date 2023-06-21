@@ -1,7 +1,7 @@
 controller_manager:
   ros__parameters:
     update_rate: 100
-    use_sim_time: false
+    # use_sim_time: false
 
     # pm_robot_IO_Axis_controller:
     #  type: position_controllers/JointGroupPositionController
@@ -12,9 +12,11 @@ controller_manager:
     pm_robot_t_axis_controller:
       type: position_controllers/JointGroupPositionController
 
+    pm_gpio_controller:
+      type: pm_gpio_controller/PMGpioController
+
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
-
 
 # pm_robot_IO_Axis_controller:
 #   ros__parameters:
@@ -31,6 +33,9 @@ controller_manager:
 #       # - UV_Module_Right_Joint
 
 #     interface_name: position
+
+pm_gpio_controller:
+  ros__parameters: {}
 
 pm_robot_t_axis_controller:
   ros__parameters:

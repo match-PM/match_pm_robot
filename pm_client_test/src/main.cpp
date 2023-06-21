@@ -14,5 +14,6 @@ int main()
     robot->camera1->get_ring_light_color(r, g, b);
     std::cout << "Ring Light RGB: " << r << ' ' << g << ' ' << b << '\n';
 
-    robot->camera1->set_ring_light_color(0, g, b);
+    robot->camera1->set_ring_light_color(100, 100, 100);
+    robot->camera1->set_ring_light(true, false, false, false);
 }

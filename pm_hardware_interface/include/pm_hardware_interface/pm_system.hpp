@@ -44,10 +44,10 @@ class PMSystem : public hardware_interface::SystemInterface
 
     AxisState m_x_axis, m_y_axis, m_z_axis, m_t_axis;
 
-    double m_camera1_coax_light = 0.0;
-    double m_camera1_ring_light[4] = {0.0, 0.0, 0.0, 0.0};
-    double m_camera1_ring_light_rgb[3] = {0.0, 0.0, 0.0};
-    double m_camera2_light = 0.0;
+    double m_camera1_coax_light;
+    double m_camera1_ring_light[4];
+    double m_camera1_ring_light_rgb[3];
+    double m_camera2_light;
 
   public:
     PMSystem();
