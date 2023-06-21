@@ -41,7 +41,7 @@ void Camera1::set_ring_light(bool segment1, bool segment2, bool segment3, bool s
     m_client->write_node_values<bool, 4>(this->ring_light, data);
 }
 
-void Camera1::get_right_light(bool &segment1, bool &segment2, bool &segment3, bool &segment4) const
+void Camera1::get_ring_light(bool &segment1, bool &segment2, bool &segment3, bool &segment4) const
 {
     std::array<bool, 4> data = m_client->read_node_values<bool, 4>(this->ring_light);
     segment1 = data[0];

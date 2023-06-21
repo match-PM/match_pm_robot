@@ -29,7 +29,7 @@ class Camera1
 
     void set_ring_light(bool segment1, bool segment2, bool segment3, bool segment4);
 
-    void get_right_light(bool &segment1, bool &segment2, bool &segment3, bool &segment4) const;
+    void get_ring_light(bool &segment1, bool &segment2, bool &segment3, bool &segment4) const;
 
     void set_ring_light_color(int red, int green, int blue);
 
