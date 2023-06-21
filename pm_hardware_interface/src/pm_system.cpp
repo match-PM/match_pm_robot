@@ -209,6 +209,42 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
         StateInterface("T_Axis_Joint", hardware_interface::HW_IF_VELOCITY, &m_z_axis.velocity)
     );
 
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Coax_Light", "On_Off", &m_camera1_coax_light)
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Ring_Light", "1_On_Off", &m_camera1_ring_light[0])
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Ring_Light", "2_On_Off", &m_camera1_ring_light[1])
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Ring_Light", "3_On_Off", &m_camera1_ring_light[2])
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Ring_Light", "4_On_Off", &m_camera1_ring_light[3])
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Ring_Light", "Red", &m_camera1_ring_light_rgb[0])
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Ring_Light", "Green", &m_camera1_ring_light_rgb[1])
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb[2])
+    );
+
+    state_interfaces.emplace_back(
+        StateInterface("Camera2_Light", "Intensity", &m_camera1_coax_light)
+    );
+
     return state_interfaces;
 }
 
@@ -272,6 +308,42 @@ std::vector<CommandInterface> PMSystem::export_command_interfaces()
         &m_t_axis.acceleration
     ));
 
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Coax_Light", "On_Off", &m_camera1_coax_light)
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Ring_Light", "1_On_Off", &m_camera1_ring_light[0])
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Ring_Light", "2_On_Off", &m_camera1_ring_light[1])
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Ring_Light", "3_On_Off", &m_camera1_ring_light[2])
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Ring_Light", "4_On_Off", &m_camera1_ring_light[3])
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Ring_Light", "Red", &m_camera1_ring_light_rgb[0])
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Ring_Light", "Green", &m_camera1_ring_light_rgb[1])
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb[2])
+    );
+
+    command_interfaces.emplace_back(
+        CommandInterface("Camera2_Light", "Intensity", &m_camera1_coax_light)
+    );
+
     return command_interfaces;
 }
 
@@ -296,6 +368,24 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
         ros_axis.current_position = increments_to_meters(*pm_axis, pm_axis->get_position());
         ros_axis.velocity = increments_to_meters(*pm_axis, pm_axis->get_speed());
     }
+
+    m_camera1_coax_light = static_cast<double>(robot->camera1->get_coax_light());
+
+    bool segments[4] = {0};
+    robot->camera1->get_ring_light(segments[0], segments[1], segments[2], segments[3]);
+    for (std::size_t i = 0; i < 4; i++)
+    {
+        m_camera1_ring_light[i] = static_cast<double>(segments[i]);
+    }
+
+    int rgb[3] = {0};
+    robot->camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
+    for (std::size_t i = 0; i < 4; i++)
+    {
+        m_camera1_ring_light[i] = static_cast<double>(rgb[i]);
+    }
+
+    m_camera2_light = static_cast<double>(robot->camera2->get_light());
 
     return hardware_interface::return_type::OK;
 }
@@ -327,6 +417,24 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
         // pm_axis->set_speed(meters_to_increments(*pm_axis, ros_axis.velocity));
         // pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
     }
+
+    robot->camera1->set_coax_light(static_cast<bool>(m_camera1_coax_light));
+
+    bool segments[4] = {0};
+    for (std::size_t i = 0; i < 4; i++)
+    {
+        segments[i] = static_cast<bool>(m_camera1_ring_light[i]);
+    }
+    robot->camera1->set_ring_light(segments[0], segments[1], segments[2], segments[3]);
+
+    int rgb[3] = {0};
+    for (std::size_t i = 0; i < 4; i++)
+    {
+        rgb[i] = static_cast<int>(m_camera1_ring_light_rgb[i]);
+    }
+    robot->camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
+
+    robot->camera2->set_light(static_cast<int>(m_camera2_light));
 
     return hardware_interface::return_type::OK;
 }
