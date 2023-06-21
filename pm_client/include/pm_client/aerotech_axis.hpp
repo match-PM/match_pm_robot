@@ -7,10 +7,6 @@
 namespace PMClient
 {
 
-static_assert(sizeof(bool) == sizeof(UA_Boolean));
-static_assert(sizeof(int) == sizeof(UA_Int32));
-static_assert(sizeof(double) == sizeof(UA_Double));
-
 class Client;
 
 /**
