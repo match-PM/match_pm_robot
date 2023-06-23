@@ -27,7 +27,9 @@ setup(
                 'pm_robot_send_target = \
                     pm_robot_control_test.pm_robot_send_target:main',
                 'pm_robot_save_urdf = \
-                    pm_robot_control_test.save_urdf:main'
+                    pm_robot_control_test.save_urdf:main',
+                'pm_robot_light_control = \
+                    pm_robot_control_test.pm_robot_light_control:main'                    
         ],
     },
 )

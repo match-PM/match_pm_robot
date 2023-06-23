@@ -39,8 +39,8 @@ def generate_launch_description():
                                 'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
                                 'with_Gonio_Right':               'true',
                                 'with_Gonio_Left':                'true',
-                                'with_Tool_SPT_Holder':           'false',
-                                'with_SPT_R_A1000_I500':          'false',
+                                'with_Tool_SPT_Holder':           'true',
+                                'with_SPT_R_A1000_I500':          'true',
                               }
     
     sim_time = True
@@ -211,7 +211,7 @@ def generate_launch_description():
     # Define Launch Description
     ld = LaunchDescription()
 
-    #ld.add_action(declare_world)
+    ld.add_action(declare_world)
     if (str(pm_robot_configuration['launch_mode']) == 'sim_HW'):
         ld.add_action(gazebo)
         ld.add_action(spawn_entity)

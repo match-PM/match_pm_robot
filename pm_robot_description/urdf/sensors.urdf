@@ -78,8 +78,8 @@
           <format>L8</format>
         </image>
         <clip>
-          <near>1.09</near>
-          <far>1.13</far>
+          <near>0.9</near>
+          <far>2.13</far>
         </clip>
         <!-- <lens>
           <type>orthographic</type>

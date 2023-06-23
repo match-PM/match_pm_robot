@@ -40,10 +40,11 @@
             
             <!-- <plugin name="my_model_plugin" filename="liblight_move_model_plugin.so"/> -->
             <plugin name="light_control" filename="libLedPlugin.so">
+                <!-- <enable>true</enable> -->
                 <light>
                     <id>light_bottom/light_camera_bottom</id>
-                    <!-- <duration>2.5</duration>
-                    <interval>2.5</interval> -->
+                    <duration>2.5</duration>
+                    <interval>0</interval>
                 </light>
             </plugin>
         </model>        

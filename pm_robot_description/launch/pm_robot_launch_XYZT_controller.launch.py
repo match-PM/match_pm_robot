@@ -63,7 +63,7 @@ def generate_launch_description():
     # Delay start of robot_controller after `joint_state_broadcaster`
     delay_Spawn_pm_robot_t_axis_JTC = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=Spawn_pm_robot_broadcaster,
+            target_action=Spawn_pm_robot_xyz_axis_controller,
             on_exit=[Spawn_pm_robot_t_axis_controller],
         )
     )
@@ -71,7 +71,7 @@ def generate_launch_description():
     # Delay start of robot_controller after `joint_state_broadcaster`
     delay_robot_controller_spawner_after_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=Spawn_pm_robot_broadcaster,
+            target_action=Spawn_pm_robot_t_axis_controller,
             on_exit=[Spawn_pm_robot_io_axis_controller],
         )
     )
