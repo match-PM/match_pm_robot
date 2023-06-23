@@ -20,7 +20,6 @@
                 </command_interface>
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
-
             </joint>
             <joint name="Z_Axis_Joint">
                 <command_interface name="position">

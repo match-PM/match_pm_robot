@@ -12,7 +12,7 @@
         </include>
 
         <model name="box">
-            <pose>0.667 0.795 0.347 3.142 0 0</pose>
+            <pose>0.5325 0.405283 1.22 3.142 0 0</pose>
             <link name="light_bottom">                            
 
                 <gravity>0</gravity>

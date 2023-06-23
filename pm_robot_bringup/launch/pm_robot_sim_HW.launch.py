@@ -31,7 +31,7 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = True
+    launch_moveit = False
 
     pm_robot_configuration = {
                                 'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
@@ -60,13 +60,7 @@ def generate_launch_description():
         default_value=world_path,
         description='Full path to the light source model file to load')
         
-    robot_controllers = PathJoinSubstitution(
-        [
-            FindPackageShare("pm_robot_description"),
-            "config",
-            "pm_robot_control.yaml",
-        ]
-    )
+
     robot_description_raw = xacro.process_file(pm_main_xacro_file, mappings=mappings).toxml()
 
     moveit_config = (
@@ -217,6 +211,7 @@ def generate_launch_description():
     # Define Launch Description
     ld = LaunchDescription()
 
+    #ld.add_action(declare_world)
     if (str(pm_robot_configuration['launch_mode']) == 'sim_HW'):
         ld.add_action(gazebo)
         ld.add_action(spawn_entity)

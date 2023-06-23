@@ -6,7 +6,7 @@
   <link name="Camera_Top_View_Link"></link>
 
   <joint name="Camera_Top_View_Link_Joint" type="fixed">
-    <parent link="Camera_Top_View"/>
+    <parent link="Cam1_Toolhead_TCP"/>
     <child link="Camera_Top_View_Link"/>
     <origin xyz="0.02 0.021 -0.16" rpy="0 1.570796 0 "/>
   </joint>
@@ -52,9 +52,9 @@
   <link name="Camera_Bottom_View_Link"></link>
 
   <joint name="Camera_Bottom_View_Joint" type="fixed">
-    <parent link="Camera_System"/>
+    <parent link="Camera_Station_TCP"/>
     <child link="Camera_Bottom_View_Link"/>
-    <origin xyz="0.0645 0.287 -0.754" rpy="0 -1.570796 0 "/>
+    <origin xyz="0.0 0 -0.754" rpy="0 -1.570796 0 "/>
   </joint>
 
   <link name="Camera_Bottom_View_Link_Optical"></link>

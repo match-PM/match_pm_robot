@@ -45,7 +45,7 @@
     <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_left.xacro" />
   </xacro:if>
 
-  <!--xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" /-->
+  <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
 
   <!-- Switch between Gazebo-Simulation and Real Robot -->
 
