@@ -259,9 +259,7 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
         StateInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb[2])
     );
 
-    state_interfaces.emplace_back(
-        StateInterface("Camera2_Light", "Intensity", &m_camera1_coax_light)
-    );
+    state_interfaces.emplace_back(StateInterface("Camera2_Light", "Intensity", &m_camera2_light));
 
     return state_interfaces;
 }
@@ -358,8 +356,7 @@ std::vector<CommandInterface> PMSystem::export_command_interfaces()
         CommandInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb[2])
     );
 
-    command_interfaces.emplace_back(
-        CommandInterface("Camera2_Light", "Intensity", &m_camera1_coax_light)
+    command_interfaces.emplace_back(CommandInterface("Camera2_Light", "Intensity", &m_camera2_light)
     );
 
     return command_interfaces;
@@ -425,12 +422,6 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     };
     for (const auto &[pm_axis, ros_axis] : axis)
     {
-        // RCLCPP_INFO(
-        //     rclcpp::get_logger("PMSystem"),
-        //     "target: %d (%f)",
-        //     (meters_to_increments(*pm_axis, ros_axis.target_position)),
-        //     ros_axis.target_position
-        // );
         pm_axis->move(meters_to_increments(*pm_axis, ros_axis.target_position));
         // pm_axis->set_speed(meters_to_increments(*pm_axis, ros_axis.velocity));
         // pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
@@ -451,18 +442,6 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
         rgb[i] = static_cast<int>(m_camera1_ring_light_rgb[i]);
     }
     robot->camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
-
-    RCLCPP_INFO(
-        rclcpp::get_logger("PMSystem"),
-        "Lights %d %d %d %d, Color %d %d %d",
-        segments[0],
-        segments[1],
-        segments[2],
-        segments[3],
-        rgb[0],
-        rgb[1],
-        rgb[2]
-    );
 
     robot->camera2->set_light(static_cast<int>(m_camera2_light));
 

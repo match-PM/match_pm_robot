@@ -22,7 +22,7 @@ class PMGpioController : public controller_interface::ControllerInterface
     int m_camera1_ring_light_color_cmd[3];
 
     rclcpp::Subscription<Camera2LightCmd>::SharedPtr m_camera2_light_sub;
-    bool m_camera2_light_cmd;
+    int m_camera2_light_cmd;
 
   public:
     PMGpioController();
