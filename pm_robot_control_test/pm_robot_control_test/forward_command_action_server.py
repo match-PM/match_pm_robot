@@ -34,10 +34,10 @@ class ForwardCommandActionServer(Node):
         self.goal = None
 
         publish_topic = "/" + "pm_robot_IO_Axis_controller"+ "/" + "commands"
-        self.publisher_ = self.create_publisher(Float64MultiArray, publish_topic, 1, callback_group=self.group1)
+        self.publisher_ = self.create_publisher(Float64MultiArray, publish_topic, 1)
         
         subscribe_topic = "/joint_states"
-        self.subsriber = self.create_subscription(JointState, subscribe_topic, self.joint_state_callback, 10)
+        self.subsriber = self.create_subscription(JointState, subscribe_topic, self.joint_state_callback, 10, callback_group=self.group1)
 
         self._action_server = ActionServer(
             self,
@@ -76,14 +76,15 @@ class ForwardCommandActionServer(Node):
     def execute_callback(self, goal_handle):
 
         self.get_logger().info('Executing goal...')
+        
+        result = ForwardCommand.Result()
 
         for idx, joint in enumerate(self.joint_names):
             # Checks, if the targets are in the joint limits
             lower, upper = get_joint_limits(ET.fromstring(self.robot_description), joint)
-            if lower is not None and upper is not None and self.goal.targets[idx] <= float(upper):
-                self.get_logger().info(f'Lower Limit: {lower}, Upper Limit: {upper}')
-            else:
+            if (lower is None and upper is None) or self.goal.targets[idx] > float(upper) or self.goal.targets[idx] < float(lower):
                 self.get_logger().warn(f'Joint {joint} not found or target out of joint limits!')
+                goal_handle.abort()
                 result.goal_reached = False 
                 return result
     
@@ -111,7 +112,7 @@ class ForwardCommandActionServer(Node):
 
         goal_handle.succeed()
         # return the result
-        result = ForwardCommand.Result()
+
         result.goal_reached = True 
         return result
     
