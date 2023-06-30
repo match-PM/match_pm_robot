@@ -18,6 +18,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import xacro
 import sys
 
+
 def generate_launch_description():
 
 
@@ -62,6 +63,26 @@ def generate_launch_description():
         
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file, mappings=mappings).toxml()
+
+
+    controler_param = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_sim_HW.yaml",
+        ]
+    )
+    forward_command_action_server = Node(
+            package="pm_robot_control_test",
+            executable="forward_command_action_server",
+            #name="pm_robot_IO_Axis_controller",
+            parameters=[{'controller_param': controler_param}, 
+                        {'robot_description': robot_description_raw}],
+            output={
+                "stdout": "screen",
+                "stderr": "screen",
+            },
+    )
 
     moveit_config = (
         MoveItConfigsBuilder("pm_robot", package_name="pm_robot_moveit_config")
@@ -216,6 +237,7 @@ def generate_launch_description():
         ld.add_action(gazebo)
         ld.add_action(spawn_entity)
     #ld.add_action(robot_state_publisher_node_mov)
+
     ld.add_action(robot_state_publisher_node)
     ld.add_action(control_node)
     if launch_moveit:
@@ -228,4 +250,5 @@ def generate_launch_description():
         ld.add_action(launch_gonio_right_controller)
     if (str(pm_robot_configuration['with_Tool_MPG_10']) == 'true'):
         ld.add_action(launch_gonio_parallel_gripper_controller)
+    ld.add_action(forward_command_action_server)
     return ld

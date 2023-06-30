@@ -32,7 +32,7 @@ class PublisherForwardPosition(Node):
                 float_goal.append(float(value))
             self.goals.append(float_goal)
 
-        publish_topic = "/" + controller_name + "/" + "state"
+        publish_topic = "/" + controller_name + "/" + "commands"
 
         self.get_logger().info(
             f'Publishing {len(goal_names)} goals on topic "{publish_topic}"\

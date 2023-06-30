@@ -7,6 +7,8 @@
   <maintainer email="114574121+Florwie@users.noreply.github.com">pmlab</maintainer>
   <license>TODO: License declaration</license>
 
+  <depend>pm_robot_interfaces</depend>
+
   <exec_depend>rclpy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
 

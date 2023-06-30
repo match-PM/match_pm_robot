@@ -1,0 +1,8 @@
+# The corresponding goals for each joint
+float64[] targets
+---
+# If the action was successful or not
+bool goal_reached
+---
+# Feedback
+bool goal_accepted

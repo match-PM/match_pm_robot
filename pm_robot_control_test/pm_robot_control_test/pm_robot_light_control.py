@@ -3,6 +3,9 @@ from rclpy.node import Node
 
 from std_srvs.srv import SetBool
 
+
+## A service to controll the light in Gazebo. Does not work yet. 
+
 class FlashlightController(Node):
 
     def __init__(self):
@@ -16,8 +19,7 @@ class FlashlightController(Node):
     def turn_on_callback(self, request, response):
         if not self.flashlight_state:
             self.flashlight_state = True
-            # Add here the code that interacts with your Gazebo plugin to turn on the flashlight
-            # For example, if the plugin provides a ROS service, call it here.
+            # code that interacts with your Gazebo plugin
             response.success = True
             response.message = "Flashlight turned on."
         else:
@@ -28,8 +30,7 @@ class FlashlightController(Node):
     def turn_off_callback(self, request, response):
         if self.flashlight_state:
             self.flashlight_state = False
-            # Add here the code that interacts with your Gazebo plugin to turn off the flashlight
-            # For example, if the plugin provides a ROS service, call it here.
+            # code that interacts with your Gazebo plugin
             response.success = True
             response.message = "Flashlight turned off."
         else:

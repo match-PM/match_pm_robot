@@ -29,7 +29,9 @@ setup(
                 'pm_robot_save_urdf = \
                     pm_robot_control_test.save_urdf:main',
                 'pm_robot_light_control = \
-                    pm_robot_control_test.pm_robot_light_control:main'                    
+                    pm_robot_control_test.pm_robot_light_control:main',
+                'forward_command_action_server = \
+                    pm_robot_control_test.forward_command_action_server:main'                      
         ],
     },
 )

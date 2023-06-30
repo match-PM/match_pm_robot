@@ -38,15 +38,16 @@
 
             </link>
             
-            <!-- <plugin name="my_model_plugin" filename="liblight_move_model_plugin.so"/> -->
-            <plugin name="light_control" filename="libLedPlugin.so">
+            <!-- <plugin name="my_model_plugin" filename="liblightcontroller_ros_plugin.so"/> -->
+
+        </model>        
+  </world>
+</sdf>
+            <!-- <plugin name="light_control" filename="libLedPlugin.so">
                 <!-- <enable>true</enable> -->
                 <light>
                     <id>light_bottom/light_camera_bottom</id>
                     <duration>2.5</duration>
-                    <interval>0</interval>
+                    <interval>1.0</interval>
                 </light>
-            </plugin>
-        </model>        
-  </world>
-</sdf>
+            </plugin> -->
