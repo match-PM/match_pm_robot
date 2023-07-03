@@ -53,6 +53,25 @@ def generate_launch_description():
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file, mappings=mappings).toxml()
 
+    controler_param = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_sim_HW.yaml",
+        ]
+    )
+    forward_command_action_server = Node(
+            package="pm_robot_control_test",
+            executable="forward_command_action_server",
+            #name="pm_robot_IO_Axis_controller",
+            parameters=[{'controller_param': controler_param}, 
+                        {'robot_description': robot_description_raw}],
+            output={
+                "stdout": "screen",
+                "stderr": "screen",
+            },
+    )
+
     moveit_config = (
         MoveItConfigsBuilder("pm_robot", package_name="pm_robot_moveit_config")
         .robot_description(file_path=pm_main_xacro_file,mappings=mappings)
@@ -210,7 +229,7 @@ def generate_launch_description():
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
-
+    ld.add_action(forward_command_action_server)
     # if (str(pm_robot_configuration['with_Gonio_Left']) == 'true'):
     #     ld.add_action(launch_gonio_left_controller)
     # if (str(pm_robot_configuration['with_Gonio_Right']) == 'true'):

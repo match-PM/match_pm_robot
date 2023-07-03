@@ -15,11 +15,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(rclcpp_components REQUIRED)
-find_package(rmw REQUIRED)
-# find_package(std_msgs REQUIRED)
-find_package(rmw_fastrtps_cpp REQUIRED)
-# Find Gazebo
-find_package(gazebo REQUIRED)
+
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -34,35 +31,11 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY world src
+  DIRECTORY world 
   DESTINATION share/${PROJECT_NAME}
 )
 
 
-
-#for gazebo plugins
-include_directories(
-  ${GAZEBO_INCLUDE_DIRS}
-  ${rclcpp_INCLUDE_DIRS}
-)            
-link_directories(${GAZEBO_LIBRARY_DIRS})               
-list(APPEND CMAKE_CXX_FLAGS "${GAZEBO_CXX_FLAGS}")
-
-
-
-
-# for compiling plugin
-add_library(light_control_plugin SHARED src/light_control_plugin.cc)
-target_link_libraries(light_control_plugin ${GAZEBO_LIBRARIES})
-
-target_include_directories(light_control_plugin
-  PUBLIC
-  ${rclcpp_INCLUDE_DIRS}
-)
-
-target_link_libraries(light_control_plugin
-  ${rclcpp_LIBRARIES}
-)
 
 
 ament_package()

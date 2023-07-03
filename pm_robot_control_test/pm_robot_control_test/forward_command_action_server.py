@@ -22,18 +22,20 @@ class ForwardCommandActionServer(Node):
         self.declare_parameter("controller_param", "")
         self.declare_parameter("robot_description", '')
 
+        controller_name = 'pm_robot_xyz_axis_controller'
+
         self.robot_description = self.get_parameter("robot_description").value
         robot_control_yaml = self.get_parameter("controller_param").get_parameter_value().string_value
 
         with open(robot_control_yaml, 'r') as file:
             yaml_data = yaml.safe_load(file)
 
-        self.joint_names = yaml_data['pm_robot_IO_Axis_controller']['ros__parameters']['joints']
+        self.joint_names = yaml_data[controller_name]['ros__parameters']['joints']
 
         self.joint_state_msg = JointState()
         self.goal = None
 
-        publish_topic = "/" + "pm_robot_IO_Axis_controller"+ "/" + "commands"
+        publish_topic = "/" + controller_name + "/" + "commands"
         self.publisher_ = self.create_publisher(Float64MultiArray, publish_topic, 1)
         
         subscribe_topic = "/joint_states"

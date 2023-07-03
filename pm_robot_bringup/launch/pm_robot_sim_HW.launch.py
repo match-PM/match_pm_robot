@@ -32,7 +32,7 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = False
+    launch_moveit = True
 
     pm_robot_configuration = {
                                 'launch_mode':                    'sim_HW',              #real_HW sim_HW fake_HW real_sim_HW
