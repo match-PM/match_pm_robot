@@ -229,7 +229,7 @@ def generate_launch_description():
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
-    ld.add_action(forward_command_action_server)
+    #ld.add_action(forward_command_action_server)
     # if (str(pm_robot_configuration['with_Gonio_Left']) == 'true'):
     #     ld.add_action(launch_gonio_left_controller)
     # if (str(pm_robot_configuration['with_Gonio_Right']) == 'true'):

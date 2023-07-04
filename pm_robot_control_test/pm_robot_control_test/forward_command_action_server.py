@@ -84,6 +84,7 @@ class ForwardCommandActionServer(Node):
         for idx, joint in enumerate(self.joint_names):
             # Checks, if the targets are in the joint limits
             lower, upper = get_joint_limits(ET.fromstring(self.robot_description), joint)
+            #self.get_logger().warn(f'Joint {joint} with lower limit {lower} and upper limit {upper}.')
             if (lower is None and upper is None) or self.goal.targets[idx] > float(upper) or self.goal.targets[idx] < float(lower):
                 self.get_logger().warn(f'Joint {joint} not found or target out of joint limits!')
                 goal_handle.abort()
@@ -105,11 +106,14 @@ class ForwardCommandActionServer(Node):
         while not all(goal_reached):
             for idx, joint in enumerate(self.joint_names):
                 i = self.joint_state_msg.name.index(joint)
-                if self.joint_state_msg.position[i] > (self.goal.targets[idx])*0.95 and self.joint_state_msg.position[i] < (self.goal.targets[idx]+10**-6)*1.05:
+                lower_threshold = (self.goal.targets[idx]-10**-6)#*0.95 
+                upper_threshold = (self.goal.targets[idx]+10**-6)#*1.05
+                self.get_logger().info(f'lower threshold = {lower_threshold}, upper threshold = {upper_threshold}')
+                if self.joint_state_msg.position[i] >= lower_threshold and self.joint_state_msg.position[i] < upper_threshold:
                     goal_reached[idx] = True
-                    self.get_logger().info(f'Goal {idx} reached')
+                    self.get_logger().info(f'Goal {idx} with {joint} reached')
                 else:
-                    self.get_logger().warn(f'Goal {idx} not reached. Position: {self.joint_state_msg.position[i]}')
+                    self.get_logger().warn(f'Goal {idx} with{joint} not reached. Position: {self.joint_state_msg.position[i]}')
                 time.sleep(0.1)
 
         goal_handle.succeed()
@@ -135,27 +139,18 @@ def main(args=None):
 
     try:
         forward_command_action_server = ForwardCommandActionServer()
-        # joint_state_sub = JointStateSubscriber()
 
         executor = MultiThreadedExecutor(num_threads=2)
         executor.add_node(forward_command_action_server)
-        # executor.add_node(joint_state_sub)
 
         try:
             executor.spin()
         finally:
             executor.shutdown()
             forward_command_action_server.destroy_node()
-            # joint_state_sub.destroy_node()
 
     finally:
         rclpy.shutdown()
-    # forward_command_action_server = ForwardCommandActionServer()
-
-    # rclpy.spin(forward_command_action_server)
-
-    # rclpy.shutdown()
-
 
 
 
