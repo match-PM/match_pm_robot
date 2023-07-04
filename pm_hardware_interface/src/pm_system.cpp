@@ -311,9 +311,9 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     auto *robot = m_pm_client.get_robot();
     std::vector<std::pair<PMClient::AerotechAxis *, AxisState &>> axis = {
         {robot->x_axis.get(), m_x_axis},
-        // {robot->y_axis.get(), m_y_axis},
-        // {robot->z_axis.get(), m_z_axis},
-        // {robot->t_axis.get(), m_t_axis},
+        {robot->y_axis.get(), m_y_axis},
+        {robot->z_axis.get(), m_z_axis},
+        {robot->t_axis.get(), m_t_axis},
     };
     for (const auto &[pm_axis, ros_axis] : axis)
     {

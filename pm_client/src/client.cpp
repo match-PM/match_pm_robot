@@ -120,15 +120,15 @@ void Client::init()
                 }
                 else if (browse_name == "RobotAxisY")
                 {
-                    m_robot->y_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                    m_robot->y_axis = browse_axis(ref->nodeId.nodeId, AxisId::Y);
                 }
                 else if (browse_name == "RobotAxisZ")
                 {
-                    m_robot->z_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                    m_robot->z_axis = browse_axis(ref->nodeId.nodeId, AxisId::Z);
                 }
                 else if (browse_name == "RobotAxisT")
                 {
-                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::T);
                 }
             }
         }
