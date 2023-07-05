@@ -26,6 +26,7 @@ rosidl_generate_interfaces(
   "msg/Camera1CoaxLightCmd.msg"
   "msg/Camera1RingLightCmd.msg"
   "msg/Camera2LightCmd.msg"
+  "msg/PneumaticCylinderCmd.msg"
 )
 
 ament_export_dependencies(rosidl_default_runtime)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(pm_gpio_controller)
+project(pm_pneumatic_controller)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -27,14 +27,14 @@ if(BUILD_TESTING)
 endif()
 
 add_library(
-  pm_gpio_controller SHARED
-  src/gpio_controller.cpp
-  include/pm_gpio_controller/gpio_controller.hpp
+  pm_pneumatic_controller SHARED
+  src/pneumatic_controller.cpp
+  include/pm_pneumatic_controller/pneumatic_controller.hpp
 )
-target_include_directories(pm_gpio_controller PRIVATE include/)
+target_include_directories(pm_pneumatic_controller PRIVATE include/)
 
 ament_target_dependencies(
-  pm_gpio_controller
+  pm_pneumatic_controller
   controller_interface
   hardware_interface
   pluginlib
@@ -42,7 +42,7 @@ ament_target_dependencies(
   rclcpp_lifecycle
   pm_msgs
 )
-pluginlib_export_plugin_description_file(controller_interface pm_gpio_controller.xml)
+pluginlib_export_plugin_description_file(controller_interface pm_pneumatic_controller.xml)
 
 install(
   DIRECTORY include/
@@ -50,15 +50,15 @@ install(
 )
 
 install(
-  TARGETS pm_gpio_controller
-  EXPORT pm_gpio_controller
+  TARGETS pm_pneumatic_controller
+  EXPORT pm_pneumatic_controller
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
   INCLUDES DESTINATION include
 )
 
-ament_export_targets(pm_gpio_controller HAS_LIBRARY_TARGET)
+ament_export_targets(pm_pneumatic_controller HAS_LIBRARY_TARGET)
 ament_export_dependencies(
   controller_interface
   hardware_interface

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(pm_hardware_interface)
+project(pm_lights_controller)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,11 +7,12 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
+find_package(controller_interface REQUIRED)
 find_package(hardware_interface REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
-find_package(pm_client REQUIRED)
+find_package(pm_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -26,23 +27,22 @@ if(BUILD_TESTING)
 endif()
 
 add_library(
-  pm_hardware_interface SHARED
-  src/pm_system.cpp
-  include/pm_hardware_interface/pm_system.hpp
-  include/pm_hardware_interface/axis.hpp
-  include/pm_hardware_interface/pneumatic.hpp
+  pm_lights_controller SHARED
+  src/lights_controller.cpp
+  include/pm_lights_controller/lights_controller.hpp
 )
-target_include_directories(pm_hardware_interface PRIVATE include/)
+target_include_directories(pm_lights_controller PRIVATE include/)
 
 ament_target_dependencies(
-  pm_hardware_interface
-  rclcpp
+  pm_lights_controller
+  controller_interface
   hardware_interface
   pluginlib
+  rclcpp
   rclcpp_lifecycle
-  pm_client
+  pm_msgs
 )
-pluginlib_export_plugin_description_file(hardware_interface pm_hardware_interface.xml)
+pluginlib_export_plugin_description_file(controller_interface pm_lights_controller.xml)
 
 install(
   DIRECTORY include/
@@ -50,26 +50,21 @@ install(
 )
 
 install(
-  TARGETS pm_hardware_interface
-  EXPORT pm_hardware_interface
+  TARGETS pm_lights_controller
+  EXPORT pm_lights_controller
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
   INCLUDES DESTINATION include
 )
 
-install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}
-)
-
-ament_export_targets(pm_hardware_interface HAS_LIBRARY_TARGET)
+ament_export_targets(pm_lights_controller HAS_LIBRARY_TARGET)
 ament_export_dependencies(
-  rclcpp
+  controller_interface
   hardware_interface
   pluginlib
+  rclcpp
   rclcpp_lifecycle
-  pm_client
 )
 
 ament_package()

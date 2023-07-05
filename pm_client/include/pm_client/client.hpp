@@ -67,9 +67,9 @@ class Client
     /**
      * Get reference to robot object.
      */
-    Robot *get_robot()
+    Robot &get_robot()
     {
-        return m_robot.get();
+        return *m_robot;
     }
 
     /**

@@ -6,12 +6,12 @@
 #include "pm_msgs/msg/camera1_ring_light_cmd.hpp"
 #include "pm_msgs/msg/camera2_light_cmd.hpp"
 
-namespace pm_gpio_controller
+namespace pm_lights_controller
 {
 
 using namespace pm_msgs::msg;
 
-class PMGpioController : public controller_interface::ControllerInterface
+class PMLightsController : public controller_interface::ControllerInterface
 {
   private:
     rclcpp::Subscription<Camera1CoaxLightCmd>::SharedPtr m_camera1_coax_light_sub;
@@ -25,7 +25,7 @@ class PMGpioController : public controller_interface::ControllerInterface
     int m_camera2_light_cmd;
 
   public:
-    PMGpioController();
+    PMLightsController();
 
     controller_interface::return_type init(
         const std::string &controller_name, const std::string &namespace_ = "",
@@ -54,4 +54,4 @@ class PMGpioController : public controller_interface::ControllerInterface
     update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 };
 
-} // namespace pm_gpio_controller
+} // namespace pm_lights_controller

@@ -1,16 +1,16 @@
 #include "pluginlib/class_list_macros.hpp"
 
-#include "pm_gpio_controller/gpio_controller.hpp"
+#include "pm_lights_controller/lights_controller.hpp"
 
-namespace pm_gpio_controller
+namespace pm_lights_controller
 {
 
-PMGpioController::PMGpioController()
+PMLightsController::PMLightsController()
 {
-    RCLCPP_INFO(rclcpp::get_logger("PMGpioController"), "PMGpioController instantiated.");
+    RCLCPP_INFO(rclcpp::get_logger("PMLightsController"), "PMLightsController instantiated.");
 }
 
-controller_interface::return_type PMGpioController::init(
+controller_interface::return_type PMLightsController::init(
     const std::string &controller_name, const std::string &namespace_,
     const rclcpp::NodeOptions &node_options
 )
@@ -22,13 +22,13 @@ controller_interface::return_type PMGpioController::init(
     );
 }
 
-controller_interface::CallbackReturn PMGpioController::on_init()
+controller_interface::CallbackReturn PMLightsController::on_init()
 {
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
 controller_interface::CallbackReturn
-PMGpioController::on_configure(const rclcpp_lifecycle::State &previous_state)
+PMLightsController::on_configure(const rclcpp_lifecycle::State &previous_state)
 {
     m_camera1_coax_light_sub = get_node()->create_subscription<Camera1CoaxLightCmd>(
         "~/camera1_coax_light",
@@ -60,7 +60,7 @@ PMGpioController::on_configure(const rclcpp_lifecycle::State &previous_state)
 }
 
 controller_interface::CallbackReturn
-PMGpioController::on_activate(const rclcpp_lifecycle::State &previous_state)
+PMLightsController::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
     m_camera1_coax_light_cmd = static_cast<bool>(state_interfaces_[0].get_value());
 
@@ -79,13 +79,13 @@ PMGpioController::on_activate(const rclcpp_lifecycle::State &previous_state)
 }
 
 controller_interface::CallbackReturn
-PMGpioController::on_deactivate(const rclcpp_lifecycle::State &previous_state)
+PMLightsController::on_deactivate(const rclcpp_lifecycle::State &previous_state)
 {
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
 controller_interface::InterfaceConfiguration
-PMGpioController::command_interface_configuration() const
+PMLightsController::command_interface_configuration() const
 {
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
@@ -102,7 +102,8 @@ PMGpioController::command_interface_configuration() const
     return config;
 }
 
-controller_interface::InterfaceConfiguration PMGpioController::state_interface_configuration() const
+controller_interface::InterfaceConfiguration
+PMLightsController::state_interface_configuration() const
 {
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
@@ -120,7 +121,7 @@ controller_interface::InterfaceConfiguration PMGpioController::state_interface_c
 }
 
 controller_interface::return_type
-PMGpioController::update(const rclcpp::Time &time, const rclcpp::Duration &period)
+PMLightsController::update(const rclcpp::Time &time, const rclcpp::Duration &period)
 {
     command_interfaces_[0].set_value(static_cast<double>(m_camera1_coax_light_cmd));
 
@@ -138,8 +139,8 @@ PMGpioController::update(const rclcpp::Time &time, const rclcpp::Duration &perio
     return controller_interface::return_type::OK;
 }
 
-} // namespace pm_gpio_controller
+} // namespace pm_lights_controller
 
 PLUGINLIB_EXPORT_CLASS(
-    pm_gpio_controller::PMGpioController, controller_interface::ControllerInterface
+    pm_lights_controller::PMLightsController, controller_interface::ControllerInterface
 )

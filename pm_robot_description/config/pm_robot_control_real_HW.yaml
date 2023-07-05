@@ -12,8 +12,11 @@ controller_manager:
     pm_robot_t_axis_controller:
       type: position_controllers/JointGroupPositionController
 
-    pm_gpio_controller:
-      type: pm_gpio_controller/PMGpioController
+    pm_lights_controller:
+      type: pm_lights_controller/PMLightsController
+
+    pm_pneumatic_controller:
+      type: pm_pneumatic_controller/PMPneumaticController
 
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -34,7 +37,7 @@ controller_manager:
 
 #     interface_name: position
 
-pm_gpio_controller:
+pm_lights_controller:
   ros__parameters: {}
 
 pm_robot_t_axis_controller:

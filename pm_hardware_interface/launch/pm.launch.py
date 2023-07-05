@@ -47,11 +47,21 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
-    pm_gpio_controller_spawner = Node(
+    # pm_lights_controller_spawner = Node(
+    #     package="controller_manager",
+    #     executable="spawner",
+    #     arguments=[
+    #         "pm_lights_controller",
+    #         "--controller-manager",
+    #         "/controller_manager",
+    #     ],
+    # )
+
+    pm_pneumatic_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "pm_gpio_controller",
+            "pm_pneumatic_controller",
             "--controller-manager",
             "/controller_manager",
         ],
@@ -60,7 +70,8 @@ def generate_launch_description():
     return LaunchDescription(
         [
             control_node,
-            pm_gpio_controller_spawner,
+            pm_pneumatic_controller_spawner,
+            # pm_lights_controller_spawner,
             robot_state_pub_node,
         ]
     )
