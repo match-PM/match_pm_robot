@@ -1,0 +1,17 @@
+pm_robot_tools:
+  MPG_10:
+    with_Tool_MPG_10: false
+    Config:
+      with_Tool_MPG_10_Jaw_3mm_Lens: false
+
+  SPT_Tool_Holder:
+    with_Tool_SPT_Holder: true
+    Config:
+      with_SPT_R_A1000_I500: true
+
+pm_robot_gonio_right:
+  with_Gonio_Right: true
+
+pm_robot_gonio_left:
+  with_Gonio_Left: true
+

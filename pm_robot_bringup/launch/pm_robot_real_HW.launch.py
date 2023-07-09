@@ -14,11 +14,18 @@ from launch_ros.substitutions import FindPackageShare
 from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 import xacro
+import yaml
+from yaml.loader import SafeLoader
 import sys
 from launch.substitutions import Command 
 
 def generate_launch_description():
 
+    bringup_config_path = os.path.join(get_package_share_directory('pm_robot_bringup'), 'config/pm_robot_bringup_config.yaml')
+    
+    f = open(bringup_config_path)
+    bringup_config = yaml.load(f,Loader=SafeLoader)
+    f.close()
 
     # Specify the name of the package and path to xacro file within the package
     pkg_name = 'pm_robot_description'
@@ -29,26 +36,17 @@ def generate_launch_description():
 
     launch_moveit = False
 
-    pm_robot_configuration = {
-                                'launch_mode':                    'real_HW',              #real_HW sim_HW fake_HW real_sim_HW
-                                'with_Tool_MPG_10':               'false',                  # Fix Needed !!!!!!!!!!!!!!
-                                'with_Tool_MPG_10_Jaw_3mm_Lens':  'false',
-                                'with_Gonio_Right':               'true',
-                                'with_Gonio_Left':                'true',
-                                'with_Tool_SPT_Holder':           'false',
-                                'with_SPT_R_A1000_I500':          'false',
-                              }
     
     sim_time = False
 
     mappings={
-        'launch_mode': str(pm_robot_configuration['launch_mode']),
-        'with_Tool_MPG_10': str(pm_robot_configuration['with_Tool_MPG_10']),
-        'with_Gonio_Left': str(pm_robot_configuration['with_Gonio_Left']),
-        'with_Gonio_Right': str(pm_robot_configuration['with_Gonio_Right']),
-        'with_Tool_MPG_10_Jaw_3mm_Lens': str(pm_robot_configuration['with_Tool_MPG_10_Jaw_3mm_Lens']),
-        'with_Tool_SPT_Holder': str(pm_robot_configuration['with_Tool_SPT_Holder']),
-        'with_SPT_R_A1000_I500': str(pm_robot_configuration['with_SPT_R_A1000_I500']),
+        'launch_mode': 'sim_HW',
+        'with_Tool_MPG_10': str(bringup_config['pm_robot_tools']['MPG_10']['with_Tool_MPG_10']),
+        'with_Gonio_Left': str(bringup_config['pm_robot_gonio_left']['with_Gonio_Left']),
+        'with_Gonio_Right': str(bringup_config['pm_robot_gonio_right']['with_Gonio_Right']),
+        'with_Tool_MPG_10_Jaw_3mm_Lens': str(bringup_config['pm_robot_tools']['MPG_10']['Config']['with_Tool_MPG_10_Jaw_3mm_Lens']),
+        'with_Tool_SPT_Holder': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['with_Tool_SPT_Holder']),
+        'with_SPT_R_A1000_I500': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['Config']['with_SPT_R_A1000_I500']),
     }
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file, mappings=mappings).toxml()
@@ -77,6 +75,8 @@ def generate_launch_description():
         .robot_description(file_path=pm_main_xacro_file,mappings=mappings)
         .robot_description_semantic(file_path="config/pm_robot.srdf")
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
+        .robot_description_kinematics(file_path="config/kinematics.yaml")
+        .planning_pipelines(pipelines=["ompl", "chomp", "pilz_industrial_motion_planner"])
         .to_moveit_configs()
     )
 
@@ -126,6 +126,7 @@ def generate_launch_description():
         output="log",
         arguments=["-d", rviz_full_config],
         parameters=[
+            {"use_sim_time": sim_time},
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
             moveit_config.planning_pipelines,
@@ -230,10 +231,10 @@ def generate_launch_description():
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
     #ld.add_action(forward_command_action_server)
-    # if (str(pm_robot_configuration['with_Gonio_Left']) == 'true'):
+    # if (str(mappings['with_Gonio_Left']) == 'true'):
     #     ld.add_action(launch_gonio_left_controller)
-    # if (str(pm_robot_configuration['with_Gonio_Right']) == 'true'):
+    # if (str(mappings['with_Gonio_Right']) == 'true'):
     #     ld.add_action(launch_gonio_right_controller)
-    # if (str(pm_robot_configuration['with_Tool_MPG_10']) == 'true'):
+    # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
     return ld
