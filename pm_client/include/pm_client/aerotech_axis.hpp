@@ -18,6 +18,10 @@ enum class AxisId
     Y,
     Z,
     T,
+    Q,
+    R,
+    U,
+    V,
 };
 
 /**

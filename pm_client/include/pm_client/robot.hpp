@@ -40,6 +40,26 @@ class Robot
     std::unique_ptr<AerotechAxis> t_axis;
 
     /**
+     * Q-Axis.
+     */
+    std::unique_ptr<AerotechAxis> q_axis;
+
+    /**
+     * R-Axis.
+     */
+    std::unique_ptr<AerotechAxis> r_axis;
+
+    /**
+     * V-Axis.
+     */
+    std::unique_ptr<AerotechAxis> u_axis;
+
+    /**
+     * T-Axis.
+     */
+    std::unique_ptr<AerotechAxis> v_axis;
+
+    /**
      * Top camera.
      */
     std::unique_ptr<Camera1> camera1;
@@ -66,7 +86,16 @@ class Robot
      */
     bool is_ok()
     {
-        auto axes = {x_axis.get(), y_axis.get(), z_axis.get(), t_axis.get()};
+        auto axes = {
+            x_axis.get(),
+            y_axis.get(),
+            z_axis.get(),
+            t_axis.get(),
+            q_axis.get(),
+            r_axis.get(),
+            u_axis.get(),
+            v_axis.get(),
+        };
         for (const auto &axis : axes)
         {
             if (axis == nullptr || !axis->is_ok())
@@ -102,6 +131,14 @@ class Robot
                 return *z_axis;
             case AxisId::T:
                 return *t_axis;
+            case AxisId::Q:
+                return *q_axis;
+            case AxisId::R:
+                return *r_axis;
+            case AxisId::U:
+                return *u_axis;
+            case AxisId::V:
+                return *v_axis;
         }
     }
 

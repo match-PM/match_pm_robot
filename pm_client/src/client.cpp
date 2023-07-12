@@ -226,6 +226,22 @@ void Client::init()
                 {
                     m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
                 }
+                else if (browse_name == "RobotAxisQ")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
+                else if (browse_name == "RobotAxisR")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
+                else if (browse_name == "RobotAxisU")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
+                else if (browse_name == "RobotAxisV")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
                 else if (browse_name == "PneumaticModuleUV1")
                 {
                     m_robot->uv1_pneumatic = browse_pneumatic(ref->nodeId.nodeId, PneumaticId::UV1);

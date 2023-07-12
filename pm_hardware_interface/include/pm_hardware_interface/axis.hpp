@@ -52,6 +52,18 @@ struct AxisState
             case AxisId::T:
                 name = "T_Axis_Joint";
                 break;
+            case AxisId::Q:
+                name = "Q_Axis_Joint";
+                break;
+            case AxisId::R:
+                name = "R_Axis_Joint";
+                break;
+            case AxisId::U:
+                name = "U_Axis_Joint";
+                break;
+            case AxisId::V:
+                name = "V_Axis_Joint";
+                break;
         }
     }
 
