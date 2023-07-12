@@ -30,26 +30,41 @@ controller_interface::CallbackReturn PMPneumaticController::on_init()
 controller_interface::CallbackReturn
 PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_state)
 {
-    m_cylinder_sub = get_node()->create_subscription<PneumaticCylinderCmd>(
-        "~/cylinder",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const PneumaticCylinderCmd::SharedPtr msg) {
-            m_cylinder_move_forward_cmd = msg->move_forward;
-        }
-    );
+    (void)previous_state;
+
+    for (std::size_t i = 0; i < m_cylinder_names.size(); i++)
+    {
+        auto subscription = get_node()->create_subscription<PneumaticCylinderCmd>(
+            "~/" + m_cylinder_names[i],
+            rclcpp::SystemDefaultsQoS(),
+            [&](const PneumaticCylinderCmd::SharedPtr msg) {
+                m_cylinder_cmds[i] = msg->move_forward;
+            }
+        );
+        m_subscriptions.emplace_back(subscription);
+    }
+
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
 controller_interface::CallbackReturn
 PMPneumaticController::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
-    m_cylinder_move_forward_cmd = static_cast<bool>(state_interfaces_[0].get_value());
+    (void)previous_state;
+
+    for (std::size_t i = 0; i < m_cylinder_names.size(); i++)
+    {
+        m_cylinder_cmds[i] = static_cast<bool>(state_interfaces_[i].get_value());
+    }
+
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
 controller_interface::CallbackReturn
 PMPneumaticController::on_deactivate(const rclcpp_lifecycle::State &previous_state)
 {
+    (void)previous_state;
+
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
@@ -58,10 +73,13 @@ PMPneumaticController::command_interface_configuration() const
 {
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
-    config.names = {
-        "UV1_Pneumatic/Move_Forward",
-        "UV1_Pneumatic/Move_Backward",
-    };
+
+    for (const auto &interface : m_cylinder_names)
+    {
+        config.names.emplace_back(interface + "/Move_Forward");
+        config.names.emplace_back(interface + "/Move_Backward");
+    }
+
     return config;
 }
 
@@ -70,18 +88,28 @@ PMPneumaticController::state_interface_configuration() const
 {
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
-    config.names = {
-        "UV1_Pneumatic/Is_Forward",
-        "UV1_Pneumatic/Is_Backward",
-    };
+
+    for (const auto &interface : m_cylinder_names)
+    {
+        config.names.emplace_back(interface + "/Move_Forward");
+        config.names.emplace_back(interface + "/Move_Backward");
+    }
+
     return config;
 }
 
 controller_interface::return_type
 PMPneumaticController::update(const rclcpp::Time &time, const rclcpp::Duration &period)
 {
-    command_interfaces_[0].set_value(static_cast<double>(m_cylinder_move_forward_cmd));
-    command_interfaces_[1].set_value(static_cast<double>(!m_cylinder_move_forward_cmd));
+    (void)time;
+    (void)period;
+
+    for (std::size_t i = 0; i < m_cylinder_names.size(); i++)
+    {
+        command_interfaces_[i * 2 + 0].set_value(static_cast<double>(m_cylinder_cmds[i]));
+        command_interfaces_[i * 2 + 1].set_value(static_cast<double>(!m_cylinder_cmds[i]));
+    }
+
     return controller_interface::return_type::OK;
 }
 

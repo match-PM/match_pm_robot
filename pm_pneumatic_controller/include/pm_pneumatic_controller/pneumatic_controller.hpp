@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "controller_interface/controller_interface.hpp"
 
 #include "pm_msgs/msg/pneumatic_cylinder_cmd.hpp"
@@ -11,8 +14,15 @@ using namespace pm_msgs::msg;
 class PMPneumaticController : public controller_interface::ControllerInterface
 {
   private:
-    rclcpp::Subscription<PneumaticCylinderCmd>::SharedPtr m_cylinder_sub;
-    bool m_cylinder_move_forward_cmd;
+    std::vector<std::string> m_cylinder_names{
+        "UV1_Pneumatic",
+        "UV2_Pneumatic",
+        "Glue_Pneumatic",
+        "Glue_2K_Pneumatic",
+        "Camera_Mire_Pneumatic",
+    };
+    std::vector<rclcpp::Subscription<PneumaticCylinderCmd>::SharedPtr> m_subscriptions;
+    std::vector<bool> m_cylinder_cmds;
 
   public:
     PMPneumaticController();
