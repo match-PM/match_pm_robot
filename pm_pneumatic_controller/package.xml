@@ -14,6 +14,7 @@
   <depend>hardware_interface</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_lifecycle</depend>
+  <depend>generate_parameter_library</depend>
 
   <depend>pm_msgs</depend>
 

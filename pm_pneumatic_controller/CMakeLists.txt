@@ -12,7 +12,9 @@ find_package(hardware_interface REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
+find_package(generate_parameter_library REQUIRED)
 find_package(pm_msgs REQUIRED)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -26,12 +28,18 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+generate_parameter_library(
+  pm_pneumatic_controller_parameters
+  src/pm_pneumatic_controller_parameters.yaml
+)
+
 add_library(
   pm_pneumatic_controller SHARED
   src/pneumatic_controller.cpp
   include/pm_pneumatic_controller/pneumatic_controller.hpp
 )
 target_include_directories(pm_pneumatic_controller PRIVATE include/)
+target_link_libraries(pm_pneumatic_controller pm_pneumatic_controller_parameters)
 
 ament_target_dependencies(
   pm_pneumatic_controller
@@ -49,9 +57,18 @@ install(
   DESTINATION include
 )
 
+# install(
+#   TARGETS pm_pneumatic_controller_parameters
+#   EXPORT pm_pneumatic_controller_parameters
+#   LIBRARY DESTINATION lib
+#   ARCHIVE DESTINATION lib
+#   RUNTIME DESTINATION bin
+#   INCLUDES DESTINATION include
+# )
+
 install(
-  TARGETS pm_pneumatic_controller
-  EXPORT pm_pneumatic_controller
+  TARGETS pm_pneumatic_controller pm_pneumatic_controller_parameters
+  EXPORT pm_pneumatic_controller 
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
@@ -65,6 +82,7 @@ ament_export_dependencies(
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  pm_pneumatic_controller_parameters
 )
 
 ament_package()

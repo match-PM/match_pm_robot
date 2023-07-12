@@ -40,6 +40,15 @@ controller_manager:
 pm_lights_controller:
   ros__parameters: {}
 
+pm_pneumatic_controller:
+  ros__parameters:
+    cylinders:
+      - UV1_Pneumatic
+      - UV2_Pneumatic
+      - Glue_Pneumatic
+      - Glue_2K_Pneumatic
+      - Camera_Mire_Pneumatic
+
 pm_robot_t_axis_controller:
   ros__parameters:
     joints:

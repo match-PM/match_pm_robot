@@ -1,11 +1,15 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "controller_interface/controller_interface.hpp"
 
 #include "pm_msgs/msg/pneumatic_cylinder_cmd.hpp"
+
+#include "pm_pneumatic_controller_parameters.hpp"
+
 namespace pm_pneumatic_controller
 {
 
@@ -14,13 +18,16 @@ using namespace pm_msgs::msg;
 class PMPneumaticController : public controller_interface::ControllerInterface
 {
   private:
-    std::vector<std::string> m_cylinder_names{
-        "UV1_Pneumatic",
-        "UV2_Pneumatic",
-        "Glue_Pneumatic",
-        "Glue_2K_Pneumatic",
-        "Camera_Mire_Pneumatic",
-    };
+    std::shared_ptr<ParamListener> m_param_listener;
+    Params m_params;
+
+    // std::vector<std::string> m_cylinder_names{
+    //     "UV1_Pneumatic",
+    //     "UV2_Pneumatic",
+    //     "Glue_Pneumatic",
+    //     "Glue_2K_Pneumatic",
+    //     "Camera_Mire_Pneumatic",
+    // };
     std::vector<rclcpp::Subscription<PneumaticCylinderCmd>::SharedPtr> m_subscriptions;
     std::vector<bool> m_cylinder_cmds;
 

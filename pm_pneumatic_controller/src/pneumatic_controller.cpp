@@ -24,6 +24,8 @@ controller_interface::return_type PMPneumaticController::init(
 
 controller_interface::CallbackReturn PMPneumaticController::on_init()
 {
+    m_param_listener = std::make_shared<ParamListener>(get_node());
+
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
@@ -32,10 +34,18 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
 {
     (void)previous_state;
 
-    for (std::size_t i = 0; i < m_cylinder_names.size(); i++)
+    m_params = m_param_listener->get_params();
+
+    if (m_params.cylinders.empty())
+    {
+        RCLCPP_ERROR(get_node()->get_logger(), "'cylinders' parameter was empty");
+        return controller_interface::CallbackReturn::ERROR;
+    }
+
+    for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
         auto subscription = get_node()->create_subscription<PneumaticCylinderCmd>(
-            "~/" + m_cylinder_names[i],
+            "~/" + m_params.cylinders[i],
             rclcpp::SystemDefaultsQoS(),
             [&](const PneumaticCylinderCmd::SharedPtr msg) {
                 m_cylinder_cmds[i] = msg->move_forward;
@@ -52,7 +62,7 @@ PMPneumaticController::on_activate(const rclcpp_lifecycle::State &previous_state
 {
     (void)previous_state;
 
-    for (std::size_t i = 0; i < m_cylinder_names.size(); i++)
+    for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
         m_cylinder_cmds[i] = static_cast<bool>(state_interfaces_[i].get_value());
     }
@@ -74,7 +84,7 @@ PMPneumaticController::command_interface_configuration() const
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
 
-    for (const auto &interface : m_cylinder_names)
+    for (const auto &interface : m_params.cylinders)
     {
         config.names.emplace_back(interface + "/Move_Forward");
         config.names.emplace_back(interface + "/Move_Backward");
@@ -89,10 +99,10 @@ PMPneumaticController::state_interface_configuration() const
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
 
-    for (const auto &interface : m_cylinder_names)
+    for (const auto &interface : m_params.cylinders)
     {
-        config.names.emplace_back(interface + "/Move_Forward");
-        config.names.emplace_back(interface + "/Move_Backward");
+        config.names.emplace_back(interface + "/Is_Forward");
+        config.names.emplace_back(interface + "/Is_Backward");
     }
 
     return config;
@@ -104,7 +114,7 @@ PMPneumaticController::update(const rclcpp::Time &time, const rclcpp::Duration &
     (void)time;
     (void)period;
 
-    for (std::size_t i = 0; i < m_cylinder_names.size(); i++)
+    for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
         command_interfaces_[i * 2 + 0].set_value(static_cast<double>(m_cylinder_cmds[i]));
         command_interfaces_[i * 2 + 1].set_value(static_cast<double>(!m_cylinder_cmds[i]));
