@@ -40,7 +40,7 @@ def generate_launch_description():
     sim_time = False
 
     mappings={
-        'launch_mode': 'sim_HW',
+        'launch_mode': 'real_HW',
         'with_Tool_MPG_10': str(bringup_config['pm_robot_tools']['MPG_10']['with_Tool_MPG_10']),
         'with_Gonio_Left': str(bringup_config['pm_robot_gonio_left']['with_Gonio_Left']),
         'with_Gonio_Right': str(bringup_config['pm_robot_gonio_right']['with_Gonio_Right']),

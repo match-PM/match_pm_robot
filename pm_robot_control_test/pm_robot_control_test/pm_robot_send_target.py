@@ -14,7 +14,7 @@ class SendPosition(Node):
     def __init__(self):
         super().__init__('send_position')
 
-        self._action_client = ActionClient(self,FollowJointTrajectory,'/pm_robot_xyz_axis_JTC/follow_joint_trajectory')
+        self._action_client = ActionClient(self,FollowJointTrajectory,'/pm_robot_xyz_axis_controller/follow_joint_trajectory')
 
         self.declare_parameter("max_velocity", 6)
 
@@ -35,14 +35,14 @@ class SendPosition(Node):
         
         point = JointTrajectoryPoint()
         point.positions = points
-        # point.velocities = [0.01, 1.0 , 5.0, 1.0]
+        point.velocities = [0.01, 0.01 , 0.01, 1.0]
         # joint_trajectory.accelerations = [1.0, 10.0 , 5.0, 1.0]
 
         goal_msg = FollowJointTrajectory.Goal()
         
-        point.time_from_start = Duration(sec=4)
+        #point.time_from_start = Duration(sec=4)
         
-        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint','Z_Axis_Joint']
+        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint','Z_Axis_Joint','T_Axis_Joint']
 
         goal_msg.trajectory.points = [point]
 
@@ -89,7 +89,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     action_client = SendPosition()
-    action_client.send_target([-0.046, 0.20, 0.0])
+    action_client.send_target([-0.359, -0.0458, 0.0, 0.0000])
     rclpy.spin(action_client)
 
 
