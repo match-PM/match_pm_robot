@@ -123,7 +123,7 @@
       <parent link="axis_base" />
       <child link="X_Axis" />
       <axis xyz="1 0 0" />
-      <limit lower="-0.745" upper="0.055" effort="0.1" velocity="35" />
+      <limit lower="-0.745" upper="0.05" effort="0.1" velocity="35" />
     </joint>
 
     <!--%%%%%%%%%%%%% Y Axis Definitions %%%%%%%%%%%%%-->
@@ -184,7 +184,7 @@
     </gazebo>
 
     <joint name="Z_Axis_Joint" type="prismatic">
-      <origin xyz="-0.00365 -0.499 0.33875" rpy="0 0 0" />
+      <origin xyz="-0.00365 -0.499 0.28025" rpy="0 0 0" />
       <parent link="Y_Axis" />
       <child link="Z_Axis" />
       <axis xyz="0 0 -1" />

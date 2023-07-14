@@ -202,11 +202,11 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     state_interfaces.emplace_back(StateInterface(
         "T_Axis_Joint",
         hardware_interface::HW_IF_POSITION,
-        &m_z_axis.current_position
+        &m_t_axis.current_position
     ));
 
     state_interfaces.emplace_back(
-        StateInterface("T_Axis_Joint", hardware_interface::HW_IF_VELOCITY, &m_z_axis.velocity)
+        StateInterface("T_Axis_Joint", hardware_interface::HW_IF_VELOCITY, &m_t_axis.velocity)
     );
 
     return state_interfaces;

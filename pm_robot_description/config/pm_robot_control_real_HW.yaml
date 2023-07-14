@@ -45,7 +45,7 @@ pm_robot_xyz_axis_controller:
       - X_Axis_Joint
       - Y_Axis_Joint
       - Z_Axis_Joint
-      - T_Axis_Joint
+      #- T_Axis_Joint
 
     command_interfaces:
       - position

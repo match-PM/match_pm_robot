@@ -27,7 +27,7 @@
         <!-- <joint name="Cam1_Toolhead_TCP_Joint"/> -->
     </group>
 
-    <group name="PM_Robot_Gonio_Right">
+    <!-- <group name="PM_Robot_Gonio_Right">
         <chain base_link="pm_robot_base_link" tip_link="Gonio_Right_Part_Origin" />
     </group>
 
@@ -41,7 +41,7 @@
 
     <group name="PM_Robot_2K_Dispenser_TCP">
         <chain base_link="pm_robot_base_link" tip_link="2K_Dispenser_TCP" />
-    </group>
+    </group> -->
 
     <group name="PM_Robot_Laser_TCP">
         <chain base_link="pm_robot_base_link" tip_link="Laser_Toolhead_TCP" />
@@ -59,7 +59,7 @@
         <group name="PM_Robot_Tool_TCP" />
         <group name="PM_Robot_Cam1_TCP" />
     </group> -->
-    
+
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <!-- <end_effector name="PM_Robot_Tool_TCP" parent_link="pm_robot_base_link" group="end_effector_toolhead"/> -->
 
@@ -89,18 +89,18 @@
         <joint name="Gonio_Left_Stage_2_Joint" value="0"/>
     </group_state> -->
 
-    <group_state group="PM_Robot_Parallel_Gripper" name="closed">
+    <!-- <group_state group="PM_Robot_Parallel_Gripper" name="closed">
         <joint name="pm_robot_Tool_Parallel_Joint" value="0.001"/>
         <joint name="pm_robot_Tool_Parallel_Joint_2" value="0.001"/>
     </group_state>
     <group_state group="PM_Robot_Parallel_Gripper" name="opened">
         <joint name="pm_robot_Tool_Parallel_Joint" value="0"/>
         <joint name="pm_robot_Tool_Parallel_Joint_2" value="0"/>
-    </group_state>
+    </group_state> -->
 
     <virtual_joint name="world_base" type="fixed" parent_frame="world" child_link="base_link_empthy" />
 
-    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. --> 
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="1K_Dispenser" link2="1K_Dispenser_Flap" reason="Always"/>
     <disable_collisions link1="1K_Dispenser" link2="2K_Dispenser_Cartridge" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Cam1_Toolhead_TCP" reason="Never"/>

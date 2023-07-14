@@ -34,7 +34,7 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = False
+    launch_moveit = True
 
     
     sim_time = False
@@ -55,7 +55,7 @@ def generate_launch_description():
         [
             FindPackageShare("pm_robot_description"),
             "config",
-            "pm_robot_control_sim_HW.yaml",
+            "pm_robot_control_real_HW.yaml",
         ]
     )
     forward_command_action_server = Node(
@@ -93,7 +93,7 @@ def generate_launch_description():
         # Publish the planning scene of the physical robot so that rviz plugin can know actual robot
         "publish_planning_scene": "should_publish",
         #"publish_geometry_updates": should_publish,
-        "publish_state_updates": "should_publish",
+        #"publish_state_updates": "should_publish",
         #"publish_transforms_updates": should_publish,
         #"monitor_dynamics": False,
         "use_sim_time": sim_time,
