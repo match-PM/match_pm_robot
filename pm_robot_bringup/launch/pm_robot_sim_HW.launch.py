@@ -38,7 +38,7 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = True
+    launch_moveit = False
     
     sim_time = True
 
@@ -249,7 +249,7 @@ def generate_launch_description():
     # Define Launch Description
     ld = LaunchDescription()
 
-    ld.add_action(declare_world)
+    #ld.add_action(declare_world)
     ld.add_action(gazebo)
     ld.add_action(spawn_entity)
     #ld.add_action(robot_state_publisher_node_mov)
@@ -260,12 +260,12 @@ def generate_launch_description():
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
-    if (str(mappings['with_Gonio_Left']) == 'true'):
-        ld.add_action(launch_gonio_left_controller)
-    if (str(mappings['with_Gonio_Right']) == 'true'):
-        ld.add_action(launch_gonio_right_controller)
-    if (str(mappings['with_Tool_MPG_10']) == 'true'):
-        ld.add_action(launch_gonio_parallel_gripper_controller)
-    ld.add_action(forward_command_action_server)
+    # if (str(mappings['with_Gonio_Left']) == 'true'):
+    #     ld.add_action(launch_gonio_left_controller)
+    # if (str(mappings['with_Gonio_Right']) == 'true'):
+    #     ld.add_action(launch_gonio_right_controller)
+    # if (str(mappings['with_Tool_MPG_10']) == 'true'):
+    #     ld.add_action(launch_gonio_parallel_gripper_controller)
+    #ld.add_action(forward_command_action_server)
     #ld.add_action(timed_start)
     return ld

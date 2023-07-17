@@ -16,33 +16,22 @@ class SendPosition(Node):
 
         self._action_client = ActionClient(self,FollowJointTrajectory,'/pm_robot_xyz_axis_controller/follow_joint_trajectory')
 
-        self.declare_parameter("max_velocity", 6)
-
-        max_velocity = self.get_parameter("max_velocity").value
-
-        self.get_logger().info(f'velocity: "{max_velocity}"')
-
-        self.current_position_ =  []
-
-        # self.joint_state_sub = self.create_subscription(
-        #     JointState, "joint_states", self.joint_state_callback, 10
-        # )
-        
-        
-        
+        subscribe_topic = "/joint_states"
+        self.subsriber = self.create_subscription(JointState, subscribe_topic, self.joint_state_callback, 10)
+            
 
     def send_target(self,points):
         
         point = JointTrajectoryPoint()
         point.positions = points
-        point.velocities = [0.01, 0.01 , 0.01, 1.0]
+        #point.velocities = [0.01, 0.01 , 0.01]
         # joint_trajectory.accelerations = [1.0, 10.0 , 5.0, 1.0]
 
         goal_msg = FollowJointTrajectory.Goal()
         
-        #point.time_from_start = Duration(sec=4)
+        point.time_from_start = Duration(sec=4)
         
-        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint','Z_Axis_Joint','T_Axis_Joint']
+        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint','Z_Axis_Joint']
 
         goal_msg.trajectory.points = [point]
 
@@ -77,11 +66,9 @@ class SendPosition(Node):
         rclpy.shutdown()
 
     
+    # Callback function for JointStates, saves states to joint_state_msg
     def joint_state_callback(self, msg):
-        #self.lock.acquire()
-        self.name = msg.name
-        self.current_position_ = msg.position
-        self.get_logger().info(f'Current position: "{self.current_position_}"')
+        self.joint_state_msg = msg
 
     
     
@@ -89,7 +76,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     action_client = SendPosition()
-    action_client.send_target([-0.359, -0.0458, 0.0, 0.0000])
+    action_client.send_target([-0.0, -0.0458, 0.0])
     rclpy.spin(action_client)
 
 
