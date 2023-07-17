@@ -47,18 +47,6 @@ class SendTargetsToJTC(Node):
        
         self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback, callback_group=self.group2)
 
-        
-        
-        #self.run()
-
-    # def run (self):
-        
-    #     await self.send_goal_and_wait(self.goal_1)  
-
-    #     while not self.goal_reached:
-    #           await asyncio.sleep(0.1)
-
-        # await self.send_goal_and_wait(self.goal_2) 
             
     def timer_callback(self):
  
@@ -101,30 +89,12 @@ class SendTargetsToJTC(Node):
 
         self.get_logger().info(f'Goal reached!')
         self.goal_reached = True
-        #rclpy.shutdown()
-    # def run(self):
-    #     # Create the goals
-    #     goal_1 = ForwardCommand.Goal()
-    #     goal_1.targets = [-0.1, 0.0, 0.0]  # Example targets
 
-    #     goal_2 = ForwardCommand.Goal()
-    #     goal_2.targets = [0.0, 0.0, 0.0]  # Example targets
 
-    #     while True:
-            # Send and wait for goal_1
-            # await self.send_goal_and_wait(goal_1)
-
-            # # Send and wait for goal_2
-            # await self.send_goal_and_wait(goal_2)
 
 def main(args=None):
     rclpy.init(args=args)
 
-    # action_client_node = SendTargetsToJTC()
-    # #rclpy.spin(action_client_node)
-
-    # executor = MultiThreadedExecutor()
-    # rclpy.spin(action_client_node, executor)
 
     try:
         action_client_node = SendTargetsToJTC()
@@ -141,31 +111,7 @@ def main(args=None):
     finally:
         rclpy.shutdown()
 
-    # action_client_node = rclpy.create_node('SendTargetsToJTC')
-
-    # # Create the goals
-    # goal_1 = ForwardCommand.Goal()
-    # goal_1.targets = [-0.3, 0.0, 0.0]  # Example targets
-    
-    # goal_2 = ForwardCommand.Goal()
-    # goal_2.targets = [0.0, 0.0, 0.0]  # Example targets
-
-    # action_client = ActionClient(action_client_node, ForwardCommand, 'trajectory_target')
-    
-    # future = action_client.send_goal_async(goal_1)
-
-    # while rclpy.ok():
-    #     rclpy.spin_once(action_client_node)
-    #     action_client_node.get_logger().info(f'Result: {future.result().status}')
-        # if future.done():
-        #     if future.result() is not None:
-        #         action_client_node.get_logger().info(f'Result: {future.result()}')
-        #     else:
-        #         action_client_node.get_logger().error('Exception while calling service:')
-        #     break
-
-    #action_client_node.destroy_node()
-    
+   
 
 if __name__ == '__main__':
     main()

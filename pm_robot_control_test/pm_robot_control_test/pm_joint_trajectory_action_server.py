@@ -98,8 +98,8 @@ class PMJointTrajectoryActionServer(Node):
 
         point = JointTrajectoryPoint()
         point.positions = targets
-        #point.velocities = [0.01, 0.01 , 0.01]
-        point.time_from_start = Duration(sec=4)
+        point.velocities = [0.01, 0.01 , 0.01]
+        #point.time_from_start = Duration(sec=4)
 
         traj = JointTrajectory()
         traj.joint_names = self.joint_names
