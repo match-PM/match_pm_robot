@@ -70,22 +70,12 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            # Node(
-            #     package="pm_robot_control_test",
-            #     executable="forward_command_action_server",
-            #     #name="pm_robot_IO_Axis_controller",
-            #     parameters=[{'controller_param': controler_param}, 
-            #                  {'robot_description': robot_description_raw}],
-            #     output={
-            #         "stdout": "screen",
-            #         "stderr": "screen",
-            #     },
-            # )
             Node(
                 package="pm_robot_control_test",
-                executable="pm_robot_joint_trajectory_publisher",
-                name="publisher_joint_trajectory_controller",
-                parameters=[position_goals],
+                executable="pm_joint_trajectory_action_server",
+                #name="pm_robot_IO_Axis_controller",
+                parameters=[{'controller_param': controler_param}, 
+                             {'robot_description': robot_description_raw}],
                 output={
                     "stdout": "screen",
                     "stderr": "screen",
@@ -93,9 +83,19 @@ def generate_launch_description():
             )
             # Node(
             #     package="pm_robot_control_test",
-            #     executable="pm_robot_send_target",
-            #     name="pm_robot_xyz_axis_JTC",
-            #     parameters=[controler_param],
+            #     executable="pm_robot_joint_trajectory_publisher",
+            #     name="publisher_joint_trajectory_controller",
+            #     parameters=[position_goals],
+            #     output={
+            #         "stdout": "screen",
+            #         "stderr": "screen",
+            #     },
+            # )
+            # Node(
+            #     package="pm_robot_control_test",
+            #     executable="pm_robot_send_target_JTC",
+            #     name="publisher_joint_trajectory_controller",
+            #     parameters=[position_goals],
             #     output={
             #         "stdout": "screen",
             #         "stderr": "screen",
