@@ -1,5 +1,4 @@
 import rclpy
-import asyncio
 import time
 from rclpy.action import ActionClient
 from rclpy.node import Node
@@ -7,6 +6,11 @@ from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 from sensor_msgs.msg import JointState
+
+from ament_index_python.packages import get_package_share_directory
+
+import yaml
+from yaml.loader import SafeLoader
 
 from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
 from rclpy.executors import MultiThreadedExecutor, SingleThreadedExecutor
@@ -21,6 +25,12 @@ class SendTargetsToJTC(Node):
 
     def __init__(self):
         super().__init__('action_client_node')
+
+        # bringup_config_path = os.path.join(get_package_share_directory('pm_robot_bringup'), 'config/pm_robot_bringup_config.yaml')
+        
+        # f = open(bringup_config_path)
+        # bringup_config = yaml.load(f,Loader=SafeLoader)
+        # f.close()
 
         # self.callback_group = ReentrantCallbackGroup()
         self.group1 = MutuallyExclusiveCallbackGroup()
