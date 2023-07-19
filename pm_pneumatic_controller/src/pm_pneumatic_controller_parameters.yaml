@@ -1,0 +1,5 @@
+pm_pneumatic_controller:
+  cylinders:
+    type: string_array
+    default_value: []
+    description: "Names of the cylinders to control. Must match hardware interface."

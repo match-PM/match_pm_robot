@@ -1,6 +1,7 @@
 #ifndef PM_SYSTEM_H
 #define PM_SYSTEM_H
 
+#include <array>
 #include <string>
 #include <vector>
 
@@ -10,6 +11,9 @@
 #include "pm_client/client.hpp"
 
 #include "visibility_control.h"
+
+#include "pm_hardware_interface/axis.hpp"
+#include "pm_hardware_interface/pneumatic.hpp"
 
 namespace pm_hardware_interface
 {
@@ -31,18 +35,32 @@ class PMSystem : public hardware_interface::SystemInterface
         std::string opcua_endpoint;
     };
 
-    struct AxisState
-    {
-        double current_position = 0.0;
-        double target_position = 0.0;
-        double velocity = 0.0;
-        double acceleration = 0.0;
-    };
-
     PMClient::Client m_pm_client;
     Config m_config;
 
-    AxisState m_x_axis, m_y_axis, m_z_axis, m_t_axis;
+    std::array<AxisState, 8> m_axes{
+        AxisState{AxisId::X},
+        AxisState{AxisId::Y},
+        AxisState{AxisId::Z},
+        AxisState{AxisId::T},
+        AxisState{AxisId::Q},
+        AxisState{AxisId::R},
+        AxisState{AxisId::U},
+        AxisState{AxisId::V},
+    };
+
+    std::array<PneumaticState, 5> m_pneumatics{
+        PneumaticState{PneumaticId::UV1},
+        PneumaticState{PneumaticId::UV2},
+        PneumaticState{PneumaticId::Glue},
+        PneumaticState{PneumaticId::Glue2K},
+        PneumaticState{PneumaticId::CameraMire},
+    };
+
+    double m_camera1_coax_light;
+    double m_camera1_ring_light[4];
+    double m_camera1_ring_light_rgb[3];
+    double m_camera2_light;
 
   public:
     PMSystem();

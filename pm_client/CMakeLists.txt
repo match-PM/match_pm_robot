@@ -12,9 +12,14 @@ add_library(
   pm_client SHARED
   src/client.cpp
   src/aerotech_axis.cpp
+  src/camera.cpp
+  src/pneumatic_cylinder.cpp
+  include/pm_client/util.hpp
   include/pm_client/client.hpp
   include/pm_client/robot.hpp
   include/pm_client/aerotech_axis.hpp
+  include/pm_client/camera.hpp
+  include/pm_client/pneumatic_cylinder.hpp
 )
 target_include_directories(pm_client PRIVATE include/)
 

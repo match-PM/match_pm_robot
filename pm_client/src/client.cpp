@@ -102,6 +102,102 @@ void Client::init()
         });
     };
 
+    auto browse_pneumatic = [&](UA_NodeId pneumatic_node_id,
+                                PneumaticId pneumatic_id) -> std::unique_ptr<PneumaticCylinder> {
+        return browse(pneumatic_node_id, [&](auto response) {
+            auto pneumatic = std::make_unique<PneumaticCylinder>(this, pneumatic_id);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("IsForward", &pneumatic->is_forward_node_id);
+                    get_node_id_from_ref("IsBackward", &pneumatic->is_backward_node_id);
+                    get_node_id_from_ref("MoveForwardCmd", &pneumatic->move_forward_cmd_node_id);
+                    get_node_id_from_ref("MoveBackwardCmd", &pneumatic->move_backward_cmd_node_id);
+                }
+            }
+
+            return pneumatic;
+        });
+    };
+
+    auto browse_camera1 = [&](UA_NodeId camera_node) -> std::unique_ptr<Camera1> {
+        return browse(camera_node, [&](auto response) {
+            auto camera1 = std::make_unique<Camera1>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("CoaxLight", &camera1->coax_light);
+                    get_node_id_from_ref("RingLight", &camera1->ring_light);
+                    get_node_id_from_ref("RingLightRGB", &camera1->ring_light_rgb);
+                }
+            }
+
+            return camera1;
+        });
+    };
+
+    auto browse_camera2 = [&](UA_NodeId camera_node) -> std::unique_ptr<Camera2> {
+        return browse(camera_node, [&](auto response) {
+            auto camera2 = std::make_unique<Camera2>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("Light", &camera2->light);
+                }
+            }
+
+            return camera2;
+        });
+    };
+
     browse(UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER), [&](auto response) {
         for (size_t i = 0; i < response.resultsSize; ++i)
         {
@@ -129,6 +225,53 @@ void Client::init()
                 else if (browse_name == "RobotAxisT")
                 {
                     m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::T);
+                }
+                else if (browse_name == "RobotAxisQ")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
+                else if (browse_name == "RobotAxisR")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
+                else if (browse_name == "RobotAxisU")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
+                else if (browse_name == "RobotAxisV")
+                {
+                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                }
+                else if (browse_name == "PneumaticModuleUV1")
+                {
+                    m_robot->uv1_pneumatic = browse_pneumatic(ref->nodeId.nodeId, PneumaticId::UV1);
+                }
+                else if (browse_name == "PneumaticModuleUV2")
+                {
+                    m_robot->uv2_pneumatic = browse_pneumatic(ref->nodeId.nodeId, PneumaticId::UV2);
+                }
+                else if (browse_name == "PneumaticModuleGlue")
+                {
+                    m_robot->glue_pneumatic =
+                        browse_pneumatic(ref->nodeId.nodeId, PneumaticId::Glue);
+                }
+                else if (browse_name == "PneumaticModuleGlue2K")
+                {
+                    m_robot->glue_2k_pneumatic =
+                        browse_pneumatic(ref->nodeId.nodeId, PneumaticId::Glue);
+                }
+                else if (browse_name == "PneumaticModuleCameraMire")
+                {
+                    m_robot->camera_mire_pneumatic =
+                        browse_pneumatic(ref->nodeId.nodeId, PneumaticId::CameraMire);
+                }
+                else if (browse_name == "Camera1")
+                {
+                    m_robot->camera1 = browse_camera1(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "Camera2")
+                {
+                    m_robot->camera2 = browse_camera2(ref->nodeId.nodeId);
                 }
             }
         }
