@@ -26,17 +26,24 @@ static int meters_to_increments(PMClient::AerotechAxis &axis, double units)
     return axis.units_to_increments(units * 1e6);
 }
 
+enum class Unit
+{
+    Meters,
+    Degrees,
+};
+
 struct AxisState
 {
     AxisId id;
     std::string name;
+    Unit unit;
 
     double current_position = 0.0;
     double target_position = 0.0;
     double velocity = 0.0;
     double acceleration = 0.0;
 
-    explicit AxisState(AxisId my_id) : id(my_id)
+    explicit AxisState(AxisId my_id, Unit my_unit) : id(my_id), unit(my_unit)
     {
         switch (my_id)
         {
@@ -98,18 +105,37 @@ struct AxisState
     void read(PMClient::Robot &robot)
     {
         auto &pm_axis = robot.get_axis(this->id);
-        this->current_position = increments_to_meters(pm_axis, pm_axis.get_position());
-        this->velocity = increments_to_meters(pm_axis, pm_axis.get_speed());
-        this->target_position = increments_to_meters(pm_axis, pm_axis.get_target());
-        this->acceleration = increments_to_meters(pm_axis, pm_axis.get_acceleration());
+        if (unit == Unit::Meters)
+        {
+            this->current_position = increments_to_meters(pm_axis, pm_axis.get_position());
+            this->velocity = increments_to_meters(pm_axis, pm_axis.get_speed());
+            this->target_position = increments_to_meters(pm_axis, pm_axis.get_target());
+            this->acceleration = increments_to_meters(pm_axis, pm_axis.get_acceleration());
+        }
+        else if (unit == Unit::Degrees)
+        {
+            this->current_position = pm_axis.get_position();
+            this->velocity = pm_axis.get_speed();
+            this->target_position = pm_axis.get_target();
+            this->acceleration = pm_axis.get_acceleration();
+        }
     }
 
     void write(PMClient::Robot &robot)
     {
         auto &pm_axis = robot.get_axis(this->id);
-        pm_axis.move(meters_to_increments(pm_axis, this->target_position));
-        pm_axis.set_speed(meters_to_increments(pm_axis, this->velocity));
-        // pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
+        if (unit == Unit::Meters)
+        {
+            pm_axis.move(meters_to_increments(pm_axis, this->target_position));
+            pm_axis.set_speed(meters_to_increments(pm_axis, this->velocity));
+            // pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
+        }
+        else if (unit == Unit::Degrees)
+        {
+            pm_axis.move(this->target_position);
+            pm_axis.set_speed(this->velocity);
+            // pm_axis->set_acceleration(ros_axis.acceleration);
+        }
     }
 };
 

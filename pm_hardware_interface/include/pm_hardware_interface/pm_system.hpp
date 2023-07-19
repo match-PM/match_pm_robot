@@ -39,11 +39,14 @@ class PMSystem : public hardware_interface::SystemInterface
     Config m_config;
 
     std::array<AxisState, 4> m_axes{
-        AxisState{AxisId::X}, AxisState{AxisId::Y}, AxisState{AxisId::Z}, AxisState{AxisId::T},
-        // AxisState{AxisId::Q},
-        // AxisState{AxisId::R},
-        // AxisState{AxisId::U},
-        // AxisState{AxisId::V},
+        AxisState{AxisId::X, Unit::Meters},
+        AxisState{AxisId::Y, Unit::Meters},
+        AxisState{AxisId::Z, Unit::Meters},
+        AxisState{AxisId::T, Unit::Degrees},
+        // AxisState{AxisId::Q, Unit::Meters},
+        // AxisState{AxisId::R, Unit::Meters},
+        // AxisState{AxisId::U, Unit::Meters},
+        // AxisState{AxisId::V, Unit::Meters},
     };
 
     std::array<PneumaticState, 5> m_pneumatics{
