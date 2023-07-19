@@ -46,9 +46,13 @@ CallbackReturn PMSystem::on_configure(const State &previous_state)
     {
         m_pm_client.init();
     }
-    catch (...)
+    catch (std::exception &e)
     {
-        RCLCPP_ERROR(rclcpp::get_logger("PMSystem"), "Failed to initialize PMClient.");
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PMSystem"),
+            "Failed to initialize PMClient (%s).",
+            e.what()
+        );
         return CallbackReturn::ERROR;
     }
 
