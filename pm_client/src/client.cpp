@@ -228,19 +228,19 @@ void Client::init()
                 }
                 else if (browse_name == "RobotAxisQ")
                 {
-                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                    m_robot->q_axis = browse_axis(ref->nodeId.nodeId, AxisId::Q);
                 }
                 else if (browse_name == "RobotAxisR")
                 {
-                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                    m_robot->r_axis = browse_axis(ref->nodeId.nodeId, AxisId::R);
                 }
                 else if (browse_name == "RobotAxisU")
                 {
-                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                    m_robot->u_axis = browse_axis(ref->nodeId.nodeId, AxisId::U);
                 }
                 else if (browse_name == "RobotAxisV")
                 {
-                    m_robot->t_axis = browse_axis(ref->nodeId.nodeId, AxisId::X);
+                    m_robot->v_axis = browse_axis(ref->nodeId.nodeId, AxisId::V);
                 }
                 else if (browse_name == "PneumaticModuleUV1")
                 {
@@ -258,7 +258,7 @@ void Client::init()
                 else if (browse_name == "PneumaticModuleGlue2K")
                 {
                     m_robot->glue_2k_pneumatic =
-                        browse_pneumatic(ref->nodeId.nodeId, PneumaticId::Glue);
+                        browse_pneumatic(ref->nodeId.nodeId, PneumaticId::Glue2K);
                 }
                 else if (browse_name == "PneumaticModuleCameraMire")
                 {
