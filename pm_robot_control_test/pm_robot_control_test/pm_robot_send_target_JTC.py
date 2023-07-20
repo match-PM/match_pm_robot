@@ -40,20 +40,31 @@ class SendTargetsToJTC(Node):
 
         # Create the goals
         self.goal_1 = ForwardCommand.Goal()
-        self.goal_1.targets = [-0.3, 0.0, 0.0]  # Example targets
+        self.goal_1.targets = [-0.05, -0.03, 0.02] 
 
         self.goal_2 = ForwardCommand.Goal()
-        self.goal_2.targets = [0.0, 0.0, 0.0]  # Example targets
+        self.goal_2.targets = [-0.05, -0.03, -0.03]
+
+        self.goal_3 = ForwardCommand.Goal()
+        self.goal_3.targets = [-0.55, -0.03, -0.03] 
+
+        self.goal_4 = ForwardCommand.Goal()
+        self.goal_4.targets = [-0.55, -0.03, 0.01]
+
 
         self.goals = []
+        self.goals.append(self.goal_2)
         self.goals.append(self.goal_1)
         self.goals.append(self.goal_2)
+        self.goals.append(self.goal_3)
+        self.goals.append(self.goal_4)
+        self.goals.append(self.goal_3)
 
         self.i = 0
 
         self.goal_reached = True
 
-        wait_sec_between_publish = 1
+        wait_sec_between_publish = 0.5
        
         self.timer = self.create_timer(wait_sec_between_publish, self.timer_callback, callback_group=self.group2)
 

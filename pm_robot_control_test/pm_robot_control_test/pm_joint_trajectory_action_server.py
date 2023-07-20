@@ -114,13 +114,13 @@ class PMJointTrajectoryActionServer(Node):
         while not all(goal_reached):
             for idx, joint in enumerate(self.joint_names):
                 i = self.joint_state_msg.name.index(joint)
-                lower_threshold = (self.goal.targets[idx]-10**-4)#*0.95 
-                upper_threshold = (self.goal.targets[idx]+10**-4)#*1.05
+                lower_threshold = (self.goal.targets[idx]-10**-3)#*0.95 
+                upper_threshold = (self.goal.targets[idx]+10**-3)#*1.05
                 if self.joint_state_msg.position[i] >= lower_threshold and self.joint_state_msg.position[i] < upper_threshold:
                     goal_reached[idx] = True
-                    self.get_logger().info(f'Goal {idx} with {joint} reached')
-                else:
-                    self.get_logger().warn(f'Goal {idx} with {joint} not reached. Position: {self.joint_state_msg.position[i]}')
+                #     self.get_logger().info(f'Goal {idx} with {joint} reached')
+                # else:
+                #     self.get_logger().warn(f'Goal {idx} with {joint} not reached. Position: {self.joint_state_msg.position[i]}')
                 time.sleep(0.1)
 
         goal_handle.succeed()

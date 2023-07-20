@@ -47,13 +47,13 @@
         <chain base_link="pm_robot_base_link" tip_link="Laser_Toolhead_TCP" />
     </group>
 
-    <group name="PM_Robot_Parallel_Gripper">
+    <!-- <group name="PM_Robot_Parallel_Gripper">
         <link name="Tool_Gripper_MPG_10_Body"/>
         <link name="Tool_Gripper_MPG_10_Jaw_1"/>
         <link name="Tool_Gripper_MPG_10_Jaw_2"/>
         <joint name="pm_robot_Tool_Parallel_Joint"/>
         <passive_joint name="pm_robot_Tool_Parallel_Joint_2"/>
-    </group>
+    </group> -->
 
     <!-- <group name="end_effector_toolhead">
         <group name="PM_Robot_Tool_TCP" />
