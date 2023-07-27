@@ -83,6 +83,8 @@ class Robot
 
     std::unique_ptr<Nozzle> gonio_nozzle;
 
+    std::unique_ptr<Nozzle> nest_nozzle;
+
     /**
      * Check if all axis references are properly set.
      *
@@ -123,6 +125,7 @@ class Robot
         auto nozzles = {
             head_nozzle.get(),
             gonio_nozzle.get(),
+            nest_nozzle.get(),
         };
         for (const auto &nozzle : nozzles)
         {
@@ -171,6 +174,19 @@ class Robot
                 return *glue_2k_pneumatic;
             case PneumaticId::CameraMire:
                 return *camera_mire_pneumatic;
+        }
+    }
+
+    [[nodiscard]] Nozzle &get_nozzle(NozzleId id)
+    {
+        switch (id)
+        {
+            case NozzleId::Head:
+                return *head_nozzle;
+            case NozzleId::Gonio:
+                return *gonio_nozzle;
+            case NozzleId::Nest:
+                return *nest_nozzle;
         }
     }
 };

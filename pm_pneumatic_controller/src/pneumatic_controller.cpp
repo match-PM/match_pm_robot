@@ -42,12 +42,14 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
         return controller_interface::CallbackReturn::ERROR;
     }
 
+    m_cylinder_cmds.resize(m_params.cylinders.size(), 0.0);
+
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
         auto subscription = get_node()->create_subscription<PneumaticCylinderCmd>(
             "~/" + m_params.cylinders[i],
             rclcpp::SystemDefaultsQoS(),
-            [&](const PneumaticCylinderCmd::SharedPtr msg) {
+            [this, i](const PneumaticCylinderCmd::SharedPtr msg) {
                 m_cylinder_cmds[i] = msg->move_forward;
             }
         );

@@ -9,8 +9,16 @@ class Client;
 
 enum class NozzleId
 {
-    HeadNozzle,
-    GonioNozzle
+    Head,
+    Gonio,
+    Nest,
+};
+
+enum class NozzleState
+{
+    Vacuum = -1,
+    Off = 0,
+    Air = 1,
 };
 
 class Nozzle
@@ -25,19 +33,13 @@ class Nozzle
 
     NozzleId nozzle_id;
 
-    UA_NodeId vacuum_node_id = UA_NODEID_NULL;
-
-    UA_NodeId air_node_id = UA_NODEID_NULL;
+    UA_NodeId state_node_id = UA_NODEID_NULL;
 
     [[nodiscard]] bool is_ok() const;
 
-    [[nodiscard]] bool get_vacuum() const;
+    void set_state(NozzleState state);
 
-    [[nodiscard]] bool get_air() const;
-
-    void set_vacuum(bool value);
-
-    void set_air(bool value);
+    [[nodiscard]] NozzleState get_state() const;
 };
 
 } // namespace PMClient

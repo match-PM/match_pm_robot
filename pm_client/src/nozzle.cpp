@@ -1,45 +1,30 @@
-#include "pm_client/nozzle.hpp"
+#include <exception>
+
 #include "pm_client/client.hpp"
+#include "pm_client/nozzle.hpp"
 
 namespace PMClient
 {
 
 [[nodiscard]] bool Nozzle::is_ok() const
 {
-    auto node_ids = {
-        &vacuum_node_id,
-        &air_node_id,
-    };
+    return !UA_NodeId_isNull(&state_node_id);
+}
 
-    for (const auto &node_id : node_ids)
+void Nozzle::set_state(NozzleState state)
+{
+    m_client->write_node_value<int>(this->state_node_id, static_cast<int>(state));
+}
+
+[[nodiscard]] NozzleState Nozzle::get_state() const
+{
+    auto state = m_client->read_node_value<int>(this->state_node_id);
+    if (state > 1 || state < -1)
     {
-        if (UA_NodeId_isNull(node_id))
-        {
-            return false;
-        }
+        throw std::runtime_error{"invalid nozzle state"};
     }
 
-    return true;
-}
-
-[[nodiscard]] bool Nozzle::get_vacuum() const
-{
-    return m_client->read_node_value<bool>(this->vacuum_node_id);
-}
-
-[[nodiscard]] bool Nozzle::get_air() const
-{
-    return m_client->read_node_value<bool>(this->air_node_id);
-}
-
-void Nozzle::set_air(bool value)
-{
-    m_client->write_node_value<bool>(this->vacuum_node_id, value);
-}
-
-void Nozzle::set_vacuum(bool value)
-{
-    m_client->write_node_value<bool>(this->air_node_id, value);
+    return static_cast<NozzleState>(state);
 }
 
 } // namespace PMClient

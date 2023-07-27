@@ -67,6 +67,16 @@ def generate_launch_description():
         ],
     )
 
+    pm_nozzle_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "pm_nozzle_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
     pm_robot_xyz_axis_controller = Node(
         package="controller_manager",
         executable="spawner",
@@ -83,6 +93,7 @@ def generate_launch_description():
             pm_lights_controller_spawner,
             pm_robot_xyz_axis_controller,
             pm_pneumatic_controller_spawner,
+            pm_nozzle_controller_spawner,
             robot_state_pub_node,
         ]
     )
