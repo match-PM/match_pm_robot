@@ -27,6 +27,20 @@
         <!-- <joint name="Cam1_Toolhead_TCP_Joint"/> -->
     </group>
 
+    <group name="PM_Robot_1K_Dispenser_TCP">
+        <joint name="Y_Axis_Joint"/>
+        <joint name="Z_Axis_Joint"/>
+        <joint name="X_Axis_Joint"/>
+        <joint name="1K_Dispenser_TCP"/>
+    </group>
+
+    <group name="PM_Robot_2K_Dispenser_TCP">
+        <joint name="Y_Axis_Joint"/>
+        <joint name="Z_Axis_Joint"/>
+        <joint name="X_Axis_Joint"/>
+        <joint name="2K_Dispenser_TCP"/>
+    </group>
+
     <!-- <group name="PM_Robot_Gonio_Right">
         <chain base_link="pm_robot_base_link" tip_link="Gonio_Right_Part_Origin" />
     </group>
@@ -35,12 +49,6 @@
         <chain base_link="pm_robot_base_link" tip_link="Gonio_Left_Part_Origin" />
     </group>
 
-    <group name="PM_Robot_1K_Dispenser_TCP">
-        <chain base_link="pm_robot_base_link" tip_link="1K_Dispenser_TCP" />
-    </group>
-
-    <group name="PM_Robot_2K_Dispenser_TCP">
-        <chain base_link="pm_robot_base_link" tip_link="2K_Dispenser_TCP" />
     </group> -->
 
     <group name="PM_Robot_Laser_TCP">
@@ -62,6 +70,7 @@
 
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <!-- <end_effector name="PM_Robot_Tool_TCP" parent_link="pm_robot_base_link" group="end_effector_toolhead"/> -->
+    <end_effector name="PM_Robot_1K_Dispenser_TCP" parent_link="1K_Dispenser_TCP" group="PM_Robot_1K_Dispenser_TCP"/>
 
 
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
@@ -101,6 +110,8 @@
     <virtual_joint name="world_base" type="fixed" parent_frame="world" child_link="base_link_empthy" />
 
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="1K_Dispenser_Tip" link2="1K_Dispenser" reason="Adjacent"/>
+    <disable_collisions link1="1K_Dispenser_Tip" link2="1K_Dispenser_Flap" reason="Adjacent"/>
     <disable_collisions link1="1K_Dispenser" link2="1K_Dispenser_Flap" reason="Always"/>
     <disable_collisions link1="1K_Dispenser" link2="2K_Dispenser_Cartridge" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Cam1_Toolhead_TCP" reason="Never"/>

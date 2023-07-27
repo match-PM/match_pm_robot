@@ -6,18 +6,34 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="pm_robot" params="launch_mode">
 
+  <xacro:include filename="$(find pm_robot_description)/urdf/match_logo.urdf.xacro" />
+  
+  <!-- Loading of the Robot Joint calibrations -->
     <xacro:if value="${launch_mode == 'sim_HW'}">
       <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
     </xacro:if>
 
     <!-- If launch_mode 'real' a local path can be specified for the calibration file -->
     <xacro:if value="${launch_mode == 'real_HW'}">
-      <xacro:property name="local_calibration_file_path__file" value="$(find pm_robot_description)/calibration_config/pm_robot_calibration_path.yaml" />
-      <xacro:property name="path_dict" value="${xacro.load_yaml(local_calibration_file_path__file)}"/>
+      <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
+      <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
+
       <xacro:property name="local_calibration_file_path" value="${path_dict['pm_robot_calibration_file_path']}"/>
-      <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
-      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" /> -->
+      <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
+
+      <!-- REAL -->
+      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+      <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/> -->
+
+      <!-- SIM -->
+      <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+
     </xacro:if>
+
+    <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+    <xacro:property name="current_pm_robot_1K_dipsenser_tip" value="${current_pm_robot_bringup_config['pm_robot_1K_dispenser_tip']['use_dispenser_tip']}"/>
 
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
 
@@ -65,6 +81,17 @@
       <axis xyz="0 0 0" />
     </joint>
 
+    <link name="match_logo_link">
+    </link>
+
+    <joint name="match_logo_link_joint" type="fixed">
+      <origin xyz="1 -0.12 -0.09" rpy="0 0 3.14159265359" />
+      <parent link="pm_robot_base_link" />
+      <child link="match_logo_link" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <xacro:match_logo parent="match_logo_link" locationprefix="left" location_dx="0" location_dy="0" location_dz="0"/>
 
     <!--%%%%%%%%%%%%% Axis-Base Definitions %%%%%%%%%%%%%-->
     <link name="axis_base">
@@ -78,9 +105,7 @@
         <geometry>
           <mesh filename="file://$(find pm_robot_description)/meshes/axis_base.STL" />
         </geometry>
-        <material name="">
-          <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-        </material>
+        <material name="grey"/>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -358,6 +383,12 @@
     <link name="1K_Dispenser_TCP">
     </link>
 
+    <!-- Init Definition of 1K Dispenser tip -->
+    <xacro:property name="dispenser_1K_configs_file" value="$(find pm_robot_description)/urdf/urdf_configs/1K_Dispenser_config.yaml" />
+    <xacro:property name="dispenser_1K_configs_dict" value="${xacro.load_yaml(dispenser_1K_configs_file)}"/>
+
+    <xacro:property name="Dispenser_1K_tip_z_offset" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['1K_dispencer_tcp_offset']}"/>
+
     <!-- Property names should not start with a number -->
     <xacro:property name="Dispenser_1K_TCP_Joint_Cal_x" value="${calibration_dict['1K_Dispenser_TCP_Joint']['x_offset']}"/>
     <xacro:property name="Dispenser_1K_TCP_Joint_Cal_y" value="${calibration_dict['1K_Dispenser_TCP_Joint']['y_offset']}"/>
@@ -370,7 +401,8 @@
       <origin xyz="
         ${-0.001 + Dispenser_1K_TCP_Joint_Cal_x * 0.000001} 
         ${-0.0318 + Dispenser_1K_TCP_Joint_Cal_y * 0.000001} 
-        ${-0.1285 + Dispenser_1K_TCP_Joint_Cal_z * 0.000001}" rpy="
+        ${-0.135 + Dispenser_1K_TCP_Joint_Cal_z * 0.000001 + Dispenser_1K_tip_z_offset}" 
+        rpy="
         ${0 + Dispenser_1K_TCP_Joint_Cal_rx * 3.14159265359/180} 
         ${0 + Dispenser_1K_TCP_Joint_Cal_ry * 3.14159265359/180} 
         ${0 + Dispenser_1K_TCP_Joint_Cal_rz * 3.14159265359/180}" />
@@ -378,6 +410,78 @@
       <child link="1K_Dispenser_TCP" />
       <axis xyz="0 0 0" />
     </joint>
+
+
+    <!-- Definition of 1K Dispenser tip -->
+    <xacro:property name="Dispenser_1K_tip_xyz" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['xyz']}"/>
+    <xacro:property name="Dispenser_1K_tip_rpy" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['rpy']}"/>
+    <xacro:property name="Dispenser_1K_tip_mass" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['mass']}"/>
+    <xacro:property name="Dispenser_1K_tip_inertia_ixx" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_ixx']}"/>
+    <xacro:property name="Dispenser_1K_tip_inertia_ixy" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_ixy']}"/>
+    <xacro:property name="Dispenser_1K_tip_inertia_ixz" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_ixz']}"/>
+    <xacro:property name="Dispenser_1K_tip_inertia_iyy" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_iyy']}"/>
+    <xacro:property name="Dispenser_1K_tip_inertia_iyz" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_iyz']}"/>
+    <xacro:property name="Dispenser_1K_tip_inertia_izz" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_izz']}"/>
+    <xacro:property name="Dispenser_1K_tip_color" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['color']}"/>    
+    <xacro:property name="Dispenser_1K_tip_visual_filename" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['visual_filename']}"/>
+    <xacro:property name="Dispenser_1K_tip_collision_filename" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['collision_filename']}"/>
+
+  <!--%%%%%%%%%%%%% The parameters here are interchangeable %%%%%%%%%%%%%-->
+  <!--%%%%%%%%%%%%% Jaw 1 Definitions %%%%%%%%%%%%%-->
+  <link
+    name="1K_Dispenser_Tip">
+    <inertial>
+      <origin
+        xyz="${Dispenser_1K_tip_xyz}"
+        rpy="${Dispenser_1K_tip_rpy}"/>
+      <mass
+        value="${Dispenser_1K_tip_mass}"/>
+      <inertia
+        ixx="${Dispenser_1K_tip_inertia_ixx}"
+        ixy="${Dispenser_1K_tip_inertia_ixy}"
+        ixz="${Dispenser_1K_tip_inertia_ixz}"
+        iyy="${Dispenser_1K_tip_inertia_iyy}"
+        iyz="${Dispenser_1K_tip_inertia_iyz}"
+        izz="${Dispenser_1K_tip_inertia_izz}" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Dispenser_Tips/${Dispenser_1K_tip_visual_filename}" />      
+      </geometry>
+      <material
+        name="${Dispenser_1K_tip_color}">
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Dispenser_Tips/${Dispenser_1K_tip_collision_filename}" />         
+      </geometry>
+    </collision>
+  </link>
+
+  <gazebo reference="1K_Dispenser_Tip">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+
+  <joint
+    name="1K_Dispenser_Tip_Joint"
+    type="fixed">
+    <!-- This needs to be corrected in Solidworks -->
+    <origin
+      xyz="0.000 0 0 "
+      rpy="0 0 0" />
+    <parent
+      link="1K_Dispenser_TCP" />
+    <child
+      link="1K_Dispenser_Tip" />
+  </joint>
+
 
     <!--%%%%%%%%%%%%% 2K Dispenser Definitions-->
 

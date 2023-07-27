@@ -1,0 +1,45 @@
+Dis_Tip_Lavender_I_150_A310_L12700:
+  1K_dispencer_tcp_offset: "0.0127"
+  xyz: "-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024"
+  rpy: "0 0 0"
+  mass: "0.000266749600701752"
+  inertia_ixx: "7.71061807673942E-05"     #19
+  inertia_ixy: "5.31796627071765E-05"    #12
+  inertia_ixz: "-8.5237329598285E-05"  #18
+  inertia_iyy: "7.72096804248683E-05"   #09
+  inertia_iyz: "2.74255625257587E-05"  #-14
+  inertia_izz: "1.50227360147676E-05"   #09
+  color: "blue"
+  visual_filename: "Dis_Tip_Lavender_I_150_A310_L12700.STL"
+  collision_filename: "Dis_Tip_Lavender_I_150_A310_L12700.STL"
+
+Dis_Tip_Yellow_I_100_A240_L12700:
+  1K_dispencer_tcp_offset: "0.0127"
+  xyz: "-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024"
+  rpy: "0 0 0"
+  mass: "0.000266749600701752"
+  inertia_ixx: "7.71061807673942E-05"     #19
+  inertia_ixy: "5.31796627071765E-05"    #12
+  inertia_ixz: "-8.5237329598285E-05"  #18
+  inertia_iyy: "7.72096804248683E-05"   #09
+  inertia_iyz: "2.74255625257587E-05"  #-14
+  inertia_izz: "1.50227360147676E-05"   #09
+  color: "orange"
+  visual_filename: "Dis_Tip_Yellow_I_100_A240_L12700.STL"
+  collision_filename: "Dis_Tip_Yellow_I_100_A240_L12700.STL"
+
+
+Dis_Tip_Red_I_250_A520_L12700:
+  1K_dispencer_tcp_offset: "0.0127"
+  xyz: "-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024"
+  rpy: "0 0 0"
+  mass: "0.000266749600701752"
+  inertia_ixx: "7.71061807673942E-05"     #19
+  inertia_ixy: "5.31796627071765E-05"    #12
+  inertia_ixz: "-8.5237329598285E-05"  #18
+  inertia_iyy: "7.72096804248683E-05"   #09
+  inertia_iyz: "2.74255625257587E-05"  #-14
+  inertia_izz: "1.50227360147676E-05"   #09
+  color: "red"
+  visual_filename: "Dis_Tip_Red_I_250_A520_L12700.STL"
+  collision_filename: "Dis_Tip_Red_I_250_A520_L12700.STL"
