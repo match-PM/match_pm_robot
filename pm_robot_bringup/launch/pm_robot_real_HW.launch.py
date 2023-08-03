@@ -193,6 +193,36 @@ def generate_launch_description():
             #}.items()
         )
     
+    pm_lights_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "pm_lights_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
+    pm_pneumatic_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "pm_pneumatic_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
+    pm_nozzle_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "pm_nozzle_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+    
     launch_gonio_left_controller = IncludeLaunchDescription(PythonLaunchDescriptionSource([
         PathJoinSubstitution([
             FindPackageShare(pkg_name),
@@ -230,6 +260,9 @@ def generate_launch_description():
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
+    ld.add_action(pm_lights_controller_spawner)
+    ld.add_action(pm_pneumatic_controller_spawner)
+    ld.add_action(pm_nozzle_controller_spawner)
     #ld.add_action(forward_command_action_server)
     # if (str(mappings['with_Gonio_Left']) == 'true'):
     #     ld.add_action(launch_gonio_left_controller)

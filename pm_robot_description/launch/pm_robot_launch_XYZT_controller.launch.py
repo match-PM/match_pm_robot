@@ -83,6 +83,6 @@ def generate_launch_description():
     ld.add_action(Spawn_pm_robot_broadcaster)    
     ld.add_action(delay_Spawn_pm_robot_xyz_JTC)
     ld.add_action(delay_Spawn_pm_robot_t_axis_JTC)
-    ld.add_action(delay_robot_controller_spawner_after_controller)
+    #ld.add_action(delay_robot_controller_spawner_after_controller)
 
     return ld
