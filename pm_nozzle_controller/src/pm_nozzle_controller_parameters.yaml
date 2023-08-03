@@ -1,0 +1,5 @@
+pm_nozzle_controller:
+  nozzles:
+    type: string_array
+    default_value: []
+    description: "Names of the nozzles to control. Must match hardware interface."

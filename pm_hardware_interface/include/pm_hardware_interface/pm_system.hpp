@@ -13,6 +13,7 @@
 #include "visibility_control.h"
 
 #include "pm_hardware_interface/axis.hpp"
+#include "pm_hardware_interface/nozzle.hpp"
 #include "pm_hardware_interface/pneumatic.hpp"
 
 namespace pm_hardware_interface
@@ -55,6 +56,12 @@ class PMSystem : public hardware_interface::SystemInterface
         PneumaticState{PneumaticId::Glue},
         PneumaticState{PneumaticId::Glue2K},
         PneumaticState{PneumaticId::CameraMire},
+    };
+
+    std::array<NozzleState, 3> m_nozzles{
+        NozzleState{NozzleId::Head},
+        NozzleState{NozzleId::Gonio},
+        NozzleState{NozzleId::Nest},
     };
 
     double m_camera1_coax_light;

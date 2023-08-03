@@ -180,6 +180,11 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
         pneumatic.add_state_interfaces(state_interfaces);
     }
 
+    for (auto &nozzle : m_nozzles)
+    {
+        nozzle.add_state_interfaces(state_interfaces);
+    }
+
     state_interfaces.emplace_back(
         StateInterface("Camera1_Coax_Light", "On_Off", &m_camera1_coax_light)
     );
@@ -229,6 +234,11 @@ std::vector<CommandInterface> PMSystem::export_command_interfaces()
     for (auto &pneumatic : m_pneumatics)
     {
         pneumatic.add_command_interfaces(command_interfaces);
+    }
+
+    for (auto &nozzle : m_nozzles)
+    {
+        nozzle.add_command_interfaces(command_interfaces);
     }
 
     command_interfaces.emplace_back(
@@ -289,6 +299,11 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
         pneumatic.read(robot);
     }
 
+    for (auto &nozzle : m_nozzles)
+    {
+        nozzle.read(robot);
+    }
+
     m_camera1_coax_light = static_cast<double>(robot.camera1->get_coax_light());
 
     bool segments[4] = {0};
@@ -328,6 +343,11 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     for (auto &pneumatic : m_pneumatics)
     {
         pneumatic.write(robot);
+    }
+
+    for (auto &nozzle : m_nozzles)
+    {
+        nozzle.write(robot);
     }
 
     robot.camera1->set_coax_light(static_cast<bool>(m_camera1_coax_light));

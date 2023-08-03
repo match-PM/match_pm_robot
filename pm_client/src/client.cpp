@@ -57,6 +57,8 @@ void Client::init()
         return return_value;
     };
 
+    // TODO: refactor this for less code duplication
+
     auto browse_axis = [&](UA_NodeId axis_node_id,
                            AxisId axis_id) -> std::unique_ptr<AerotechAxis> {
         return browse(axis_node_id, [&](auto response) {
@@ -133,6 +135,37 @@ void Client::init()
             }
 
             return pneumatic;
+        });
+    };
+
+    auto browse_nozzle = [&](UA_NodeId nozzle_node_id,
+                             NozzleId nozzle_id) -> std::unique_ptr<Nozzle> {
+        return browse(nozzle_node_id, [&](auto response) {
+            auto nozzle = std::make_unique<Nozzle>(this, nozzle_id);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("State", &nozzle->state_node_id);
+                }
+            }
+
+            return nozzle;
         });
     };
 
@@ -264,6 +297,18 @@ void Client::init()
                 {
                     m_robot->camera_mire_pneumatic =
                         browse_pneumatic(ref->nodeId.nodeId, PneumaticId::CameraMire);
+                }
+                else if (browse_name == "HeadNozzle")
+                {
+                    m_robot->head_nozzle = browse_nozzle(ref->nodeId.nodeId, NozzleId::Head);
+                }
+                else if (browse_name == "GoniometerNozzle")
+                {
+                    m_robot->gonio_nozzle = browse_nozzle(ref->nodeId.nodeId, NozzleId::Gonio);
+                }
+                else if (browse_name == "NestNozzle")
+                {
+                    m_robot->nest_nozzle = browse_nozzle(ref->nodeId.nodeId, NozzleId::Nest);
                 }
                 else if (browse_name == "Camera1")
                 {

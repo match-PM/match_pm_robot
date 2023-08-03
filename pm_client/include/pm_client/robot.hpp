@@ -6,8 +6,8 @@
 
 #include "pm_client/aerotech_axis.hpp"
 #include "pm_client/camera.hpp"
+#include "pm_client/nozzle.hpp"
 #include "pm_client/pneumatic_cylinder.hpp"
-
 namespace PMClient
 {
 
@@ -79,6 +79,12 @@ class Robot
 
     std::unique_ptr<PneumaticCylinder> camera_mire_pneumatic;
 
+    std::unique_ptr<Nozzle> head_nozzle;
+
+    std::unique_ptr<Nozzle> gonio_nozzle;
+
+    std::unique_ptr<Nozzle> nest_nozzle;
+
     /**
      * Check if all axis references are properly set.
      *
@@ -112,6 +118,18 @@ class Robot
         for (const auto &pneumatic : pneumatics)
         {
             if (pneumatic == nullptr || !pneumatic->is_ok())
+            {
+                return false;
+            }
+        }
+        auto nozzles = {
+            head_nozzle.get(),
+            gonio_nozzle.get(),
+            nest_nozzle.get(),
+        };
+        for (const auto &nozzle : nozzles)
+        {
+            if (nozzle == nullptr || !nozzle->is_ok())
             {
                 return false;
             }
@@ -156,6 +174,19 @@ class Robot
                 return *glue_2k_pneumatic;
             case PneumaticId::CameraMire:
                 return *camera_mire_pneumatic;
+        }
+    }
+
+    [[nodiscard]] Nozzle &get_nozzle(NozzleId id)
+    {
+        switch (id)
+        {
+            case NozzleId::Head:
+                return *head_nozzle;
+            case NozzleId::Gonio:
+                return *gonio_nozzle;
+            case NozzleId::Nest:
+                return *nest_nozzle;
         }
     }
 };

@@ -1,0 +1,7 @@
+<library path="pm_nozzle_controller">
+    <class name="pm_nozzle_controller/PMNozzleController" type="pm_nozzle_controller::PMNozzleController" base_class_type="controller_interface::ControllerInterface">
+        <description>
+            Controller for PM nozzles.
+        </description>
+    </class>
+</library>
