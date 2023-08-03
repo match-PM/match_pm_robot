@@ -199,6 +199,11 @@ def generate_launch_description():
         ]
     )
 
+    opcua_server_sim = Node(
+        package='opcua_server',
+        executable='opcua_server'
+    )
+
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
@@ -268,4 +273,5 @@ def generate_launch_description():
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
     #ld.add_action(forward_command_action_server)
     #ld.add_action(timed_start)
+    ld.add_action(opcua_server_sim)
     return ld
