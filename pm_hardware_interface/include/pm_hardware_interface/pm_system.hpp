@@ -72,6 +72,8 @@ class PMSystem : public hardware_interface::SystemInterface
     double m_camera1_ring_light_rgb[3];
     double m_camera2_light;
 
+    double m_laser_measurement;
+
   public:
     PMSystem();
 

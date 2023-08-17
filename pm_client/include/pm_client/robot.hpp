@@ -6,6 +6,7 @@
 
 #include "pm_client/aerotech_axis.hpp"
 #include "pm_client/camera.hpp"
+#include "pm_client/laser.hpp"
 #include "pm_client/nozzle.hpp"
 #include "pm_client/pneumatic_cylinder.hpp"
 namespace PMClient
@@ -91,6 +92,8 @@ class Robot
 
     std::unique_ptr<Nozzle> doseur_glue_2k;
 
+    std::unique_ptr<Laser> laser;
+
     /**
      * Check if all axis references are properly set.
      *
@@ -144,7 +147,7 @@ class Robot
                 return false;
             }
         }
-        return camera1->is_ok() && camera2->is_ok();
+        return camera1->is_ok() && camera2->is_ok() && laser->is_ok();
     }
 
     [[nodiscard]] AerotechAxis &get_axis(AxisId id)
