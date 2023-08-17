@@ -35,6 +35,12 @@ struct NozzleState
             case NozzleId::Nest:
                 name = "Nest_Nozzle";
                 break;
+            case NozzleId::DoseurGlue:
+                name = "Doseur_Nozzle";
+                break;
+            case NozzleId::DoseurGlue2K:
+                name = "Glue_2K_Doseur";
+                break;
         }
     }
 

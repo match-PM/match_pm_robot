@@ -298,6 +298,11 @@ void Client::init()
                     m_robot->camera_mire_pneumatic =
                         browse_pneumatic(ref->nodeId.nodeId, PneumaticId::CameraMire);
                 }
+                else if (browse_name == "PneumaticProtectDoseur")
+                {
+                    m_robot->protect_doseur_pneumatic =
+                        browse_pneumatic(ref->nodeId.nodeId, PneumaticId::ProtectDoseur);
+                }
                 else if (browse_name == "HeadNozzle")
                 {
                     m_robot->head_nozzle = browse_nozzle(ref->nodeId.nodeId, NozzleId::Head);
@@ -309,6 +314,15 @@ void Client::init()
                 else if (browse_name == "NestNozzle")
                 {
                     m_robot->nest_nozzle = browse_nozzle(ref->nodeId.nodeId, NozzleId::Nest);
+                }
+                else if (browse_name == "DoseurGlue")
+                {
+                    m_robot->doseur_glue = browse_nozzle(ref->nodeId.nodeId, NozzleId::DoseurGlue);
+                }
+                else if (browse_name == "DoseurGlue2K")
+                {
+                    m_robot->doseur_glue_2k =
+                        browse_nozzle(ref->nodeId.nodeId, NozzleId::DoseurGlue2K);
                 }
                 else if (browse_name == "Camera1")
                 {

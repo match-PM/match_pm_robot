@@ -79,11 +79,17 @@ class Robot
 
     std::unique_ptr<PneumaticCylinder> camera_mire_pneumatic;
 
+    std::unique_ptr<PneumaticCylinder> protect_doseur_pneumatic;
+
     std::unique_ptr<Nozzle> head_nozzle;
 
     std::unique_ptr<Nozzle> gonio_nozzle;
 
     std::unique_ptr<Nozzle> nest_nozzle;
+
+    std::unique_ptr<Nozzle> doseur_glue;
+
+    std::unique_ptr<Nozzle> doseur_glue_2k;
 
     /**
      * Check if all axis references are properly set.
@@ -114,7 +120,9 @@ class Robot
             uv2_pneumatic.get(),
             glue_pneumatic.get(),
             glue_2k_pneumatic.get(),
-            camera_mire_pneumatic.get()};
+            camera_mire_pneumatic.get(),
+            protect_doseur_pneumatic.get(),
+        };
         for (const auto &pneumatic : pneumatics)
         {
             if (pneumatic == nullptr || !pneumatic->is_ok())
@@ -126,6 +134,8 @@ class Robot
             head_nozzle.get(),
             gonio_nozzle.get(),
             nest_nozzle.get(),
+            doseur_glue.get(),
+            doseur_glue_2k.get(),
         };
         for (const auto &nozzle : nozzles)
         {
@@ -174,6 +184,8 @@ class Robot
                 return *glue_2k_pneumatic;
             case PneumaticId::CameraMire:
                 return *camera_mire_pneumatic;
+            case PneumaticId::ProtectDoseur:
+                return *protect_doseur_pneumatic;
         }
     }
 
@@ -187,6 +199,10 @@ class Robot
                 return *gonio_nozzle;
             case NozzleId::Nest:
                 return *nest_nozzle;
+            case NozzleId::DoseurGlue:
+                return *doseur_glue;
+            case NozzleId::DoseurGlue2K:
+                return *doseur_glue_2k;
         }
     }
 };

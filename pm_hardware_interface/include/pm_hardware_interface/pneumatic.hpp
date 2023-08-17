@@ -43,6 +43,9 @@ struct PneumaticState
             case PneumaticId::CameraMire:
                 name = "Camera_Mire_Pneumatic";
                 break;
+            case PneumaticId::ProtectDoseur:
+                name = "Protect_Doseur_Pneumatic";
+                break;
         }
     }
 

@@ -50,18 +50,21 @@ class PMSystem : public hardware_interface::SystemInterface
         // AxisState{AxisId::V, Unit::Meters},
     };
 
-    std::array<PneumaticState, 5> m_pneumatics{
+    std::array<PneumaticState, 6> m_pneumatics{
         PneumaticState{PneumaticId::UV1},
         PneumaticState{PneumaticId::UV2},
         PneumaticState{PneumaticId::Glue},
         PneumaticState{PneumaticId::Glue2K},
         PneumaticState{PneumaticId::CameraMire},
+        PneumaticState{PneumaticId::ProtectDoseur},
     };
 
-    std::array<NozzleState, 3> m_nozzles{
+    std::array<NozzleState, 5> m_nozzles{
         NozzleState{NozzleId::Head},
         NozzleState{NozzleId::Gonio},
         NozzleState{NozzleId::Nest},
+        NozzleState{NozzleId::DoseurGlue},
+        NozzleState{NozzleId::DoseurGlue2K},
     };
 
     double m_camera1_coax_light;
