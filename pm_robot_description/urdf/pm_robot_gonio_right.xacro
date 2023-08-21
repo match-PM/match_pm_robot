@@ -3,7 +3,43 @@
      Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 
-<robot name="pm_robot_Gonio_Right">
+     <robot xmlns:xacro="http://ros.org/wiki/xacro">
+      <xacro:macro name="pm_robot_gonio_right" params="launch_mode">
+  
+    <!-- Loading of the Robot Joint calibrations -->
+    <xacro:if value="${launch_mode == 'sim_HW'}">
+      <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+    </xacro:if>
+  
+    <!-- If launch_mode 'real' a local path can be specified for the calibration file -->
+    <xacro:if value="${launch_mode == 'real_HW'}">
+      <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
+      <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
+  
+      <xacro:property name="local_calibration_file_path" value="${path_dict['pm_robot_calibration_file_path']}"/>
+      <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
+  
+      <!-- REAL -->
+      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+      <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/> -->
+  
+      <!-- SIM -->
+      <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+  
+    </xacro:if>
+  
+
+    <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+    <xacro:property name="current_gonio_right_chuck" value="${current_pm_robot_bringup_config['pm_robot_gonio_right']['use_chuck']}"/>
+  
+    <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
+
+
+    <!-- Init Definition of gonio chuck dict -->
+    <xacro:property name="gonio_right_configs_file" value="$(find pm_robot_description)/urdf/urdf_configs/gonio_right_chuck_config.yaml" />
+    <xacro:property name="gonio_right_configs_dict" value="${xacro.load_yaml(gonio_right_configs_file)}"/>
 
 <!--%%%%%%%%%%%%% Gonio_Right Definitions %%%%%%%%-->
 
@@ -228,11 +264,11 @@
   <!--%%%%%%%%%%%%% Gonio Right Chuck Definitions-->
 
   <link
-    name="Gonio_Right_Chuck">
+    name="Gonio_Right_Chuck_Origin">
   </link>
 
   <joint
-    name="Gonio_Right_Chuck_Joint"
+    name="Gonio_Right_Chuck_Origin_Joint"
     type="fixed">
     <origin
       xyz="0 0 -0.0499999999999999"
@@ -240,11 +276,81 @@
     <parent
       link="Gonio_Right_Stage_2_Bottom" />
     <child
-      link="Gonio_Right_Chuck" />
+      link="Gonio_Right_Chuck_Origin" />
     <axis
       xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% This is for the Chuck  -->
+  <xacro:property name="gonio_chuck_tcp_offset_x" value="${gonio_right_configs_dict[current_gonio_right_chuck]['tcp_offset_from_gonio_x']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_y" value="${gonio_right_configs_dict[current_gonio_right_chuck]['tcp_offset_from_gonio_y']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_z" value="${gonio_right_configs_dict[current_gonio_right_chuck]['tcp_offset_from_gonio_z']}"/>
+  <xacro:property name="gonio_chuck_xyz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['xyz']}"/>
+  <xacro:property name="gonio_chuck_xyz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['xyz']}"/>
+  <xacro:property name="gonio_chuck_xyz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['xyz']}"/>
+  <xacro:property name="gonio_chuck_rpy" value="${gonio_right_configs_dict[current_gonio_right_chuck]['rpy']}"/>
+  <xacro:property name="gonio_chuck_mass" value="${gonio_right_configs_dict[current_gonio_right_chuck]['mass']}"/>
+  <xacro:property name="gonio_chuck_inertia_ixx" value="${gonio_right_configs_dict[current_gonio_right_chuck]['inertia_ixx']}"/>
+  <xacro:property name="gonio_chuck_inertia_ixy" value="${gonio_right_configs_dict[current_gonio_right_chuck]['inertia_ixy']}"/>
+  <xacro:property name="gonio_chuck_inertia_ixz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['inertia_ixz']}"/>
+  <xacro:property name="gonio_chuck_inertia_iyy" value="${gonio_right_configs_dict[current_gonio_right_chuck]['inertia_iyy']}"/>
+  <xacro:property name="gonio_chuck_inertia_iyz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['inertia_iyz']}"/>
+  <xacro:property name="gonio_chuck_inertia_izz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['inertia_izz']}"/>
+  <xacro:property name="gonio_chuck_color" value="${gonio_right_configs_dict[current_gonio_right_chuck]['color']}"/>    
+  <xacro:property name="gonio_chuck_visual_filename" value="${gonio_right_configs_dict[current_gonio_right_chuck]['visual_filename']}"/>
+  <xacro:property name="gonio_chuck_collision_filename" value="${gonio_right_configs_dict[current_gonio_right_chuck]['collision_filename']}"/>
+
+<link
+  name="Gonio_Right_Chuck">
+  <inertial>
+    <origin
+      xyz="${gonio_chuck_xyz}"
+      rpy="${gonio_chuck_rpy}"/>
+    <mass
+      value="${gonio_chuck_mass}"/>
+    <inertia
+      ixx="${gonio_chuck_inertia_ixx}"
+      ixy="${gonio_chuck_inertia_ixy}"
+      ixz="${gonio_chuck_inertia_ixz}"
+      iyy="${gonio_chuck_inertia_iyy}"
+      iyz="${gonio_chuck_inertia_iyz}"
+      izz="${gonio_chuck_inertia_izz}" />
+  </inertial>
+  <visual>
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <geometry>
+      <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chucks/${gonio_chuck_visual_filename}" />      
+    </geometry>
+    <material
+      name="${gonio_chuck_color}">
+    </material>
+  </visual>
+  <collision>
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <geometry>
+      <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chucks/${gonio_chuck_collision_filename}" />         
+    </geometry>
+  </collision>
+</link>
+
+<joint
+  name="Gonio_Right_Chuck_Joint"
+  type="fixed">
+  <origin
+    xyz="0 0 0"
+    rpy="0 0 0" />
+  <parent
+    link="Gonio_Right_Chuck_Origin" />
+  <child
+    link="Gonio_Right_Chuck" />
+  <axis
+    xyz="0 0 0" />
+</joint>
+  
   <!--%%%%%%%%%%%%% Gonio Right Part Origin -->
   <link
     name="Gonio_Right_Part_Origin">
@@ -254,68 +360,17 @@
     name="Gonio_Right_Part_Origin_Joint"
     type="fixed">
     <origin
-      xyz="0 0 0"
+      xyz="${gonio_chuck_tcp_offset_x} ${gonio_chuck_tcp_offset_y} ${gonio_chuck_tcp_offset_z}"
       rpy="0 0 0" />
     <parent
-      link="Gonio_Right_Chuck" />
+      link="Gonio_Right_Chuck_Origin" />
     <child
       link="Gonio_Right_Part_Origin" />
     <axis
       xyz="0 0 0" />
   </joint>
 
-  <!--%%%%%%%%%%%%% This is a Chuck Example -->
-  <link
-    name="Gonio_Right_Example_Chuck">
-    <inertial>
-      <origin
-        xyz="-4.91275391850676E-05 -7.08920350384057E-06 0.0216564841336891"
-        rpy="0 0 0" />
-      <mass
-        value="0.133934804202608" />
-      <inertia
-        ixx="3.05433990945277E-05"
-        ixy="-2.55507616624267E-10"
-        ixz="-1.7486699307754E-08"
-        iyy="4.80787890381723E-05"
-        iyz="2.24246430305895E-09"
-        izz="7.18729232269431E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chuck.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chuck.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint
-    name="Gonio_Right_Example_Chuck_Joint"
-    type="fixed">
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Right_Chuck" />
-    <child
-      link="Gonio_Right_Example_Chuck" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  
 
-</robot> 
+</xacro:macro>
+
+</robot>

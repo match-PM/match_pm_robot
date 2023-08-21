@@ -1,15 +1,17 @@
 
 chuck_gonio_left_Siemens_Carrier:
-  tcp_offset: "0"
-  xyz: "-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024"
+  tcp_offset_from_gonio_x: "0"
+  tcp_offset_from_gonio_y: "0"
+  tcp_offset_from_gonio_z: "0"
+  xyz: "0.00851660407252697 0.00736263697453748 0.0446054201819609"
   rpy: "0 0 0"
-  mass: "0.000266749600701752"
-  inertia_ixx: "7.71061807673942E-05"     #19
-  inertia_ixy: "5.31796627071765E-05"    #12
-  inertia_ixz: "-8.5237329598285E-05"  #18
-  inertia_iyy: "7.72096804248683E-05"   #09
-  inertia_iyz: "2.74255625257587E-05"  #-14
-  inertia_izz: "1.50227360147676E-05"   #09
-  color: "blue"
+  mass: "0.193859196068301"
+  inertia_ixx: "6.74557361964199E-05"     
+  inertia_ixy: "-1.48218596250914E-05"   
+  inertia_ixz: "-9.56044333605206E-07" 
+  inertia_iyy: "0.000514689088229689"  
+  inertia_iyz: "-1.14966587929801E-06"  
+  inertia_izz: "0.00047114586366426"  
+  color: "white"
   visual_filename: "Chuck_Siemens_Carrier_Gonio_Left.STL"
   collision_filename: "Chuck_Siemens_Carrier_Gonio_Left.STL"

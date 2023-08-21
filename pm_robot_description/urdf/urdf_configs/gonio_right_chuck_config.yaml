@@ -1,15 +1,16 @@
-
 chuck_gonio_right_Siemens_UFC:
-  tcp_offset: "0"
-  xyz: "-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024"
+  tcp_offset_from_gonio_x: "0.0175"
+  tcp_offset_from_gonio_y: "0.01025"
+  tcp_offset_from_gonio_z: "0.0525"
+  xyz: "-4.91275391850676E-05 -7.08920350384057E-06 0.0216564841336891"
   rpy: "0 0 0"
-  mass: "0.000266749600701752"
-  inertia_ixx: "7.71061807673942E-05"     #19
-  inertia_ixy: "5.31796627071765E-05"    #12
-  inertia_ixz: "-8.5237329598285E-05"  #18
-  inertia_iyy: "7.72096804248683E-05"   #09
-  inertia_iyz: "2.74255625257587E-05"  #-14
-  inertia_izz: "1.50227360147676E-05"   #09
-  color: "blue"
+  mass: "0.133934804202608"
+  inertia_ixx: "3.05433990945277E-05"    
+  inertia_ixy: "-2.55507616624267E-10"   
+  inertia_ixz: "-1.7486699307754E-08" 
+  inertia_iyy: "4.80787890381723E-05"  
+  inertia_iyz: "2.24246430305895E-09" 
+  inertia_izz: "7.18729232269431E-05"   
+  color: "white"
   visual_filename: "Chuck_Siemens_UFC_Gonio_Right.STL"
   collision_filename: "Chuck_Siemens_UFC_Gonio_Right.STL"
