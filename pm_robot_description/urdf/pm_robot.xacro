@@ -34,8 +34,10 @@
 
     <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
     <xacro:property name="current_pm_robot_1K_dipsenser_tip" value="${current_pm_robot_bringup_config['pm_robot_1K_dispenser_tip']['use_dispenser_tip']}"/>
+    <xacro:property name="current_vacuum_tool" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_tool']}"/>
 
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
+
 
     <link name="world">
     </link>
@@ -284,7 +286,7 @@
       <axis xyz="0 0 0" />
     </joint>
 
-
+<!-- 
     <link name="PM_Robot_Tool_TCP">
     </link>
 
@@ -295,19 +297,21 @@
     <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_ry" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['ry_offset']}"/>
     <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_rz" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['rz_offset']}"/>
 
+    <xacro:property name="pm_robot_tool_TCP_z_offset" value="$(arg pm_robot_tool_TCP_z_offset)"/>
+
     <joint name="PM_Robot_Tool_TCP_Joint" type="fixed">
-      <!--Hier spaeter Variable-->
+      Hier spaeter Variable
       <origin xyz="
         ${0 + PM_Robot_Tool_TCP_Joint_Cal_x * 0.000001} 
         ${0 + PM_Robot_Tool_TCP_Joint_Cal_y * 0.000001} 
-        ${-0.08142 + PM_Robot_Tool_TCP_Joint_Cal_z * 0.000001}" rpy="
+        ${0 + pm_robot_tool_TCP_z_offset + PM_Robot_Tool_TCP_Joint_Cal_z * 0.000001}" rpy="
         ${0 + PM_Robot_Tool_TCP_Joint_Cal_rx * 3.14159265359/180} 
         ${0 + PM_Robot_Tool_TCP_Joint_Cal_ry * 3.14159265359/180} 
         ${0 + PM_Robot_Tool_TCP_Joint_Cal_rz * 3.14159265359/180}" />
       <parent link="Gripper_Rot_Plate" />
       <child link="PM_Robot_Tool_TCP" />
       <axis xyz="0 0 0" />
-    </joint>
+    </joint> -->
 
 
     <!--%%%%%%%%%%%%% 1K Dispenser Flap Definitions %%%%%%%%%%%%%-->
