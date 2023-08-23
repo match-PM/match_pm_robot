@@ -21,6 +21,9 @@ controller_manager:
     pm_nozzle_controller:
       type: pm_nozzle_controller/PMNozzleController
 
+    pm_laser_controller:
+      type: pm_laser_controller/PMLaserController
+
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
@@ -41,6 +44,9 @@ controller_manager:
 #     interface_name: position
 
 pm_lights_controller:
+  ros__parameters: {}
+
+pm_laser_controller:
   ros__parameters: {}
 
 pm_pneumatic_controller:

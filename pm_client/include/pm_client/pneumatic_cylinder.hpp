@@ -14,6 +14,7 @@ enum class PneumaticId
     Glue,
     Glue2K,
     CameraMire,
+    ProtectDoseur,
 };
 
 class PneumaticCylinder

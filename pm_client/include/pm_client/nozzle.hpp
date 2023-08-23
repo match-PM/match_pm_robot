@@ -12,6 +12,8 @@ enum class NozzleId
     Head,
     Gonio,
     Nest,
+    DoseurGlue,
+    DoseurGlue2K,
 };
 
 enum class NozzleState

@@ -100,6 +100,11 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
         pneumatic.read(robot);
     }
 
+    for (auto &nozzle : m_nozzles)
+    {
+        nozzle.read(robot);
+    }
+
     m_camera1_coax_light = static_cast<double>(robot.camera1->get_coax_light());
 
     bool segments[4] = {0};
@@ -117,6 +122,8 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
     }
 
     m_camera2_light = static_cast<double>(robot.camera2->get_light());
+
+    m_laser_measurement = robot.laser->get_measurement();
 
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "Successfully activated PMSystem.");
     return CallbackReturn::SUCCESS;
@@ -218,6 +225,8 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     );
 
     state_interfaces.emplace_back(StateInterface("Camera2_Light", "Intensity", &m_camera2_light));
+
+    state_interfaces.emplace_back(StateInterface("Laser", "Measurement", &m_laser_measurement));
 
     return state_interfaces;
 }
@@ -321,6 +330,8 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     }
 
     m_camera2_light = static_cast<double>(robot.camera2->get_light());
+
+    m_laser_measurement = robot.laser->get_measurement();
 
     return hardware_interface::return_type::OK;
 }
