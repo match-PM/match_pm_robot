@@ -100,6 +100,11 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
         pneumatic.read(robot);
     }
 
+    for (auto &nozzle : m_nozzles)
+    {
+        nozzle.read(robot);
+    }
+
     m_camera1_coax_light = static_cast<double>(robot.camera1->get_coax_light());
 
     bool segments[4] = {0};

@@ -42,7 +42,7 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
         return controller_interface::CallbackReturn::ERROR;
     }
 
-    m_nozzle_cmds.resize(m_params.nozzles.size(), 0.0);
+    m_nozzle_cmds.resize(m_params.nozzles.size(), 0);
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {

@@ -19,8 +19,8 @@ struct NozzleState
     NozzleId id;
     std::string name;
 
-    double pressure;
-    double pressure_cmd;
+    double pressure = 0.0;
+    double pressure_cmd = 0.0;
 
     explicit NozzleState(NozzleId my_id) : id(my_id)
     {

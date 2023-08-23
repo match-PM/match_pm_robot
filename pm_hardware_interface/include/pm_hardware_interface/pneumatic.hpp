@@ -22,7 +22,7 @@ struct PneumaticState
     double move_forward_cmd = 0.0;
     double move_backward_cmd = 0.0;
     double is_forward = 0.0;
-    double is_backward = 0.0;
+    double is_backward = 1.0;
 
     explicit PneumaticState(PneumaticId my_id) : id(my_id)
     {
