@@ -16,6 +16,7 @@ class ForceSensor
 
   public:
     UA_NodeId measurements = UA_NODEID_NULL;
+    UA_NodeId bias = UA_NODEID_NULL;
 
     explicit ForceSensor(Client *client) : m_client{client}
     {
@@ -24,6 +25,8 @@ class ForceSensor
     [[nodiscard]] bool is_ok() const;
 
     [[nodiscard]] std::array<double, 7> get_measurements() const;
+
+    [[nodiscard]] void set_bias() const;
 };
 
 } // namespace PMClient

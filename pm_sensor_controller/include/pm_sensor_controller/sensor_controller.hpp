@@ -2,6 +2,7 @@
 
 #include "controller_interface/controller_interface.hpp"
 
+#include "std_msgs/msg/bool.hpp"
 #include "std_msgs/msg/float64.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 
@@ -13,6 +14,8 @@ class PMSensorController : public controller_interface::ControllerInterface
   private:
     rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr m_laser_pub;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr m_force_pub;
+    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr m_force_bias_sub;
+    bool m_force_sensor_bias_cmd = false;
 
   public:
     PMSensorController();

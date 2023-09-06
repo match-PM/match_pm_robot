@@ -34,6 +34,11 @@ PMSensorController::on_configure(const rclcpp_lifecycle::State &previous_state)
 
     m_laser_pub = get_node()->create_publisher<std_msgs::msg::Float64>("~/laser", 1000);
     m_force_pub = get_node()->create_publisher<std_msgs::msg::Float64MultiArray>("~/force", 1000);
+    m_force_bias_sub = get_node()->create_subscription<std_msgs::msg::Bool>(
+        "~/force_bias",
+        rclcpp::SystemDefaultsQoS(),
+        [this](const std_msgs::msg::Bool::SharedPtr msg) { m_force_sensor_bias_cmd = msg->data; }
+    );
 
     return controller_interface::CallbackReturn::SUCCESS;
 }
@@ -58,7 +63,10 @@ controller_interface::InterfaceConfiguration
 PMSensorController::command_interface_configuration() const
 {
     controller_interface::InterfaceConfiguration config;
-    config.type = controller_interface::interface_configuration_type::NONE;
+    config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
+    config.names = {
+        "Force/Bias",
+    };
     return config;
 }
 
@@ -99,6 +107,9 @@ PMSensorController::update(const rclcpp::Time &time, const rclcpp::Duration &per
         }
         m_force_pub->publish(msg);
     }
+
+    command_interfaces_[0].set_value(static_cast<double>(m_force_sensor_bias_cmd));
+    m_force_sensor_bias_cmd = false;
 
     return controller_interface::return_type::OK;
 }

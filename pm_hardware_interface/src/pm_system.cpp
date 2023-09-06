@@ -292,6 +292,8 @@ std::vector<CommandInterface> PMSystem::export_command_interfaces()
     command_interfaces.emplace_back(CommandInterface("Camera2_Light", "Intensity", &m_camera2_light)
     );
 
+    command_interfaces.emplace_back(CommandInterface("Force", "Bias", &m_force_sensor_bias));
+
     return command_interfaces;
 }
 
@@ -387,6 +389,12 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     robot.camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
 
     robot.camera2->set_light(static_cast<int>(m_camera2_light));
+
+    if (m_force_sensor_bias)
+    {
+        robot.force_sensor->set_bias();
+        m_force_sensor_bias = 0.0;
+    }
 
     return hardware_interface::return_type::OK;
 }

@@ -284,6 +284,7 @@ void Client::init()
                     };
 
                     get_node_id_from_ref("Measurements", &force_sensor->measurements);
+                    get_node_id_from_ref("SetZero", &force_sensor->bias);
                 }
             }
 
