@@ -64,6 +64,8 @@ pm_nozzle_controller:
       - Head_Nozzle
       - Gonio_Nozzle
       - Nest_Nozzle
+      - Doseur_Nozzle
+      - Glue_2K_Doseur
 
 pm_robot_t_axis_controller:
   ros__parameters:
