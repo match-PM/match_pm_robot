@@ -16,6 +16,7 @@ add_library(
   src/pneumatic_cylinder.cpp
   src/nozzle.cpp
   src/laser.cpp
+  src/force_sensor.cpp
   include/pm_client/util.hpp
   include/pm_client/client.hpp
   include/pm_client/robot.hpp
@@ -24,6 +25,7 @@ add_library(
   include/pm_client/pneumatic_cylinder.hpp
   include/pm_client/nozzle.hpp
   include/pm_client/laser.hpp
+  include/pm_client/force_sensor.hpp
 )
 target_include_directories(pm_client PRIVATE include/)
 

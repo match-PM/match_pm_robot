@@ -228,6 +228,13 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
 
     state_interfaces.emplace_back(StateInterface("Laser", "Measurement", &m_laser_measurement));
 
+    state_interfaces.emplace_back(StateInterface("Force", "X", &m_force_sensor_measurements[0]));
+    state_interfaces.emplace_back(StateInterface("Force", "Y", &m_force_sensor_measurements[1]));
+    state_interfaces.emplace_back(StateInterface("Force", "Z", &m_force_sensor_measurements[2]));
+    state_interfaces.emplace_back(StateInterface("Force", "TX", &m_force_sensor_measurements[3]));
+    state_interfaces.emplace_back(StateInterface("Force", "TY", &m_force_sensor_measurements[4]));
+    state_interfaces.emplace_back(StateInterface("Force", "TZ", &m_force_sensor_measurements[5]));
+
     return state_interfaces;
 }
 
@@ -332,6 +339,8 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     m_camera2_light = static_cast<double>(robot.camera2->get_light());
 
     m_laser_measurement = robot.laser->get_measurement();
+
+    m_force_sensor_measurements = robot.force_sensor->get_measurements();
 
     return hardware_interface::return_type::OK;
 }

@@ -1,7 +1,0 @@
-<library path="pm_laser_controller">
-    <class name="pm_laser_controller/PMLaserController" type="pm_laser_controller::PMLaserController" base_class_type="controller_interface::ControllerInterface">
-        <description>
-    Controller for PM GPIOs.
-        </description>
-    </class>
-</library>

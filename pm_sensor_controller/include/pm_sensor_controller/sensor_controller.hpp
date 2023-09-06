@@ -3,17 +3,19 @@
 #include "controller_interface/controller_interface.hpp"
 
 #include "std_msgs/msg/float64.hpp"
+#include "std_msgs/msg/float64_multi_array.hpp"
 
-namespace pm_laser_controller
+namespace pm_sensor_controller
 {
 
-class PMLaserController : public controller_interface::ControllerInterface
+class PMSensorController : public controller_interface::ControllerInterface
 {
   private:
-    rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr m_measurement_pub;
+    rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr m_laser_pub;
+    rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr m_force_pub;
 
   public:
-    PMLaserController();
+    PMSensorController();
 
     controller_interface::return_type init(
         const std::string &controller_name, const std::string &namespace_ = "",
@@ -42,4 +44,4 @@ class PMLaserController : public controller_interface::ControllerInterface
     update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 };
 
-} // namespace pm_laser_controller
+} // namespace pm_sensor_controller

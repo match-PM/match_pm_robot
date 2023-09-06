@@ -261,6 +261,36 @@ void Client::init()
         });
     };
 
+    auto browse_force_sensor = [&](UA_NodeId force_sensor_node) -> std::unique_ptr<ForceSensor> {
+        return browse(force_sensor_node, [&](auto response) {
+            auto force_sensor = std::make_unique<ForceSensor>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("Measurements", &force_sensor->measurements);
+                }
+            }
+
+            return force_sensor;
+        });
+    };
+
     browse(UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER), [&](auto response) {
         for (size_t i = 0; i < response.resultsSize; ++i)
         {
@@ -365,6 +395,10 @@ void Client::init()
                 else if (browse_name == "Laser")
                 {
                     m_robot->laser = browse_laser(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "ForceSensor")
+                {
+                    m_robot->force_sensor = browse_force_sensor(ref->nodeId.nodeId);
                 }
             }
         }

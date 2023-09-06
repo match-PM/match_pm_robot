@@ -6,7 +6,7 @@
         "limitSymbolsToIncludedHeaders": false
       },
       "includePath": [
-        "/home/pmlab/pm_ros2_ws/install/pm_laser_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_sensor_controller/include/**",
         "/home/pmlab/pm_ros2_ws/install/pm_msgs/include/**",
         "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_component/include/**",
         "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/include/**",
