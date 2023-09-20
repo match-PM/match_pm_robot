@@ -74,6 +74,9 @@ class PMSystem : public hardware_interface::SystemInterface
 
     double m_laser_measurement;
 
+    std::array<double, 7> m_force_sensor_measurements;
+    double m_force_sensor_bias;
+
   public:
     PMSystem();
 

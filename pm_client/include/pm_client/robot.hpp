@@ -6,6 +6,7 @@
 
 #include "pm_client/aerotech_axis.hpp"
 #include "pm_client/camera.hpp"
+#include "pm_client/force_sensor.hpp"
 #include "pm_client/laser.hpp"
 #include "pm_client/nozzle.hpp"
 #include "pm_client/pneumatic_cylinder.hpp"
@@ -93,6 +94,8 @@ class Robot
     std::unique_ptr<Nozzle> doseur_glue_2k;
 
     std::unique_ptr<Laser> laser;
+
+    std::unique_ptr<ForceSensor> force_sensor;
 
     /**
      * Check if all axis references are properly set.

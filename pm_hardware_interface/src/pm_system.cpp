@@ -228,6 +228,13 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
 
     state_interfaces.emplace_back(StateInterface("Laser", "Measurement", &m_laser_measurement));
 
+    state_interfaces.emplace_back(StateInterface("Force", "X", &m_force_sensor_measurements[0]));
+    state_interfaces.emplace_back(StateInterface("Force", "Y", &m_force_sensor_measurements[1]));
+    state_interfaces.emplace_back(StateInterface("Force", "Z", &m_force_sensor_measurements[2]));
+    state_interfaces.emplace_back(StateInterface("Force", "TX", &m_force_sensor_measurements[3]));
+    state_interfaces.emplace_back(StateInterface("Force", "TY", &m_force_sensor_measurements[4]));
+    state_interfaces.emplace_back(StateInterface("Force", "TZ", &m_force_sensor_measurements[5]));
+
     return state_interfaces;
 }
 
@@ -285,6 +292,8 @@ std::vector<CommandInterface> PMSystem::export_command_interfaces()
     command_interfaces.emplace_back(CommandInterface("Camera2_Light", "Intensity", &m_camera2_light)
     );
 
+    command_interfaces.emplace_back(CommandInterface("Force", "Bias", &m_force_sensor_bias));
+
     return command_interfaces;
 }
 
@@ -333,6 +342,8 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
 
     m_laser_measurement = robot.laser->get_measurement();
 
+    m_force_sensor_measurements = robot.force_sensor->get_measurements();
+
     return hardware_interface::return_type::OK;
 }
 
@@ -378,6 +389,12 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     robot.camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
 
     robot.camera2->set_light(static_cast<int>(m_camera2_light));
+
+    if (m_force_sensor_bias)
+    {
+        robot.force_sensor->set_bias();
+        m_force_sensor_bias = 0.0;
+    }
 
     return hardware_interface::return_type::OK;
 }

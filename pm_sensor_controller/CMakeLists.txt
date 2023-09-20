@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(pm_laser_controller)
+project(pm_sensor_controller)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -27,14 +27,14 @@ if(BUILD_TESTING)
 endif()
 
 add_library(
-  pm_laser_controller SHARED
-  src/laser_controller.cpp
-  include/pm_laser_controller/laser_controller.hpp
+  pm_sensor_controller SHARED
+  src/sensor_controller.cpp
+  include/pm_sensor_controller/sensor_controller.hpp
 )
-target_include_directories(pm_laser_controller PRIVATE include/)
+target_include_directories(pm_sensor_controller PRIVATE include/)
 
 ament_target_dependencies(
-  pm_laser_controller
+  pm_sensor_controller
   controller_interface
   hardware_interface
   pluginlib
@@ -42,7 +42,7 @@ ament_target_dependencies(
   rclcpp_lifecycle
   pm_msgs
 )
-pluginlib_export_plugin_description_file(controller_interface pm_laser_controller.xml)
+pluginlib_export_plugin_description_file(controller_interface pm_sensor_controller.xml)
 
 install(
   DIRECTORY include/
@@ -50,15 +50,15 @@ install(
 )
 
 install(
-  TARGETS pm_laser_controller
-  EXPORT pm_laser_controller
+  TARGETS pm_sensor_controller
+  EXPORT pm_sensor_controller
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
   INCLUDES DESTINATION include
 )
 
-ament_export_targets(pm_laser_controller HAS_LIBRARY_TARGET)
+ament_export_targets(pm_sensor_controller HAS_LIBRARY_TARGET)
 ament_export_dependencies(
   controller_interface
   hardware_interface
