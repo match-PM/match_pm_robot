@@ -17,6 +17,7 @@ add_library(
   src/nozzle.cpp
   src/laser.cpp
   src/force_sensor.cpp
+  src/hoenle_uv.cpp
   include/pm_client/util.hpp
   include/pm_client/client.hpp
   include/pm_client/robot.hpp
@@ -26,6 +27,7 @@ add_library(
   include/pm_client/nozzle.hpp
   include/pm_client/laser.hpp
   include/pm_client/force_sensor.hpp
+  include/pm_client/hoenle_uv.hpp
 )
 target_include_directories(pm_client PRIVATE include/)
 

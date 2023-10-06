@@ -292,6 +292,38 @@ void Client::init()
         });
     };
 
+    auto browse_hoenle_uv = [&](UA_NodeId hoenle_uv_node) -> std::unique_ptr<HoenleUV> {
+        return browse(hoenle_uv_node, [&](auto response) {
+            auto hoenle_uv = std::make_unique<HoenleUV>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("OnOff", &hoenle_uv->on_off);
+                    get_node_id_from_ref("Power", &hoenle_uv->power);
+                    get_node_id_from_ref("Time", &hoenle_uv->time);
+                }
+            }
+
+            return hoenle_uv;
+        });
+    };
+
     browse(UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER), [&](auto response) {
         for (size_t i = 0; i < response.resultsSize; ++i)
         {
@@ -400,6 +432,10 @@ void Client::init()
                 else if (browse_name == "ForceSensor")
                 {
                     m_robot->force_sensor = browse_force_sensor(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "HoenleUV")
+                {
+                    m_robot->hoenle_uv = browse_hoenle_uv(ref->nodeId.nodeId);
                 }
             }
         }

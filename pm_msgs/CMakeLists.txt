@@ -28,6 +28,9 @@ rosidl_generate_interfaces(
   "msg/Camera2LightCmd.msg"
   "msg/PneumaticCylinderCmd.msg"
   "msg/NozzleCmd.msg"
+  "msg/UVOnOff.msg"
+  "msg/UVPowerCmd.msg"
+  "msg/UVTimeCmd.msg"
 )
 
 ament_export_dependencies(rosidl_default_runtime)

@@ -13,6 +13,7 @@
 #include "visibility_control.h"
 
 #include "pm_hardware_interface/axis.hpp"
+#include "pm_hardware_interface/hoenle_uv.hpp"
 #include "pm_hardware_interface/nozzle.hpp"
 #include "pm_hardware_interface/pneumatic.hpp"
 
@@ -66,6 +67,8 @@ class PMSystem : public hardware_interface::SystemInterface
         NozzleState{NozzleId::DoseurGlue},
         NozzleState{NozzleId::DoseurGlue2K},
     };
+
+    HoenleUVState hoenle_uv;
 
     double m_camera1_coax_light;
     double m_camera1_ring_light[4];

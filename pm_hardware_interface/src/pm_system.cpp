@@ -125,6 +125,8 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
 
     m_laser_measurement = robot.laser->get_measurement();
 
+    hoenle_uv.read(robot);
+
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "Successfully activated PMSystem.");
     return CallbackReturn::SUCCESS;
 }
@@ -235,6 +237,8 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     state_interfaces.emplace_back(StateInterface("Force", "TY", &m_force_sensor_measurements[4]));
     state_interfaces.emplace_back(StateInterface("Force", "TZ", &m_force_sensor_measurements[5]));
 
+    hoenle_uv.add_state_interfaces(state_interfaces);
+
     return state_interfaces;
 }
 
@@ -294,6 +298,8 @@ std::vector<CommandInterface> PMSystem::export_command_interfaces()
 
     command_interfaces.emplace_back(CommandInterface("Force", "Bias", &m_force_sensor_bias));
 
+    hoenle_uv.add_command_interfaces(command_interfaces);
+
     return command_interfaces;
 }
 
@@ -343,6 +349,8 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     m_laser_measurement = robot.laser->get_measurement();
 
     m_force_sensor_measurements = robot.force_sensor->get_measurements();
+
+    hoenle_uv.read(robot);
 
     return hardware_interface::return_type::OK;
 }
@@ -395,6 +403,8 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
         robot.force_sensor->set_bias();
         m_force_sensor_bias = 0.0;
     }
+
+    hoenle_uv.write(robot);
 
     return hardware_interface::return_type::OK;
 }

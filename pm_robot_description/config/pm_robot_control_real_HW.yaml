@@ -27,6 +27,9 @@ controller_manager:
     pm_sensor_controller:
       type: pm_sensor_controller/PMSensorController
 
+    pm_uv_controller:
+      type: pm_uv_controller/PMUVController
+
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 

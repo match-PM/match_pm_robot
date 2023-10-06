@@ -97,14 +97,25 @@ def generate_launch_description():
         ],
     )
 
+    pm_uv_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "pm_uv_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
     return LaunchDescription(
         [
             control_node,
-            pm_lights_controller_spawner,
-            pm_robot_xyz_axis_controller,
-            pm_pneumatic_controller_spawner,
-            pm_nozzle_controller_spawner,
-            pm_sensor_controller,
+            # pm_lights_controller_spawner,
+            # pm_robot_xyz_axis_controller,
+            # pm_pneumatic_controller_spawner,
+            # pm_nozzle_controller_spawner,
+            # pm_sensor_controller,
+            pm_uv_controller,
             robot_state_pub_node,
         ]
     )

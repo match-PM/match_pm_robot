@@ -7,6 +7,7 @@
 #include "pm_client/aerotech_axis.hpp"
 #include "pm_client/camera.hpp"
 #include "pm_client/force_sensor.hpp"
+#include "pm_client/hoenle_uv.hpp"
 #include "pm_client/laser.hpp"
 #include "pm_client/nozzle.hpp"
 #include "pm_client/pneumatic_cylinder.hpp"
@@ -97,6 +98,8 @@ class Robot
 
     std::unique_ptr<ForceSensor> force_sensor;
 
+    std::unique_ptr<HoenleUV> hoenle_uv;
+
     /**
      * Check if all axis references are properly set.
      *
@@ -150,7 +153,8 @@ class Robot
                 return false;
             }
         }
-        return camera1->is_ok() && camera2->is_ok() && laser->is_ok();
+        return camera1->is_ok() && camera2->is_ok() && laser->is_ok() && force_sensor->is_ok() &&
+               hoenle_uv->is_ok();
     }
 
     [[nodiscard]] AerotechAxis &get_axis(AxisId id)
