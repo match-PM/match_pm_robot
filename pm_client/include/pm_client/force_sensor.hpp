@@ -26,7 +26,7 @@ class ForceSensor
 
     [[nodiscard]] std::array<double, 7> get_measurements() const;
 
-    [[nodiscard]] void set_bias() const;
+    void set_bias() const;
 };
 
 } // namespace PMClient
