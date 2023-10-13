@@ -42,9 +42,10 @@
     <!--%%%%%%%%%%%%% Gonio Station Left Definitions-->
     <link name="Gonio_Left_Base">
       <inertial>
-        <origin xyz="0.178376501584756 0.0965486243516244 0.101012071321914" rpy="0 0 0" />
-        <mass value="4.83318673735945" />
-        <inertia ixx="0.0115124478906001" ixy="4.00480442649554E-05" ixz="-5.80448319957772E-07" iyy="0.0188689063295654" iyz="-2.7716346407679E-05" izz="0.0269850736598033" />
+        <origin xyz="0.177919402818021 0.0965286177417367 0.101012071345888" rpy="0 0 0" />
+        <mass value="4.83318674398637" />
+        <inertia
+        ixx="0.0115127403940929" ixy="-3.33565784736103E-05" ixz="-1.45496624993124E-06" iyy="0.0188686138682557" iyz="-2.7618864699939E-05" izz="0.026985073699425" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -60,11 +61,11 @@
         </geometry>
       </collision>
     </link>
+
     <joint name="Gonio_Left_Base_Joint" type="fixed">
       <origin xyz="0.14249999999998 0.295499999999939 0" rpy="0 0 0" />
       <parent link="pm_robot_base_link" />
       <child link="Gonio_Left_Base" />
-ö
       <axis xyz="0 0 0" />
     </joint>
 
@@ -72,9 +73,15 @@
 
     <link name="Gonio_Left_Stage_1_Top">
       <inertial>
-        <origin xyz="0.059454973286124 0.0107762403389283 -0.0446785627316242" rpy="0 0 0" />
+        <origin xyz="0.059782487896749 0.00877925652714845 -0.0446785627316222" rpy="0 0 0" />
         <mass value="0.578798857286943" />
-        <inertia ixx="0.000410450617020548" ixy="-0.000168393668986117" ixz="9.5803621154249E-07" iyy="0.00156907354726657" iyz="-5.23053452301373E-06" izz="0.00188005175520343" />
+        <inertia
+        ixx="0.000400478324367351"
+        ixy="-0.000129239522587819"
+        ixz="7.82346515336273E-07"
+        iyy="0.00157904583991977"
+        iyz="-5.25968237719779E-06"
+        izz="0.00188005175520343" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -108,9 +115,15 @@
     <!--%%%%%%%%%%%%% Gonio Left Stage 2 Bottom Definitions-->
     <link name="Gonio_Left_Stage_2_Bottom">
       <inertial>
-        <origin xyz="4.69384364709668E-10 1.57268642553277E-11 -0.00620045721380197" rpy="0 0 0" />
-        <mass value="0.0270626701992899" />
-        <inertia ixx="6.08566105952436E-06" ixy="5.75557428925166E-08" ixz="-8.6517331846629E-13" iyy="4.36978117330268E-06" iyz="-2.89879120608969E-14" izz="9.60640029376035E-06" />
+        <origin xyz="4.69633887334453E-10 4.9960036108132E-16 -0.0212004572137997" rpy="0 0 0" />
+        <mass value="0.02706267019929" />
+        <inertia
+        ixx="6.08758948397044E-06"
+        ixy="4.1172957090613E-14"
+        ixz="-8.65658801813879E-13"
+        iyy="4.36785274885666E-06"
+        iyz="-3.36683105860672E-21"
+        izz="9.6064002937604E-06" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -136,7 +149,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
       <parent link="Gonio_Left_Stage_1_Top" />
       <child link="Gonio_Left_Stage_2_Bottom" />
-      <axis xyz="0.0334865202089474 -0.999439169216564 0" />
+      <axis xyz="0 -1 0" />
       <limit lower="-0.17453" upper="0.17453" effort="100" velocity="0.1" />
     </joint>
 
@@ -147,7 +160,7 @@
     </link>
 
     <joint name="Gonio_Left_Chuck_Origin_Joint" type="fixed">
-      <origin xyz="0 0 -0.015" rpy="0 0 3.174753954" />
+      <origin xyz="0 0 -0.015" rpy="0 0 0" />
       <parent link="Gonio_Left_Stage_2_Bottom" />
       <child link="Gonio_Left_Chuck_Origin" />
       <axis xyz="0 0 0" />

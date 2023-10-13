@@ -5,8 +5,8 @@ controller_manager:
     pm_robot_gonio_left_controller:
       type: position_controllers/JointGroupPositionController
 
-    pm_robot_gonio_left_JSB:
-      type: joint_state_broadcaster/JointStateBroadcaster
+    # pm_robot_gonio_left_JSB:
+    #   type: joint_state_broadcaster/JointStateBroadcaster
 
 
 pm_robot_gonio_left_controller:

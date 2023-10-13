@@ -7,7 +7,8 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-
+    
+    # Depricated
     # XYZ Axis Joint State Broadcaster
     Spawn_pm_robot_gonio_right_JSB = Node(
         package='controller_manager',
@@ -30,6 +31,7 @@ def generate_launch_description():
         ],
     )
 
+    # Depricated
     # Delay start of robot_controller after `joint_state_broadcaster`
     delay_Spawn_pm_robot_gonio_right_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
@@ -41,6 +43,7 @@ def generate_launch_description():
     # Define Launch Description
 
     ld = LaunchDescription()
-    ld.add_action(Spawn_pm_robot_gonio_right_JSB)
-    ld.add_action(delay_Spawn_pm_robot_gonio_right_controller)
+    #ld.add_action(Spawn_pm_robot_gonio_right_JSB)
+    #ld.add_action(delay_Spawn_pm_robot_gonio_right_controller)
+    ld.add_action(Spawn_pm_robot_gonio_right_controller)
     return ld

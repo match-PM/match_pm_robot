@@ -256,7 +256,7 @@
     <link name="t_axis_toolchanger">
       <inertial>
         <origin xyz="2.66657822625138E-05 -6.51697797860451E-05 -0.0173989628147272" rpy="0 0 0" />
-        <mass value="0.0770166396645032" />
+        <mass value="0.0741175653990944" />
         <inertia ixx="1.38724675369177E-05" ixy="-2.81065278601148E-08" ixz="-4.32931581160332E-09" iyy="1.28173377099281E-05" iyz="-3.69738102041932E-10" izz="2.32495071670115E-05" />
       </inertial>
       <visual>
@@ -599,7 +599,7 @@
     <!--%%%%%%%%%%%%% Laser Toolhead Definitions-->
     <link name="Laser_Toolhead_TCP">
       <inertial>
-        <origin xyz="0.00141971945625508 0.0148011051892054 0.0588118094043311" rpy="0 0 0" />
+        <origin xyz="0.00143426339843722 0.014826109459576 0.0588947661972293" rpy="0 0 0" />
         <mass value="0.185632781644417" />
         <inertia ixx="0.00018384097226268" ixy="5.39428478530615E-09" ixz="-6.26322611599089E-07" iyy="0.000136967759808617" iyz="6.13082513214026E-07" izz="7.65210217467237E-05" />
       </inertial>
@@ -634,9 +634,9 @@
 
     <joint name="Laser_Toolhead_TCP_Joint" type="fixed">
       <origin xyz="
-          ${0.147498952947696 + Laser_Toolhead_TCP_Joint_Cal_x*0.000001} 
-          ${-0.0899999732334101 + Laser_Toolhead_TCP_Joint_Cal_y*0.000001} 
-          ${-0.495500000000011+ Laser_Toolhead_TCP_Joint_Cal_z*0.000001}" rpy="
+          ${0.147498952947694 + Laser_Toolhead_TCP_Joint_Cal_x*0.000001} 
+          ${-0.0739999732334102 + Laser_Toolhead_TCP_Joint_Cal_y*0.000001} 
+          ${-0.495500146516092+ Laser_Toolhead_TCP_Joint_Cal_z*0.000001}" rpy="
           ${0 + Laser_Toolhead_TCP_Joint_Cal_rx*3.14159265359/180} 
           ${0 + Laser_Toolhead_TCP_Joint_Cal_ry*3.14159265359/180} 
           ${0 + Laser_Toolhead_TCP_Joint_Cal_rz*3.14159265359/180}" />
@@ -723,48 +723,53 @@
       <child link="Camera_Station_TCP" />
       <axis xyz="0 0 0" />
     </joint>
-    <link name="Station_Laser_Bottom_TCP">
-      <inertial>
-        <origin xyz="0.00141971945625008 -0.0148011051892056 -0.0588118094043316" rpy="0 0 0" />
-        <mass value="0.185632781644417" />
-        <inertia ixx="0.000183840972262678" ixy="-5.39428478522435E-09" ixz="6.26322611589981E-07" iyy="0.000136967759808615" iyz="6.13082513215402E-07" izz="7.65210217467232E-05" />
-      </inertial>
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
-        </geometry>
-        <material name="">
-          <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-        </material>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
-        </geometry>
-      </collision>
-    </link>
 
-    <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_x" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['x_offset']}"/>
-    <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_y" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['y_offset']}"/>
-    <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_z" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['z_offset']}"/>
-    <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_rx" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['rx_offset']}"/>
-    <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_ry" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['ry_offset']}"/>
-    <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_rz" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['rz_offset']}"/>
 
-    <joint name="Station_Laser_Bottom_TCP_Joint" type="fixed">
-      <origin xyz="
-          ${0.1799989100971 + Station_Laser_Bottom_TCP_Joint_Cal_x*0.000001} 
-          ${0.0939999732334095 + Station_Laser_Bottom_TCP_Joint_Cal_y*0.000001} 
-          ${0.328499853483917 + Station_Laser_Bottom_TCP_Joint_Cal_z*0.000001}" rpy="
-          ${0 + Station_Laser_Bottom_TCP_Joint_Cal_rx*3.14159265359/180} 
-          ${0 + Station_Laser_Bottom_TCP_Joint_Cal_ry*3.14159265359/180} 
-          ${0 + Station_Laser_Bottom_TCP_Joint_Cal_rz*3.14159265359/180}" />
-      <parent link="Camera_Station" />
-      <child link="Station_Laser_Bottom_TCP" />
-      <axis xyz="0 0 0" />
-    </joint>
+
+    <xacro:if value="${current_pm_robot_bringup_config['measuring_systems']['use_keyence_bottom']}">
+      <link name="Station_Laser_Bottom_TCP">
+        <inertial>
+          <origin xyz="0.00143426339843278 -0.0148261094595752 -0.0588947661972306" rpy="0 0 0" />
+          <mass value="0.185632781644417" />
+          <inertia ixx="0.000183840972262678" ixy="-5.39428478522435E-09" ixz="6.26322611589981E-07" iyy="0.000136967759808615" iyz="6.13082513215402E-07" izz="7.65210217467232E-05" />
+        </inertial>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
+          </geometry>
+          <material name="">
+            <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <mesh filename="file://$(find pm_robot_description)/meshes/Station_Laser_Bottom_TCP.STL" />
+          </geometry>
+        </collision>
+      </link>
+
+      <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_x" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['x_offset']}"/>
+      <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_y" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['y_offset']}"/>
+      <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_z" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['z_offset']}"/>
+      <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_rx" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['rx_offset']}"/>
+      <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_ry" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['ry_offset']}"/>
+      <xacro:property name="Station_Laser_Bottom_TCP_Joint_Cal_rz" value="${calibration_dict['Station_Laser_Bottom_TCP_Joint']['rz_offset']}"/>
+
+      <joint name="Station_Laser_Bottom_TCP_Joint" type="fixed">
+        <origin xyz="
+            ${0.179998910097098 + Station_Laser_Bottom_TCP_Joint_Cal_x*0.000001} 
+            ${0.0939999732334105 + Station_Laser_Bottom_TCP_Joint_Cal_y*0.000001} 
+            ${0.328500000000003 + Station_Laser_Bottom_TCP_Joint_Cal_z*0.000001}" rpy="
+            ${0 + Station_Laser_Bottom_TCP_Joint_Cal_rx*3.14159265359/180} 
+            ${0 + Station_Laser_Bottom_TCP_Joint_Cal_ry*3.14159265359/180} 
+            ${0 + Station_Laser_Bottom_TCP_Joint_Cal_rz*3.14159265359/180}" />
+        <parent link="Camera_Station" />
+        <child link="Station_Laser_Bottom_TCP" />
+        <axis xyz="0 0 0" />
+      </joint>
+  </xacro:if>
 
     <!--%%%%%%%%%%%%% Camera Calibration Definitions-->
     <link name="Camera_Calibration_Platelet">
