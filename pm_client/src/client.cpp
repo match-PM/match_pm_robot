@@ -324,6 +324,37 @@ void Client::init()
         });
     };
 
+    auto browse_reference_cube = [&](UA_NodeId reference_cube_node
+                                 ) -> std::unique_ptr<ReferenceCube> {
+        return browse(reference_cube_node, [&](auto response) {
+            auto reference_cube = std::make_unique<ReferenceCube>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("Pushed", &reference_cube->pushed);
+                }
+            }
+
+            return reference_cube;
+        });
+    };
+
     browse(UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER), [&](auto response) {
         for (size_t i = 0; i < response.resultsSize; ++i)
         {
@@ -436,6 +467,10 @@ void Client::init()
                 else if (browse_name == "HoenleUV")
                 {
                     m_robot->hoenle_uv = browse_hoenle_uv(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "ReferenceCube")
+                {
+                    m_robot->reference_cube = browse_reference_cube(ref->nodeId.nodeId);
                 }
             }
         }

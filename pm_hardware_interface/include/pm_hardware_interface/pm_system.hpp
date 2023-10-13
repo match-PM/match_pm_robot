@@ -80,6 +80,8 @@ class PMSystem : public hardware_interface::SystemInterface
     std::array<double, 7> m_force_sensor_measurements;
     double m_force_sensor_bias;
 
+    double reference_cube_pushed;
+
   public:
     PMSystem();
 

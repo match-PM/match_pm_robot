@@ -127,6 +127,8 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
 
     hoenle_uv.read(robot);
 
+    reference_cube_pushed = static_cast<double>(robot.reference_cube->get_pushed());
+
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "Successfully activated PMSystem.");
     return CallbackReturn::SUCCESS;
 }
@@ -238,6 +240,9 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     state_interfaces.emplace_back(StateInterface("Force", "TZ", &m_force_sensor_measurements[5]));
 
     hoenle_uv.add_state_interfaces(state_interfaces);
+
+    state_interfaces.emplace_back(StateInterface("ReferenceCube", "Pushed", &reference_cube_pushed)
+    );
 
     return state_interfaces;
 }
@@ -351,6 +356,8 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     m_force_sensor_measurements = robot.force_sensor->get_measurements();
 
     hoenle_uv.read(robot);
+
+    reference_cube_pushed = static_cast<double>(robot.reference_cube->get_pushed());
 
     return hardware_interface::return_type::OK;
 }

@@ -32,6 +32,8 @@ PMSensorController::on_configure(const rclcpp_lifecycle::State &previous_state)
 {
     (void)previous_state;
 
+    m_reference_cube_pub =
+        get_node()->create_publisher<std_msgs::msg::Bool>("~/reference_cube", 1000);
     m_laser_pub = get_node()->create_publisher<std_msgs::msg::Float64>("~/laser", 1000);
     m_force_pub = get_node()->create_publisher<std_msgs::msg::Float64MultiArray>("~/force", 1000);
     m_force_bias_sub = get_node()->create_subscription<std_msgs::msg::Bool>(
@@ -83,6 +85,7 @@ PMSensorController::state_interface_configuration() const
         "Force/TX",
         "Force/TY",
         "Force/TZ",
+        "ReferenceCube/Pushed",
     };
     return config;
 }
@@ -92,6 +95,12 @@ PMSensorController::update(const rclcpp::Time &time, const rclcpp::Duration &per
 {
     (void)time;
     (void)period;
+
+    {
+        std_msgs::msg::Bool msg;
+        msg.data = static_cast<bool>(state_interfaces_[7].get_value());
+        m_reference_cube_pub->publish(msg);
+    }
 
     {
         std_msgs::msg::Float64 msg;

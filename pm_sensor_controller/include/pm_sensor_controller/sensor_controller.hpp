@@ -12,6 +12,7 @@ namespace pm_sensor_controller
 class PMSensorController : public controller_interface::ControllerInterface
 {
   private:
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr m_reference_cube_pub;
     rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr m_laser_pub;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr m_force_pub;
     rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr m_force_bias_sub;

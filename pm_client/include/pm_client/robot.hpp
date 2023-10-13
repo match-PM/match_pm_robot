@@ -11,6 +11,8 @@
 #include "pm_client/laser.hpp"
 #include "pm_client/nozzle.hpp"
 #include "pm_client/pneumatic_cylinder.hpp"
+#include "pm_client/reference_cube.hpp"
+
 namespace PMClient
 {
 
@@ -100,6 +102,8 @@ class Robot
 
     std::unique_ptr<HoenleUV> hoenle_uv;
 
+    std::unique_ptr<ReferenceCube> reference_cube;
+
     /**
      * Check if all axis references are properly set.
      *
@@ -154,7 +158,7 @@ class Robot
             }
         }
         return camera1->is_ok() && camera2->is_ok() && laser->is_ok() && force_sensor->is_ok() &&
-               hoenle_uv->is_ok();
+               hoenle_uv->is_ok() && reference_cube->is_ok();
     }
 
     [[nodiscard]] AerotechAxis &get_axis(AxisId id)
