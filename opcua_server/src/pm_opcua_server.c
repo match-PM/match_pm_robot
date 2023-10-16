@@ -352,8 +352,8 @@ static UA_StatusCode function_pm_opcua_server_12_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -386,8 +386,8 @@ static UA_StatusCode function_pm_opcua_server_13_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -511,8 +511,8 @@ static UA_StatusCode function_pm_opcua_server_17_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -545,8 +545,8 @@ static UA_StatusCode function_pm_opcua_server_18_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -670,8 +670,8 @@ static UA_StatusCode function_pm_opcua_server_22_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -704,8 +704,8 @@ static UA_StatusCode function_pm_opcua_server_23_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -829,8 +829,8 @@ static UA_StatusCode function_pm_opcua_server_27_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -863,8 +863,8 @@ static UA_StatusCode function_pm_opcua_server_28_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -988,8 +988,8 @@ static UA_StatusCode function_pm_opcua_server_32_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -1022,8 +1022,8 @@ static UA_StatusCode function_pm_opcua_server_33_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -1124,8 +1124,8 @@ static UA_StatusCode function_pm_opcua_server_36_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -1158,8 +1158,8 @@ static UA_StatusCode function_pm_opcua_server_37_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -1361,6 +1361,8 @@ arrayDimensions[0] = 3;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "RingLightRGB");
+UA_Int32 init_val[3] = {0,0,0};
+UA_Variant_setArray(&attr.value, init_val, 3, &UA_TYPES[UA_TYPES_INT32]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Used to set the color of the camera 1 ring lights (0-100%).");
 #endif
@@ -1398,6 +1400,8 @@ arrayDimensions[0] = 4;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "RingLight");
+UA_Boolean init_val[4] = {false, false, false, false};
+UA_Variant_setArray(&attr.value, init_val, 4, &UA_TYPES[UA_TYPES_BOOLEAN]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Used to turn each of the 4 camera 1 ring lights on or off.");
 #endif
@@ -1614,8 +1618,8 @@ static UA_StatusCode function_pm_opcua_server_52_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -1784,8 +1788,8 @@ static UA_StatusCode function_pm_opcua_server_57_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -2147,8 +2151,8 @@ static UA_StatusCode function_pm_opcua_server_68_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -2317,8 +2321,8 @@ static UA_StatusCode function_pm_opcua_server_73_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -2680,8 +2684,8 @@ static UA_StatusCode function_pm_opcua_server_84_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -2850,8 +2854,8 @@ static UA_StatusCode function_pm_opcua_server_89_begin(UA_Server *server, UA_UIn
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3213,8 +3217,8 @@ static UA_StatusCode function_pm_opcua_server_100_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -3383,8 +3387,8 @@ static UA_StatusCode function_pm_opcua_server_105_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3746,8 +3750,8 @@ static UA_StatusCode function_pm_opcua_server_116_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -3916,8 +3920,8 @@ static UA_StatusCode function_pm_opcua_server_121_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4279,8 +4283,8 @@ static UA_StatusCode function_pm_opcua_server_132_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -4449,8 +4453,8 @@ static UA_StatusCode function_pm_opcua_server_137_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4812,8 +4816,8 @@ static UA_StatusCode function_pm_opcua_server_148_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -4982,8 +4986,8 @@ static UA_StatusCode function_pm_opcua_server_153_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5345,8 +5349,8 @@ static UA_StatusCode function_pm_opcua_server_164_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -5515,8 +5519,8 @@ static UA_StatusCode function_pm_opcua_server_169_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5855,8 +5859,8 @@ static UA_StatusCode function_pm_opcua_server_179_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -6025,8 +6029,8 @@ static UA_StatusCode function_pm_opcua_server_184_begin(UA_Server *server, UA_UI
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
 attr.minimumSamplingInterval = 0.000000;
-attr.userAccessLevel = 1;
-attr.accessLevel = 1;
+attr.userAccessLevel = 3;
+attr.accessLevel = 3;
 /* Value rank inherited */
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
