@@ -19,8 +19,8 @@ struct NozzleState
     NozzleId id;
     std::string name;
 
-    double pressure;
-    double pressure_cmd;
+    double pressure = 0.0;
+    double pressure_cmd = 0.0;
 
     explicit NozzleState(NozzleId my_id) : id(my_id)
     {
@@ -34,6 +34,12 @@ struct NozzleState
                 break;
             case NozzleId::Nest:
                 name = "Nest_Nozzle";
+                break;
+            case NozzleId::DoseurGlue:
+                name = "Doseur_Nozzle";
+                break;
+            case NozzleId::DoseurGlue2K:
+                name = "Glue_2K_Doseur";
                 break;
         }
     }

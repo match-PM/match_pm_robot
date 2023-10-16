@@ -156,30 +156,13 @@ def generate_launch_description():
         #parameters=[moveit_config.robot_description],
     )
 
-    robot_state_publisher_node_mov = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        name="robot_state_publisher",
-        output="both",
-        parameters=[moveit_config.robot_description],
-    )
-
-    # For testing moveit interactions       - Terei
-    # timed_start = TimerAction(period=15.0,
-    #             actions=[
-    #                 Node(
-    #                     package="test_node_1", 
-    #                     executable='pm_moveit_tests',
-    #                     parameters=[
-    #                         {"use_sim_time": sim_time},
-    #                         moveit_config.robot_description,
-    #                         moveit_config.robot_description_semantic,
-    #                         moveit_config.planning_pipelines,
-    #                         moveit_config.robot_description_kinematics,
-    #                     ],
-    #                     name='demo_node_1',
-    #                 )
-    #             ])
+    # robot_state_publisher_node_mov = Node(
+    #     package="robot_state_publisher",
+    #     executable="robot_state_publisher",
+    #     name="robot_state_publisher",
+    #     output="both",
+    #     parameters=[moveit_config.robot_description],
+    # )
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
@@ -249,15 +232,28 @@ def generate_launch_description():
             'pm_robot_launch_gripper_controller.launch.py'
             ])
         ])
-        )    
-    
+        )  
+
+    # delay_spawn_pm_robot_gonio_left_controllers = RegisterEventHandler(
+    #     event_handler=OnProcessExit(
+    #         target_action=launch_XYZT_controllers,
+    #         on_exit=[launch_gonio_left_controller],
+    #     )
+    # )  
+
+    # delay_spawn_pm_robot_gonio_right_controllers = RegisterEventHandler(
+    #     event_handler=OnProcessExit(
+    #         target_action=launch_XYZT_controllers,
+    #         on_exit=[launch_gonio_right_controller],
+    #     )
+    # ) 
+
     # Define Launch Description
     ld = LaunchDescription()
 
     #ld.add_action(declare_world)
     ld.add_action(gazebo)
     ld.add_action(spawn_entity)
-    #ld.add_action(robot_state_publisher_node_mov)
 
     ld.add_action(robot_state_publisher_node)
     ld.add_action(control_node)
@@ -265,13 +261,14 @@ def generate_launch_description():
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
-    # if (str(mappings['with_Gonio_Left']) == 'true'):
-    #     ld.add_action(launch_gonio_left_controller)
-    # if (str(mappings['with_Gonio_Right']) == 'true'):
-    #     ld.add_action(launch_gonio_right_controller)
+
+
+    if (mappings['with_Gonio_Left'] == 'True'):
+        ld.add_action(launch_gonio_left_controller)
+    if (mappings['with_Gonio_Right'] == 'True'):
+        ld.add_action(launch_gonio_right_controller)
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
     #ld.add_action(forward_command_action_server)
-    #ld.add_action(timed_start)
     ld.add_action(opcua_server_sim)
     return ld

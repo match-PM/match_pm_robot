@@ -31,6 +31,7 @@ add_library(
   include/pm_hardware_interface/pm_system.hpp
   include/pm_hardware_interface/axis.hpp
   include/pm_hardware_interface/pneumatic.hpp
+  include/pm_hardware_interface/hoenle_uv.hpp
 )
 target_include_directories(pm_hardware_interface PRIVATE include/)
 

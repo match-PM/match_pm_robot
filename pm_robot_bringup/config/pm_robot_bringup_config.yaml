@@ -37,3 +37,5 @@ pm_robot_1K_dispenser_tip:
     - "Dis_Tip_Lavender_I_150_A310_L12700"
     - "Dis_Tip_Red_I_250_A520_L12700"
 
+measuring_systems:
+  use_keyence_bottom: false

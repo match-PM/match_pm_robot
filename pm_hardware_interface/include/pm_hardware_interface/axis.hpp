@@ -7,6 +7,8 @@
 
 #include "pm_client/aerotech_axis.hpp"
 
+#define PI 3.14159265359
+
 namespace pm_hardware_interface
 {
 
@@ -24,6 +26,16 @@ static double increments_to_meters(PMClient::AerotechAxis &axis, int increments)
 static int meters_to_increments(PMClient::AerotechAxis &axis, double units)
 {
     return axis.units_to_increments(units * 1e6);
+}
+
+static double increments_to_rad(PMClient::AerotechAxis &axis, int increments)
+{
+    return axis.increments_to_units(increments) / 180 * PI;
+}
+
+static int rad_to_increments(PMClient::AerotechAxis &axis, double rad)
+{
+    return axis.units_to_increments(rad * 180 / PI);
 }
 
 enum class Unit
@@ -66,10 +78,10 @@ struct AxisState
                 name = "R_Axis_Joint";
                 break;
             case AxisId::U:
-                name = "U_Axis_Joint";
+                name = "Gonio_Left_Stage_1_Joint";
                 break;
             case AxisId::V:
-                name = "V_Axis_Joint";
+                name = "Gonio_Left_Stage_2_Joint";
                 break;
         }
     }
@@ -114,10 +126,10 @@ struct AxisState
         }
         else if (unit == Unit::Degrees)
         {
-            this->current_position = pm_axis.get_position();
-            this->velocity = pm_axis.get_speed();
-            this->target_position = pm_axis.get_target();
-            this->acceleration = pm_axis.get_acceleration();
+            this->current_position = increments_to_rad(pm_axis, pm_axis.get_position());
+            this->velocity = increments_to_rad(pm_axis, pm_axis.get_speed());
+            this->target_position = increments_to_rad(pm_axis, pm_axis.get_target());
+            this->acceleration = increments_to_rad(pm_axis, pm_axis.get_acceleration());
         }
     }
 
@@ -128,13 +140,13 @@ struct AxisState
         {
             pm_axis.move(meters_to_increments(pm_axis, this->target_position));
             pm_axis.set_speed(meters_to_increments(pm_axis, this->velocity));
-            // pm_axis->set_acceleration(meters_to_increments(*pm_axis, ros_axis.acceleration));
+            // pm_axis.set_acceleration(meters_to_increments(pm_axis, this->acceleration));
         }
         else if (unit == Unit::Degrees)
         {
-            pm_axis.move(this->target_position);
-            pm_axis.set_speed(this->velocity);
-            // pm_axis->set_acceleration(ros_axis.acceleration);
+            pm_axis.move(rad_to_increments(pm_axis, this->target_position));
+            pm_axis.set_speed(rad_to_increments(pm_axis, this->velocity));
+            // pm_axis.set_acceleration(rad_to_increments(pm_axis, this->acceleration));
         }
     }
 };

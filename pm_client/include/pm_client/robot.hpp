@@ -6,8 +6,13 @@
 
 #include "pm_client/aerotech_axis.hpp"
 #include "pm_client/camera.hpp"
+#include "pm_client/force_sensor.hpp"
+#include "pm_client/hoenle_uv.hpp"
+#include "pm_client/laser.hpp"
 #include "pm_client/nozzle.hpp"
 #include "pm_client/pneumatic_cylinder.hpp"
+#include "pm_client/reference_cube.hpp"
+
 namespace PMClient
 {
 
@@ -79,11 +84,25 @@ class Robot
 
     std::unique_ptr<PneumaticCylinder> camera_mire_pneumatic;
 
+    std::unique_ptr<PneumaticCylinder> protect_doseur_pneumatic;
+
     std::unique_ptr<Nozzle> head_nozzle;
 
     std::unique_ptr<Nozzle> gonio_nozzle;
 
     std::unique_ptr<Nozzle> nest_nozzle;
+
+    std::unique_ptr<Nozzle> doseur_glue;
+
+    std::unique_ptr<Nozzle> doseur_glue_2k;
+
+    std::unique_ptr<Laser> laser;
+
+    std::unique_ptr<ForceSensor> force_sensor;
+
+    std::unique_ptr<HoenleUV> hoenle_uv;
+
+    std::unique_ptr<ReferenceCube> reference_cube;
 
     /**
      * Check if all axis references are properly set.
@@ -114,7 +133,9 @@ class Robot
             uv2_pneumatic.get(),
             glue_pneumatic.get(),
             glue_2k_pneumatic.get(),
-            camera_mire_pneumatic.get()};
+            camera_mire_pneumatic.get(),
+            protect_doseur_pneumatic.get(),
+        };
         for (const auto &pneumatic : pneumatics)
         {
             if (pneumatic == nullptr || !pneumatic->is_ok())
@@ -126,6 +147,8 @@ class Robot
             head_nozzle.get(),
             gonio_nozzle.get(),
             nest_nozzle.get(),
+            doseur_glue.get(),
+            doseur_glue_2k.get(),
         };
         for (const auto &nozzle : nozzles)
         {
@@ -134,7 +157,8 @@ class Robot
                 return false;
             }
         }
-        return camera1->is_ok() && camera2->is_ok();
+        return camera1->is_ok() && camera2->is_ok() && laser->is_ok() && force_sensor->is_ok() &&
+               hoenle_uv->is_ok() && reference_cube->is_ok();
     }
 
     [[nodiscard]] AerotechAxis &get_axis(AxisId id)
@@ -174,6 +198,8 @@ class Robot
                 return *glue_2k_pneumatic;
             case PneumaticId::CameraMire:
                 return *camera_mire_pneumatic;
+            case PneumaticId::ProtectDoseur:
+                return *protect_doseur_pneumatic;
         }
     }
 
@@ -187,6 +213,10 @@ class Robot
                 return *gonio_nozzle;
             case NozzleId::Nest:
                 return *nest_nozzle;
+            case NozzleId::DoseurGlue:
+                return *doseur_glue;
+            case NozzleId::DoseurGlue2K:
+                return *doseur_glue_2k;
         }
     }
 };

@@ -13,8 +13,8 @@
             </hardware>
 
             <joint name="X_Axis_Joint">
-                <command_interface name="position"/>
-                <!-- <command_interface name="velocity"/> -->
+                <command_interface name="position">
+                </command_interface>
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
             </joint>
@@ -23,7 +23,6 @@
                 </command_interface>
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
-
             </joint>
             <joint name="Z_Axis_Joint">
                 <command_interface name="position">
@@ -51,23 +50,25 @@
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>
-            <joint name="Gonio_Right_Stage_1_Joint">
+            </joint> -->
+            <!-- <joint name="Gonio_Right_Stage_1_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
+                <state_interface name="velocity"/>
             </joint>
             <joint name="Gonio_Right_Stage_2_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>
-            <joint name="Camera_Calibration_Platelet_Joint">
+                <state_interface name="velocity"/>
+            </joint> -->
+            <!-- <joint name="Camera_Calibration_Platelet_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>
-            <joint name="Gonio_Left_Stage_1_Joint">
+            </joint> -->
+            <!-- <joint name="Gonio_Left_Stage_1_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -76,8 +77,8 @@
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>
-            <joint name="UV_Slider_X_Front_Joint">
+            </joint> -->
+            <!-- <joint name="UV_Slider_X_Front_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>

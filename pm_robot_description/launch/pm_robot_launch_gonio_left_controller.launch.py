@@ -41,6 +41,7 @@ def generate_launch_description():
     # Define Launch Description
 
     ld = LaunchDescription()
-    ld.add_action(Spawn_pm_robot_gonio_left_JSB)
-    ld.add_action(delay_Spawn_pm_robot_gonio_left_controller)
+    #ld.add_action(Spawn_pm_robot_gonio_left_JSB)
+    #ld.add_action(delay_Spawn_pm_robot_gonio_left_controller)
+    ld.add_action(Spawn_pm_robot_gonio_left_controller)
     return ld

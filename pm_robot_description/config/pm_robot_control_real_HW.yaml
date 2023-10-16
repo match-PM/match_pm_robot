@@ -21,6 +21,12 @@ controller_manager:
     pm_nozzle_controller:
       type: pm_nozzle_controller/PMNozzleController
 
+    pm_sensor_controller:
+      type: pm_sensor_controller/PMSensorController
+
+    pm_uv_controller:
+      type: pm_uv_controller/PMUVController
+
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
@@ -43,6 +49,9 @@ controller_manager:
 pm_lights_controller:
   ros__parameters: {}
 
+pm_laser_controller:
+  ros__parameters: {}
+
 pm_pneumatic_controller:
   ros__parameters:
     cylinders:
@@ -58,6 +67,8 @@ pm_nozzle_controller:
       - Head_Nozzle
       - Gonio_Nozzle
       - Nest_Nozzle
+      - Doseur_Nozzle
+      - Glue_2K_Doseur
 
 pm_robot_t_axis_controller:
   ros__parameters:

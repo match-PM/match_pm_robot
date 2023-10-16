@@ -13,6 +13,7 @@
 #include "visibility_control.h"
 
 #include "pm_hardware_interface/axis.hpp"
+#include "pm_hardware_interface/hoenle_uv.hpp"
 #include "pm_hardware_interface/nozzle.hpp"
 #include "pm_hardware_interface/pneumatic.hpp"
 
@@ -50,24 +51,36 @@ class PMSystem : public hardware_interface::SystemInterface
         // AxisState{AxisId::V, Unit::Meters},
     };
 
-    std::array<PneumaticState, 5> m_pneumatics{
+    std::array<PneumaticState, 6> m_pneumatics{
         PneumaticState{PneumaticId::UV1},
         PneumaticState{PneumaticId::UV2},
         PneumaticState{PneumaticId::Glue},
         PneumaticState{PneumaticId::Glue2K},
         PneumaticState{PneumaticId::CameraMire},
+        PneumaticState{PneumaticId::ProtectDoseur},
     };
 
-    std::array<NozzleState, 3> m_nozzles{
+    std::array<NozzleState, 5> m_nozzles{
         NozzleState{NozzleId::Head},
         NozzleState{NozzleId::Gonio},
         NozzleState{NozzleId::Nest},
+        NozzleState{NozzleId::DoseurGlue},
+        NozzleState{NozzleId::DoseurGlue2K},
     };
+
+    HoenleUVState hoenle_uv;
 
     double m_camera1_coax_light;
     double m_camera1_ring_light[4];
     double m_camera1_ring_light_rgb[3];
     double m_camera2_light;
+
+    double m_laser_measurement;
+
+    std::array<double, 7> m_force_sensor_measurements;
+    double m_force_sensor_bias;
+
+    double reference_cube_pushed;
 
   public:
     PMSystem();

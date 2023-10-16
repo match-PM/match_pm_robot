@@ -1,0 +1,7 @@
+<library path="pm_uv_controller">
+    <class name="pm_uv_controller/PMUVController" type="pm_uv_controller::PMUVController" base_class_type="controller_interface::ControllerInterface">
+        <description>
+            Controller for Hoenle UV lights.
+        </description>
+    </class>
+</library>

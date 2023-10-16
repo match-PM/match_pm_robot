@@ -1,8 +1,8 @@
 
 chuck_gonio_left_Siemens_Carrier:
-  tcp_offset_from_gonio_x: "0"
-  tcp_offset_from_gonio_y: "0"
-  tcp_offset_from_gonio_z: "0"
+  tcp_offset_from_gonio_x: "0.01762"
+  tcp_offset_from_gonio_y: "0.0105"
+  tcp_offset_from_gonio_z: "0.09655"
   xyz: "0.00851660407252697 0.00736263697453748 0.0446054201819609"
   rpy: "0 0 0"
   mass: "0.193859196068301"

@@ -42,7 +42,7 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
         return controller_interface::CallbackReturn::ERROR;
     }
 
-    m_cylinder_cmds.resize(m_params.cylinders.size(), 0.0);
+    m_cylinder_cmds.resize(m_params.cylinders.size(), false);
 
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
@@ -63,11 +63,6 @@ controller_interface::CallbackReturn
 PMPneumaticController::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
     (void)previous_state;
-
-    for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
-    {
-        m_cylinder_cmds[i] = static_cast<bool>(state_interfaces_[i].get_value());
-    }
 
     return controller_interface::CallbackReturn::SUCCESS;
 }

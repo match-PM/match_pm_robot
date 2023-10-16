@@ -231,6 +231,130 @@ void Client::init()
         });
     };
 
+    auto browse_laser = [&](UA_NodeId laser_node) -> std::unique_ptr<Laser> {
+        return browse(laser_node, [&](auto response) {
+            auto laser = std::make_unique<Laser>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("Measurement", &laser->measurement);
+                }
+            }
+
+            return laser;
+        });
+    };
+
+    auto browse_force_sensor = [&](UA_NodeId force_sensor_node) -> std::unique_ptr<ForceSensor> {
+        return browse(force_sensor_node, [&](auto response) {
+            auto force_sensor = std::make_unique<ForceSensor>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("Measurements", &force_sensor->measurements);
+                    get_node_id_from_ref("SetZero", &force_sensor->bias);
+                }
+            }
+
+            return force_sensor;
+        });
+    };
+
+    auto browse_hoenle_uv = [&](UA_NodeId hoenle_uv_node) -> std::unique_ptr<HoenleUV> {
+        return browse(hoenle_uv_node, [&](auto response) {
+            auto hoenle_uv = std::make_unique<HoenleUV>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("OnOff", &hoenle_uv->on_off);
+                    get_node_id_from_ref("Power", &hoenle_uv->power);
+                    get_node_id_from_ref("Time", &hoenle_uv->time);
+                }
+            }
+
+            return hoenle_uv;
+        });
+    };
+
+    auto browse_reference_cube = [&](UA_NodeId reference_cube_node
+                                 ) -> std::unique_ptr<ReferenceCube> {
+        return browse(reference_cube_node, [&](auto response) {
+            auto reference_cube = std::make_unique<ReferenceCube>(this);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("Pushed", &reference_cube->pushed);
+                }
+            }
+
+            return reference_cube;
+        });
+    };
+
     browse(UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER), [&](auto response) {
         for (size_t i = 0; i < response.resultsSize; ++i)
         {
@@ -298,6 +422,11 @@ void Client::init()
                     m_robot->camera_mire_pneumatic =
                         browse_pneumatic(ref->nodeId.nodeId, PneumaticId::CameraMire);
                 }
+                else if (browse_name == "PneumaticProtectDoseur")
+                {
+                    m_robot->protect_doseur_pneumatic =
+                        browse_pneumatic(ref->nodeId.nodeId, PneumaticId::ProtectDoseur);
+                }
                 else if (browse_name == "HeadNozzle")
                 {
                     m_robot->head_nozzle = browse_nozzle(ref->nodeId.nodeId, NozzleId::Head);
@@ -310,6 +439,15 @@ void Client::init()
                 {
                     m_robot->nest_nozzle = browse_nozzle(ref->nodeId.nodeId, NozzleId::Nest);
                 }
+                else if (browse_name == "DoseurGlue")
+                {
+                    m_robot->doseur_glue = browse_nozzle(ref->nodeId.nodeId, NozzleId::DoseurGlue);
+                }
+                else if (browse_name == "DoseurGlue2K")
+                {
+                    m_robot->doseur_glue_2k =
+                        browse_nozzle(ref->nodeId.nodeId, NozzleId::DoseurGlue2K);
+                }
                 else if (browse_name == "Camera1")
                 {
                     m_robot->camera1 = browse_camera1(ref->nodeId.nodeId);
@@ -317,6 +455,22 @@ void Client::init()
                 else if (browse_name == "Camera2")
                 {
                     m_robot->camera2 = browse_camera2(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "Laser")
+                {
+                    m_robot->laser = browse_laser(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "ForceSensor")
+                {
+                    m_robot->force_sensor = browse_force_sensor(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "HoenleUV")
+                {
+                    m_robot->hoenle_uv = browse_hoenle_uv(ref->nodeId.nodeId);
+                }
+                else if (browse_name == "ReferenceCube")
+                {
+                    m_robot->reference_cube = browse_reference_cube(ref->nodeId.nodeId);
                 }
             }
         }
