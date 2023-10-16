@@ -479,7 +479,6 @@ static UA_StatusCode function_pm_opcua_server_11_finish(UA_Server *server, UA_UI
 
 /* IsBackward - ns=1;i=50398 */
 
-<<<<<<< HEAD
 static UA_StatusCode function_pm_opcua_server_12_begin(UA_Server *server, UA_UInt16* ns) {
 UA_StatusCode retVal = UA_STATUSCODE_GOOD;
 UA_VariableAttributes attr = UA_VariableAttributes_default;
@@ -490,19 +489,6 @@ attr.accessLevel = 3;
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "IsBackward");
-=======
-static UA_StatusCode function_pm_opcua_server_12_begin(UA_Server *server, UA_UInt16 *ns)
-{
-    UA_StatusCode retVal = UA_STATUSCODE_GOOD;
-    UA_VariableAttributes attr = UA_VariableAttributes_default;
-    attr.minimumSamplingInterval = 0.000000;
-    attr.userAccessLevel = 1;
-    attr.accessLevel = 1;
-    /* Value rank inherited */
-    attr.valueRank = -2;
-    attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
-    attr.displayName = UA_LOCALIZEDTEXT("", "IsBackward");
->>>>>>> 50ccf107b65fb13ecf66647c7ceea48b4f8edbe4
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
     attr.description =
         UA_LOCALIZEDTEXT("", "Whether or not the cylinder is set to its backward position.");
