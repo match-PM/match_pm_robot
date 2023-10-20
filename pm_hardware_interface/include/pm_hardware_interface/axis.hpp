@@ -72,10 +72,10 @@ struct AxisState
                 name = "T_Axis_Joint";
                 break;
             case AxisId::Q:
-                name = "Q_Axis_Joint";
+                name = "Gonio_Right_Stage_1_Joint";
                 break;
             case AxisId::R:
-                name = "R_Axis_Joint";
+                name = "Gonio_Right_Stage_2_Joint";
                 break;
             case AxisId::U:
                 name = "Gonio_Left_Stage_1_Joint";

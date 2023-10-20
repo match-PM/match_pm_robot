@@ -40,15 +40,15 @@ class PMSystem : public hardware_interface::SystemInterface
     PMClient::Client m_pm_client;
     Config m_config;
 
-    std::array<AxisState, 4> m_axes{
+    std::array<AxisState, 8> m_axes{
         AxisState{AxisId::X, Unit::Meters},
         AxisState{AxisId::Y, Unit::Meters},
         AxisState{AxisId::Z, Unit::Meters},
         AxisState{AxisId::T, Unit::Degrees},
-        // AxisState{AxisId::Q, Unit::Meters},
-        // AxisState{AxisId::R, Unit::Meters},
-        // AxisState{AxisId::U, Unit::Meters},
-        // AxisState{AxisId::V, Unit::Meters},
+        AxisState{AxisId::Q, Unit::Meters},
+        AxisState{AxisId::R, Unit::Meters},
+        AxisState{AxisId::U, Unit::Meters},
+        AxisState{AxisId::V, Unit::Meters},
     };
 
     std::array<PneumaticState, 6> m_pneumatics{

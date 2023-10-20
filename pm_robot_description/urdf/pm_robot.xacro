@@ -6,9 +6,9 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="pm_robot" params="launch_mode">
 
-  <xacro:include filename="$(find pm_robot_description)/urdf/match_logo.urdf.xacro" />
-  
-  <!-- Loading of the Robot Joint calibrations -->
+    <xacro:include filename="$(find pm_robot_description)/urdf/match_logo.urdf.xacro" />
+
+    <!-- Loading of the Robot Joint calibrations -->
     <xacro:if value="${launch_mode == 'sim_HW'}">
       <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
       <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
@@ -250,7 +250,7 @@
       <parent link="Z_Axis" />
       <child link="Gripper_Rot_Plate" />
       <axis xyz="0 0 1" />
-      <limit lower="0" upper="12" effort="100" velocity="5" />
+      <limit lower="-2.0" upper="2.0" effort="100" velocity="5" />
     </joint>
 
     <link name="t_axis_toolchanger">
@@ -286,7 +286,7 @@
       <axis xyz="0 0 0" />
     </joint>
 
-<!-- 
+    <!-- 
     <link name="PM_Robot_Tool_TCP">
     </link>
 
@@ -405,8 +405,7 @@
       <origin xyz="
         ${-0.001 + Dispenser_1K_TCP_Joint_Cal_x * 0.000001} 
         ${-0.0318 + Dispenser_1K_TCP_Joint_Cal_y * 0.000001} 
-        ${-0.135 + Dispenser_1K_TCP_Joint_Cal_z * 0.000001 + Dispenser_1K_tip_z_offset}" 
-        rpy="
+        ${-0.135 + Dispenser_1K_TCP_Joint_Cal_z * 0.000001 + Dispenser_1K_tip_z_offset}" rpy="
         ${0 + Dispenser_1K_TCP_Joint_Cal_rx * 3.14159265359/180} 
         ${0 + Dispenser_1K_TCP_Joint_Cal_ry * 3.14159265359/180} 
         ${0 + Dispenser_1K_TCP_Joint_Cal_rz * 3.14159265359/180}" />
@@ -426,65 +425,44 @@
     <xacro:property name="Dispenser_1K_tip_inertia_iyy" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_iyy']}"/>
     <xacro:property name="Dispenser_1K_tip_inertia_iyz" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_iyz']}"/>
     <xacro:property name="Dispenser_1K_tip_inertia_izz" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['inertia_izz']}"/>
-    <xacro:property name="Dispenser_1K_tip_color" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['color']}"/>    
+    <xacro:property name="Dispenser_1K_tip_color" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['color']}"/>
     <xacro:property name="Dispenser_1K_tip_visual_filename" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['visual_filename']}"/>
     <xacro:property name="Dispenser_1K_tip_collision_filename" value="${dispenser_1K_configs_dict[current_pm_robot_1K_dipsenser_tip]['collision_filename']}"/>
 
-  <!--%%%%%%%%%%%%% The parameters here are interchangeable %%%%%%%%%%%%%-->
-  <!--%%%%%%%%%%%%% Jaw 1 Definitions %%%%%%%%%%%%%-->
-  <link
-    name="1K_Dispenser_Tip">
-    <inertial>
-      <origin
-        xyz="${Dispenser_1K_tip_xyz}"
-        rpy="${Dispenser_1K_tip_rpy}"/>
-      <mass
-        value="${Dispenser_1K_tip_mass}"/>
-      <inertia
-        ixx="${Dispenser_1K_tip_inertia_ixx}"
-        ixy="${Dispenser_1K_tip_inertia_ixy}"
-        ixz="${Dispenser_1K_tip_inertia_ixz}"
-        iyy="${Dispenser_1K_tip_inertia_iyy}"
-        iyz="${Dispenser_1K_tip_inertia_iyz}"
-        izz="${Dispenser_1K_tip_inertia_izz}" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Dispenser_Tips/${Dispenser_1K_tip_visual_filename}" />      
-      </geometry>
-      <material
-        name="${Dispenser_1K_tip_color}">
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Dispenser_Tips/${Dispenser_1K_tip_collision_filename}" />         
-      </geometry>
-    </collision>
-  </link>
+    <!--%%%%%%%%%%%%% The parameters here are interchangeable %%%%%%%%%%%%%-->
+    <!--%%%%%%%%%%%%% Jaw 1 Definitions %%%%%%%%%%%%%-->
+    <link name="1K_Dispenser_Tip">
+      <inertial>
+        <origin xyz="${Dispenser_1K_tip_xyz}" rpy="${Dispenser_1K_tip_rpy}"/>
+        <mass value="${Dispenser_1K_tip_mass}"/>
+        <inertia ixx="${Dispenser_1K_tip_inertia_ixx}" ixy="${Dispenser_1K_tip_inertia_ixy}" ixz="${Dispenser_1K_tip_inertia_ixz}" iyy="${Dispenser_1K_tip_inertia_iyy}" iyz="${Dispenser_1K_tip_inertia_iyz}" izz="${Dispenser_1K_tip_inertia_izz}" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Dispenser_Tips/${Dispenser_1K_tip_visual_filename}" />
+        </geometry>
+        <material name="${Dispenser_1K_tip_color}">
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Dispenser_Tips/${Dispenser_1K_tip_collision_filename}" />
+        </geometry>
+      </collision>
+    </link>
 
-  <gazebo reference="1K_Dispenser_Tip">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
+    <gazebo reference="1K_Dispenser_Tip">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
 
-  <joint
-    name="1K_Dispenser_Tip_Joint"
-    type="fixed">
-    <!-- This needs to be corrected in Solidworks -->
-    <origin
-      xyz="0.000 0 0 "
-      rpy="0 0 0" />
-    <parent
-      link="1K_Dispenser_TCP" />
-    <child
-      link="1K_Dispenser_Tip" />
-  </joint>
+    <joint name="1K_Dispenser_Tip_Joint" type="fixed">
+      <!-- This needs to be corrected in Solidworks -->
+      <origin xyz="0.000 0 0 " rpy="0 0 0" />
+      <parent link="1K_Dispenser_TCP" />
+      <child link="1K_Dispenser_Tip" />
+    </joint>
 
 
     <!--%%%%%%%%%%%%% 2K Dispenser Definitions-->
@@ -769,7 +747,7 @@
         <child link="Station_Laser_Bottom_TCP" />
         <axis xyz="0 0 0" />
       </joint>
-  </xacro:if>
+    </xacro:if>
 
     <!--%%%%%%%%%%%%% Camera Calibration Definitions-->
     <link name="Camera_Calibration_Platelet">

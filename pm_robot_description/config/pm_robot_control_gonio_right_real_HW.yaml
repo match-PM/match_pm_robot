@@ -3,7 +3,7 @@ controller_manager:
     update_rate: 100
 
     pm_robot_gonio_right_controller:
-      type: type: joint_trajectory_controller/JointTrajectoryController
+      type: joint_trajectory_controller/JointTrajectoryController
 
     # pm_robot_gonio_right_JSB:
     #   type: joint_state_broadcaster/JointStateBroadcaster

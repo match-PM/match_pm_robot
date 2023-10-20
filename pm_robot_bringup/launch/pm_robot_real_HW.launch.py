@@ -34,7 +34,7 @@ def generate_launch_description():
     # Use xacro to process the file
     pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
-    launch_moveit = False
+    launch_moveit = True
 
     
     sim_time = False
@@ -161,6 +161,22 @@ def generate_launch_description():
         ]
     )
 
+    robot_gonio_left_controllers_path = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_gonio_left_real_HW.yaml",
+        ]
+    )
+
+    robot_gonio_right_controllers_path = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_gonio_right_real_HW.yaml",
+        ]
+    )
+
     robot_description_command = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
     
     # control_manager = Node(
@@ -174,7 +190,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[{'robot_description':robot_description_command},
-                    robot_controllers_path],
+                    robot_controllers_path,robot_gonio_left_controllers_path,robot_gonio_right_controllers_path],
         output="both",
     )
 
