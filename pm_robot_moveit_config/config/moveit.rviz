@@ -33,6 +33,20 @@ Visualization Manager:
       Show Arrows: true
       Show Axes: true
       Show Names: false
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: Marker
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /rviz_visual_tools
+        
+      Value: true
   Global Options:
     Fixed Frame: world
   Tools:

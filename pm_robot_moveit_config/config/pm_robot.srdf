@@ -31,14 +31,14 @@
         <joint name="Y_Axis_Joint"/>
         <joint name="Z_Axis_Joint"/>
         <joint name="X_Axis_Joint"/>
-        <joint name="1K_Dispenser_TCP"/>
+        <!-- <joint name="1K_Dispenser_Joint"/> -->
     </group>
 
     <group name="PM_Robot_2K_Dispenser_TCP">
         <joint name="Y_Axis_Joint"/>
         <joint name="Z_Axis_Joint"/>
         <joint name="X_Axis_Joint"/>
-        <joint name="2K_Dispenser_TCP"/>
+        <!-- <joint name="2K_Dispenser_Joint"/> -->
     </group>
 
     <group name="PM_Robot_Gonio_Right">
@@ -70,7 +70,9 @@
 
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <!-- <end_effector name="PM_Robot_Tool_TCP" parent_link="pm_robot_base_link" group="end_effector_toolhead"/> -->
-    <end_effector name="PM_Robot_1K_Dispenser_TCP" parent_link="1K_Dispenser_TCP" group="PM_Robot_1K_Dispenser_TCP"/>
+    <!-- <end_effector name="PM_Robot_1K_Dispenser_TCP" parent_link="1K_Dispenser_TCP" group="PM_Robot_1K_Dispenser_TCP"/>
+    <end_effector name="PM_Robot_2K_Dispenser_TCP" parent_link="2K_Dispenser_TCP" group="PM_Robot_2K_Dispenser_TCP"/>
+    <end_effector name="Laser" parent_link="Laser_Toolhead_TCP" group="PM_Robot_Laser_TCP"/> -->
 
 
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
@@ -124,10 +126,6 @@
     <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="UV_Slider_X_Back" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="UV_Slider_X_Front" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="1K_Dispenser" link2="Z_Axis" reason="Adjacent"/>
@@ -161,8 +159,6 @@
     <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="UV_LED_Front" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Z_Axis" reason="Adjacent"/>
@@ -195,10 +191,6 @@
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="UV_Slider_X_Back" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="UV_Slider_X_Front" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Z_Axis" reason="Adjacent"/>
@@ -600,8 +592,6 @@
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_2_changeable" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_1" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="UV_LED_Front" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Z_Axis" reason="Adjacent"/>
@@ -680,8 +670,6 @@
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="pm_robot_base_link" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2_changeable" link2="t_axis_toolchanger" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="Tool_Gripper_MPG_10_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="UV_LED_Front" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="Z_Axis" reason="Never"/>
@@ -693,8 +681,6 @@
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="housing_vr" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="pm_robot_base_link" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_1" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2" link2="UV_LED_Front" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="Tool_Gripper_MPG_10_Jaw_2" link2="Z_Axis" reason="Never"/>
@@ -718,7 +704,6 @@
     <disable_collisions link1="UV_LED_Back" link2="housing_vl" reason="Never"/>
     <disable_collisions link1="UV_LED_Back" link2="housing_vr" reason="Never"/>
     <disable_collisions link1="UV_LED_Back" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="UV_LED_Back" link2="t_axis_toolchanger" reason="Never"/>
     <disable_collisions link1="UV_LED_Front" link2="UV_Slider_X_Back" reason="Never"/>
     <disable_collisions link1="UV_LED_Front" link2="UV_Slider_X_Front" reason="Adjacent"/>
     <disable_collisions link1="UV_LED_Front" link2="X_Axis" reason="Never"/>
@@ -731,7 +716,6 @@
     <disable_collisions link1="UV_LED_Front" link2="housing_vl" reason="Never"/>
     <disable_collisions link1="UV_LED_Front" link2="housing_vr" reason="Never"/>
     <disable_collisions link1="UV_LED_Front" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="UV_LED_Front" link2="t_axis_toolchanger" reason="Never"/>
     <disable_collisions link1="UV_Slider_X_Back" link2="UV_Slider_X_Front" reason="Never"/>
     <disable_collisions link1="UV_Slider_X_Back" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="UV_Slider_X_Back" link2="Y_Axis" reason="Never"/>
@@ -863,10 +847,7 @@
     <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Schunk_SPT_Toolholder" reason="Adjacent"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="Tool_Schunk_SPT_Toolholder" reason="Never"/>
-    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_Slider_X_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="UV_Slider_X_Front" reason="Never"/>
+
     <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="Tool_Schunk_SPT_Toolholder" link2="Z_Axis" reason="Never"/>
@@ -897,8 +878,7 @@
     <disable_collisions link1="Gripper_Rot_Plate" link2="PM_Robot_Vacuum_Tool" reason="Adjacent"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="UV_LED_Front" reason="Never"/>
+
     <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="Y_Axis" reason="Never"/>
     <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="Z_Axis" reason="Never"/>

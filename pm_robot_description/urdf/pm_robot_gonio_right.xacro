@@ -36,7 +36,6 @@
   
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
 
-
     <!-- Init Definition of gonio chuck dict -->
     <xacro:property name="gonio_right_configs_file" value="$(find pm_robot_description)/urdf/urdf_configs/gonio_right_chuck_config.yaml" />
     <xacro:property name="gonio_right_configs_dict" value="${xacro.load_yaml(gonio_right_configs_file)}"/>

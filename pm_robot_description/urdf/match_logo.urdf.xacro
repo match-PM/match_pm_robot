@@ -10,6 +10,13 @@
 				</geometry>
                 <material name="match_green"/>
 			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="file://$(find pm_robot_description)/meshes/Housing/match_background.dae" scale="0.001 0.001 0.001" />
+				</geometry>
+                <material name="match_green"/>
+			</collision>
 		</link>
 
 		<joint name="${locationprefix}_match_logo_joint" type="fixed">
@@ -26,6 +33,13 @@
 				</geometry>
                 <material name="white"/>
 			</visual>
+			<collision>
+				<origin xyz="0 0 0 " rpy="${pi/2} 0 ${pi}" />
+				<geometry>
+					<mesh filename="file://$(find pm_robot_description)/meshes/Housing/match_font.stl" scale="0.01 0.01 0.01" />
+				</geometry>
+                <material name="white"/>
+			</collision>
 		</link>
 		<joint name="${locationprefix}_match_logo_font_joint" type="fixed">
 			<origin xyz="0.042 0.0 -0.013" rpy="0 0 0" />

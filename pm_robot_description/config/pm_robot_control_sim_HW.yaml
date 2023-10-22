@@ -67,8 +67,8 @@ pm_robot_xyz_axis_controller:
     # constraints:
     #   stopped_velocity_tolerance: 0.2 # Defaults to 0.01
     #   goal_time: 0.0 # Defaults to 0.0 (start immediately)
-    #   X_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-    #   Y_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
-    #   Z_Axis_Joint: { trajectory: 0.2, goal: 0.0 }
+    #   X_Axis_Joint: { trajectory: 0.2, goal: 0.0000000001 }
+    #   Y_Axis_Joint: { trajectory: 0.2, goal: 0.0000000001 }
+    #   Z_Axis_Joint: { trajectory: 0.2, goal: 0.0000000001 }
 
 

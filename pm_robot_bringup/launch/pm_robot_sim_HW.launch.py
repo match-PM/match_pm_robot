@@ -121,6 +121,7 @@ def generate_launch_description():
         executable="move_group",
         output="screen",
         parameters=move_group_params,
+        emulate_tty=True
     )
 
     # RViz
@@ -143,6 +144,7 @@ def generate_launch_description():
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
         ],
+        emulate_tty=True
     )
 
     # Configure the node
@@ -152,7 +154,8 @@ def generate_launch_description():
         name="robot_state_publisher",
         output='both',
         parameters=[{'robot_description': robot_description_raw,
-                     'use_sim_time': sim_time}]  # add other parameters here if required
+                     'use_sim_time': sim_time}],  # add other parameters here if required
+        emulate_tty=True
         #parameters=[moveit_config.robot_description],
     )
 
@@ -191,6 +194,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[moveit_config.robot_description, robot_controllers_path],
+        emulate_tty=True,
         output="both",
     )
 
