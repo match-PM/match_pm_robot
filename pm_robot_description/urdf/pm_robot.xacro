@@ -287,6 +287,8 @@
     </joint>
 
     <!-- 
+
+    This link is now defined in the individual gripper files
     <link name="PM_Robot_Tool_TCP">
     </link>
 

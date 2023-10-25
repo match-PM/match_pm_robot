@@ -44,12 +44,12 @@ def generate_launch_description():
 
     mappings={
         'launch_mode': 'sim_HW',
-        'with_Tool_MPG_10': str(bringup_config['pm_robot_tools']['MPG_10']['with_Tool_MPG_10']),
+        #'with_Tool_MPG_10': str(bringup_config['pm_robot_tools']['MPG_10']['with_Tool_MPG_10']),
         'with_Gonio_Left': str(bringup_config['pm_robot_gonio_left']['with_Gonio_Left']),
         'with_Gonio_Right': str(bringup_config['pm_robot_gonio_right']['with_Gonio_Right']),
-        'with_Tool_MPG_10_Jaw_3mm_Lens': str(bringup_config['pm_robot_tools']['MPG_10']['Config']['with_Tool_MPG_10_Jaw_3mm_Lens']),
-        'with_Tool_SPT_Holder': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['with_Tool_SPT_Holder']),
-        'with_SPT_R_A1000_I500': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['Config']['with_SPT_R_A1000_I500']),
+        #'with_Tool_MPG_10_Jaw_3mm_Lens': str(bringup_config['pm_robot_tools']['MPG_10']['Config']['with_Tool_MPG_10_Jaw_3mm_Lens']),
+        #'with_Tool_SPT_Holder': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['with_Tool_SPT_Holder']),
+        #'with_SPT_R_A1000_I500': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['Config']['with_SPT_R_A1000_I500']),
     }
 
 

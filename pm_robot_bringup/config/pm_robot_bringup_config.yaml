@@ -1,22 +1,40 @@
 pm_robot_tools:
-  MPG_10:
-    with_Tool_MPG_10: false
-    Config:
-      with_Tool_MPG_10_Jaw_3mm_Lens: false
-
-  SPT_Tool_Holder:
-    with_Tool_SPT_Holder: false
-    Config:
-      with_SPT_R_A1000_I500: true
-  
   pm_robot_vacuum_tools:
-    use_vacuum_tool: true
-    use_tool: "Siemens_Vacuum_Array"
-    availabe_chucks: 
-      - "SPT_R_A1000_I500"
-      - "Siemens_Vacuum_Array"
+    use_vacuum_tool: false
+    use_tool: "Schunk_Lens_Gripper"
+    use_tip: "Tip_Lens_12_7"
 
+    availabe_tools:             #This is just a list and is not used. Its to remind the user of available configs. Make sure these names match the yamls in robot_description
+      - "Tool_Schunk_SPT_Tool":
+        availabe_tips:
+          - "Tip_R_A1000_I500"
+      - "Siemens_Vacuum_Array":
+        availabe_tips:
+          - "Tip_Siemens_Vacuum_Array"
+      - "Schunk_Lens_Gripper":
+        availabe_tips:
+          - "Tip_Lens_12_7"
 
+  pm_robot_tool_parallel_gripper_1_jaw:
+    use_paralell_gripper: true
+    use_tool: "SmarAct_Piezo_Gripper"
+    use_jaw_type: "Default_Jaw"
+
+    available_tools:
+      - "SmarAct_Piezo_Gripper":
+        availabe_jaws:
+          - "Default_Jaw"
+
+  pm_robot_tool_parallel_gripper_2_jaws:
+    use_paralell_gripper: false
+    use_tool: "Schunk_MPG_10_plus"
+    use_jaw_type: "Jaw_3mm_Lens"
+
+    available_tools:
+      - "Schunk_MPG_10_plus":
+        availabe_jaws:
+          - "Jaw_3mm_Lens"
+      
 pm_robot_gonio_right:
   with_Gonio_Right: true
   use_chuck: "chuck_gonio_right_Siemens_UFC"
@@ -28,7 +46,6 @@ pm_robot_gonio_left:
   use_chuck: "chuck_gonio_left_Siemens_Carrier"
   availabe_chucks: 
     - "chuck_gonio_left_Siemens_Carrier"
-
 
 pm_robot_1K_dispenser_tip:
   use_dispenser_tip: "Dis_Tip_Yellow_I_100_A240_L12700"

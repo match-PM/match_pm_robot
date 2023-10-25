@@ -4,236 +4,251 @@
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="mpg_10_plus" params="use_three_mm_lens:=false">
+  <xacro:macro name="Tool_Parallel_Gripper_2_Jaws" params="launch_mode">
   
+          <xacro:if value="${launch_mode == 'sim_HW'}">
+              <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+              <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+          </xacro:if>
+
+    <!-- Loading of the Robot Joint calibrations and bringup config -->
+    <!-- If launch_mode 'real' a local path can be specified for the calibration file -->
+          <xacro:if value="${launch_mode == 'real_HW'}">
+              <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
+              <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
+          
+              <xacro:property name="local_calibration_file_path" value="${path_dict['pm_robot_calibration_file_path']}"/>
+              <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
+          
+              <!-- REAL -->
+              <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+              <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/> -->
+          
+              <!-- SIM -->
+              <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+              <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+        
+          </xacro:if>
+  
+    <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+    <!-- <xacro:property name="current_vacuum_tool" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_tool']}"/>
+    <xacro:property name="current_vacuum_tool_tip" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_tip']}"/> -->
+
+    <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
     <!--%%%%%%%%%%%%% MPG 10-plus Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
     <link
-    name="Tool_Gripper_MPG_10_Body">
+    name="Tool_Parallel_Gripper_Body_2_Jaws">
     <inertial>
       <origin
-        xyz="-5.33378479914543E-05 4.89879018877605E-05 0.0298093199815774"
+        xyz="5.33378479914543E-05 -4.89879018877605E-05 -0.0298093199815774"
         rpy="0 0 0" />
       <mass
         value="0.018064299267735" />
       <inertia
-        ixx="2.10522678277741E-05"
-        ixy="2.48405263011294E-05"
-        ixz="-1.67008448737427E-05"
-        iyy="1.54869219778472E-05"
-        iyz="-7.34159323200004E-05"
-        izz="3.42066952879888E-05" />
+        ixx="2.20562725075551E-06"
+        ixy="3.27141658492019E-08"
+        ixz="1.66797947446843E-08"
+        iyy="1.61047701086979E-06"
+        iyz="7.34159323199956E-09"
+        izz="3.58202149775683E-06" />
     </inertial>
     <visual>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Tool_MPG_10_Base.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Tool_MPG_10_Base.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Tool_MPG_10_Base.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Tool_MPG_10_Base.STL" />
       </geometry>
     </collision>
   </link>
 
   <!---Gravity off-->
-  <gazebo reference="Tool_Gripper_MPG_10_Body">
+  <gazebo reference="Tool_Parallel_Gripper_Body_2_Jaws">
     <turnGravityOff>true</turnGravityOff>
     <color>1.0 0 0.5 1.0</color> 
   </gazebo>
 
-  <joint name="Tool_Gripper_MPG_10_Body_Joint" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0" />
-    <parent link="PM_Robot_Tool_TCP" />
-    <child link="Tool_Gripper_MPG_10_Body" />
+  <joint name="Tool_Parallel_Gripper_Body_Joint" type="fixed">
+    <origin xyz="0 0 -0.04542" rpy="0 0 0" />
+    <parent link="t_axis_toolchanger" />
+    <child link="Tool_Parallel_Gripper_Body_2_Jaws" />
     <axis xyz="0 0 0" />
   </joint>
 
-  <!--%%%%%%%%%%%%% MPG 10-plus Jaw 1 Parallel Gripper Definitions %%%%%%%%%%%%%-->
-
-    <link
-    name="Tool_Gripper_MPG_10_Jaw_1">
-    <inertial>
-      <origin
-        xyz="0.00342309885399157 0.000378376833032924 -0.00384521007824437"
-        rpy="0 0 0" />
-      <mass
-        value="0.000125699746806344" />
-      <inertia
-        ixx="9.10321731673149E-05"
-        ixy="1.08017429109396E-05"
-        ixz="-3.94221523852005E-05"
-        iyy="1.46877530343563E-05"
-        iyz="1.55511351427264E-05"
-        izz="8.29097865963565E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_1.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_1.STL" />
-      </geometry>
-    </collision>
-  </link>
-
-  <!---Gravity off-->
-  <gazebo reference="Tool_Gripper_MPG_10_Jaw_1">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-
-  <joint
-    name="pm_robot_Tool_Parallel_Joint"
-    type="prismatic">
-    <origin
-      xyz="0.00135 -0.005 0.0125"
-      rpy="0 0 1.5708" />
-    <parent
-      link="Tool_Gripper_MPG_10_Body" />
-    <child
-      link="Tool_Gripper_MPG_10_Jaw_1" />
-    <axis
-      xyz="1 0 0" />
-    <limit
-      lower="0"
-      upper="0.001"
-      effort="20"
-      velocity="0.05" />
-  </joint>
-
-  <link
-    name="Tool_Gripper_MPG_10_Jaw_1_Point">
-  </link>
-
-  <joint
-    name="Tool_Gripper_MPG_10_Jaw_1_Point_Joint"
-    type="fixed">
-    <origin
-      xyz="0 0.0014 -0.0075"
-      rpy="0 0 0" />
-    <parent
-      link="Tool_Gripper_MPG_10_Jaw_1" />
-    <child
-      link="Tool_Gripper_MPG_10_Jaw_1_Point" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-
-
   <!--%%%%%%%%%%%%% MPG 10-plus Jaw 2 Parallel Gripper Definitions %%%%%%%%%%%%%-->
-      <link
-    name="Tool_Gripper_MPG_10_Jaw_2">
-    <inertial>
-      <origin
-        xyz="0.00363289819353893 0.000378376833032925 -0.00384521007176004"
-        rpy="0 0 0" />
-      <mass
-        value="0.000125699746806344" />
-      <inertia
-        ixx="9.10321731673149E-05"
-        ixy="1.0801742729746E-05"
-        ixz="-3.94221523852005E-05"
-        iyy="1.46877530343563E-05"
-        iyz="1.55511351102191E-05"
-        izz="8.29097865963571E-05" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_2.STL" /> 
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_2.STL" /> 
-      </geometry>
-    </collision>
-  </link>
 
-    <gazebo reference="Tool_Gripper_MPG_10_Jaw_2">
+      <link
+      name="Tool_Parallel_Gripper_Jaw_2">
+      <inertial>
+        <origin
+        xyz="-0.000378376833032915 0.00363289819353893 -0.00384521007176003"
+        rpy="0 0 0" />
+        <mass
+          value="0.000125699746806344" />
+        <inertia
+        ixx="1.46877530343563E-09"
+        ixy="-1.08017427297462E-10"
+        ixz="-1.55511351102192E-10"
+        iyy="9.10321731673149E-10"
+        iyz="-3.94221523852005E-10"
+        izz="8.29097865963572E-10" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_2.STL" />
+        </geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_2.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!---Gravity off-->
+    <gazebo reference="Tool_Parallel_Gripper_Jaw_2">
       <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
-  <joint
-    name="pm_robot_Tool_Parallel_Joint_2"
-    type="prismatic">
-    <origin
-      xyz="-0.00135 0.005 0.0125"
-      rpy="0 0 -1.5708" />
-    <parent
-      link="Tool_Gripper_MPG_10_Body" />
-    <child
-      link="Tool_Gripper_MPG_10_Jaw_2" />
-    <axis
-      xyz="1 0 0" />
-    <limit
+    <joint
+      name="Tool_Parallel_Gripper_Jaw_2_Joint"
+      type="prismatic">
+      <origin
+        xyz="0.00134999999999982 -0.00399999999999992 -0.0248"
+        rpy="0 0 0" />
+      <parent
+        link="Tool_Parallel_Gripper_Body_2_Jaws" />
+      <child
+        link="Tool_Parallel_Gripper_Jaw_2" />
+      <axis
+        xyz="0 1 0" />
+      <limit
         lower="0"
         upper="0.001"
         effort="20"
         velocity="0.05" />
-    <mimic joint="pm_robot_Tool_Parallel_Joint" />
-  </joint>
+    </joint>
 
-  <link
-    name="Tool_Gripper_MPG_10_Jaw_2_Point">
-  </link>
+    <link
+      name="Tool_Parallel_Gripper_Jaw_2_Point">
+    </link>
 
-  <joint
-    name="Tool_Gripper_MPG_10_Jaw_2_Point_Joint"
-    type="fixed">
-    <origin
-      xyz="0 0.0014 -0.0075"
+    <joint
+      name="Tool_Parallel_Gripper_Jaw_2_Point"
+      type="fixed">
+      <origin
+      xyz="-0.0014 0 -0.0075"
       rpy="0 0 0" />
-    <parent
-      link="Tool_Gripper_MPG_10_Jaw_2" />
-    <child
-      link="Tool_Gripper_MPG_10_Jaw_2_Point" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
+      <parent
+        link="Tool_Parallel_Gripper_Jaw_2" />
+      <child
+        link="Tool_Parallel_Gripper_Jaw_2_Point" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+    
+    <!--%%%%%%%%%%%%% MPG 10-plus Jaw 1 Parallel Gripper Definitions %%%%%%%%%%%%%-->
+      <link
+      name="Tool_Parallel_Gripper_Jaw_1">
+      <inertial>
+        <origin
+          xyz="0.000378376833032915 -0.00342309885399157 -0.00384521007824437"
+          rpy="0 0 0" />
+        <mass
+          value="0.000125699746806344" />
+        <inertia
+          ixx="1.46877530343563E-05"
+          ixy="-1.08017429109398E-05"
+          ixz="1.55511351427265E-05"
+          iyy="9.10321731673149E-05"
+          iyz="3.94221523852004E-05"
+          izz="8.29097865963568E-05" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_1.STL" />
+        </geometry>
+        <material name="grey"/>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_1.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!---Gravity off-->
+    <gazebo reference="Tool_Parallel_Gripper_Jaw_1">
+      <turnGravityOff>true</turnGravityOff>
+    </gazebo>
+
+    <joint
+      name="Tool_Parallel_Gripper_Jaw_1_Joint"
+      type="prismatic">
+      <origin
+        xyz="-0.00135000000000003 0.00400000000000003 -0.0248"
+        rpy="0 0 0" />
+      <parent
+        link="Tool_Parallel_Gripper_Body_2_Jaws" />
+      <child
+        link="Tool_Parallel_Gripper_Jaw_1" />
+      <axis
+        xyz="0 -1 0" />
+      <limit
+        lower="0"
+        upper="0.001"
+        effort="20"
+        velocity="0.05" />
+    </joint>
+
+    <link
+      name="Tool_Parallel_Gripper_Jaw_1_Point">
+    </link>
+
+    <joint
+      name="Tool_Parallel_Gripper_Jaw_1_Point"
+      type="fixed">
+      <origin
+        xyz="0 0.0014 -0.0075"
+        rpy="0 0 0" />
+      <parent
+        link="Tool_Parallel_Gripper_Jaw_1" />
+      <child
+        link="Tool_Parallel_Gripper_Jaw_1_Point" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
   
 
   <!--%%%%%%%%%%%%% Jaw Definitions %%%%%%%%%%%%%-->
-    <xacro:property name="mpg_10_plus_jaw_define_file" value="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus_jaws.yaml" />
-    <xacro:property name="jaw_dict" value="${xacro.load_yaml(mpg_10_plus_jaw_define_file)}"/>
+    <!-- <xacro:property name="mpg_10_plus_jaw_define_file" value="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus_jaws.yaml" />
+    <xacro:property name="jaw_dict" value="${xacro.load_yaml(mpg_10_plus_jaw_define_file)}"/> -->
     
     <!--%%%%%%%%%%%%% Default Jaw Definitions %%%%%%%%%%%%%-->
-    <xacro:property name="Gripper_jaw_1_xyz" value="${jaw_dict['lens_jaw_3_mm_1']['xyz']}"/>
+    <!-- <xacro:property name="Gripper_jaw_1_xyz" value="${jaw_dict['lens_jaw_3_mm_1']['xyz']}"/>
     <xacro:property name="Gripper_jaw_1_rpy" value="${jaw_dict['lens_jaw_3_mm_1']['rpy']}"/>
     <xacro:property name="Gripper_jaw_1_mass" value="${jaw_dict['lens_jaw_3_mm_1']['mass']}"/>
     <xacro:property name="Gripper_jaw_1_inertia_ixx" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_ixx']}"/>
@@ -255,10 +270,10 @@
     <xacro:property name="Gripper_jaw_2_inertia_iyz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_iyz']}"/>
     <xacro:property name="Gripper_jaw_2_inertia_izz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_izz']}"/>
     <xacro:property name="Gripper_jaw_2_visual_filename" value="${jaw_dict['lens_jaw_3_mm_2']['visual_filename']}"/>
-    <xacro:property name="Gripper_jaw_2_collision_filename" value="${jaw_dict['lens_jaw_3_mm_2']['collision_filename']}"/>
+    <xacro:property name="Gripper_jaw_2_collision_filename" value="${jaw_dict['lens_jaw_3_mm_2']['collision_filename']}"/> -->
 
     <!--%%%%%%%%%%%%% 3MM Lens Jaw 1 Definitions %%%%%%%%%%%%%-->
-    <xacro:if value="${use_three_mm_lens}">
+    <!-- <xacro:if value="${use_three_mm_lens}">
       <xacro:property name="Gripper_jaw_1_xyz" value="${jaw_dict['lens_jaw_3_mm_1']['xyz']}"/>
       <xacro:property name="Gripper_jaw_1_rpy" value="${jaw_dict['lens_jaw_3_mm_1']['rpy']}"/>
       <xacro:property name="Gripper_jaw_1_mass" value="${jaw_dict['lens_jaw_3_mm_1']['mass']}"/>
@@ -283,12 +298,12 @@
       <xacro:property name="Gripper_jaw_2_inertia_izz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_izz']}"/>
       <xacro:property name="Gripper_jaw_2_visual_filename" value="${jaw_dict['lens_jaw_3_mm_2']['visual_filename']}"/>
       <xacro:property name="Gripper_jaw_2_collision_filename" value="${jaw_dict['lens_jaw_3_mm_2']['collision_filename']}"/>
-    </xacro:if>
+    </xacro:if> -->
 
 
     <!--%%%%%%%%%%%%% The parameters here are interchangeable %%%%%%%%%%%%%-->
     <!--%%%%%%%%%%%%% Jaw 1 Definitions %%%%%%%%%%%%%-->
-    <link
+    <!-- <link
       name="Tool_Gripper_MPG_10_Jaw_1_changeable">
       <inertial>
         <origin
@@ -334,7 +349,6 @@
     <joint
       name="Tool_Gripper_MPG_10_Jaw_1_changeable_Joint"
       type="fixed">
-      <!-- This needs to be corrected in Solidworks -->
       <origin
         xyz="0.002 0 0 "
         rpy="0 0 0" />
@@ -344,7 +358,6 @@
         link="Tool_Gripper_MPG_10_Jaw_1_changeable" />
     </joint>
 
-    <!--%%%%%%%%%%%%% Jaw 2 Definitions %%%%%%%%%%%%%-->
 
     <link
       name="Tool_Gripper_MPG_10_Jaw_2_changeable">
@@ -392,7 +405,6 @@
     <joint
       name="Tool_Gripper_MPG_10_Jaw_2_changeable_Joint"
       type="fixed">
-      <!-- This needs to be corrected in Solidworks -->
       <origin
         xyz="0.002 0  0 "
         rpy="1.5708 0 0" />
@@ -400,8 +412,29 @@
         link="Tool_Gripper_MPG_10_Jaw_2_Point" />
       <child
         link="Tool_Gripper_MPG_10_Jaw_2_changeable" />
-    </joint>
+    </joint> -->
+  <link name="PM_Robot_Tool_TCP">
+  </link>
 
+  <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_x" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['x_offset']}"/>
+  <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_y" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['y_offset']}"/>
+  <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_z" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['z_offset']}"/>
+  <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_rx" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['rx_offset']}"/>
+  <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_ry" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['ry_offset']}"/>
+  <xacro:property name="PM_Robot_Tool_TCP_Joint_Cal_rz" value="${calibration_dict['PM_Robot_Tool_TCP_Joint']['rz_offset']}"/>
+
+  <joint name="PM_Robot_Tool_TCP_Joint" type="fixed">
+    <origin xyz="
+      ${0  + PM_Robot_Tool_TCP_Joint_Cal_x * 0.000001} 
+      ${0  + PM_Robot_Tool_TCP_Joint_Cal_y * 0.000001} 
+      ${0 - 0.04542 + PM_Robot_Tool_TCP_Joint_Cal_z * 0.000001}" rpy="
+      ${0 + PM_Robot_Tool_TCP_Joint_Cal_rx * 3.14159265359/180} 
+      ${0 + PM_Robot_Tool_TCP_Joint_Cal_ry * 3.14159265359/180} 
+      ${0 + PM_Robot_Tool_TCP_Joint_Cal_rz * 3.14159265359/180}" />
+    <parent link="Gripper_Rot_Plate" />
+    <child link="PM_Robot_Tool_TCP" />
+    <axis xyz="0 0 0" />
+  </joint>
 </xacro:macro>
 
 </robot>

@@ -17,52 +17,70 @@
   <xacro:arg name="with_Gonio_Left" default="true" />
   <xacro:arg name="with_Gonio_Right" default="true" />
 
-  <!-- Tools -->
-  <xacro:arg name="with_Tool_MPG_10" default="false" />
-  <xacro:arg name="with_Tool_MPG_10_Jaw_3mm_Lens" default="false"/>
-  <xacro:arg name="with_Tool_SPT_Holder" default="false" />
-  <xacro:arg name="with_SPT_R_A1000_I500" default="false"/>
-
   <xacro:pm_robot launch_mode="$(arg launch_mode)"/>
 
+  <!-- START - Loading Config Files-->
 
-  <!-- Loading of the Robot Joint calibrations -->
-  <xacro:if value="${launch_mode == 'sim_HW'}">
-    <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
-  </xacro:if>
-  
-  <!-- If launch_mode 'real' a local path can be specified for the calibration file -->
-  <xacro:if value="${launch_mode == 'real_HW'}">
-      <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
-      <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
-      <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
-  
-      <!-- REAL -->
-      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
-      <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/> -->
-  
-      <!-- SIM -->
+    <!-- Loading of the Robot bringup config -->
+    <xacro:if value="${launch_mode == 'sim_HW'}">
       <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
     </xacro:if>
+    
+    <!-- If launch_mode 'real' a local path can be specified for the calibration file -->
+    <xacro:if value="${launch_mode == 'real_HW'}">
+        <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
+        <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
+        <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
+    
+        <!-- REAL -->
+        <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+        <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/> -->
+    
+        <!-- SIM -->
+        <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+      </xacro:if>
   
-    <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+  <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
 
-  <!-- Tool Defines-->
-  <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_vacuum_tool']}">
-    <xacro:Schunk_Vacuum_Tools launch_mode="$(arg launch_mode)" />
-  </xacro:if>
+  <!-- END - Loading Config Files-->
 
-  <xacro:if value="$(arg with_Tool_MPG_10)">
-    <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus.xacro" />
-    <xacro:mpg_10_plus use_three_mm_lens="$(arg with_Tool_MPG_10_Jaw_3mm_Lens)" />
-  </xacro:if>
+  <!-- START - Tool Defines-->
 
-  <!-- This may be deletet in the future -->
-  <xacro:if value="$(arg with_Tool_SPT_Holder)">
-    <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/SPT_Vacuumtool.xacro" />
-    <xacro:SPT_Vacuumtool use_R_A1000_I500="$(arg with_SPT_R_A1000_I500)" />
-  </xacro:if>
+  <!-- If Vacuum Tool is selected-->
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_vacuum_tool']}">
+      <xacro:Schunk_Vacuum_Tools launch_mode="$(arg launch_mode)"/>
+    </xacro:if>
 
+  <!-- If 2 Jaws Parallel Gripper is selected-->
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']}">
+      <xacro:property name="current_parallel_gripper" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_tool']}"/>
+      <xacro:property name="parallel_gripper_configs_file" value="$(find pm_robot_description)/urdf/urdf_configs/parallel_gripper_2_jaw.yaml" />
+      <xacro:property name="parallel_gripper_configs_dict" value="${xacro.load_yaml(parallel_gripper_configs_file)}"/>
+      <xacro:property name="current_parallel_gripper_xacro" value="${parallel_gripper_configs_dict[current_parallel_gripper]['xacro_file']}"/>
+
+      <!-- Import the respective xacro file -->
+      <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/Parallel_Gripper_2_Jaws/${current_parallel_gripper_xacro}" />
+      <!-- Create the included xacro -->
+      <xacro:Tool_Parallel_Gripper_2_Jaws launch_mode="$(arg launch_mode)"/>
+    </xacro:if>
+
+    <!-- If 1 Jaws Parallel Gripper is selected-->
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']}">
+      <xacro:property name="current_parallel_gripper" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_tool']}"/>
+      <xacro:property name="parallel_gripper_configs_file" value="$(find pm_robot_description)/urdf/urdf_configs/parallel_gripper_1_jaw.yaml" />
+      <xacro:property name="parallel_gripper_configs_dict" value="${xacro.load_yaml(parallel_gripper_configs_file)}"/>
+      <xacro:property name="current_parallel_gripper_xacro" value="${parallel_gripper_configs_dict[current_parallel_gripper]['xacro_file']}"/>
+
+      <!-- Import the respective xacro file -->
+      <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/Parallel_Gripper_1_Jaw/${current_parallel_gripper_xacro}" />
+      <!-- Create the included xacro -->
+      <xacro:Tool_Parallel_Gripper_1_Jaw launch_mode="$(arg launch_mode)"/>
+    </xacro:if>
+
+  <!-- END - Tool Defines-->
+
+
+  <!-- START - Gonio Defines-->  
 
   <!-- Gonio Right Defines-->
   <xacro:if value="$(arg with_Gonio_Right)">
@@ -74,20 +92,16 @@
     <xacro:pm_robot_gonio_left launch_mode="$(arg launch_mode)"/>
   </xacro:if>
 
+  <!-- END - Gonio Defines-->  
+
+
   <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
 
   <!-- Switch between Gazebo-Simulation and Real Robot -->
 
   <!-- Import control_xacro -->
-  <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_fake_HW.xacro" />
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_sim_HW.xacro" />
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_real_HW.xacro" />
-
-
-
-  <xacro:if value="${launch_mode == 'fake_HW'}">
-    <xacro:pm_robot_ros2_control_hw_fake name="Fake_HW" initial_positions_file="$(arg initial_positions_file)"/>
-  </xacro:if>
 
   <xacro:if value="${launch_mode == 'real_HW'}">
     <xacro:pm_robot_ros2_control_hw_real name="Real_HW" initial_positions_file="$(arg initial_positions_file)"/>
@@ -96,10 +110,6 @@
 
   <xacro:if value="${launch_mode == 'sim_HW'}">
     <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW" initial_positions_file="$(arg initial_positions_file)"/>
-  </xacro:if>
-
-  <xacro:if value="${launch_mode == 'real_sim_HW'}">
-    <!-- <xacro:pm_robot_ros2_control_hw_fake name="Real_Sim_HW" initial_positions_file="$(arg initial_positions_file)"/> -->
   </xacro:if>
 
 </robot>
