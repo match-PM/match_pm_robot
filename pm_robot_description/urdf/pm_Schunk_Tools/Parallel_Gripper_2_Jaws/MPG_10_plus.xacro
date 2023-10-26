@@ -40,17 +40,17 @@
     name="Tool_Parallel_Gripper_Body_2_Jaws">
     <inertial>
       <origin
-        xyz="5.33378479914543E-05 -4.89879018877605E-05 -0.0298093199815774"
+        xyz="5.30403682906828E-05 -4.81468891081322E-05 -0.00753129191051478"
         rpy="0 0 0" />
       <mass
-        value="0.018064299267735" />
+        value="0.0183798400393325" />
       <inertia
-        ixx="2.20562725075551E-06"
-        ixy="3.27141658492019E-08"
-        ixz="1.66797947446843E-08"
-        iyy="1.61047701086979E-06"
-        iyz="7.34159323199956E-09"
-        izz="3.58202149775683E-06" />
+        ixx="2.20562725075551E-05"
+        ixy="3.27141658492019E-05"
+        ixz="1.66797947446843E-05"
+        iyy="1.61047701086979E-05"
+        iyz="7.34159323199958E-05"
+        izz="3.58202149775683E-05" />
     </inertial>
     <visual>
       <origin
@@ -95,19 +95,19 @@
         <mass
           value="0.000125699746806344" />
         <inertia
-        ixx="1.46877530343563E-09"
-        ixy="-1.08017427297462E-10"
-        ixz="-1.55511351102192E-10"
-        iyy="9.10321731673149E-10"
-        iyz="-3.94221523852005E-10"
-        izz="8.29097865963572E-10" />
+          ixx="1.46877530343563E-05"
+          ixy="-1.08017427297462E-05"
+          ixz="-1.55511351102192E-05"
+          iyy="9.10321731673149E-05"
+          iyz="-3.94221523852004E-05"
+          izz="8.29097865963572E-05" />
       </inertial>
       <visual>
         <origin
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_2.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_2.STL" />
         </geometry>
         <material name="grey"/>
       </visual>
@@ -116,7 +116,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_2.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_2.STL" />
         </geometry>
       </collision>
     </link>
@@ -186,7 +186,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_1.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_1.STL" />
         </geometry>
         <material name="grey"/>
       </visual>
@@ -195,7 +195,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/MPG_10_Jaw_1.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_1.STL" />
         </geometry>
       </collision>
     </link>
@@ -209,7 +209,7 @@
       name="Tool_Parallel_Gripper_Jaw_1_Joint"
       type="prismatic">
       <origin
-        xyz="-0.00135000000000003 0.00400000000000003 -0.0248"
+        xyz="-0.00135 0.004 -0.0248"
         rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Body_2_Jaws" />
@@ -304,7 +304,7 @@
     <!--%%%%%%%%%%%%% The parameters here are interchangeable %%%%%%%%%%%%%-->
     <!--%%%%%%%%%%%%% Jaw 1 Definitions %%%%%%%%%%%%%-->
     <!-- <link
-      name="Tool_Gripper_MPG_10_Jaw_1_changeable">
+      name="Tool_Parallel_Gripper_Jaw_1_attachment">
       <inertial>
         <origin
           xyz="${Gripper_jaw_1_xyz}"
@@ -360,7 +360,7 @@
 
 
     <link
-      name="Tool_Gripper_MPG_10_Jaw_2_changeable">
+      name="Tool_Parallel_Gripper_Jaw_2_attachment">
       <inertial>
         <origin
           xyz="${Gripper_jaw_2_xyz}"

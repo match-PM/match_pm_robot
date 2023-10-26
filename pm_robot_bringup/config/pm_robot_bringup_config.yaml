@@ -16,7 +16,7 @@ pm_robot_tools:
           - "Tip_Lens_12_7"
 
   pm_robot_tool_parallel_gripper_1_jaw:
-    use_paralell_gripper: true
+    use_paralell_gripper: false
     use_tool: "SmarAct_Piezo_Gripper"
     use_jaw_type: "Default_Jaw"
 
@@ -26,7 +26,7 @@ pm_robot_tools:
           - "Default_Jaw"
 
   pm_robot_tool_parallel_gripper_2_jaws:
-    use_paralell_gripper: false
+    use_paralell_gripper: true
     use_tool: "Schunk_MPG_10_plus"
     use_jaw_type: "Jaw_3mm_Lens"
 

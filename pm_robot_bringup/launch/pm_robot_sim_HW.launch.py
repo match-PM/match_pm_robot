@@ -155,7 +155,8 @@ def generate_launch_description():
         output='both',
         parameters=[{'robot_description': robot_description_raw,
                      'use_sim_time': sim_time}],  # add other parameters here if required
-        emulate_tty=True
+        emulate_tty=True,
+        arguments=[('__log_level:=debug')]
         #parameters=[moveit_config.robot_description],
     )
 
