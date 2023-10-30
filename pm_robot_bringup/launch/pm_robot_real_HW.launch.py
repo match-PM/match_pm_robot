@@ -82,6 +82,7 @@ def generate_launch_description():
 
     move_group_configuration = {
         "publish_robot_description_semantic": True,
+        "trajectory_execution.allowed_execution_duration_scaling": 10.0,
         #"allow_trajectory_execution": LaunchConfiguration("allow_trajectory_execution"),
         # Note: Wrapping the following values is necessary so that the parameter value can be the empty string
         #"capabilities": ParameterValue(
@@ -96,7 +97,7 @@ def generate_launch_description():
         #"publish_state_updates": "should_publish",
         #"publish_transforms_updates": should_publish,
         #"monitor_dynamics": False,
-        "use_sim_time": sim_time,
+        "use_sim_time": True,
     }    
 
     move_group_params = [
@@ -277,14 +278,14 @@ def generate_launch_description():
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
 
-    if (mappings['with_Gonio_Left'] == 'True'):
-        ld.add_action(launch_gonio_left_controller)
-    if (mappings['with_Gonio_Right'] == 'True'):
-        ld.add_action(launch_gonio_right_controller)
+    # if (mappings['with_Gonio_Left'] == 'True'):
+    #     ld.add_action(launch_gonio_left_controller)
+    # if (mappings['with_Gonio_Right'] == 'True'):
+    #     ld.add_action(launch_gonio_right_controller)
 
-    ld.add_action(pm_lights_controller_spawner)
-    ld.add_action(pm_pneumatic_controller_spawner)
-    ld.add_action(pm_nozzle_controller_spawner)
+    # ld.add_action(pm_lights_controller_spawner)
+    # ld.add_action(pm_pneumatic_controller_spawner)
+    # ld.add_action(pm_nozzle_controller_spawner)
    
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
