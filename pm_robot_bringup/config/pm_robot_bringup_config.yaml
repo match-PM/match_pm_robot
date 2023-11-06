@@ -1,8 +1,8 @@
 pm_robot_tools:
   pm_robot_vacuum_tools:
-    use_vacuum_tool: false
-    use_tool: "Schunk_Lens_Gripper"
-    use_tip: "Tip_Lens_12_7"
+    use_vacuum_tool: true
+    use_tool: "Siemens_Vacuum_Array"
+    use_tip: "Tip_Siemens_Vacuum_Array"
 
     availabe_tools:             #This is just a list and is not used. Its to remind the user of available configs. Make sure these names match the yamls in robot_description
       - "Tool_Schunk_SPT_Tool":
@@ -26,7 +26,7 @@ pm_robot_tools:
           - "Default_Jaw"
 
   pm_robot_tool_parallel_gripper_2_jaws:
-    use_paralell_gripper: true
+    use_paralell_gripper: false
     use_tool: "Schunk_MPG_10_plus"
     use_jaw_type: "Jaw_3mm_Lens"
 

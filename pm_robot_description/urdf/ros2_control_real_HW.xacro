@@ -58,6 +58,8 @@
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
             </joint>
+
+
             <!-- <joint name="1K_Dispenser_Flap_Joint">
                 <command_interface name="position">
                 </command_interface>
@@ -72,13 +74,13 @@
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint> -->
-            <!-- <joint name="Camera_Calibration_Platelet_Joint">
+            </joint>
+            <joint name="Camera_Calibration_Platelet_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint> -->
-            <!-- <joint name="UV_Slider_X_Front_Joint">
+            </joint>
+            <joint name="UV_Slider_X_Front_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -102,9 +104,10 @@
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>
+            </joint> -->
 
-            <xacro:if value="$(arg with_Tool_MPG_10)">
+
+            <!-- <xacro:if value="$(arg with_Tool_MPG_10)">
                 <joint name="pm_robot_Tool_Parallel_Joint">
                     <command_interface name="position">
                     </command_interface>
@@ -120,9 +123,11 @@
                     <state_interface name="position"/>
                     <state_interface name="velocity"/>
                 </joint>
-            </xacro:if> -->
+            </xacro:if>  -->
+
+            <!-- Only if gripper with two jaws is selected -->
             <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']}">
-                
+
                 <joint name="Tool_Parallel_Gripper_Jaw_1_Joint">
                     <command_interface name="position">
                     </command_interface>
@@ -130,7 +135,7 @@
                     <state_interface name="velocity"/>
                 </joint>
 
-               <joint name="Tool_Parallel_Gripper_Jaw_2_Joint">
+                <joint name="Tool_Parallel_Gripper_Jaw_2_Joint">
                     <command_interface name="position">
                     </command_interface>
                     <state_interface name="position"/>
@@ -157,7 +162,7 @@
                 </joint>
 
             </xacro:if>
-            
+
         </ros2_control>
 
     </xacro:macro>

@@ -3,7 +3,8 @@ controller_manager:
     update_rate: 100
 
     pm_robot_gonio_left_controller:
-      type: position_controllers/JointGroupPositionController
+      #type: position_controllers/JointGroupPositionController
+      type: joint_trajectory_controller/JointTrajectoryController
 
     # pm_robot_gonio_left_JSB:
     #   type: joint_state_broadcaster/JointStateBroadcaster
@@ -15,4 +16,10 @@ pm_robot_gonio_left_controller:
       - Gonio_Left_Stage_1_Joint
       - Gonio_Left_Stage_2_Joint
 
-    interface_name: position
+    #interface_name: position
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
