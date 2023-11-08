@@ -2318,6 +2318,8 @@ arrayDimensions[0] = 3;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "RingLightRGB");
+UA_Int32 init_val[3] = {0,0,0};
+UA_Variant_setArray(&attr.value, init_val, 3, &UA_TYPES[UA_TYPES_INT32]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Used to set the color of the camera 1 ring lights (0-100%).");
 #endif
@@ -2355,6 +2357,8 @@ arrayDimensions[0] = 4;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "RingLight");
+UA_Boolean init_val[4] = {false, false, false, false};
+UA_Variant_setArray(&attr.value, init_val, 4, &UA_TYPES[UA_TYPES_BOOLEAN]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Used to turn each of the 4 camera 1 ring lights on or off.");
 #endif
@@ -5242,6 +5246,8 @@ attr.accessLevel = 1;
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+UA_Double init_val = 0.05;
+UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "The number of units per increment.");
 #endif
@@ -5775,6 +5781,8 @@ attr.accessLevel = 1;
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+UA_Double init_val = 0.05;
+UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "The number of units per increment.");
 #endif
@@ -6308,6 +6316,8 @@ attr.accessLevel = 1;
 attr.valueRank = -2;
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+UA_Double init_val = 0.05;
+UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "The number of units per increment.");
 #endif
