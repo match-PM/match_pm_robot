@@ -26,11 +26,12 @@ rosidl_generate_interfaces(
   "msg/Camera1CoaxLightCmd.msg"
   "msg/Camera1RingLightCmd.msg"
   "msg/Camera2LightCmd.msg"
-  "msg/PneumaticCylinderCmd.msg"
   "msg/NozzleCmd.msg"
   "msg/UVOnOff.msg"
   "msg/UVPowerCmd.msg"
   "msg/UVTimeCmd.msg"
+  "srv/PneumaticSetPosition.srv"
+  "srv/PneumaticGetPosition.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)
