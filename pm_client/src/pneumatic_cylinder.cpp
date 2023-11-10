@@ -7,10 +7,8 @@ namespace PMClient
 [[nodiscard]] bool PneumaticCylinder::is_ok() const
 {
     auto node_ids = {
-        &is_forward_node_id,
-        &is_backward_node_id,
-        &move_forward_cmd_node_id,
-        &move_backward_cmd_node_id,
+        &position_node_id,
+        &move_cmd_node_id,
     };
 
     for (const auto &node_id : node_ids)
@@ -24,25 +22,14 @@ namespace PMClient
     return true;
 }
 
-[[nodiscard]] bool PneumaticCylinder::get_is_forward() const
+[[nodiscard]] Position PneumaticCylinder::get_position() const
 {
-    return m_client->read_node_value<bool>(this->is_forward_node_id);
+    return static_cast<Position>(m_client->read_node_value<int>(this->position_node_id));
 }
 
-[[nodiscard]] bool PneumaticCylinder::get_is_backward() const
-
+void PneumaticCylinder::move(Position position)
 {
-    return m_client->read_node_value<bool>(this->is_backward_node_id);
-}
-
-void PneumaticCylinder::move_forward()
-{
-    m_client->write_node_value<bool>(this->move_forward_cmd_node_id, true);
-}
-
-void PneumaticCylinder::move_backward()
-{
-    m_client->write_node_value<bool>(this->move_backward_cmd_node_id, true);
+    m_client->write_node_value<int>(this->move_cmd_node_id, static_cast<int>(position));
 }
 
 } // namespace PMClient

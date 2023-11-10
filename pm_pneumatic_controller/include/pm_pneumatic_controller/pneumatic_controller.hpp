@@ -21,15 +21,8 @@ class PMPneumaticController : public controller_interface::ControllerInterface
     std::shared_ptr<ParamListener> m_param_listener;
     Params m_params;
 
-    // std::vector<std::string> m_cylinder_names{
-    //     "UV1_Pneumatic",
-    //     "UV2_Pneumatic",
-    //     "Glue_Pneumatic",
-    //     "Glue_2K_Pneumatic",
-    //     "Camera_Mire_Pneumatic",
-    // };
     std::vector<rclcpp::Subscription<PneumaticCylinderCmd>::SharedPtr> m_subscriptions;
-    std::vector<bool> m_cylinder_cmds;
+    std::vector<int> m_move_commands;
 
   public:
     PMPneumaticController();

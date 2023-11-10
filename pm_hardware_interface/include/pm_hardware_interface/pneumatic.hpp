@@ -14,15 +14,15 @@ using CommandInterface = hardware_interface::CommandInterface;
 
 using PneumaticId = PMClient::PneumaticId;
 
+using Position = PMClient::Position;
+
 struct PneumaticState
 {
     PneumaticId id;
     std::string name;
 
-    double move_forward_cmd = 0.0;
-    double move_backward_cmd = 0.0;
-    double is_forward = 0.0;
-    double is_backward = 1.0;
+    double position = -1.0;
+    double move_command = -1.0;
 
     explicit PneumaticState(PneumaticId my_id) : id(my_id)
     {
@@ -51,34 +51,48 @@ struct PneumaticState
 
     void add_state_interfaces(std::vector<StateInterface> &interfaces)
     {
-        interfaces.emplace_back(StateInterface(this->name, "Is_Forward", &this->is_forward));
-        interfaces.emplace_back(StateInterface(this->name, "Is_Backward", &this->is_backward));
+        interfaces.emplace_back(StateInterface(this->name, "Position", &this->position));
     }
 
     void add_command_interfaces(std::vector<CommandInterface> &interfaces)
     {
-        interfaces.emplace_back(
-            CommandInterface(this->name, "Move_Forward", &this->move_forward_cmd)
-        );
-        interfaces.emplace_back(
-            CommandInterface(this->name, "Move_Backward", &this->move_backward_cmd)
-        );
+        interfaces.emplace_back(CommandInterface(this->name, "Move_Command", &this->move_command));
     }
 
     void read(PMClient::Robot &robot)
     {
         auto &pm_pneumatic = robot.get_pneumatic(this->id);
-        this->is_forward = static_cast<double>(pm_pneumatic.get_is_forward());
-        this->is_backward = static_cast<double>(pm_pneumatic.get_is_backward());
+
+        switch (pm_pneumatic.get_position())
+        {
+            case Position::Forward:
+                this->position = 1.0;
+                break;
+            case Position::Neutral:
+                this->position = 0.0;
+                break;
+            case Position::Backward:
+                this->position = -1.0;
+                break;
+        }
     }
 
     void write(PMClient::Robot &robot)
     {
         auto &pm_pneumatic = robot.get_pneumatic(this->id);
-        if (this->move_forward_cmd && !this->move_backward_cmd)
-            pm_pneumatic.move_forward();
-        if (!this->move_forward_cmd && this->move_backward_cmd)
-            pm_pneumatic.move_backward();
+
+        if (this->move_command > 0.0)
+        {
+            pm_pneumatic.move(Position::Forward);
+        }
+        else if (this->move_command < 0.0)
+        {
+            pm_pneumatic.move(Position::Backward);
+        }
+        else
+        {
+            pm_pneumatic.move(Position::Neutral);
+        }
     }
 };
 

@@ -17,6 +17,13 @@ enum class PneumaticId
     ProtectDoseur,
 };
 
+enum class Position
+{
+    Forward = 1,
+    Neutral = 0,
+    Backward = -1,
+};
+
 class PneumaticCylinder
 {
   private:
@@ -29,23 +36,15 @@ class PneumaticCylinder
 
     PneumaticId pneumatic_id;
 
-    UA_NodeId is_forward_node_id = UA_NODEID_NULL;
+    UA_NodeId position_node_id = UA_NODEID_NULL;
 
-    UA_NodeId is_backward_node_id = UA_NODEID_NULL;
-
-    UA_NodeId move_forward_cmd_node_id = UA_NODEID_NULL;
-
-    UA_NodeId move_backward_cmd_node_id = UA_NODEID_NULL;
+    UA_NodeId move_cmd_node_id = UA_NODEID_NULL;
 
     [[nodiscard]] bool is_ok() const;
 
-    [[nodiscard]] bool get_is_forward() const;
+    [[nodiscard]] Position get_position() const;
 
-    [[nodiscard]] bool get_is_backward() const;
-
-    void move_forward();
-
-    void move_backward();
+    void move(Position dir);
 };
 
 } // namespace PMClient

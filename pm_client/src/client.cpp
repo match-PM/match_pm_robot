@@ -127,10 +127,8 @@ void Client::init()
                         }
                     };
 
-                    get_node_id_from_ref("IsForward", &pneumatic->is_forward_node_id);
-                    get_node_id_from_ref("IsBackward", &pneumatic->is_backward_node_id);
-                    get_node_id_from_ref("MoveForwardCmd", &pneumatic->move_forward_cmd_node_id);
-                    get_node_id_from_ref("MoveBackwardCmd", &pneumatic->move_backward_cmd_node_id);
+                    get_node_id_from_ref("Position", &pneumatic->position_node_id);
+                    get_node_id_from_ref("MoveCommand", &pneumatic->move_cmd_node_id);
                 }
             }
 

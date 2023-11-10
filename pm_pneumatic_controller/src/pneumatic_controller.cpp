@@ -42,16 +42,14 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
         return controller_interface::CallbackReturn::ERROR;
     }
 
-    m_cylinder_cmds.resize(m_params.cylinders.size(), false);
+    m_move_commands.resize(m_params.cylinders.size(), -1);
 
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
         auto subscription = get_node()->create_subscription<PneumaticCylinderCmd>(
             "~/" + m_params.cylinders[i],
             rclcpp::SystemDefaultsQoS(),
-            [this, i](const PneumaticCylinderCmd::SharedPtr msg) {
-                m_cylinder_cmds[i] = msg->move_forward;
-            }
+            [this, i](const PneumaticCylinderCmd::SharedPtr msg) { m_move_commands[i] = msg->cmd; }
         );
         m_subscriptions.emplace_back(subscription);
     }
@@ -83,8 +81,7 @@ PMPneumaticController::command_interface_configuration() const
 
     for (const auto &interface : m_params.cylinders)
     {
-        config.names.emplace_back(interface + "/Move_Forward");
-        config.names.emplace_back(interface + "/Move_Backward");
+        config.names.emplace_back(interface + "/Move_Command");
     }
 
     return config;
@@ -98,8 +95,7 @@ PMPneumaticController::state_interface_configuration() const
 
     for (const auto &interface : m_params.cylinders)
     {
-        config.names.emplace_back(interface + "/Is_Forward");
-        config.names.emplace_back(interface + "/Is_Backward");
+        config.names.emplace_back(interface + "/Position");
     }
 
     return config;
@@ -113,8 +109,7 @@ PMPneumaticController::update(const rclcpp::Time &time, const rclcpp::Duration &
 
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
-        command_interfaces_[i * 2 + 0].set_value(static_cast<double>(m_cylinder_cmds[i]));
-        command_interfaces_[i * 2 + 1].set_value(static_cast<double>(!m_cylinder_cmds[i]));
+        command_interfaces_[i].set_value(static_cast<double>(m_move_commands[i]));
     }
 
     return controller_interface::return_type::OK;
