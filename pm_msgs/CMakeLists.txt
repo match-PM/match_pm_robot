@@ -23,13 +23,15 @@ endif()
 
 rosidl_generate_interfaces(
   ${PROJECT_NAME}
-  "msg/Camera1CoaxLightCmd.msg"
-  "msg/Camera1RingLightCmd.msg"
-  "msg/Camera2LightCmd.msg"
-  "msg/NozzleCmd.msg"
   "msg/UVOnOff.msg"
   "msg/UVPowerCmd.msg"
   "msg/UVTimeCmd.msg"
+  "srv/CoaxLightGetState.srv"
+  "srv/CoaxLightSetState.srv"
+  "srv/Cam2LightSetState.srv"
+  "srv/Cam2LightGetState.srv"
+  "srv/RingLightGetState.srv"
+  "srv/RingLightSetState.srv"
   "srv/PneumaticSetPosition.srv"
   "srv/PneumaticGetPosition.srv"
 )

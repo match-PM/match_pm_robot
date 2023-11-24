@@ -1,0 +1,3 @@
+bool[4] turn_on
+uint8[3] rgb
+---

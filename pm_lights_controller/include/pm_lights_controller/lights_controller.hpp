@@ -2,27 +2,40 @@
 
 #include "controller_interface/controller_interface.hpp"
 
-#include "pm_msgs/msg/camera1_coax_light_cmd.hpp"
-#include "pm_msgs/msg/camera1_ring_light_cmd.hpp"
-#include "pm_msgs/msg/camera2_light_cmd.hpp"
+#include "pm_msgs/srv/cam2_light_get_state.hpp"
+#include "pm_msgs/srv/cam2_light_set_state.hpp"
+#include "pm_msgs/srv/coax_light_get_state.hpp"
+#include "pm_msgs/srv/coax_light_set_state.hpp"
+#include "pm_msgs/srv/ring_light_get_state.hpp"
+#include "pm_msgs/srv/ring_light_set_state.hpp"
 
 namespace pm_lights_controller
 {
 
-using namespace pm_msgs::msg;
+using namespace pm_msgs::srv;
 
 class PMLightsController : public controller_interface::ControllerInterface
 {
   private:
-    rclcpp::Subscription<Camera1CoaxLightCmd>::SharedPtr m_camera1_coax_light_sub;
-    bool m_camera1_coax_light_cmd;
+    rclcpp::Service<CoaxLightSetState>::SharedPtr m_coax_light_set_service;
+    bool m_coax_light_command;
 
-    rclcpp::Subscription<Camera1RingLightCmd>::SharedPtr m_camera1_ring_light_sub;
-    bool m_camera1_ring_light_cmd[4];
-    int m_camera1_ring_light_color_cmd[3];
+    rclcpp::Service<CoaxLightGetState>::SharedPtr m_coax_light_get_service;
+    bool m_coax_light_state;
 
-    rclcpp::Subscription<Camera2LightCmd>::SharedPtr m_camera2_light_sub;
-    int m_camera2_light_cmd;
+    rclcpp::Service<Cam2LightSetState>::SharedPtr m_cam2_light_set_service;
+    int m_cam2_light_command;
+
+    rclcpp::Service<Cam2LightGetState>::SharedPtr m_cam2_light_get_service;
+    int m_cam2_light_state;
+
+    rclcpp::Service<RingLightSetState>::SharedPtr m_ring_light_set_service;
+    std::array<bool, 4> m_ring_light_command;
+    std::array<int, 8> m_ring_light_rgb_command;
+
+    rclcpp::Service<RingLightGetState>::SharedPtr m_ring_light_get_service;
+    std::array<bool, 4> m_ring_light_state;
+    std::array<int, 8> m_ring_light_rgb_state;
 
   public:
     PMLightsController();

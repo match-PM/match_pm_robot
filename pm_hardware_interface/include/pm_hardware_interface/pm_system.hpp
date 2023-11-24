@@ -70,10 +70,15 @@ class PMSystem : public hardware_interface::SystemInterface
 
     HoenleUVState hoenle_uv;
 
-    double m_camera1_coax_light;
-    double m_camera1_ring_light[4];
-    double m_camera1_ring_light_rgb[3];
-    double m_camera2_light;
+    double m_camera1_coax_light_state;
+    double m_camera1_ring_light_state[4];
+    double m_camera1_ring_light_rgb_state[3];
+    double m_camera2_light_state;
+
+    double m_camera1_coax_light_cmd;
+    double m_camera1_ring_light_cmd[4];
+    double m_camera1_ring_light_rgb_cmd[3];
+    double m_camera2_light_cmd;
 
     double m_laser_measurement;
 
