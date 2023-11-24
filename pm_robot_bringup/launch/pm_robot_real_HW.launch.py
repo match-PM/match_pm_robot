@@ -70,19 +70,6 @@ def generate_launch_description():
             "pm_robot_control_real_HW.yaml",
         ]
     )
-    forward_command_action_server = Node(
-        package="pm_robot_control_test",
-        executable="forward_command_action_server",
-        # name="pm_robot_IO_Axis_controller",
-        parameters=[
-            {"controller_param": controler_param},
-            {"robot_description": robot_description_raw},
-        ],
-        output={
-            "stdout": "screen",
-            "stderr": "screen",
-        },
-    )
 
     moveit_config = (
         MoveItConfigsBuilder("pm_robot", package_name="pm_robot_moveit_config")
@@ -98,7 +85,7 @@ def generate_launch_description():
 
     move_group_configuration = {
         "publish_robot_description_semantic": True,
-        "trajectory_execution.allowed_execution_duration_scaling": 10.0,
+        # "trajectory_execution.allowed_execution_duration_scaling": 10.0,
         # "allow_trajectory_execution": LaunchConfiguration("allow_trajectory_execution"),
         # Note: Wrapping the following values is necessary so that the parameter value can be the empty string
         # "capabilities": ParameterValue(
@@ -314,16 +301,19 @@ def generate_launch_description():
         )
     )
 
+    delayed_rviz = TimerAction(period=15.0, actions=[rviz_node])
+    delayed_move_group = TimerAction(period=15.0, actions=[run_move_group_node])
+
     # Define Launch Description
     ld = LaunchDescription()
 
     ld.add_action(robot_state_publisher_node)
     # ld.add_action(control_manager)
     ld.add_action(delayed_controller_manager)
-    if launch_moveit:
-        ld.add_action(rviz_node)
-        ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
+    if launch_moveit:
+        ld.add_action(delayed_rviz)
+        ld.add_action(delayed_move_group)
 
     if mappings["with_Gonio_Left"] == "True":
         ld.add_action(launch_gonio_left_controller)
