@@ -42,16 +42,32 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
         return controller_interface::CallbackReturn::ERROR;
     }
 
-    m_nozzle_cmds.resize(m_params.nozzles.size(), 0);
+    m_commands.resize(m_params.nozzles.size(), -1);
+    m_positions.resize(m_params.nozzles.size(), -1);
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {
-        auto subscription = get_node()->create_subscription<NozzleCmd>(
-            "~/" + m_params.nozzles[i],
-            rclcpp::SystemDefaultsQoS(),
-            [this, i](const NozzleCmd::SharedPtr msg) { m_nozzle_cmds[i] = msg->cmd; }
+        auto set_service = get_node()->create_service<NozzleSetPosition>(
+            "~/" + m_params.nozzles[i] + "/SetPosition",
+            [this,
+             i](const NozzleSetPosition::Request::SharedPtr request,
+                NozzleSetPosition::Response::SharedPtr response) {
+                (void)response;
+                m_commands[i] = request->command;
+            }
         );
-        m_subscriptions.emplace_back(subscription);
+        m_set_position.emplace_back(set_service);
+
+        auto get_service = get_node()->create_service<NozzleGetPosition>(
+            "~/" + m_params.nozzles[i] + "/GetPosition",
+            [this,
+             i](const NozzleGetPosition::Request::SharedPtr request,
+                NozzleGetPosition::Response::SharedPtr response) {
+                (void)request;
+                response->position = m_positions[i];
+            }
+        );
+        m_get_position.emplace_back(get_service);
     }
 
     return controller_interface::CallbackReturn::SUCCESS;
@@ -61,11 +77,6 @@ controller_interface::CallbackReturn
 PMNozzleController::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
     (void)previous_state;
-
-    for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
-    {
-        m_nozzle_cmds[i] = static_cast<int>(state_interfaces_[i].get_value());
-    }
 
     return controller_interface::CallbackReturn::SUCCESS;
 }
@@ -114,7 +125,12 @@ PMNozzleController::update(const rclcpp::Time &time, const rclcpp::Duration &per
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {
-        command_interfaces_[i].set_value(static_cast<double>(m_nozzle_cmds[i]));
+        command_interfaces_[i].set_value(static_cast<double>(m_commands[i]));
+    }
+
+    for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
+    {
+        m_positions[i] = static_cast<int>(state_interfaces_[i].get_value());
     }
 
     return controller_interface::return_type::OK;

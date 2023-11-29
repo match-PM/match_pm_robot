@@ -34,6 +34,8 @@ rosidl_generate_interfaces(
   "srv/RingLightSetState.srv"
   "srv/PneumaticSetPosition.srv"
   "srv/PneumaticGetPosition.srv"
+  "srv/NozzleSetPosition.srv"
+  "srv/NozzleGetPosition.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)

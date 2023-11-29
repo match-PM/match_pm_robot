@@ -6,14 +6,15 @@
 
 #include "controller_interface/controller_interface.hpp"
 
-#include "pm_msgs/msg/nozzle_cmd.hpp"
+#include "pm_msgs/srv/nozzle_get_position.hpp"
+#include "pm_msgs/srv/nozzle_set_position.hpp"
 
 #include "pm_nozzle_controller_parameters.hpp"
 
 namespace pm_nozzle_controller
 {
 
-using namespace pm_msgs::msg;
+using namespace pm_msgs::srv;
 
 class PMNozzleController : public controller_interface::ControllerInterface
 {
@@ -21,8 +22,11 @@ class PMNozzleController : public controller_interface::ControllerInterface
     std::shared_ptr<ParamListener> m_param_listener;
     Params m_params;
 
-    std::vector<rclcpp::Subscription<NozzleCmd>::SharedPtr> m_subscriptions;
-    std::vector<int> m_nozzle_cmds;
+    std::vector<rclcpp::Service<NozzleSetPosition>::SharedPtr> m_set_position;
+    std::vector<int> m_commands;
+
+    std::vector<rclcpp::Service<NozzleGetPosition>::SharedPtr> m_get_position;
+    std::vector<int> m_positions;
 
   public:
     PMNozzleController();
