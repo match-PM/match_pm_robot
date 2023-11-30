@@ -1,0 +1,14 @@
+1. Get Server XML-File:
+	1. Clone: https://github.com/plt-tud/opc_ua_xml_export_client.git
+	2. Navigate to op_ua_xml_export_client directory and run: python3 NodeXmlExporter.py opc.tcp://PC1M0484-1:4840/ --namespace 2 [name-of-xml-file].xml
+
+2. Convert XML into Server c-Files:
+	1. Get open62541 repo from github: git clone https://github.com/open62541/open62541.git
+	2. Navigate to open62541 directory and run: git submodule update --init 
+	3. Navigate to open62541/tools/nodeset_compiler directory and run: python3 nodeset_compiler.py --types-array=UA_TYPES --existing ../../deps/ua-nodeset/Schema/Opc.Ua.NodeSet2.xml --xml [path-to-your-xml-file] [path-for-C-and-header-files] 
+				
+3. Change user permissions for exisitng nodes:
+	1. Navigate to match_pm_robot_unity directory and open modify_exisiting_nodes.py in Editor.
+	2. Change the path variable to your current server C-file. 
+	3. Run the python script. 
+	Disclamer: This script changes read/write permissions only of nodes inside ids list. Add other node ids to the list if needed.
