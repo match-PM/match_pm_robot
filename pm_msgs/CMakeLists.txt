@@ -23,9 +23,12 @@ endif()
 
 rosidl_generate_interfaces(
   ${PROJECT_NAME}
-  "msg/UVOnOff.msg"
-  "msg/UVPowerCmd.msg"
-  "msg/UVTimeCmd.msg"
+  "srv/UVSetOnOff.srv"
+  "srv/UVGetOnOff.srv"
+  "srv/UVSetPower.srv"
+  "srv/UVGetPower.srv"
+  "srv/UVSetTime.srv"
+  "srv/UVGetTime.srv"
   "srv/CoaxLightGetState.srv"
   "srv/CoaxLightSetState.srv"
   "srv/Cam2LightSetState.srv"

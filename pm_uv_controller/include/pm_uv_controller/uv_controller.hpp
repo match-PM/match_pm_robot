@@ -2,28 +2,38 @@
 
 #include "controller_interface/controller_interface.hpp"
 
-#include "pm_msgs/msg/uv_on_off.hpp"
-#include "pm_msgs/msg/uv_power_cmd.hpp"
-#include "pm_msgs/msg/uv_time_cmd.hpp"
+#include "pm_msgs/srv/uv_get_on_off.hpp"
+#include "pm_msgs/srv/uv_get_power.hpp"
+#include "pm_msgs/srv/uv_get_time.hpp"
+#include "pm_msgs/srv/uv_set_on_off.hpp"
+#include "pm_msgs/srv/uv_set_power.hpp"
+#include "pm_msgs/srv/uv_set_time.hpp"
 
 namespace pm_uv_controller
 {
 
-using namespace pm_msgs::msg;
+using namespace pm_msgs::srv;
 
 class PMUVController : public controller_interface::ControllerInterface
 {
   private:
-    rclcpp::Publisher<UVOnOff>::SharedPtr m_on_off_pub;
+    rclcpp::Service<UVSetOnOff>::SharedPtr m_set_on_off_service;
+    std::array<bool, 4> m_on_off_cmd;
 
-    rclcpp::Subscription<UVOnOff>::SharedPtr m_on_off_sub;
-    std::array<bool, 4> m_on_off_cmd{};
+    rclcpp::Service<UVGetOnOff>::SharedPtr m_get_on_off_service;
+    std::array<bool, 4> m_on_off_state;
 
-    rclcpp::Subscription<UVPowerCmd>::SharedPtr m_power_sub;
-    std::array<int, 4> m_power_cmd{};
+    rclcpp::Service<UVSetPower>::SharedPtr m_set_power_service;
+    std::array<int, 4> m_power_cmd;
 
-    rclcpp::Subscription<UVTimeCmd>::SharedPtr m_time_sub;
-    std::array<double, 4> m_time_cmd{};
+    rclcpp::Service<UVGetPower>::SharedPtr m_get_power_service;
+    std::array<int, 4> m_power_state;
+
+    rclcpp::Service<UVSetTime>::SharedPtr m_set_time_service;
+    std::array<double, 4> m_time_cmd;
+
+    rclcpp::Service<UVGetTime>::SharedPtr m_get_time_service;
+    std::array<double, 4> m_time_state;
 
   public:
     PMUVController();
