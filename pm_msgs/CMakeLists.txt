@@ -39,6 +39,10 @@ rosidl_generate_interfaces(
   "srv/PneumaticGetPosition.srv"
   "srv/NozzleSetPosition.srv"
   "srv/NozzleGetPosition.srv"
+  "srv/ForceSensorGetMeasurement.srv"
+  "srv/ForceSensorBias.srv"
+  "srv/LaserGetMeasurement.srv"
+  "srv/ReferenceCubeState.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)
