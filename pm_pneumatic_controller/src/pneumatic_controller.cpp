@@ -42,16 +42,32 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
         return controller_interface::CallbackReturn::ERROR;
     }
 
-    m_move_commands.resize(m_params.cylinders.size(), -1);
+    m_commands.resize(m_params.cylinders.size(), -1);
+    m_positions.resize(m_params.cylinders.size(), -1);
 
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
-        auto subscription = get_node()->create_subscription<PneumaticCylinderCmd>(
-            "~/" + m_params.cylinders[i],
-            rclcpp::SystemDefaultsQoS(),
-            [this, i](const PneumaticCylinderCmd::SharedPtr msg) { m_move_commands[i] = msg->cmd; }
+        auto set_service = get_node()->create_service<PneumaticSetPosition>(
+            "pm_pneumatic_controller/" + m_params.cylinders[i] + "/SetPosition",
+            [this,
+             i](const PneumaticSetPosition::Request::SharedPtr request,
+                PneumaticSetPosition::Response::SharedPtr response) {
+                (void)response;
+                m_commands[i] = request->command;
+            }
         );
-        m_subscriptions.emplace_back(subscription);
+        m_set_position.emplace_back(set_service);
+
+        auto get_service = get_node()->create_service<PneumaticGetPosition>(
+            "pm_pneumatic_controller/" + m_params.cylinders[i] + "/GetPosition",
+            [this,
+             i](const PneumaticGetPosition::Request::SharedPtr request,
+                PneumaticGetPosition::Response::SharedPtr response) {
+                (void)request;
+                response->position = m_positions[i];
+            }
+        );
+        m_get_position.emplace_back(get_service);
     }
 
     return controller_interface::CallbackReturn::SUCCESS;
@@ -109,7 +125,12 @@ PMPneumaticController::update(const rclcpp::Time &time, const rclcpp::Duration &
 
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
-        command_interfaces_[i].set_value(static_cast<double>(m_move_commands[i]));
+        command_interfaces_[i].set_value(static_cast<double>(m_commands[i]));
+    }
+
+    for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
+    {
+        m_positions[i] = static_cast<int>(state_interfaces_[i].get_value());
     }
 
     return controller_interface::return_type::OK;

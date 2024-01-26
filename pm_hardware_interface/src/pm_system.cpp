@@ -105,23 +105,23 @@ CallbackReturn PMSystem::on_activate(const State &previous_state)
         nozzle.read(robot);
     }
 
-    m_camera1_coax_light = static_cast<double>(robot.camera1->get_coax_light());
+    m_camera1_coax_light_state = static_cast<double>(robot.camera1->get_coax_light());
 
     bool segments[4] = {0};
     robot.camera1->get_ring_light(segments[0], segments[1], segments[2], segments[3]);
     for (std::size_t i = 0; i < 4; i++)
     {
-        m_camera1_ring_light[i] = static_cast<double>(segments[i]);
+        m_camera1_ring_light_state[i] = static_cast<double>(segments[i]);
     }
 
     int rgb[3] = {0};
     robot.camera1->get_ring_light_color(rgb[0], rgb[1], rgb[2]);
     for (std::size_t i = 0; i < 3; i++)
     {
-        m_camera1_ring_light_rgb[i] = static_cast<double>(rgb[i]);
+        m_camera1_ring_light_rgb_state[i] = static_cast<double>(rgb[i]);
     }
 
-    m_camera2_light = static_cast<double>(robot.camera2->get_light());
+    m_camera2_light_state = static_cast<double>(robot.camera2->get_light());
 
     m_laser_measurement = robot.laser->get_measurement();
 
@@ -203,7 +203,7 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     for (auto &dummy : dummies)
     {
         state_interfaces.emplace_back(
-            StateInterface(dummy, hardware_interface::HW_IF_POSITION, &m_camera1_coax_light)
+            StateInterface(dummy, hardware_interface::HW_IF_POSITION, &m_camera1_coax_light_state)
         );
     }
 
@@ -218,38 +218,40 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     }
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Coax_Light", "On_Off", &m_camera1_coax_light)
+        StateInterface("Camera1_Coax_Light", "On_Off", &m_camera1_coax_light_state)
     );
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Ring_Light", "1_On_Off", &m_camera1_ring_light[0])
+        StateInterface("Camera1_Ring_Light", "1_On_Off", &m_camera1_ring_light_state[0])
     );
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Ring_Light", "2_On_Off", &m_camera1_ring_light[1])
+        StateInterface("Camera1_Ring_Light", "2_On_Off", &m_camera1_ring_light_state[1])
     );
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Ring_Light", "3_On_Off", &m_camera1_ring_light[2])
+        StateInterface("Camera1_Ring_Light", "3_On_Off", &m_camera1_ring_light_state[2])
     );
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Ring_Light", "4_On_Off", &m_camera1_ring_light[3])
+        StateInterface("Camera1_Ring_Light", "4_On_Off", &m_camera1_ring_light_state[3])
     );
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Ring_Light", "Red", &m_camera1_ring_light_rgb[0])
+        StateInterface("Camera1_Ring_Light", "Red", &m_camera1_ring_light_rgb_state[0])
     );
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Ring_Light", "Green", &m_camera1_ring_light_rgb[1])
+        StateInterface("Camera1_Ring_Light", "Green", &m_camera1_ring_light_rgb_state[1])
     );
 
     state_interfaces.emplace_back(
-        StateInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb[2])
+        StateInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb_state[2])
     );
 
-    state_interfaces.emplace_back(StateInterface("Camera2_Light", "Intensity", &m_camera2_light));
+    state_interfaces.emplace_back(
+        StateInterface("Camera2_Light", "Intensity", &m_camera2_light_state)
+    );
 
     state_interfaces.emplace_back(StateInterface("Laser", "Measurement", &m_laser_measurement));
 
@@ -288,38 +290,39 @@ std::vector<CommandInterface> PMSystem::export_command_interfaces()
     }
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Coax_Light", "On_Off", &m_camera1_coax_light)
+        CommandInterface("Camera1_Coax_Light", "On_Off", &m_camera1_coax_light_cmd)
     );
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Ring_Light", "1_On_Off", &m_camera1_ring_light[0])
+        CommandInterface("Camera1_Ring_Light", "1_On_Off", &m_camera1_ring_light_cmd[0])
     );
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Ring_Light", "2_On_Off", &m_camera1_ring_light[1])
+        CommandInterface("Camera1_Ring_Light", "2_On_Off", &m_camera1_ring_light_cmd[1])
     );
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Ring_Light", "3_On_Off", &m_camera1_ring_light[2])
+        CommandInterface("Camera1_Ring_Light", "3_On_Off", &m_camera1_ring_light_cmd[2])
     );
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Ring_Light", "4_On_Off", &m_camera1_ring_light[3])
+        CommandInterface("Camera1_Ring_Light", "4_On_Off", &m_camera1_ring_light_cmd[3])
     );
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Ring_Light", "Red", &m_camera1_ring_light_rgb[0])
+        CommandInterface("Camera1_Ring_Light", "Red", &m_camera1_ring_light_rgb_cmd[0])
     );
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Ring_Light", "Green", &m_camera1_ring_light_rgb[1])
+        CommandInterface("Camera1_Ring_Light", "Green", &m_camera1_ring_light_rgb_cmd[1])
     );
 
     command_interfaces.emplace_back(
-        CommandInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb[2])
+        CommandInterface("Camera1_Ring_Light", "Blue", &m_camera1_ring_light_rgb_cmd[2])
     );
 
-    command_interfaces.emplace_back(CommandInterface("Camera2_Light", "Intensity", &m_camera2_light)
+    command_interfaces.emplace_back(
+        CommandInterface("Camera2_Light", "Intensity", &m_camera2_light_cmd)
     );
 
     command_interfaces.emplace_back(CommandInterface("Force", "Bias", &m_force_sensor_bias));
@@ -354,23 +357,23 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
         nozzle.read(robot);
     }
 
-    m_camera1_coax_light = static_cast<double>(robot.camera1->get_coax_light());
+    m_camera1_coax_light_state = static_cast<double>(robot.camera1->get_coax_light());
 
     bool segments[4] = {0};
     robot.camera1->get_ring_light(segments[0], segments[1], segments[2], segments[3]);
     for (std::size_t i = 0; i < 4; i++)
     {
-        m_camera1_ring_light[i] = static_cast<double>(segments[i]);
+        m_camera1_ring_light_state[i] = static_cast<double>(segments[i]);
     }
 
     int rgb[3] = {0};
     robot.camera1->get_ring_light_color(rgb[0], rgb[1], rgb[2]);
-    for (std::size_t i = 0; i < 4; i++)
+    for (std::size_t i = 0; i < 3; i++)
     {
-        m_camera1_ring_light_rgb[i] = static_cast<double>(rgb[i]);
+        m_camera1_ring_light_rgb_state[i] = static_cast<double>(rgb[i]);
     }
 
-    m_camera2_light = static_cast<double>(robot.camera2->get_light());
+    m_camera2_light_state = static_cast<double>(robot.camera2->get_light());
 
     m_laser_measurement = robot.laser->get_measurement();
 
@@ -408,23 +411,23 @@ PMSystem::write(const rclcpp::Time &time, const rclcpp::Duration &period)
         nozzle.write(robot);
     }
 
-    robot.camera1->set_coax_light(static_cast<bool>(m_camera1_coax_light));
+    robot.camera1->set_coax_light(static_cast<bool>(m_camera1_coax_light_cmd));
 
     bool segments[4] = {0};
     for (std::size_t i = 0; i < 4; i++)
     {
-        segments[i] = static_cast<bool>(m_camera1_ring_light[i]);
+        segments[i] = static_cast<bool>(m_camera1_ring_light_cmd[i]);
     }
     robot.camera1->set_ring_light(segments[0], segments[1], segments[2], segments[3]);
 
     int rgb[3] = {0};
     for (std::size_t i = 0; i < 3; i++)
     {
-        rgb[i] = static_cast<int>(m_camera1_ring_light_rgb[i]);
+        rgb[i] = static_cast<int>(m_camera1_ring_light_rgb_cmd[i]);
     }
     robot.camera1->set_ring_light_color(rgb[0], rgb[1], rgb[2]);
 
-    robot.camera2->set_light(static_cast<int>(m_camera2_light));
+    robot.camera2->set_light(static_cast<int>(m_camera2_light_cmd));
 
     if (m_force_sensor_bias)
     {

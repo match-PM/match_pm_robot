@@ -18,7 +18,9 @@ struct HoenleUVState
 
     std::array<double, 4> on_off_state{0.0, 0.0, 0.0, 0.0};
     std::array<double, 4> on_off_cmd{0.0, 0.0, 0.0, 0.0};
+    std::array<double, 4> power_state{0.0, 0.0, 0.0, 0.0};
     std::array<double, 4> power_cmd{0.0, 0.0, 0.0, 0.0};
+    std::array<double, 4> time_state{0.0, 0.0, 0.0, 0.0};
     std::array<double, 4> time_cmd{0.0, 0.0, 0.0, 0.0};
 
     explicit HoenleUVState()
@@ -31,6 +33,12 @@ struct HoenleUVState
         {
             interfaces.emplace_back(
                 StateInterface(this->name, "OnOff_" + std::to_string(i), &this->on_off_state[i])
+            );
+            interfaces.emplace_back(
+                StateInterface(this->name, "Power_" + std::to_string(i), &this->power_state[i])
+            );
+            interfaces.emplace_back(
+                StateInterface(this->name, "Time_" + std::to_string(i), &this->time_state[i])
             );
         }
     }
@@ -54,10 +62,14 @@ struct HoenleUVState
 
     void read(PMClient::Robot &robot)
     {
-        auto state = robot.hoenle_uv->get_on_off();
+        auto on_off_state = robot.hoenle_uv->get_on_off();
+        auto power_state = robot.hoenle_uv->get_power();
+        auto time_state = robot.hoenle_uv->get_time();
         for (auto i = 0; i < 4; i++)
         {
-            this->on_off_state[i] = static_cast<double>(state[i]);
+            this->on_off_state[i] = static_cast<double>(on_off_state[i]);
+            this->power_state[i] = static_cast<double>(power_state[i]);
+            this->time_state[i] = static_cast<double>(time_state[i]);
         }
     }
 

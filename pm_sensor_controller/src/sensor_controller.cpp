@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "pluginlib/class_list_macros.hpp"
 
 #include "pm_sensor_controller/sensor_controller.hpp"
@@ -33,13 +35,60 @@ PMSensorController::on_configure(const rclcpp_lifecycle::State &previous_state)
     (void)previous_state;
 
     m_reference_cube_pub =
-        get_node()->create_publisher<std_msgs::msg::Bool>("~/reference_cube", 1000);
-    m_laser_pub = get_node()->create_publisher<std_msgs::msg::Float64>("~/laser", 1000);
-    m_force_pub = get_node()->create_publisher<std_msgs::msg::Float64MultiArray>("~/force", 1000);
-    m_force_bias_sub = get_node()->create_subscription<std_msgs::msg::Bool>(
-        "~/force_bias",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const std_msgs::msg::Bool::SharedPtr msg) { m_force_sensor_bias_cmd = msg->data; }
+        get_node()->create_publisher<std_msgs::msg::Bool>("~/ReferenceCube/Stream", 1000);
+    m_laser_pub = get_node()->create_publisher<std_msgs::msg::Float64>("~/Laser/Stream", 1000);
+    m_force_pub = get_node()->create_publisher<std_msgs::msg::Float64MultiArray>(
+        "~/ForceSensor/Stream",
+        1000
+    );
+
+    m_force_sensor_get_measurement = get_node()->create_service<ForceSensorGetMeasurement>(
+        "~/ForceSensor/GetMeasurement",
+        [this](
+            const ForceSensorGetMeasurement::Request::SharedPtr request,
+            ForceSensorGetMeasurement::Response::SharedPtr response
+        ) {
+            (void)request;
+            std::copy_n(
+                std::begin(response->data),
+                m_force_sensor_measurement.size(),
+                std::begin(m_force_sensor_measurement)
+            );
+        }
+    );
+
+    m_force_sensor_bias = get_node()->create_service<ForceSensorBias>(
+        "~/ForceSensor/Bias",
+        [this](
+            const ForceSensorBias::Request::SharedPtr request,
+            ForceSensorBias::Response::SharedPtr response
+        ) {
+            (void)response;
+            (void)request;
+            m_force_sensor_bias_cmd = true;
+        }
+    );
+
+    m_laser_get_measurement = get_node()->create_service<LaserGetMeasurement>(
+        "~/Laser/GetMeasurement",
+        [this](
+            const LaserGetMeasurement::Request::SharedPtr request,
+            LaserGetMeasurement::Response::SharedPtr response
+        ) {
+            (void)request;
+            response->measurement = m_laser_measurement;
+        }
+    );
+
+    m_reference_cube_state = get_node()->create_service<ReferenceCubeState>(
+        "~/ReferenceCube/State",
+        [this](
+            const ReferenceCubeState::Request::SharedPtr request,
+            ReferenceCubeState::Response::SharedPtr response
+        ) {
+            (void)request;
+            response->pressed = m_reference_cube_pressed;
+        }
     );
 
     return controller_interface::CallbackReturn::SUCCESS;
@@ -98,13 +147,13 @@ PMSensorController::update(const rclcpp::Time &time, const rclcpp::Duration &per
 
     {
         std_msgs::msg::Bool msg;
-        msg.data = static_cast<bool>(state_interfaces_[7].get_value());
+        m_reference_cube_pressed = msg.data = static_cast<bool>(state_interfaces_[7].get_value());
         m_reference_cube_pub->publish(msg);
     }
 
     {
         std_msgs::msg::Float64 msg;
-        msg.data = state_interfaces_[0].get_value();
+        m_laser_measurement = msg.data = state_interfaces_[0].get_value();
         m_laser_pub->publish(msg);
     }
 
@@ -112,7 +161,8 @@ PMSensorController::update(const rclcpp::Time &time, const rclcpp::Duration &per
         std_msgs::msg::Float64MultiArray msg;
         for (auto i = 0; i < 6; i++)
         {
-            msg.data.emplace_back(state_interfaces_[1 + i].get_value());
+            m_force_sensor_measurement[i] = state_interfaces_[1 + i].get_value();
+            msg.data.emplace_back(m_force_sensor_measurement[i]);
         }
         m_force_pub->publish(msg);
     }

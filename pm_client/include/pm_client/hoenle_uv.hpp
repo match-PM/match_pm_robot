@@ -29,7 +29,11 @@ class HoenleUV
 
     void set_on_off(std::array<bool, 4> values);
 
+    [[nodiscard]] std::array<int, 4> get_power() const;
+
     void set_power(std::array<int, 4> power);
+
+    [[nodiscard]] std::array<double, 4> get_time() const;
 
     void set_time(std::array<double, 4> time);
 };
