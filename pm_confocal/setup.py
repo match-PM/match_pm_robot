@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'pm_confocal_py'
+package_name = 'pm_confocal'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'confocal = pm_confocal_py.confocal:main'
+            'confocal = pm_confocal.confocal:main'
         ],
     },
 )
