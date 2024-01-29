@@ -43,6 +43,8 @@ rosidl_generate_interfaces(
   "srv/ForceSensorBias.srv"
   "srv/LaserGetMeasurement.srv"
   "srv/ReferenceCubeState.srv"
+
+  "action/SmaractMove.action"
 )
 
 ament_export_dependencies(rosidl_default_runtime)
