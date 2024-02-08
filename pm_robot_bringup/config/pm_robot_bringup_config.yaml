@@ -1,58 +1,55 @@
-pm_robot_tools:
-  pm_robot_vacuum_tools:
-    use_vacuum_tool: true
-    use_tool: "Siemens_Vacuum_Array"
-    use_tip: "Tip_Siemens_Vacuum_Array"
-
-    availabe_tools:             #This is just a list and is not used. Its to remind the user of available configs. Make sure these names match the yamls in robot_description
-      - "Tool_Schunk_SPT_Tool":
-        availabe_tips:
-          - "Tip_R_A1000_I500"
-      - "Siemens_Vacuum_Array":
-        availabe_tips:
-          - "Tip_Siemens_Vacuum_Array"
-      - "Schunk_Lens_Gripper":
-        availabe_tips:
-          - "Tip_Lens_12_7"
-
-  pm_robot_tool_parallel_gripper_1_jaw:
-    use_paralell_gripper: false
-    use_tool: "SmarAct_Piezo_Gripper"
-    use_jaw_type: "Default_Jaw"
-
-    available_tools:
-      - "SmarAct_Piezo_Gripper":
-        availabe_jaws:
-          - "Default_Jaw"
-
-  pm_robot_tool_parallel_gripper_2_jaws:
-    use_paralell_gripper: false
-    use_tool: "Schunk_MPG_10_plus"
-    use_jaw_type: "Jaw_3mm_Lens"
-
-    available_tools:
-      - "Schunk_MPG_10_plus":
-        availabe_jaws:
-          - "Jaw_3mm_Lens"
-      
-pm_robot_gonio_right:
-  with_Gonio_Right: true
-  use_chuck: "chuck_gonio_right_Siemens_UFC"
-  availabe_chucks: 
-    - "chuck_gonio_right_Siemens_UFC"
-
-pm_robot_gonio_left:
-  with_Gonio_Left: true
-  use_chuck: "chuck_gonio_left_Siemens_Carrier"
-  availabe_chucks: 
-    - "chuck_gonio_left_Siemens_Carrier"
-
-pm_robot_1K_dispenser_tip:
-  use_dispenser_tip: "Dis_Tip_Yellow_I_100_A240_L12700"
-  availabe_dispenser_tips: 
-    - "Dis_Tip_Yellow_I_100_A240_L12700"
-    - "Dis_Tip_Lavender_I_150_A310_L12700"
-    - "Dis_Tip_Red_I_250_A520_L12700"
-
 measuring_systems:
   use_keyence_bottom: false
+pm_robot_1K_dispenser_tip:
+  availabe_dispenser_tips:
+  - Dis_Tip_Yellow_I_100_A240_L12700
+  - Dis_Tip_Lavender_I_150_A310_L12700
+  - Dis_Tip_Red_I_250_A520_L12700
+  use_dispenser_tip: Dis_Tip_Red_I_250_A520_L12700
+pm_robot_gonio_left:
+  availabe_chucks:
+  - chuck_gonio_left_Siemens_Carrier
+  - chuck_gonio_left_Siemens_Sensor
+  - chuck_gonio_left_IPEG_Demonstrator
+  use_chuck: chuck_gonio_left_IPEG_Demonstrator
+  with_Gonio_Left: true
+pm_robot_gonio_right:
+  availabe_chucks:
+  - chuck_gonio_right_Siemens_UFC
+  - chuck_gonio_right_double_lens_holder_12_7
+  use_chuck: chuck_gonio_right_Siemens_UFC
+  with_Gonio_Right: true
+pm_robot_tools:
+  pm_robot_tool_parallel_gripper_1_jaw:
+    available_tools:
+    - availabe_jaws:
+      - Default_Jaw
+      tool_name: SmarAct_Piezo_Gripper
+    use_jaw_type: Default_Jaw
+    use_paralell_gripper: false
+    use_tool: SmarAct_Piezo_Gripper
+  pm_robot_tool_parallel_gripper_2_jaws:
+    available_tools:
+    - availabe_jaws:
+      - Jaw_3mm_Lens
+      tool_name: Schunk_MPG_10_plus
+    use_jaw_type: Jaw_3mm_Lens
+    use_paralell_gripper: false
+    use_tool: Schunk_MPG_10_plus
+  pm_robot_vacuum_tools:
+    availabe_tools:
+    - availabe_tips:
+      - Tip_R_A1000_I500
+      tool_name: Tool_SPT_Toolholder
+    - availabe_tips:
+      - Tip_R_A1000_I500
+      tool_name: Tool_Schunk_SPT_Tool_old
+    - availabe_tips:
+      - Tip_Siemens_Vacuum_Array
+      tool_name: Siemens_Vacuum_Array
+    - availabe_tips:
+      - Tip_Lens_12_7
+      tool_name: Schunk_Lens_Gripper
+    use_tip: Tip_R_A1000_I500
+    use_tool: Tool_SPT_Toolholder
+    use_vacuum_tool: true
