@@ -24,9 +24,9 @@ def generate_launch_description():
 
     bringup_config_path = os.path.join(get_package_share_directory('pm_robot_bringup'), 'config/pm_robot_bringup_config.yaml')
     
-    f = open(bringup_config_path)
-    bringup_config = yaml.load(f,Loader=SafeLoader)
-    f.close()
+
+    with open(bringup_config_path) as f:
+        bringup_config = yaml.safe_load(f)
     
     # Specify the name of the package and path to xacro file within the package
     pkg_name = 'pm_robot_description'
@@ -45,8 +45,8 @@ def generate_launch_description():
     mappings={
         'launch_mode': 'sim_HW',
         #'with_Tool_MPG_10': str(bringup_config['pm_robot_tools']['MPG_10']['with_Tool_MPG_10']),
-        'with_Gonio_Left': str(bringup_config['pm_robot_gonio_left']['with_Gonio_Left']),
-        'with_Gonio_Right': str(bringup_config['pm_robot_gonio_right']['with_Gonio_Right']),
+        #'with_Gonio_Left': str(bringup_config['pm_robot_gonio_left']['with_Gonio_Left']),
+        #'with_Gonio_Right': str(bringup_config['pm_robot_gonio_right']['with_Gonio_Right']),
         #'with_Tool_MPG_10_Jaw_3mm_Lens': str(bringup_config['pm_robot_tools']['MPG_10']['Config']['with_Tool_MPG_10_Jaw_3mm_Lens']),
         #'with_Tool_SPT_Holder': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['with_Tool_SPT_Holder']),
         #'with_SPT_R_A1000_I500': str(bringup_config['pm_robot_tools']['SPT_Tool_Holder']['Config']['with_SPT_R_A1000_I500']),
@@ -267,10 +267,9 @@ def generate_launch_description():
         ld.add_action(run_move_group_node)
     ld.add_action(launch_XYZT_controllers)
 
-
-    if (mappings['with_Gonio_Left'] == 'True'):
+    if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)
-    if (mappings['with_Gonio_Right'] == 'True'):
+    if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)

@@ -3,7 +3,15 @@
     This is a format for representing semantic information about the robot structure.
     A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
 -->
-<robot name="pm_robot">
+
+<robot name="pm_robot"
+    xmlns:xacro="https://ros.org/wiki/xacro">
+
+     <!-- Loading of the Robot bringup config -->
+    <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+    <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+
+
     <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
     <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
@@ -41,27 +49,55 @@
         <!-- <joint name="2K_Dispenser_Joint"/> -->
     </group>
 
-    <group name="PM_Robot_Gonio_Right">
-        <joint name="Gonio_Right_Stage_1_Joint"/>
-        <joint name="Gonio_Right_Stage_2_Joint"/>
-    </group>
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_gonio_right']['with_Gonio_Right']}">
+        <group name="PM_Robot_Gonio_Right">
+            <joint name="Gonio_Right_Stage_1_Joint"/>
+            <joint name="Gonio_Right_Stage_2_Joint"/>
+        </group>
 
-    <group name="PM_Robot_Gonio_Left">
-        <joint name="Gonio_Left_Stage_1_Joint"/>
-        <joint name="Gonio_Left_Stage_2_Joint"/>
-    </group>
+        <group_state name="Default_Position" group="PM_Robot_Gonio_Right">
+            <joint name="Gonio_Right_Stage_1_Joint" value="0.0"/>
+            <joint name="Gonio_Right_Stage_2_Joint" value="0.0"/>
+        </group_state>
+
+    </xacro:if>
+
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_gonio_right']['with_Gonio_Right']}">
+        <group name="PM_Robot_Gonio_Left">
+            <joint name="Gonio_Left_Stage_1_Joint"/>
+            <joint name="Gonio_Left_Stage_2_Joint"/>
+        </group>
+
+        <group_state name="Default_Position" group="PM_Robot_Gonio_Left">
+            <joint name="Gonio_Left_Stage_1_Joint" value="0.0"/>
+            <joint name="Gonio_Left_Stage_2_Joint" value="0.0"/>
+        </group_state>
+
+    </xacro:if>
 
     <group name="PM_Robot_Laser_TCP">
         <chain base_link="pm_robot_base_link" tip_link="Laser_Toolhead_TCP" />
     </group>
 
-    <!-- <group name="PM_Robot_Parallel_Gripper">
-        <link name="Tool_Parallel_Gripper_Body_2_Jaws"/>
-        <link name="Tool_Parallel_Gripper_Jaw_1"/>
-        <link name="Tool_Parallel_Gripper_Jaw_2"/>
-        <joint name="pm_robot_Tool_Parallel_Joint"/>
-        <passive_joint name="pm_robot_Tool_Parallel_Joint_2"/>
-    </group> -->
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']}">
+        <group name="PM_Robot_Parallel_Gripper">
+            <link name="Tool_Parallel_Gripper_Body_2_Jaws"/>
+            <link name="Tool_Parallel_Gripper_Jaw_1"/>
+            <link name="Tool_Parallel_Gripper_Jaw_2"/>
+            <joint name="pm_robot_Tool_Parallel_Joint"/>
+            <passive_joint name="pm_robot_Tool_Parallel_Joint_2"/>
+        </group>
+
+        <group_state group="PM_Robot_Parallel_Gripper" name="closed">
+            <joint name="pm_robot_Tool_Parallel_Joint" value="0.001"/>
+            <joint name="pm_robot_Tool_Parallel_Joint_2" value="0.001"/>
+        </group_state>
+
+        <group_state group="PM_Robot_Parallel_Gripper" name="opened">
+            <joint name="pm_robot_Tool_Parallel_Joint" value="0"/>
+            <joint name="pm_robot_Tool_Parallel_Joint_2" value="0"/>
+        </group_state>
+    </xacro:if>
 
     <!-- <group name="end_effector_toolhead">
         <group name="PM_Robot_Tool_TCP" />
@@ -83,26 +119,12 @@
         <joint name="Z_Axis_Joint" value="0"/>
     </group_state>
 
-    <group_state name="Default_Position" group="PM_Robot_Gonio_Left">
-        <joint name="Gonio_Left_Stage_1_Joint" value="0.0"/>
-        <joint name="Gonio_Left_Stage_2_Joint" value="0.0"/>
-    </group_state>
 
-    <group_state name="Default_Position" group="PM_Robot_Gonio_Right">
-        <joint name="Gonio_Right_Stage_1_Joint" value="0.0"/>
-        <joint name="Gonio_Right_Stage_2_Joint" value="0.0"/>
-    </group_state>
 
-    <!-- <group_state group="PM_Robot_Parallel_Gripper" name="closed">
-        <joint name="pm_robot_Tool_Parallel_Joint" value="0.001"/>
-        <joint name="pm_robot_Tool_Parallel_Joint_2" value="0.001"/>
-    </group_state>
-    <group_state group="PM_Robot_Parallel_Gripper" name="opened">
-        <joint name="pm_robot_Tool_Parallel_Joint" value="0"/>
-        <joint name="pm_robot_Tool_Parallel_Joint_2" value="0"/>
-    </group_state> -->
 
     <virtual_joint name="world_base" type="fixed" parent_frame="world" child_link="base_link_empthy" />
+    
+   
 
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="1K_Dispenser_Tip" link2="1K_Dispenser" reason="Adjacent"/>
@@ -149,7 +171,6 @@
     <disable_collisions link1="1K_Dispenser_Flap" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="Y_Axis" reason="Never"/>
@@ -177,7 +198,6 @@
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="2K_Dispenser_Cartridge" link2="Y_Axis" reason="Never"/>
@@ -204,7 +224,6 @@
     <disable_collisions link1="Calibration_Qube" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Calibration_Qube" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="UV_LED_Front" reason="Never"/>
@@ -234,7 +253,6 @@
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Cam1_Toolhead_TCP" link2="UV_LED_Front" reason="Never"/>
@@ -263,7 +281,6 @@
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Camera_Calibration_Platelet" link2="UV_LED_Front" reason="Never"/>
@@ -289,7 +306,6 @@
     <disable_collisions link1="Camera_Station" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="Gripper_Rot_Plate" reason="Never"/>
-    <disable_collisions link1="Camera_Station" link2="Station_Laser_Bottom_TCP" reason="Adjacent"/>
     <disable_collisions link1="Camera_Station" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Camera_Station" link2="UV_LED_Front" reason="Never"/>
@@ -315,7 +331,6 @@
     <disable_collisions link1="Gonio_Base_Right" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Base_Right" link2="UV_LED_Front" reason="Never"/>
@@ -341,7 +356,6 @@
     <disable_collisions link1="Gonio_Left_Base" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Base" link2="UV_LED_Front" reason="Never"/>
@@ -366,7 +380,6 @@
     <disable_collisions link1="Gonio_Left_Chuck" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Chuck" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Chuck" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Chuck" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Chuck" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Chuck" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Chuck" link2="UV_LED_Front" reason="Never"/>
@@ -389,7 +402,6 @@
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="UV_LED_Front" reason="Never"/>
@@ -412,7 +424,6 @@
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="UV_LED_Front" reason="Never"/>
@@ -433,7 +444,6 @@
     <disable_collisions link1="Gonio_Right_Chuck" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Chuck" link2="Gonio_Right_Stage_2_Bottom" reason="Adjacent"/>
     <disable_collisions link1="Gonio_Right_Chuck" link2="Gripper_Rot_Plate" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Chuck" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Chuck" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Chuck" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Chuck" link2="UV_LED_Front" reason="Never"/>
@@ -454,7 +464,6 @@
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="UV_LED_Front" reason="Never"/>
@@ -474,7 +483,6 @@
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Gonio_Right_Stage_2_Bottom" reason="Adjacent"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="UV_LED_Front" reason="Never"/>
@@ -493,7 +501,6 @@
     <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="t_axis_toolchanger" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Gripper_Rot_Plate" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="UV_LED_Front" reason="Never"/>
@@ -511,7 +518,6 @@
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="pm_robot_base_link" reason="Never"/>
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="t_axis_toolchanger" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="Laser_Toolhead_TCP" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="UV_LED_Front" reason="Never"/>
@@ -528,7 +534,6 @@
     <disable_collisions link1="Gripper_Rot_Plate" link2="housing_vr" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="pm_robot_base_link" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="t_axis_toolchanger" reason="Adjacent"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="X_Axis" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="Y_Axis" reason="Never"/>
@@ -541,22 +546,47 @@
     <disable_collisions link1="Laser_Toolhead_TCP" link2="housing_vr" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="pm_robot_base_link" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="Test_Station" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_Slider_X_Back" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_Slider_X_Front" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="t_axis_toolchanger" reason="Never"/>
+
+    <!-- Settings for Laser Bottom -->
+    <xacro:if value="${current_pm_robot_bringup_config['measuring_systems']['use_keyence_bottom']}">
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="Test_Station" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_LED_Back" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_LED_Front" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_Slider_X_Back" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="UV_Slider_X_Front" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="t_axis_toolchanger" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Chuck" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Chuck" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Camera_Station" link2="Station_Laser_Bottom_TCP" reason="Adjacent"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Calibration_Qube" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="left_match_logo_background" reason="Never"/>
+        <disable_collisions link1="Station_Laser_Bottom_TCP" link2="left_match_logo_font" reason="Never"/>
+    </xacro:if>
+    
+    
     <disable_collisions link1="Test_Station" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="UV_LED_Front" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="UV_Slider_X_Back" reason="Never"/>
@@ -674,225 +704,234 @@
     <disable_collisions link1="pm_robot_base_link" link2="t_axis_toolchanger" reason="Never"/>
 
      <!-- 2 Jaw Parallel Gripper Definition -->
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Chuck" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Adjacent"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Tool_Parallel_Gripper_Jaw_1" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Tool_Parallel_Gripper_Jaw_2" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="t_axis_toolchanger" reason="Default"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Jaw_1" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Tool_Parallel_Gripper_Jaw_2" reason="Adjacent"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="UV_LED_Back" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="UV_LED_Front" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="t_axis_toolchanger" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Chuck" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Chuck" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+       <!-- If 2 Jaws Parallel Gripper is selected-->
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']}">
+        <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Chuck" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Adjacent"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Tool_Parallel_Gripper_Body_2_Jaws" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Tool_Parallel_Gripper_Jaw_1" reason="Adjacent"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Tool_Parallel_Gripper_Jaw_2" reason="Adjacent"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="UV_LED_Back" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="UV_LED_Front" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Body_2_Jaws" link2="t_axis_toolchanger" reason="Default"/>
+        <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Test_Station" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Jaw_1" reason="Adjacent"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="UV_LED_Back" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="UV_LED_Front" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="t_axis_toolchanger" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Tool_Parallel_Gripper_Jaw_2" reason="Adjacent"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="UV_LED_Back" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="UV_LED_Front" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="t_axis_toolchanger" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="t_axis_toolchanger" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="t_axis_toolchanger" reason="Never"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Chuck" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Chuck" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Chuck" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_1_attachment" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_2_attachment" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_1" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="Tool_Parallel_Gripper_Jaw_2" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="left_match_logo_background" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="left_match_logo_background" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="left_match_logo_background" reason="Never"/>
+        <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="left_match_logo_background" reason="Never"/>
+    </xacro:if>
 
 
+    <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_vacuum_tool']}">
 
+        <!-- Vacuum tool holder -->
+        <disable_collisions link1="1K_Dispenser" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="PM_Robot_Vacuum_Tool" reason="Adjacent"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
+        <disable_collisions link1="Test_Station" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
 
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="t_axis_toolchanger" reason="Default"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="PM_Robot_Vacuum_Tool_Tip" reason="Adjacent"/>
 
+        <!-- Vacuum tool tip -->
+        <disable_collisions link1="1K_Dispenser" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="PM_Robot_Vacuum_Tool_Tip" reason="Adjacent"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
+        <disable_collisions link1="Test_Station" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
 
-    <!-- Vacuum tool holder -->
-    <disable_collisions link1="1K_Dispenser" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="PM_Robot_Vacuum_Tool" reason="Adjacent"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="PM_Robot_Vacuum_Tool" reason="Never"/>
-
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="t_axis_toolchanger" reason="Default"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool" link2="PM_Robot_Vacuum_Tool_Tip" reason="Adjacent"/>
-
-    <!-- Vacuum tool tip -->
-    <disable_collisions link1="1K_Dispenser" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Cam1_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Camera_Calibration_Platelet" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="PM_Robot_Vacuum_Tool_Tip" reason="Adjacent"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="PM_Robot_Vacuum_Tool_Tip" reason="Never"/>
-
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="X_Axis" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="Y_Axis" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="Z_Axis" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="axis_base" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_hl" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="pm_robot_base_link" reason="Never"/>
-    <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="t_axis_toolchanger" reason="Default"/>
-
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="PM_Robot_Vacuum_Tool_Tip" link2="t_axis_toolchanger" reason="Default"/>
+    </xacro:if>
     <!-- Disable collision for logo background-->
     <disable_collisions link1="1K_Dispenser" link2="left_match_logo_background" reason="Never"/>
     <disable_collisions link1="1K_Dispenser_Flap" link2="left_match_logo_background" reason="Never"/>
@@ -916,12 +955,8 @@
     <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="left_match_logo_background" reason="Never"/>
     <disable_collisions link1="Gripper_Rot_Plate" link2="left_match_logo_background" reason="Never"/>
     <disable_collisions link1="Laser_Toolhead_TCP" link2="left_match_logo_background" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="left_match_logo_background" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="left_match_logo_background" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="left_match_logo_background" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="left_match_logo_background" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="left_match_logo_background" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="left_match_logo_background" reason="Never"/>
+
     <disable_collisions link1="UV_LED_Back" link2="left_match_logo_background" reason="Never"/>
     <disable_collisions link1="UV_LED_Front" link2="left_match_logo_background" reason="Never"/>
     <disable_collisions link1="X_Axis" link2="left_match_logo_background" reason="Never"/>
@@ -932,46 +967,41 @@
     <disable_collisions link1="left_match_logo_background" link2="housing_hr" reason="Never"/>
     <disable_collisions link1="left_match_logo_background" link2="housing_vl" reason="Never"/>
     <disable_collisions link1="left_match_logo_background" link2="housing_vr" reason="Never"/>
-    <disable_collisions link1="left_match_logo_front" link2="left_match_logo_background" reason="Never"/>
+    <disable_collisions link1="left_match_logo_font" link2="left_match_logo_background" reason="Never"/>
 
     <!-- Disable collision for logo -->
-    <disable_collisions link1="1K_Dispenser" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="1K_Dispenser_Flap" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="2K_Dispenser_Cartridge" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Calibration_Qube" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Camera_Station" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Base_Right" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Chuck" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="UV_Slider_X_Back" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Base" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Chuck" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Chuck" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Gripper_Rot_Plate" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Laser_Toolhead_TCP" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Station_Laser_Bottom_TCP" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Test_Station" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1_attachment" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_1" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2_attachment" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Tool_Parallel_Gripper_Jaw_2" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="UV_LED_Back" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="UV_LED_Front" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="X_Axis" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Y_Axis" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="Z_Axis" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="axis_base" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="housing" link2="left_match_logo_front" reason="Never"/>
-    <disable_collisions link1="left_match_logo_front" link2="housing_hr" reason="Never"/>
-    <disable_collisions link1="left_match_logo_front" link2="housing_vl" reason="Never"/>
-    <disable_collisions link1="left_match_logo_front" link2="housing_vr" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="1K_Dispenser_Flap" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="2K_Dispenser_Cartridge" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Calibration_Qube" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Camera_Station" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Base_Right" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Base" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Chuck" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="UV_Slider_X_Back" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Base" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Chuck" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Chuck" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Gripper_Rot_Plate" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Laser_Toolhead_TCP" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Test_Station" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="UV_LED_Back" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="UV_LED_Front" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="X_Axis" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Y_Axis" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="Z_Axis" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="axis_base" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="housing" link2="left_match_logo_font" reason="Never"/>
+    <disable_collisions link1="left_match_logo_font" link2="housing_hr" reason="Never"/>
+    <disable_collisions link1="left_match_logo_font" link2="housing_vl" reason="Never"/>
+    <disable_collisions link1="left_match_logo_font" link2="housing_vr" reason="Never"/>
 
 </robot>
