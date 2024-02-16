@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -135,18 +136,30 @@ struct AxisState
 
     void write(PMClient::Robot &robot)
     {
-        auto &pm_axis = robot.get_axis(this->id);
-        if (unit == Unit::Meters)
+        try
         {
-            pm_axis.move(meters_to_increments(pm_axis, this->target_position));
-            pm_axis.set_speed(meters_to_increments(pm_axis, this->velocity));
-            // pm_axis.set_acceleration(meters_to_increments(pm_axis, this->acceleration));
+            auto &pm_axis = robot.get_axis(this->id);
+            if (unit == Unit::Meters)
+            {
+                pm_axis.move(meters_to_increments(pm_axis, this->target_position));
+                pm_axis.set_speed(meters_to_increments(pm_axis, this->velocity));
+                // pm_axis.set_acceleration(meters_to_increments(pm_axis, this->acceleration));
+            }
+            else if (unit == Unit::Degrees)
+            {
+                pm_axis.move(rad_to_increments(pm_axis, this->target_position));
+                pm_axis.set_speed(rad_to_increments(pm_axis, this->velocity));
+                // pm_axis.set_acceleration(rad_to_increments(pm_axis, this->acceleration));
+            }
         }
-        else if (unit == Unit::Degrees)
+        catch (std::exception &e)
         {
-            pm_axis.move(rad_to_increments(pm_axis, this->target_position));
-            pm_axis.set_speed(rad_to_increments(pm_axis, this->velocity));
-            // pm_axis.set_acceleration(rad_to_increments(pm_axis, this->acceleration));
+            RCLCPP_ERROR(
+                rclcpp::get_logger("PMSystem"),
+                "Failed to write position: %f m, or velocity %f m/s\n",
+                this->target_position,
+                this->velocity
+            );
         }
     }
 };
