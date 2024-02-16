@@ -281,9 +281,13 @@
   </joint>
 
   <!--%%%%%%%%%%%%% This is for the Chuck  -->
-  <xacro:property name="gonio_chuck_tcp_offset_x" value="${gonio_right_configs_dict[current_gonio_right_chuck]['tcp_offset_from_gonio_x']}"/>
-  <xacro:property name="gonio_chuck_tcp_offset_y" value="${gonio_right_configs_dict[current_gonio_right_chuck]['tcp_offset_from_gonio_y']}"/>
-  <xacro:property name="gonio_chuck_tcp_offset_z" value="${gonio_right_configs_dict[current_gonio_right_chuck]['tcp_offset_from_gonio_z']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_x_1" value="${gonio_right_configs_dict[current_gonio_right_chuck]['spawn_1_offset_from_gonio_x']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_y_1" value="${gonio_right_configs_dict[current_gonio_right_chuck]['spawn_1_offset_from_gonio_y']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_z_1" value="${gonio_right_configs_dict[current_gonio_right_chuck]['spawn_1_offset_from_gonio_z']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_x_2" value="${gonio_right_configs_dict[current_gonio_right_chuck]['spawn_2_offset_from_gonio_x']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_y_2" value="${gonio_right_configs_dict[current_gonio_right_chuck]['spawn_2_offset_from_gonio_y']}"/>
+  <xacro:property name="gonio_chuck_tcp_offset_z_2" value="${gonio_right_configs_dict[current_gonio_right_chuck]['spawn_2_offset_from_gonio_z']}"/>
+  
   <xacro:property name="gonio_chuck_xyz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['xyz']}"/>
   <xacro:property name="gonio_chuck_xyz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['xyz']}"/>
   <xacro:property name="gonio_chuck_xyz" value="${gonio_right_configs_dict[current_gonio_right_chuck]['xyz']}"/>
@@ -350,25 +354,43 @@
     xyz="0 0 0" />
 </joint>
   
-  <!--%%%%%%%%%%%%% Gonio Right Part Origin -->
+  <!--%%%%%%%%%%%%% Gonio Right Part 1 Origin -->
   <link
-    name="Gonio_Right_Part_Origin">
+    name="Gonio_Right_Part_1_Origin">
   </link>
 
   <joint
-    name="Gonio_Right_Part_Origin_Joint"
+    name="Gonio_Right_Part_1_Origin_Joint"
     type="fixed">
     <origin
-      xyz="${gonio_chuck_tcp_offset_x} ${gonio_chuck_tcp_offset_y} ${gonio_chuck_tcp_offset_z}"
+      xyz="${gonio_chuck_tcp_offset_x_1} ${gonio_chuck_tcp_offset_y_1} ${gonio_chuck_tcp_offset_z_1}"
       rpy="0 0 0" />
     <parent
       link="Gonio_Right_Chuck_Origin" />
     <child
-      link="Gonio_Right_Part_Origin" />
+      link="Gonio_Right_Part_1_Origin" />
     <axis
       xyz="0 0 0" />
   </joint>
 
+  <!--%%%%%%%%%%%%% Gonio Right Part 2 Origin -->
+  <link
+    name="Gonio_Right_Part_2_Origin">
+  </link>
+
+  <joint
+    name="Gonio_Right_Part_2_Origin_Joint"
+    type="fixed">
+    <origin
+      xyz="${gonio_chuck_tcp_offset_x_2} ${gonio_chuck_tcp_offset_y_2} ${gonio_chuck_tcp_offset_z_2}"
+      rpy="0 0 0" />
+    <parent
+      link="Gonio_Right_Chuck_Origin" />
+    <child
+      link="Gonio_Right_Part_2_Origin" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
 
 </xacro:macro>
 

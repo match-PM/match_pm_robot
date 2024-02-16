@@ -168,9 +168,9 @@
 
     <!--%%%%%%%%%%%%% Gonio Left Example Chuck Definitions-->
     <!--%%%%%%%%%%%%% This is for the Chuck  -->
-    <xacro:property name="gonio_chuck_tcp_offset_x" value="${gonio_left_configs_dict[current_gonio_left_chuck]['tcp_offset_from_gonio_x']}"/>
-    <xacro:property name="gonio_chuck_tcp_offset_y" value="${gonio_left_configs_dict[current_gonio_left_chuck]['tcp_offset_from_gonio_y']}"/>
-    <xacro:property name="gonio_chuck_tcp_offset_z" value="${gonio_left_configs_dict[current_gonio_left_chuck]['tcp_offset_from_gonio_z']}"/>
+    <xacro:property name="gonio_chuck_tcp_offset_x" value="${gonio_left_configs_dict[current_gonio_left_chuck]['spawn_1_offset_from_gonio_x']}"/>
+    <xacro:property name="gonio_chuck_tcp_offset_y" value="${gonio_left_configs_dict[current_gonio_left_chuck]['spawn_1_offset_from_gonio_y']}"/>
+    <xacro:property name="gonio_chuck_tcp_offset_z" value="${gonio_left_configs_dict[current_gonio_left_chuck]['spawn_1_offset_from_gonio_z']}"/>
     <xacro:property name="gonio_chuck_xyz" value="${gonio_left_configs_dict[current_gonio_left_chuck]['xyz']}"/>
     <xacro:property name="gonio_chuck_xyz" value="${gonio_left_configs_dict[current_gonio_left_chuck]['xyz']}"/>
     <xacro:property name="gonio_chuck_xyz" value="${gonio_left_configs_dict[current_gonio_left_chuck]['xyz']}"/>
