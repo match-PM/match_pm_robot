@@ -87,13 +87,15 @@ class Client
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            throw std::runtime_error{UA_StatusCode_name(status)};
+            // throw std::runtime_error{UA_StatusCode_name(status)};
+            return {};
         }
 
         if (!UA_Variant_hasScalarType(&value, &UA_TYPES[UA_TYPE]))
         {
             throw std::runtime_error{
-                "Tried to read value from node but node did not have expected type."};
+                "Tried to read value from node but node did not have expected type."
+            };
         }
 
         T data = *reinterpret_cast<T *>(value.data);
@@ -118,13 +120,15 @@ class Client
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            throw std::runtime_error{UA_StatusCode_name(status)};
+            // throw std::runtime_error{UA_StatusCode_name(status)};
+            return {};
         }
 
         if (!UA_Variant_hasArrayType(&value, &UA_TYPES[UA_TYPE]) || value.arrayLength != count)
         {
             throw std::runtime_error{
-                "Tried to read value from node but node did not have expected type."};
+                "Tried to read value from node but node did not have expected type."
+            };
         }
 
         T *data = reinterpret_cast<T *>(value.data);
@@ -154,7 +158,8 @@ class Client
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            throw std::runtime_error{UA_StatusCode_name(status)};
+            // throw std::runtime_error{UA_StatusCode_name(status)};
+            return;
         }
 
         UA_Variant_delete(variant);
@@ -175,7 +180,8 @@ class Client
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            throw std::runtime_error{UA_StatusCode_name(status)};
+            // throw std::runtime_error{UA_StatusCode_name(status)};
+            return;
         }
 
         UA_Variant_delete(variant);
