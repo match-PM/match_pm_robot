@@ -31,11 +31,11 @@ class PMLightsController : public controller_interface::ControllerInterface
 
     rclcpp::Service<RingLightSetState>::SharedPtr m_ring_light_set_service;
     std::array<bool, 4> m_ring_light_command;
-    std::array<int, 8> m_ring_light_rgb_command;
+    std::array<std::uint8_t, 3> m_ring_light_rgb_command;
 
     rclcpp::Service<RingLightGetState>::SharedPtr m_ring_light_get_service;
     std::array<bool, 4> m_ring_light_state;
-    std::array<int, 8> m_ring_light_rgb_state;
+    std::array<std::uint8_t, 3> m_ring_light_rgb_state;
 
   public:
     PMLightsController();
