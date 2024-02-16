@@ -24,7 +24,7 @@ Make sure that you have installed the following packages:
 sudo apt install ros-humble-desktop-full
 ```
 ```
-sudo aptinstall ros-humble-xacro
+sudo apt install ros-humble-xacro
 ```
 ```
 sudo apt install ros-humble-moveit

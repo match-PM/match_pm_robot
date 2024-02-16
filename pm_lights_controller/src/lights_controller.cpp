@@ -82,8 +82,16 @@ PMLightsController::on_configure(const rclcpp_lifecycle::State &previous_state)
         ) {
             (void)response;
 
-            std::copy_n(std::begin(m_ring_light_command), 4, std::begin(request->turn_on));
-            std::copy_n(std::begin(m_ring_light_rgb_command), 3, std::begin(request->rgb));
+            RCLCPP_INFO(
+                get_node()->get_logger(),
+                "RGB CALL: %i %i %i\n",
+                (int)request->rgb[0],
+                (int)request->rgb[1],
+                (int)request->rgb[2]
+            );
+
+            std::copy_n(std::begin(request->turn_on), 4, std::begin(m_ring_light_command));
+            std::copy_n(std::begin(request->rgb), 3, std::begin(m_ring_light_rgb_command));
         }
     );
 
@@ -95,8 +103,8 @@ PMLightsController::on_configure(const rclcpp_lifecycle::State &previous_state)
         ) {
             (void)request;
 
-            std::copy_n(std::begin(response->is_on), 4, std::begin(m_ring_light_state));
-            std::copy_n(std::begin(response->rgb), 3, std::begin(m_ring_light_rgb_state));
+            std::copy_n(std::begin(m_ring_light_state), 4, std::begin(response->is_on));
+            std::copy_n(std::begin(m_ring_light_rgb_state), 3, std::begin(response->rgb));
         }
     );
 

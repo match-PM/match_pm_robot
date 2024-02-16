@@ -70,22 +70,22 @@ class PMSystem : public hardware_interface::SystemInterface
 
     HoenleUVState hoenle_uv;
 
-    double m_camera1_coax_light_state;
-    double m_camera1_ring_light_state[4];
-    double m_camera1_ring_light_rgb_state[3];
-    double m_camera2_light_state;
+    double m_camera1_coax_light_state{};
+    double m_camera1_ring_light_state[4]{};
+    double m_camera1_ring_light_rgb_state[3]{};
+    double m_camera2_light_state{};
 
-    double m_camera1_coax_light_cmd;
-    double m_camera1_ring_light_cmd[4];
-    double m_camera1_ring_light_rgb_cmd[3];
-    double m_camera2_light_cmd;
+    double m_camera1_coax_light_cmd{};
+    double m_camera1_ring_light_cmd[4]{};
+    double m_camera1_ring_light_rgb_cmd[3]{};
+    double m_camera2_light_cmd{};
 
-    double m_laser_measurement;
+    double m_laser_measurement{};
 
-    std::array<double, 7> m_force_sensor_measurements;
-    double m_force_sensor_bias;
+    std::array<double, 7> m_force_sensor_measurements{};
+    double m_force_sensor_bias{};
 
-    double reference_cube_pushed;
+    double reference_cube_pushed{};
 
   public:
     PMSystem();

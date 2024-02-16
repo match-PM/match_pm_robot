@@ -1,0 +1,36 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/pmlab/pm_ros2_ws/install/object_spawner_manager/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/spawn_object_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/ros_sequential_action_programmer/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_vision_manager/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_vision_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_vision_app/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_robot_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_msgs/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_moveit_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_confocal/lib/python3.10/site-packages",
+        "/home/pmlab/Documents/ros2-for-unity/install/lib/python3.10/site-packages",
+        "/home/pmlab/Documents/ros2-for-unity/install/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/pmlab/pm_ros2_ws/install/object_spawner_manager/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/spawn_object_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/ros_sequential_action_programmer/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_vision_manager/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_vision_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_vision_app/lib/python3.10/site-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_robot_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_msgs/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_moveit_interfaces/local/lib/python3.10/dist-packages",
+        "/home/pmlab/pm_ros2_ws/install/pm_confocal/lib/python3.10/site-packages",
+        "/home/pmlab/Documents/ros2-for-unity/install/lib/python3.10/site-packages",
+        "/home/pmlab/Documents/ros2-for-unity/install/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
