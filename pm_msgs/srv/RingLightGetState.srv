@@ -1,0 +1,3 @@
+---
+bool[4] is_on
+uint8[3] rgb

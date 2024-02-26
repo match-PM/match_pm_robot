@@ -30,51 +30,98 @@ controller_interface::CallbackReturn PMLightsController::on_init()
 controller_interface::CallbackReturn
 PMLightsController::on_configure(const rclcpp_lifecycle::State &previous_state)
 {
-    m_camera1_coax_light_sub = get_node()->create_subscription<Camera1CoaxLightCmd>(
-        "~/camera1_coax_light",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const Camera1CoaxLightCmd::SharedPtr msg) { m_camera1_coax_light_cmd = msg->on; }
-    );
-
-    m_camera1_ring_light_sub = get_node()->create_subscription<Camera1RingLightCmd>(
-        "~/camera1_ring_light",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const Camera1RingLightCmd::SharedPtr msg) {
-            for (auto i = 0; i < 4; i++)
-            {
-                m_camera1_ring_light_cmd[i] = msg->on[i];
-            }
-            for (auto i = 0; i < 3; i++)
-            {
-                m_camera1_ring_light_color_cmd[i] = msg->rgb[i];
-            }
+    m_coax_light_set_service = get_node()->create_service<CoaxLightSetState>(
+        "~/CoaxLight/SetState",
+        [this](
+            const CoaxLightSetState::Request::SharedPtr request,
+            CoaxLightSetState::Response::SharedPtr response
+        ) {
+            (void)response;
+            m_coax_light_command = request->turn_on;
         }
     );
 
-    m_camera2_light_sub = get_node()->create_subscription<Camera2LightCmd>(
-        "~/camera2_light",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const Camera2LightCmd::SharedPtr msg) { m_camera2_light_cmd = msg->intensity; }
+    m_coax_light_get_service = get_node()->create_service<CoaxLightGetState>(
+        "~/CoaxLight/GetState",
+        [this](
+            const CoaxLightGetState::Request::SharedPtr request,
+            CoaxLightGetState::Response::SharedPtr response
+        ) {
+            (void)request;
+            response->is_on = m_coax_light_state;
+        }
     );
+
+    m_cam2_light_set_service = get_node()->create_service<Cam2LightSetState>(
+        "~/Cam2Light/SetState",
+        [this](
+            const Cam2LightSetState::Request::SharedPtr request,
+            Cam2LightSetState::Response::SharedPtr response
+        ) {
+            (void)response;
+            m_cam2_light_command = request->intensity;
+        }
+    );
+
+    m_cam2_light_get_service = get_node()->create_service<Cam2LightGetState>(
+        "~/Cam2Light/GetState",
+        [this](
+            const Cam2LightGetState::Request::SharedPtr request,
+            Cam2LightGetState::Response::SharedPtr response
+        ) {
+            (void)request;
+            response->intensity = m_cam2_light_state;
+        }
+    );
+
+    m_ring_light_set_service = get_node()->create_service<RingLightSetState>(
+        "~/RingLight/SetState",
+        [this](
+            const RingLightSetState::Request::SharedPtr request,
+            RingLightSetState::Response::SharedPtr response
+        ) {
+            (void)response;
+
+            std::copy_n(std::begin(m_ring_light_command), 4, std::begin(request->turn_on));
+            std::copy_n(std::begin(m_ring_light_rgb_command), 3, std::begin(request->rgb));
+        }
+    );
+
+    m_ring_light_get_service = get_node()->create_service<RingLightGetState>(
+        "~/RingLight/GetState",
+        [this](
+            const RingLightGetState::Request::SharedPtr request,
+            RingLightGetState::Response::SharedPtr response
+        ) {
+            (void)request;
+
+            std::copy_n(std::begin(response->is_on), 4, std::begin(m_ring_light_state));
+            std::copy_n(std::begin(response->rgb), 3, std::begin(m_ring_light_rgb_state));
+        }
+    );
+
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
 controller_interface::CallbackReturn
 PMLightsController::on_activate(const rclcpp_lifecycle::State &previous_state)
 {
-    m_camera1_coax_light_cmd = static_cast<bool>(state_interfaces_[0].get_value());
-
-    m_camera1_ring_light_cmd[0] = static_cast<bool>(state_interfaces_[1].get_value());
-    m_camera1_ring_light_cmd[1] = static_cast<bool>(state_interfaces_[2].get_value());
-    m_camera1_ring_light_cmd[2] = static_cast<bool>(state_interfaces_[3].get_value());
-    m_camera1_ring_light_cmd[3] = static_cast<bool>(state_interfaces_[4].get_value());
-
-    m_camera1_ring_light_color_cmd[0] = static_cast<int>(state_interfaces_[5].get_value());
-    m_camera1_ring_light_color_cmd[1] = static_cast<int>(state_interfaces_[6].get_value());
-    m_camera1_ring_light_color_cmd[2] = static_cast<int>(state_interfaces_[7].get_value());
-
-    m_camera2_light_cmd = static_cast<int>(state_interfaces_[8].get_value());
-
+    m_coax_light_command = m_coax_light_state = static_cast<bool>(state_interfaces_[0].get_value());
+    m_ring_light_command[0] = m_ring_light_state[0] =
+        static_cast<bool>(state_interfaces_[1].get_value());
+    m_ring_light_command[1] = m_ring_light_state[1] =
+        static_cast<bool>(state_interfaces_[2].get_value());
+    m_ring_light_command[2] = m_ring_light_state[2] =
+        static_cast<bool>(state_interfaces_[3].get_value());
+    m_ring_light_command[3] = m_ring_light_state[3] =
+        static_cast<bool>(state_interfaces_[4].get_value());
+    m_ring_light_rgb_command[0] = m_ring_light_rgb_state[0] =
+        static_cast<int>(state_interfaces_[5].get_value());
+    m_ring_light_rgb_command[1] = m_ring_light_rgb_state[1] =
+        static_cast<int>(state_interfaces_[6].get_value());
+    m_ring_light_rgb_command[2] = m_ring_light_rgb_state[2] =
+        static_cast<int>(state_interfaces_[7].get_value());
+    m_cam2_light_command = m_cam2_light_state = static_cast<int>(state_interfaces_[8].get_value());
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
@@ -98,7 +145,8 @@ PMLightsController::command_interface_configuration() const
         "Camera1_Ring_Light/Red",
         "Camera1_Ring_Light/Green",
         "Camera1_Ring_Light/Blue",
-        "Camera2_Light/Intensity"};
+        "Camera2_Light/Intensity"
+    };
     return config;
 }
 
@@ -116,25 +164,33 @@ PMLightsController::state_interface_configuration() const
         "Camera1_Ring_Light/Red",
         "Camera1_Ring_Light/Green",
         "Camera1_Ring_Light/Blue",
-        "Camera2_Light/Intensity"};
+        "Camera2_Light/Intensity"
+    };
     return config;
 }
 
 controller_interface::return_type
 PMLightsController::update(const rclcpp::Time &time, const rclcpp::Duration &period)
 {
-    command_interfaces_[0].set_value(static_cast<double>(m_camera1_coax_light_cmd));
+    m_coax_light_state = static_cast<bool>(state_interfaces_[0].get_value());
+    m_ring_light_state[0] = static_cast<bool>(state_interfaces_[1].get_value());
+    m_ring_light_state[1] = static_cast<bool>(state_interfaces_[2].get_value());
+    m_ring_light_state[2] = static_cast<bool>(state_interfaces_[3].get_value());
+    m_ring_light_state[3] = static_cast<bool>(state_interfaces_[4].get_value());
+    m_ring_light_rgb_state[0] = static_cast<int>(state_interfaces_[5].get_value());
+    m_ring_light_rgb_state[1] = static_cast<int>(state_interfaces_[6].get_value());
+    m_ring_light_rgb_state[2] = static_cast<int>(state_interfaces_[7].get_value());
+    m_cam2_light_state = static_cast<int>(state_interfaces_[8].get_value());
 
-    command_interfaces_[1].set_value(static_cast<double>(m_camera1_ring_light_cmd[0]));
-    command_interfaces_[2].set_value(static_cast<double>(m_camera1_ring_light_cmd[1]));
-    command_interfaces_[3].set_value(static_cast<double>(m_camera1_ring_light_cmd[2]));
-    command_interfaces_[4].set_value(static_cast<double>(m_camera1_ring_light_cmd[3]));
-
-    command_interfaces_[5].set_value(static_cast<double>(m_camera1_ring_light_color_cmd[0]));
-    command_interfaces_[6].set_value(static_cast<double>(m_camera1_ring_light_color_cmd[1]));
-    command_interfaces_[7].set_value(static_cast<double>(m_camera1_ring_light_color_cmd[2]));
-
-    command_interfaces_[8].set_value(static_cast<double>(m_camera2_light_cmd));
+    command_interfaces_[0].set_value(static_cast<double>(m_coax_light_command));
+    command_interfaces_[1].set_value(static_cast<double>(m_ring_light_command[0]));
+    command_interfaces_[2].set_value(static_cast<double>(m_ring_light_command[1]));
+    command_interfaces_[3].set_value(static_cast<double>(m_ring_light_command[2]));
+    command_interfaces_[4].set_value(static_cast<double>(m_ring_light_command[3]));
+    command_interfaces_[5].set_value(static_cast<double>(m_ring_light_rgb_command[0]));
+    command_interfaces_[6].set_value(static_cast<double>(m_ring_light_rgb_command[1]));
+    command_interfaces_[7].set_value(static_cast<double>(m_ring_light_rgb_command[2]));
+    command_interfaces_[8].set_value(static_cast<double>(m_cam2_light_command));
 
     return controller_interface::return_type::OK;
 }

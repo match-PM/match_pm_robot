@@ -98,6 +98,7 @@ def generate_launch_description():
         ],
     )
 
+    # This file is not used !!!!!!
     return LaunchDescription(
         [
             rviz_node,

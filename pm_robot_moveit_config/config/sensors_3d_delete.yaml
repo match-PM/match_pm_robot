@@ -1,6 +1,8 @@
 sensors:
-  - default_sensor
-  - kinect_depthimage
+  - null
+  #- default_sensor
+  #- kinect_depthimage
+  
 default_sensor:
   far_clipping_plane_distance: 5.0
   filtered_cloud_topic: filtered_cloud

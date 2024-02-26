@@ -32,29 +32,73 @@ PMUVController::on_configure(const rclcpp_lifecycle::State &previous_state)
 {
     (void)previous_state;
 
-    m_on_off_pub = get_node()->create_publisher<UVOnOff>("~/uv_on_off_state", 1000);
-
-    m_on_off_sub = get_node()->create_subscription<UVOnOff>(
-        "~/uv_on_off",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const UVOnOff::SharedPtr msg) {
-            std::copy_n(std::begin(msg->on), 4, std::begin(m_on_off_cmd));
+    m_set_on_off_service = get_node()->create_service<UVSetOnOff>(
+        "~/Hoenle_UV/SetOnOff",
+        [this](
+            const UVSetOnOff::Request::SharedPtr request,
+            UVSetOnOff::Response::SharedPtr response
+        ) {
+            (void)response;
+            std::copy_n(
+                std::begin(m_on_off_cmd),
+                m_on_off_cmd.size(),
+                std::begin(request->turn_on)
+            );
         }
     );
 
-    m_power_sub = get_node()->create_subscription<UVPowerCmd>(
-        "~/uv_power",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const UVPowerCmd::SharedPtr msg) {
-            std::copy_n(std::begin(msg->power), 4, std::begin(m_power_cmd));
+    m_get_on_off_service = get_node()->create_service<UVGetOnOff>(
+        "~/Hoenle_UV/GetOnOff",
+        [this](
+            const UVGetOnOff::Request::SharedPtr request,
+            UVGetOnOff::Response::SharedPtr response
+        ) {
+            (void)request;
+            std::copy_n(std::begin(response->is_on), m_on_off_cmd.size(), std::begin(m_on_off_cmd));
         }
     );
 
-    m_time_sub = get_node()->create_subscription<UVTimeCmd>(
-        "~/uv_time",
-        rclcpp::SystemDefaultsQoS(),
-        [this](const UVTimeCmd::SharedPtr msg) {
-            std::copy_n(std::begin(msg->time), 4, std::begin(m_time_cmd));
+    m_set_power_service = get_node()->create_service<UVSetPower>(
+        "~/Hoenle_UV/SetPower",
+        [this](
+            const UVSetPower::Request::SharedPtr request,
+            UVSetPower::Response::SharedPtr response
+        ) {
+            (void)response;
+            std::copy_n(std::begin(m_power_cmd), m_power_cmd.size(), std::begin(request->power));
+        }
+    );
+
+    m_get_power_service = get_node()->create_service<UVGetPower>(
+        "~/Hoenle_UV/GetPower",
+        [this](
+            const UVGetPower::Request::SharedPtr request,
+            UVGetPower::Response::SharedPtr response
+        ) {
+            (void)request;
+            std::copy_n(std::begin(response->power), m_power_cmd.size(), std::begin(m_power_cmd));
+        }
+    );
+
+    m_set_time_service = get_node()->create_service<UVSetTime>(
+        "~/Hoenle_UV/SetTime",
+        [this](
+            const UVSetTime::Request::SharedPtr request,
+            UVSetTime::Response::SharedPtr response
+        ) {
+            (void)response;
+            std::copy_n(std::begin(m_time_cmd), m_time_cmd.size(), std::begin(request->time));
+        }
+    );
+
+    m_get_time_service = get_node()->create_service<UVGetTime>(
+        "~/Hoenle_UV/GetTime",
+        [this](
+            const UVGetTime::Request::SharedPtr request,
+            UVGetTime::Response::SharedPtr response
+        ) {
+            (void)request;
+            std::copy_n(std::begin(response->time), m_time_cmd.size(), std::begin(m_time_cmd));
         }
     );
 
@@ -103,6 +147,14 @@ controller_interface::InterfaceConfiguration PMUVController::state_interface_con
     {
         config.names.emplace_back("HoenleUV/OnOff_" + std::to_string(i));
     }
+    for (auto i = 0; i < 4; i++)
+    {
+        config.names.emplace_back("HoenleUV/Power_" + std::to_string(i));
+    }
+    for (auto i = 0; i < 4; i++)
+    {
+        config.names.emplace_back("HoenleUV/Time_" + std::to_string(i));
+    }
     return config;
 }
 
@@ -112,26 +164,20 @@ PMUVController::update(const rclcpp::Time &time, const rclcpp::Duration &period)
     (void)time;
     (void)period;
 
-    {
-        UVOnOff msg;
-        for (auto i = 0; i < 4; i++)
-        {
-            msg.on[i] = static_cast<bool>(state_interfaces_[i].get_value());
-        }
-        m_on_off_pub->publish(msg);
-    }
-
     for (auto i = 0; i < 4; i++)
     {
         command_interfaces_[i].set_value(static_cast<double>(m_on_off_cmd[i]));
+        m_on_off_state[i] = static_cast<bool>(state_interfaces_[i].get_value());
     }
     for (auto i = 0; i < 4; i++)
     {
         command_interfaces_[4 + i].set_value(static_cast<double>(m_power_cmd[i]));
+        m_power_state[i] = static_cast<int>(state_interfaces_[4 + i].get_value());
     }
     for (auto i = 0; i < 4; i++)
     {
         command_interfaces_[8 + i].set_value(static_cast<double>(m_time_cmd[i]));
+        m_time_state[i] = static_cast<double>(state_interfaces_[8 + i].get_value());
     }
 
     return controller_interface::return_type::OK;

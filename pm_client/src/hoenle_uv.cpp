@@ -19,9 +19,19 @@ void HoenleUV::set_on_off(std::array<bool, 4> values)
     m_client->write_node_values<bool, 4>(this->on_off, values);
 }
 
+[[nodiscard]] std::array<int, 4> HoenleUV::get_power() const
+{
+    return m_client->read_node_values<int, 4>(this->power);
+}
+
 void HoenleUV::set_power(std::array<int, 4> power)
 {
     m_client->write_node_values<int, 4>(this->power, power);
+}
+
+[[nodiscard]] std::array<double, 4> HoenleUV::get_time() const
+{
+    return m_client->read_node_values<double, 4>(this->time);
 }
 
 void HoenleUV::set_time(std::array<double, 4> time)

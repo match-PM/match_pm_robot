@@ -110,9 +110,9 @@ def generate_launch_description():
     return LaunchDescription(
         [
             control_node,
-            # pm_lights_controller_spawner,
+            pm_lights_controller_spawner,
             # pm_robot_xyz_axis_controller,
-            pm_pneumatic_controller_spawner,
+            # pm_pneumatic_controller_spawner,
             # pm_nozzle_controller_spawner,
             # pm_sensor_controller,
             # pm_uv_controller,

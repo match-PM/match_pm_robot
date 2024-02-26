@@ -23,14 +23,26 @@ endif()
 
 rosidl_generate_interfaces(
   ${PROJECT_NAME}
-  "msg/Camera1CoaxLightCmd.msg"
-  "msg/Camera1RingLightCmd.msg"
-  "msg/Camera2LightCmd.msg"
-  "msg/PneumaticCylinderCmd.msg"
-  "msg/NozzleCmd.msg"
-  "msg/UVOnOff.msg"
-  "msg/UVPowerCmd.msg"
-  "msg/UVTimeCmd.msg"
+  "srv/UVSetOnOff.srv"
+  "srv/UVGetOnOff.srv"
+  "srv/UVSetPower.srv"
+  "srv/UVGetPower.srv"
+  "srv/UVSetTime.srv"
+  "srv/UVGetTime.srv"
+  "srv/CoaxLightGetState.srv"
+  "srv/CoaxLightSetState.srv"
+  "srv/Cam2LightSetState.srv"
+  "srv/Cam2LightGetState.srv"
+  "srv/RingLightGetState.srv"
+  "srv/RingLightSetState.srv"
+  "srv/PneumaticSetPosition.srv"
+  "srv/PneumaticGetPosition.srv"
+  "srv/NozzleSetPosition.srv"
+  "srv/NozzleGetPosition.srv"
+  "srv/ForceSensorGetMeasurement.srv"
+  "srv/ForceSensorBias.srv"
+  "srv/LaserGetMeasurement.srv"
+  "srv/ReferenceCubeState.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)

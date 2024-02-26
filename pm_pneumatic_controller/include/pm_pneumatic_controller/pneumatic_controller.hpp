@@ -6,14 +6,15 @@
 
 #include "controller_interface/controller_interface.hpp"
 
-#include "pm_msgs/msg/pneumatic_cylinder_cmd.hpp"
+#include "pm_msgs/srv/pneumatic_get_position.hpp"
+#include "pm_msgs/srv/pneumatic_set_position.hpp"
 
 #include "pm_pneumatic_controller_parameters.hpp"
 
 namespace pm_pneumatic_controller
 {
 
-using namespace pm_msgs::msg;
+using namespace pm_msgs::srv;
 
 class PMPneumaticController : public controller_interface::ControllerInterface
 {
@@ -21,8 +22,11 @@ class PMPneumaticController : public controller_interface::ControllerInterface
     std::shared_ptr<ParamListener> m_param_listener;
     Params m_params;
 
-    std::vector<rclcpp::Subscription<PneumaticCylinderCmd>::SharedPtr> m_subscriptions;
-    std::vector<int> m_move_commands;
+    std::vector<rclcpp::Service<PneumaticSetPosition>::SharedPtr> m_set_position;
+    std::vector<int> m_commands;
+
+    std::vector<rclcpp::Service<PneumaticGetPosition>::SharedPtr> m_get_position;
+    std::vector<int> m_positions;
 
   public:
     PMPneumaticController();
