@@ -1074,12 +1074,10 @@ attr.accessLevel = 1;
 attr.valueRank = 1;
 attr.arrayDimensionsSize = 1;
 UA_UInt32 arrayDimensions[1];
-arrayDimensions[0] = 7;
+arrayDimensions[0] = 4;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "Measurements");
-UA_Double init_val[7] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-UA_Variant_setArray(&attr.value, init_val, 7, &UA_TYPES[UA_TYPES_DOUBLE]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Measurements from the force sensor.");
 #endif
@@ -1842,8 +1840,6 @@ arrayDimensions[0] = 4;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "Time");
-UA_Double init_val[4] = {0.0, 0.0, 0.0, 0.0};
-UA_Variant_setArray(&attr.value, init_val, 4, &UA_TYPES[UA_TYPES_DOUBLE]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Time for each of the UV LEDs (seconds).");
 #endif
@@ -1881,8 +1877,6 @@ arrayDimensions[0] = 4;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "Power");
-UA_Int32 init_val[4] = {0, 0, 0, 0};
-UA_Variant_setArray(&attr.value, init_val, 4, &UA_TYPES[UA_TYPES_INT32]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Power for each of the UV LEDs (0-100).");
 #endif
@@ -1920,8 +1914,6 @@ arrayDimensions[0] = 4;
 attr.arrayDimensions = &arrayDimensions[0];
 attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "OnOff");
-UA_Boolean init_val[4] = {false, false, false, false};
-UA_Variant_setArray(&attr.value, init_val, 4, &UA_TYPES[UA_TYPES_BOOLEAN]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "On/Off state for each of the UV LEDs.");
 #endif
@@ -1957,10 +1949,8 @@ attr.arrayDimensionsSize = 1;
 UA_UInt32 arrayDimensions[1];
 arrayDimensions[0] = 4;
 attr.arrayDimensions = &arrayDimensions[0];
-attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
+attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
 attr.displayName = UA_LOCALIZEDTEXT("", "Time");
-UA_Int32 init_val[4] = {0, 0, 0, 0};
-UA_Variant_setArray(&attr.value, init_val, 4, &UA_TYPES[UA_TYPES_INT32]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 attr.description = UA_LOCALIZEDTEXT("", "Time for each of the UV LEDs (seconds).");
 #endif
