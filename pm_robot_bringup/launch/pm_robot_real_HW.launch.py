@@ -203,6 +203,7 @@ def generate_launch_description():
             robot_gonio_right_controllers_path,
         ],
         output="both",
+        emulate_tty=True
         # arguments=[                   # Set log level to debug
         #     "--ros-args",
         #     "--log-level",
@@ -237,6 +238,7 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
+        emulate_tty=True
     )
 
     pm_pneumatic_controller_spawner = Node(
@@ -247,6 +249,7 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
+        emulate_tty=True
     )
 
     pm_nozzle_controller_spawner = Node(
@@ -257,6 +260,7 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
+        emulate_tty=True
     )
 
     launch_gonio_left_controller = IncludeLaunchDescription(
