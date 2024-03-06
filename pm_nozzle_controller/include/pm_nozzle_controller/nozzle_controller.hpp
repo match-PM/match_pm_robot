@@ -6,6 +6,7 @@
 
 #include "controller_interface/controller_interface.hpp"
 
+#include "pm_msgs/srv/empty_with_success.hpp"
 #include "pm_msgs/srv/nozzle_get_position.hpp"
 #include "pm_msgs/srv/nozzle_set_position.hpp"
 
@@ -22,6 +23,9 @@ class PMNozzleController : public controller_interface::ControllerInterface
     std::shared_ptr<ParamListener> m_param_listener;
     Params m_params;
 
+    std::vector<rclcpp::Service<EmptyWithSuccess>::SharedPtr> m_vacuum_services;
+    std::vector<rclcpp::Service<EmptyWithSuccess>::SharedPtr> m_pressure_services;
+    std::vector<rclcpp::Service<EmptyWithSuccess>::SharedPtr> m_off_services;
     std::vector<rclcpp::Service<NozzleSetPosition>::SharedPtr> m_set_position;
     std::vector<int> m_commands;
 

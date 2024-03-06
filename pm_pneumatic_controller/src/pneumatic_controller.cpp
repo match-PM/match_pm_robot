@@ -47,6 +47,30 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
 
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
+        auto forward_service = get_node()->create_service<EmptyWithSuccess>(
+            "pm_pneumatic_controller/" + m_params.cylinders[i] + "/MoveForward",
+            [this,
+             i](const EmptyWithSuccess::Request::SharedPtr request,
+                EmptyWithSuccess::Response::SharedPtr response) {
+                (void)request;
+                m_commands[i] = 1;
+                response->success = true;
+            }
+        );
+        m_forward_services.emplace_back(forward_service);
+
+        auto backward_service = get_node()->create_service<EmptyWithSuccess>(
+            "pm_pneumatic_controller/" + m_params.cylinders[i] + "/MoveBackward",
+            [this,
+             i](const EmptyWithSuccess::Request::SharedPtr request,
+                EmptyWithSuccess::Response::SharedPtr response) {
+                (void)request;
+                m_commands[i] = -1;
+                response->success = true;
+            }
+        );
+        m_backward_services.emplace_back(backward_service);
+
         auto set_service = get_node()->create_service<PneumaticSetPosition>(
             "pm_pneumatic_controller/" + m_params.cylinders[i] + "/SetPosition",
             [this,

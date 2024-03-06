@@ -47,6 +47,42 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {
+        auto vacuum_service = get_node()->create_service<EmptyWithSuccess>(
+            "~/" + m_params.nozzles[i] + "/Vacuum",
+            [this,
+             i](const EmptyWithSuccess::Request::SharedPtr request,
+                EmptyWithSuccess::Response::SharedPtr response) {
+                (void)request;
+                m_commands[i] = -1;
+                response->success = true;
+            }
+        );
+        m_vacuum_services.emplace_back(vacuum_service);
+
+        auto pressure_service = get_node()->create_service<EmptyWithSuccess>(
+            "~/" + m_params.nozzles[i] + "/Pressure",
+            [this,
+             i](const EmptyWithSuccess::Request::SharedPtr request,
+                EmptyWithSuccess::Response::SharedPtr response) {
+                (void)request;
+                m_commands[i] = 1;
+                response->success = true;
+            }
+        );
+        m_pressure_services.emplace_back(pressure_service);
+
+        auto off_service = get_node()->create_service<EmptyWithSuccess>(
+            "~/" + m_params.nozzles[i] + "/TurnOff",
+            [this,
+             i](const EmptyWithSuccess::Request::SharedPtr request,
+                EmptyWithSuccess::Response::SharedPtr response) {
+                (void)request;
+                m_commands[i] = 0;
+                response->success = true;
+            }
+        );
+        m_off_services.emplace_back(off_service);
+
         auto set_service = get_node()->create_service<NozzleSetPosition>(
             "~/" + m_params.nozzles[i] + "/SetPosition",
             [this,

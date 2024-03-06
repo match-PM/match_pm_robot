@@ -7,6 +7,7 @@
 #include "controller_interface/controller_interface.hpp"
 
 #include "std_msgs/msg/bool.hpp"
+#include "pm_msgs/srv/empty_with_success.hpp"
 #include "pm_msgs/srv/pneumatic_get_position.hpp"
 #include "pm_msgs/srv/pneumatic_set_position.hpp"
 
@@ -23,6 +24,8 @@ class PMPneumaticController : public controller_interface::ControllerInterface
     std::shared_ptr<ParamListener> m_param_listener;
     Params m_params;
 
+    std::vector<rclcpp::Service<EmptyWithSuccess>::SharedPtr> m_forward_services;
+    std::vector<rclcpp::Service<EmptyWithSuccess>::SharedPtr> m_backward_services;
     std::vector<rclcpp::Service<PneumaticSetPosition>::SharedPtr> m_set_position;
     std::vector<int> m_commands;
 

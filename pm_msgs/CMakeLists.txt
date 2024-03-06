@@ -23,6 +23,7 @@ endif()
 
 rosidl_generate_interfaces(
   ${PROJECT_NAME}
+  "srv/EmptyWithSuccess.srv"
   "srv/UVSetOnOff.srv"
   "srv/UVGetOnOff.srv"
   "srv/UVSetPower.srv"
