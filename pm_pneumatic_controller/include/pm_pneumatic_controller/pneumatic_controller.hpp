@@ -6,6 +6,7 @@
 
 #include "controller_interface/controller_interface.hpp"
 
+#include "std_msgs/msg/bool.hpp"
 #include "pm_msgs/srv/pneumatic_get_position.hpp"
 #include "pm_msgs/srv/pneumatic_set_position.hpp"
 
@@ -27,6 +28,8 @@ class PMPneumaticController : public controller_interface::ControllerInterface
 
     std::vector<rclcpp::Service<PneumaticGetPosition>::SharedPtr> m_get_position;
     std::vector<int> m_positions;
+
+    std::vector<rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr> m_position_publishers;
 
   public:
     PMPneumaticController();

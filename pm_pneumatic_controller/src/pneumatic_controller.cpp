@@ -68,6 +68,9 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
             }
         );
         m_get_position.emplace_back(get_service);
+
+        auto publisher = get_node()->create_publisher<std_msgs::msg::Bool>("~/" + m_params.cylinders[i] + "/IsForward", 10);
+        m_position_publishers.emplace_back(publisher);
     }
 
     return controller_interface::CallbackReturn::SUCCESS;
@@ -131,6 +134,10 @@ PMPneumaticController::update(const rclcpp::Time &time, const rclcpp::Duration &
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
         m_positions[i] = static_cast<int>(state_interfaces_[i].get_value());
+        
+        std_msgs::msg::Bool msg;
+        msg.data = m_positions[i] == 1;
+        m_position_publishers[i]->publish(msg);
     }
 
     return controller_interface::return_type::OK;
