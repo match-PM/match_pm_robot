@@ -18,6 +18,9 @@ namespace pm_pneumatic_controller
 
 using namespace pm_msgs::srv;
 
+constexpr int POSITION_FORWARD = 1;
+constexpr int POSITION_BACK = -1;
+
 class PMPneumaticController : public controller_interface::ControllerInterface
 {
   private:
@@ -62,6 +65,8 @@ class PMPneumaticController : public controller_interface::ControllerInterface
 
     controller_interface::return_type
     update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
+
+    void wait_until_in_position(int cylinder, int target_position);
 };
 
 } // namespace pm_pneumatic_controller

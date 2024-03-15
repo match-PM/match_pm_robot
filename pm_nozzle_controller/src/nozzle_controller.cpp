@@ -1,9 +1,14 @@
+#include <chrono>
+#include <thread>
+
 #include "pluginlib/class_list_macros.hpp"
 
 #include "pm_nozzle_controller/nozzle_controller.hpp"
 
 namespace pm_nozzle_controller
 {
+
+using namespace std::chrono_literals;
 
 PMNozzleController::PMNozzleController()
 {
@@ -53,7 +58,10 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
              i](const EmptyWithSuccess::Request::SharedPtr request,
                 EmptyWithSuccess::Response::SharedPtr response) {
                 (void)request;
-                m_commands[i] = -1;
+                m_commands[i] = STATE_VACUUM;
+
+                wait_for_state(i, STATE_VACUUM);
+
                 response->success = true;
             }
         );
@@ -65,7 +73,10 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
              i](const EmptyWithSuccess::Request::SharedPtr request,
                 EmptyWithSuccess::Response::SharedPtr response) {
                 (void)request;
-                m_commands[i] = 1;
+                m_commands[i] = STATE_PRESSURE;
+
+                wait_for_state(i, STATE_PRESSURE);
+
                 response->success = true;
             }
         );
@@ -77,7 +88,10 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
              i](const EmptyWithSuccess::Request::SharedPtr request,
                 EmptyWithSuccess::Response::SharedPtr response) {
                 (void)request;
-                m_commands[i] = 0;
+                m_commands[i] = STATE_IDLE;
+
+                wait_for_state(i, STATE_IDLE);
+
                 response->success = true;
             }
         );
@@ -107,6 +121,14 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
     }
 
     return controller_interface::CallbackReturn::SUCCESS;
+}
+
+void PMNozzleController::wait_for_state(int nozzle, int target_state)
+{
+    while (m_positions[nozzle] != target_state)
+    {
+        std::this_thread::sleep_for(50ms);
+    }
 }
 
 controller_interface::CallbackReturn

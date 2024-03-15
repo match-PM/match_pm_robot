@@ -17,6 +17,10 @@ namespace pm_nozzle_controller
 
 using namespace pm_msgs::srv;
 
+constexpr int STATE_VACUUM = -1;
+constexpr int STATE_IDLE = 0;
+constexpr int STATE_PRESSURE = 1;
+
 class PMNozzleController : public controller_interface::ControllerInterface
 {
   private:
@@ -60,6 +64,8 @@ class PMNozzleController : public controller_interface::ControllerInterface
 
     controller_interface::return_type
     update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
+
+    void wait_for_state(int nozzle, int state);
 };
 
 } // namespace pm_nozzle_controller

@@ -1,9 +1,14 @@
+#include <chrono>
+#include <thread>
+
 #include "pluginlib/class_list_macros.hpp"
 
 #include "pm_pneumatic_controller/pneumatic_controller.hpp"
 
 namespace pm_pneumatic_controller
 {
+
+using namespace std::chrono_literals;
 
 PMPneumaticController::PMPneumaticController()
 {
@@ -53,7 +58,10 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
              i](const EmptyWithSuccess::Request::SharedPtr request,
                 EmptyWithSuccess::Response::SharedPtr response) {
                 (void)request;
-                m_commands[i] = 1;
+                m_commands[i] = POSITION_FORWARD;
+                
+                wait_until_in_position(i, POSITION_FORWARD);
+
                 response->success = true;
             }
         );
@@ -65,7 +73,10 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
              i](const EmptyWithSuccess::Request::SharedPtr request,
                 EmptyWithSuccess::Response::SharedPtr response) {
                 (void)request;
-                m_commands[i] = -1;
+                m_commands[i] = POSITION_BACK;
+                
+                wait_until_in_position(i, POSITION_BACK);
+
                 response->success = true;
             }
         );
@@ -98,6 +109,14 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
     }
 
     return controller_interface::CallbackReturn::SUCCESS;
+}
+
+void PMPneumaticController::wait_until_in_position(int cylinder, int target_position)
+{
+    while (m_positions[cylinder] != target_position)
+    {
+        std::this_thread::sleep_for(50ms);
+    }
 }
 
 controller_interface::CallbackReturn
@@ -160,7 +179,7 @@ PMPneumaticController::update(const rclcpp::Time &time, const rclcpp::Duration &
         m_positions[i] = static_cast<int>(state_interfaces_[i].get_value());
         
         std_msgs::msg::Bool msg;
-        msg.data = m_positions[i] == 1;
+        msg.data = m_positions[i] == POSITION_FORWARD;
         m_position_publishers[i]->publish(msg);
     }
 
