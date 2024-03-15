@@ -24,6 +24,8 @@ struct PneumaticState
     double position = -1.0;
     double move_command = -1.0;
 
+    bool initialized = false;
+
     explicit PneumaticState(PneumaticId my_id) : id(my_id)
     {
         switch (my_id)
@@ -75,11 +77,21 @@ struct PneumaticState
                 this->position = -1.0;
                 break;
         }
+
+        if (!initialized)
+        {
+            RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "---- READ %s: %f\n", this->name.c_str(), this->position);
+
+            this->move_command = this->position;
+            initialized = true;
+        }
     }
 
     void write(PMClient::Robot &robot)
     {
         auto &pm_pneumatic = robot.get_pneumatic(this->id);
+
+        RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "---- WRITE %s: %f\n", this->name.c_str(), this->position);
 
         if (this->move_command > 0.0)
         {

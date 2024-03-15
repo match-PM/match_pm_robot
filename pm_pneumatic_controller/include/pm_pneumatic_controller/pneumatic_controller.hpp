@@ -27,6 +27,8 @@ class PMPneumaticController : public controller_interface::ControllerInterface
     std::shared_ptr<ParamListener> m_param_listener;
     Params m_params;
 
+    bool m_initialized = false;
+
     std::vector<rclcpp::Service<EmptyWithSuccess>::SharedPtr> m_forward_services;
     std::vector<rclcpp::Service<EmptyWithSuccess>::SharedPtr> m_backward_services;
     std::vector<rclcpp::Service<PneumaticSetPosition>::SharedPtr> m_set_position;

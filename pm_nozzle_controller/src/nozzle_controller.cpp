@@ -183,12 +183,18 @@ PMNozzleController::update(const rclcpp::Time &time, const rclcpp::Duration &per
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {
-        command_interfaces_[i].set_value(static_cast<double>(m_commands[i]));
+        m_positions[i] = static_cast<int>(state_interfaces_[i].get_value());
+    }
+
+    if (!m_initialized)
+    {
+        std::copy(std::begin(m_positions), std::end(m_positions), std::begin(m_commands));
+        m_initialized = true;
     }
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {
-        m_positions[i] = static_cast<int>(state_interfaces_[i].get_value());
+        command_interfaces_[i].set_value(static_cast<double>(m_commands[i]));
     }
 
     return controller_interface::return_type::OK;

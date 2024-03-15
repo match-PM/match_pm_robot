@@ -22,6 +22,8 @@ struct NozzleState
     double pressure = 0.0;
     double pressure_cmd = 0.0;
 
+    bool initialized = false;
+
     explicit NozzleState(NozzleId my_id) : id(my_id)
     {
         switch (my_id)
@@ -69,6 +71,12 @@ struct NozzleState
             case PMClient::NozzleState::Vacuum:
                 this->pressure = -1.0;
                 break;
+        }
+
+        if (!initialized)
+        {
+            this->pressure_cmd = this->pressure;
+            initialized = true;
         }
     }
 
