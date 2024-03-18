@@ -17,6 +17,7 @@ pm_robot_gonio_right:
   availabe_chucks:
   - chuck_gonio_right_Siemens_UFC
   - chuck_gonio_right_double_lens_holder_12_7
+  - chuck_gonio_right_ipeg_active_alignment_station
   use_chuck: chuck_gonio_right_Siemens_UFC
   with_Gonio_Right: true
 pm_robot_tools:
@@ -50,6 +51,9 @@ pm_robot_tools:
     - availabe_tips:
       - Tip_Lens_12_7
       tool_name: Schunk_Lens_Gripper
+    - availabe_tips:
+      - Tip_Lens_12_7_long
+      tool_name: Schunk_Lens_Gripper_long
     use_tip: Tip_R_A1000_I500
     use_tool: Tool_SPT_Toolholder
     use_vacuum_tool: true
