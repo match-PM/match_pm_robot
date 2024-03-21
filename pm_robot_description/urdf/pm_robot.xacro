@@ -347,7 +347,7 @@
       <parent link="Z_Axis" />
       <child link="1K_Dispenser_Flap" />
       <axis xyz="1 0 0" />
-      <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
+      <limit lower="0.02" upper="0.00" effort="100" velocity="0.5" />
     </joint>
 
 
@@ -499,8 +499,8 @@
       <origin xyz="-0.169 0.01176 -0.424" rpy="0 0 0" />
       <parent link="Z_Axis" />
       <child link="2K_Dispenser_Cartridge" />
-      <axis xyz="0 0 -1" />
-      <limit lower="0" upper="0.02" effort="100" velocity="0.05" />
+      <axis xyz="0 0 1" />
+      <limit lower="-0.04" upper="0.00" effort="100" velocity="0.1" />
     </joint>
 
     <link name="2K_Dispenser_TCP">
@@ -777,7 +777,7 @@
       <parent link="Camera_Station" />
       <child link="Camera_Calibration_Platelet" />
       <axis xyz="0 -1 0" />
-      <limit lower="-0.04" upper="0.0" effort="100" velocity="0.05" />
+      <limit lower="-0.04" upper="0.0" effort="100" velocity="0.5" />
     </joint>
 
     <!--%%%%%%%%%%%%% Calibration Qube Definitions-->

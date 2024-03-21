@@ -27,41 +27,26 @@ from launch.substitutions import Command
 
 
 def generate_launch_description():
-    bringup_config_path = os.path.join(
-        get_package_share_directory("pm_robot_bringup"),
-        "config/pm_robot_bringup_config.yaml",
-    )
+    bringup_config_path = os.path.join(get_package_share_directory("pm_robot_bringup"),"config/pm_robot_bringup_config.yaml",)
 
-    f = open(bringup_config_path)
-    bringup_config = yaml.load(f, Loader=SafeLoader)
-    f.close()
+    with open(bringup_config_path) as f:
+        bringup_config = yaml.safe_load(f)
 
     # Specify the name of the package and path to xacro file within the package
     pkg_name = "pm_robot_description"
     file_subpath = "urdf/pm_robot_main.xacro"
 
     # Use xacro to process the file
-    pm_main_xacro_file = os.path.join(
-        get_package_share_directory(pkg_name), file_subpath
-    )
+    pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
     launch_moveit = True
-
     sim_time = False
 
-    mappings = {
-        "launch_mode": "real_HW",
-        "with_Gonio_Left": str(
-            bringup_config["pm_robot_gonio_left"]["with_Gonio_Left"]
-        ),
-        "with_Gonio_Right": str(
-            bringup_config["pm_robot_gonio_right"]["with_Gonio_Right"]
-        ),
+    mappings={
+        'launch_mode': 'real_HW'
     }
 
-    robot_description_raw = xacro.process_file(
-        pm_main_xacro_file, mappings=mappings
-    ).toxml()
+    robot_description_raw = xacro.process_file(pm_main_xacro_file, mappings=mappings).toxml()
 
     controler_param = PathJoinSubstitution(
         [
@@ -136,6 +121,7 @@ def generate_launch_description():
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
         ],
+        emulate_tty=True
     )
 
     # Configure the node
@@ -146,7 +132,9 @@ def generate_launch_description():
         output="both",
         parameters=[
             {"robot_description": robot_description_raw, "use_sim_time": sim_time}
-        ]  # add other parameters here if required
+        ],
+        emulate_tty=True  
+        # add other parameters here if required
         # parameters=[moveit_config.robot_description],
     )
 
@@ -319,9 +307,9 @@ def generate_launch_description():
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)
 
-    if mappings["with_Gonio_Left"] == "True":
+    if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)
-    if mappings["with_Gonio_Right"] == "True":
+    if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
 
     ld.add_action(pm_lights_controller_spawner)

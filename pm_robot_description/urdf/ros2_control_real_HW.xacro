@@ -60,22 +60,14 @@
             </joint>
 
 
-            <!-- <joint name="1K_Dispenser_Flap_Joint">
+
+<!-- 
+            <joint name="1K_Dispenser_Flap_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-            <joint name="1K_Dispenser_Joint">
-                <command_interface name="position">
-                </command_interface>
-                <state_interface name="position"/>
-            </joint>
-            <joint name="2K_Dispenser_Joint">
-                <command_interface name="position">
-                </command_interface>
-                <state_interface name="position"/>
-            </joint>
-            <joint name="Camera_Calibration_Platelet_Joint">
+            <joint name="Calibration_Qube_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -85,27 +77,11 @@
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
-            <joint name="UV_LED_Front_Joint">
-                <command_interface name="position">
-                </command_interface>
-                <state_interface name="position"/>
-            </joint>
             <joint name="UV_Slider_X_Back_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
-            </joint>
-            <joint name="UV_LED_Back_Joint">
-                <command_interface name="position">
-                </command_interface>
-                <state_interface name="position"/>
-            </joint>
-            <joint name="Calibration_Qube_Joint">
-                <command_interface name="position">
-                </command_interface>
-                <state_interface name="position"/>
             </joint> -->
-
 
             <!-- <xacro:if value="$(arg with_Tool_MPG_10)">
                 <joint name="pm_robot_Tool_Parallel_Joint">
@@ -166,4 +142,61 @@
         </ros2_control>
 
     </xacro:macro>
+
+
+    <xacro:macro name="pm_robot_pneumatic_mock" >
+        <ros2_control name="PMSystemPneumatic" type="system">
+            <hardware>
+                <plugin>mock_components/GenericSystem</plugin>
+
+                <!-- <param name="mock_sensor_commands">true</param> -->
+            </hardware>
+
+            <joint name="1K_Dispenser_Joint">
+                <command_interface name="position" >
+                </command_interface>
+                <state_interface name="position">
+                <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="2K_Dispenser_Joint">
+                <command_interface name="position" >
+                </command_interface>
+                <state_interface name="position">
+                <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="Camera_Calibration_Platelet_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position">
+                    <param name="initial_value">-0.04</param>
+                </state_interface>
+            </joint>
+            <joint name="UV_LED_Front_Joint">
+                <command_interface name="position" >
+                </command_interface>
+                <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="UV_LED_Back_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            <joint name="1K_Dispenser_Flap_Joint">
+                <command_interface name="position">
+                </command_interface>
+                <state_interface name="position">
+                    <param name="initial_value">0.0</param>
+                </state_interface>
+            </joint>
+            
+        </ros2_control>
+    </xacro:macro>
+
 </robot>
+

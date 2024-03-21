@@ -189,16 +189,25 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     // Dummy state interfaces so that MoveIt doesn't complain
     // about missing joint data
     // TODO: Implement properly
+    // State interfaces for these axes were implemented with a mock hardware and a JointgroupController
+    // Consider adding the hardware interface for moving the pneumatic axes in here properly
+
+    // std::vector<std::string> dummies{
+    //     "Calibration_Qube_Joint",
+    //     "Camera_Calibration_Platelet_Joint",
+    //     "UV_Slider_X_Back_Joint",
+    //     "UV_LED_Back_Joint",
+    //     "UV_Slider_X_Front_Joint",
+    //     "UV_LED_Front_Joint",
+    //     "1K_Dispenser_Flap_Joint",
+    //     "1K_Dispenser_Joint",
+    //     "2K_Dispenser_Joint"
+    // };
+
     std::vector<std::string> dummies{
         "Calibration_Qube_Joint",
-        "Camera_Calibration_Platelet_Joint",
         "UV_Slider_X_Back_Joint",
-        "UV_LED_Back_Joint",
         "UV_Slider_X_Front_Joint",
-        "UV_LED_Front_Joint",
-        "1K_Dispenser_Flap_Joint",
-        "1K_Dispenser_Joint",
-        "2K_Dispenser_Joint"
     };
     for (auto &dummy : dummies)
     {

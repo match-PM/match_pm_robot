@@ -1,10 +1,13 @@
 controller_manager:
   ros__parameters:
     update_rate: 100
-    # use_sim_time: false
+    use_sim_time: false
 
-    # pm_robot_IO_Axis_controller:
-    #  type: position_controllers/JointGroupPositionController
+    pm_pneumatic_forward_controller:
+      type: position_controllers/JointGroupPositionController
+      #type: joint_trajectory_controller/JointTrajectoryController
+      #type: forward_command_controller/ForwardCommandController
+      #type: position_controllers/MultiInterfaceForwardCommandController
 
     pm_robot_xyz_axis_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -60,6 +63,25 @@ pm_pneumatic_controller:
       - Glue_Pneumatic
       - Glue_2K_Pneumatic
       - Camera_Mire_Pneumatic
+      - Protect_Doseur_Pneumatic
+    
+# Enter the joint names of the pneumatic axis here
+# Make sure the order of the joint names matches the names from the 'pm_pneumatic_controller' cylinder names
+# The pneumatic_controller_listener will set the position of the pneumatic axis to min/max depending on the state of the pneumatic controllers
+pm_pneumatic_forward_controller:
+  ros__parameters:
+    joints:
+      - UV_LED_Front_Joint
+      - UV_LED_Back_Joint
+      - 1K_Dispenser_Joint
+      - 2K_Dispenser_Joint
+      - Camera_Calibration_Platelet_Joint
+      - 1K_Dispenser_Flap_Joint
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
 
 pm_nozzle_controller:
   ros__parameters:
@@ -73,7 +95,6 @@ pm_nozzle_controller:
 pm_robot_t_axis_controller:
   ros__parameters:
     joints:
-      #- 1K_Dispenser_Flap_Joint
       - T_Axis_Joint
       
     command_interfaces:

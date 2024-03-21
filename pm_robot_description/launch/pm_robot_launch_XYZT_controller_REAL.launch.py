@@ -52,6 +52,16 @@ def generate_launch_description():
         ],
     )
 
+    Spawn_pm_robot_pneumatic_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "pm_pneumatic_forward_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
     # Delay start of robot_controller after `joint_state_broadcaster`
     delay_Spawn_pm_robot_xyz_JTC = RegisterEventHandler(
         event_handler=OnProcessExit(
@@ -76,6 +86,14 @@ def generate_launch_description():
         )
     )
 
+    # Delay start of robot_controller after `joint_state_broadcaster`
+    delay_spawn_pm_robot_pneumatic_controller = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=Spawn_pm_robot_broadcaster,
+            on_exit=[Spawn_pm_robot_pneumatic_controller],
+        )
+    )
+
     # Define Launch Description
 
     ld = LaunchDescription()
@@ -83,6 +101,7 @@ def generate_launch_description():
     ld.add_action(Spawn_pm_robot_broadcaster)    
     ld.add_action(delay_Spawn_pm_robot_xyz_JTC)
     ld.add_action(delay_Spawn_pm_robot_t_axis_JTC)
+    ld.add_action(delay_spawn_pm_robot_pneumatic_controller)
     #ld.add_action(delay_robot_controller_spawner_after_controller)
 
     return ld
