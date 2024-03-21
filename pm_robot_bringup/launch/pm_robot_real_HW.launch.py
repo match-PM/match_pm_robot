@@ -31,7 +31,7 @@ def generate_launch_description():
 
     with open(bringup_config_path) as f:
         bringup_config = yaml.safe_load(f)
-
+    
     # Specify the name of the package and path to xacro file within the package
     pkg_name = "pm_robot_description"
     file_subpath = "urdf/pm_robot_main.xacro"
