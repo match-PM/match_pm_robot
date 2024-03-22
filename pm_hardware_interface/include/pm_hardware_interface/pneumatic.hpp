@@ -80,8 +80,6 @@ struct PneumaticState
 
         if (!initialized)
         {
-            RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "---- READ %s: %f\n", this->name.c_str(), this->position);
-
             this->move_command = this->position;
             initialized = true;
         }
@@ -90,8 +88,6 @@ struct PneumaticState
     void write(PMClient::Robot &robot)
     {
         auto &pm_pneumatic = robot.get_pneumatic(this->id);
-
-        RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "---- WRITE %s: %f\n", this->name.c_str(), this->position);
 
         if (this->move_command > 0.0)
         {
