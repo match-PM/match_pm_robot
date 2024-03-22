@@ -347,7 +347,7 @@
       <parent link="Z_Axis" />
       <child link="1K_Dispenser_Flap" />
       <axis xyz="1 0 0" />
-      <limit lower="0.02" upper="0.00" effort="100" velocity="0.5" />
+      <limit lower="0.025" upper="0.00" effort="100" velocity="0.5" />
     </joint>
 
 

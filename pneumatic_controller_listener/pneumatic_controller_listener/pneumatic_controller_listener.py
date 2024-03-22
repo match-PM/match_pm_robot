@@ -9,7 +9,6 @@ from rcl_interfaces.srv import GetParameters
 from rcl_interfaces.msg import ParameterValue, Parameter, ParameterType
 import xml.etree.ElementTree as ET 
 from collections import defaultdict
-import pprint
 
 def etree_to_dict(t):
     d = {t.tag: {} if t.attrib else None}
@@ -34,7 +33,7 @@ def etree_to_dict(t):
 class PneumaticControllerListener(Node):
 
     def __init__(self):
-        super().__init__('minimal_publisher')
+        super().__init__('pm_pneumatic_controller_listener')
         self.robot_description_path = get_package_share_directory('pm_robot_description')
         self.controller_yaml = f"{self.robot_description_path}/config/pm_robot_control_real_HW.yaml"
         self.test_publisher = self.create_publisher(Float64MultiArray,"/pm_pneumatic_forward_controller/commands",10)
@@ -109,21 +108,6 @@ class PneumaticControllerListener(Node):
         for forward_controller_name in self.forward_controller_names:
             self.logger.warn(forward_controller_name)
 
-    def callback2(self, msg:Bool, controller_name:str):
-        state_1 = Float64MultiArray()
-        state_1.data = self.lower_limits
-        state_2 = Float64MultiArray()
-        state_2.data = self.upper_limits
-    
-        self.get_logger().info(f'Conroller state {controller_name}: {msg.data}')
-        if self.bool:
-            self.test_publisher.publish(state_1)
-            self.logger.warn(f"publishing {self.bool}")
-            self.bool = False
-        else:
-            self.test_publisher.publish(state_2)
-            self.logger.warn(f"publishing {self.bool}")
-            self.bool = True
 
     def callback(self, msg:Bool, controller_name:str):
         has_changed, new_value = self.set_axis_forward(self.get_joint_for_controller(controller_name), msg.data)

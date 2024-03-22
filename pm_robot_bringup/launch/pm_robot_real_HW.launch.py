@@ -138,14 +138,6 @@ def generate_launch_description():
         # parameters=[moveit_config.robot_description],
     )
 
-    robot_state_publisher_node_mov = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        name="robot_state_publisher",
-        output="both",
-        parameters=[moveit_config.robot_description],
-    )
-
     robot_controllers_path = PathJoinSubstitution(
         [
             FindPackageShare("pm_robot_description"),
@@ -197,6 +189,17 @@ def generate_launch_description():
         #     "--log-level",
         #     "debug",
         # ],
+    )
+
+        # Configure the node
+    # this node listens to the states of the pneumatic and sets the joints
+    pneumatic_controller_listener_node = Node(
+        package="pneumatic_controller_listener",
+        executable="pneumatic_controller_listener",
+        name="pneumatic_controller_listener",
+        output="both",
+        parameters=[],
+        emulate_tty=True  
     )
 
     delayed_controller_manager = TimerAction(period=3.0, actions=[control_manager])
@@ -293,8 +296,24 @@ def generate_launch_description():
         )
     )
 
+    pm_moveit_server = Node(
+        package="pm_moveit_server",
+        executable="pm_moveit_server",
+        name="pm_moveit_server",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time},
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+        ],
+        emulate_tty=True,
+    )
+
     delayed_rviz = TimerAction(period=15.0, actions=[rviz_node])
     delayed_move_group = TimerAction(period=15.0, actions=[run_move_group_node])
+    delayed_pm_moveit_server = TimerAction(period=15.0, actions=[pm_moveit_server])
+    delayed_pneumatic_controller_listener = TimerAction(period=15.0, actions=[pneumatic_controller_listener_node])
 
     # Define Launch Description
     ld = LaunchDescription()
@@ -303,9 +322,11 @@ def generate_launch_description():
     # ld.add_action(control_manager)
     ld.add_action(delayed_controller_manager)
     ld.add_action(launch_XYZT_controllers)
+    ld.add_action(delayed_pneumatic_controller_listener)
     if launch_moveit:
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)
+        ld.add_action(delayed_pm_moveit_server)
 
     if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)

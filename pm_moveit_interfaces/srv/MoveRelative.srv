@@ -1,0 +1,8 @@
+geometry_msgs/Vector3 translation
+geometry_msgs/Quaternion rotation
+bool execute_movement
+---
+bool success
+string[] joint_names
+float32[] joint_values
+string message
