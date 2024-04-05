@@ -101,7 +101,7 @@ def generate_launch_description():
     ld.add_action(Spawn_pm_robot_broadcaster)    
     ld.add_action(delay_Spawn_pm_robot_xyz_JTC)
     ld.add_action(delay_Spawn_pm_robot_t_axis_JTC)
-    ld.add_action(delay_spawn_pm_robot_pneumatic_controller)
+    #ld.add_action(delay_spawn_pm_robot_pneumatic_controller)   # This causes problems when used with the pm_pneumatic_controller_listener
     #ld.add_action(delay_robot_controller_spawner_after_controller)
 
     return ld

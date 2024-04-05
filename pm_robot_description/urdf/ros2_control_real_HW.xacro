@@ -170,7 +170,7 @@
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position">
-                    <param name="initial_value">-0.04</param>
+                    <param name="initial_value">0.0</param>
                 </state_interface>
             </joint>
             <joint name="UV_LED_Front_Joint">

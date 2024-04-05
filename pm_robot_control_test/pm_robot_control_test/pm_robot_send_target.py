@@ -14,7 +14,7 @@ class SendPosition(Node):
     def __init__(self):
         super().__init__('send_position')
 
-        self._action_client = ActionClient(self,FollowJointTrajectory,'/pm_robot_xyz_axis_controller/follow_joint_trajectory')
+        self._action_client = ActionClient(self,FollowJointTrajectory,'/pm_robot_gonio_right_controller/follow_joint_trajectory')
 
         subscribe_topic = "/joint_states"
         self.subsriber = self.create_subscription(JointState, subscribe_topic, self.joint_state_callback, 10)
@@ -24,14 +24,14 @@ class SendPosition(Node):
         
         point = JointTrajectoryPoint()
         point.positions = points
-        point.velocities = [0.01, 0.01 , 0.01, 0.01]
+        point.velocities = [0.01,0.01]
         # joint_trajectory.accelerations = [1.0, 10.0 , 5.0, 1.0]
 
         goal_msg = FollowJointTrajectory.Goal()
         
         #point.time_from_start = Duration(sec=4)
         
-        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint','Z_Axis_Joint','T_Axis_Joint']
+        goal_msg.trajectory.joint_names = ['Gonio_Right_Stage_1_Joint','Gonio_Right_Stage_2_Joint']
 
         goal_msg.trajectory.points = [point]
 
@@ -76,7 +76,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     action_client = SendPosition()
-    action_client.send_target([-0.359, -0.0458, 0.03, 400000.0])
+    action_client.send_target([-0.000001, 0.000001])
     rclpy.spin(action_client)
 
 

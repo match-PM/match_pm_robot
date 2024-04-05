@@ -1,7 +1,7 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription,DeclareLaunchArgument
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -98,8 +98,7 @@ def generate_launch_description():
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        parameters=move_group_params,
-    )
+        parameters=move_group_params,    )
 
     # RViz
     rviz_base = os.path.join(

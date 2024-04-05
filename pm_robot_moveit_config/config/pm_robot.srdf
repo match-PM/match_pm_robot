@@ -39,15 +39,13 @@
         <joint name="Y_Axis_Joint"/>
         <joint name="Z_Axis_Joint"/>
         <joint name="X_Axis_Joint"/>
-        <!-- <joint name="1K_Dispenser_Joint"/> -->
     </group>
 
-    <group name="PM_Robot_2K_Dispenser_TCP">
+    <!-- <group name="PM_Robot_2K_Dispenser_TCP">
         <joint name="Y_Axis_Joint"/>
         <joint name="Z_Axis_Joint"/>
         <joint name="X_Axis_Joint"/>
-        <!-- <joint name="2K_Dispenser_Joint"/> -->
-    </group>
+    </group> -->
 
     <xacro:if value="${current_pm_robot_bringup_config['pm_robot_gonio_right']['with_Gonio_Right']}">
         <group name="PM_Robot_Gonio_Right">

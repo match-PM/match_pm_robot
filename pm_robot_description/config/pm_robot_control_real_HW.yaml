@@ -3,12 +3,6 @@ controller_manager:
     update_rate: 100
     use_sim_time: false
 
-    pm_pneumatic_forward_controller:
-      type: position_controllers/JointGroupPositionController
-      #type: joint_trajectory_controller/JointTrajectoryController
-      #type: forward_command_controller/ForwardCommandController
-      #type: position_controllers/MultiInterfaceForwardCommandController
-
     pm_robot_xyz_axis_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
@@ -33,6 +27,8 @@ controller_manager:
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+    pm_pneumatic_forward_controller:
+      type: position_controllers/JointGroupPositionController
 # pm_robot_IO_Axis_controller:
 #   ros__parameters:
 #     joints:

@@ -45,6 +45,19 @@ enum class Unit
     Degrees,
 };
 
+static std::string unitToString(Unit unit)
+{
+    switch (unit)
+    {
+        case Unit::Meters:
+            return "Meters";
+        case Unit::Degrees:
+            return "Degrees";
+        default:
+            return "Unknown";
+    }
+}
+
 struct AxisState
 {
     AxisId id;
@@ -74,6 +87,11 @@ struct AxisState
                 break;
             case AxisId::Q:
                 name = "Gonio_Right_Stage_1_Joint";
+                RCLCPP_ERROR(
+                    rclcpp::get_logger("PMSystem"),
+                    "Unit: %s",
+                    unitToString(my_unit).c_str()
+                );
                 break;
             case AxisId::R:
                 name = "Gonio_Right_Stage_2_Joint";
