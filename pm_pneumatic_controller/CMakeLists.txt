@@ -14,7 +14,8 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(generate_parameter_library REQUIRED)
 find_package(pm_msgs REQUIRED)
-
+find_package(rcl_interfaces REQUIRED)
+find_package(urdf REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -49,6 +50,8 @@ ament_target_dependencies(
   rclcpp
   rclcpp_lifecycle
   pm_msgs
+  rcl_interfaces
+  urdf
 )
 pluginlib_export_plugin_description_file(controller_interface pm_pneumatic_controller.xml)
 
@@ -83,6 +86,8 @@ ament_export_dependencies(
   rclcpp
   rclcpp_lifecycle
   pm_pneumatic_controller_parameters
+  rcl_interfaces
+  urdf
 )
 
 ament_package()

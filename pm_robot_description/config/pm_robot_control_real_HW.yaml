@@ -54,12 +54,12 @@ pm_laser_controller:
 pm_pneumatic_controller:
   ros__parameters:
     cylinders:
-      - UV1_Pneumatic
-      - UV2_Pneumatic
-      - Glue_Pneumatic
-      - Glue_2K_Pneumatic
-      - Camera_Mire_Pneumatic
-      - Protect_Doseur_Pneumatic
+      - UV_LED_Front_Joint
+      - UV_LED_Back_Joint
+      - 1K_Dispenser_Joint
+      - 2K_Dispenser_Joint
+      - Camera_Calibration_Platelet_Joint
+      - 1K_Dispenser_Flap_Joint
     
 # Enter the joint names of the pneumatic axis here
 # Make sure the order of the joint names matches the names from the 'pm_pneumatic_controller' cylinder names

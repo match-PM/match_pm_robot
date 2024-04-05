@@ -21,7 +21,10 @@ struct PneumaticState
     PneumaticId id;
     std::string name;
 
-    double position = -1.0;
+    double upper_limit = 0.0;
+    double lower_limit = 0.0;
+    double physical_position = 0.0;
+    double fwd_or_bwd = -1.0;
     double move_command = -1.0;
 
     bool initialized = false;
@@ -31,33 +34,36 @@ struct PneumaticState
         switch (my_id)
         {
             case PneumaticId::UV1:
-                name = "UV1_Pneumatic";
+                name = "UV_LED_Front_Joint";
                 break;
             case PneumaticId::UV2:
-                name = "UV2_Pneumatic";
+                name = "UV_LED_Back_Joint";
                 break;
             case PneumaticId::Glue:
-                name = "Glue_Pneumatic";
+                name = "1K_Dispenser_Joint";
                 break;
             case PneumaticId::Glue2K:
-                name = "Glue_2K_Pneumatic";
+                name = "2K_Dispenser_Joint";
                 break;
             case PneumaticId::CameraMire:
-                name = "Camera_Mire_Pneumatic";
+                name = "Camera_Calibration_Platelet_Joint";
                 break;
             case PneumaticId::ProtectDoseur:
-                name = "Protect_Doseur_Pneumatic";
+                name = "1K_Dispenser_Flap_Joint";
                 break;
         }
     }
 
     void add_state_interfaces(std::vector<StateInterface> &interfaces)
     {
-        interfaces.emplace_back(StateInterface(this->name, "Position", &this->position));
+        interfaces.emplace_back(StateInterface(this->name, "position", &this->physical_position));
+        interfaces.emplace_back(StateInterface(this->name, "FwdOrBwd", &this->fwd_or_bwd));
     }
 
     void add_command_interfaces(std::vector<CommandInterface> &interfaces)
     {
+        interfaces.emplace_back(CommandInterface(this->name, "UpperLimit", &this->upper_limit));
+        interfaces.emplace_back(CommandInterface(this->name, "LowerLimit", &this->lower_limit));
         interfaces.emplace_back(CommandInterface(this->name, "Move_Command", &this->move_command));
     }
 
@@ -68,19 +74,22 @@ struct PneumaticState
         switch (pm_pneumatic.get_position())
         {
             case Position::Forward:
-                this->position = 1.0;
+                this->fwd_or_bwd = 1.0;
+                this->physical_position = lower_limit;
                 break;
             case Position::Neutral:
-                this->position = 0.0;
+                this->fwd_or_bwd = 0.0;
+                this->physical_position = 0.0;
                 break;
             case Position::Backward:
-                this->position = -1.0;
+                this->fwd_or_bwd = -1.0;
+                this->physical_position = upper_limit;
                 break;
         }
 
         if (!initialized)
         {
-            this->move_command = this->position;
+            this->move_command = this->fwd_or_bwd;
             initialized = true;
         }
     }

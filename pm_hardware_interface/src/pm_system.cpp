@@ -57,6 +57,7 @@ CallbackReturn PMSystem::on_configure(const State &previous_state)
     }
 
     RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "Successfully configured PMSystem.");
+
     return CallbackReturn::SUCCESS;
 }
 
@@ -189,8 +190,9 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     // Dummy state interfaces so that MoveIt doesn't complain
     // about missing joint data
     // TODO: Implement properly
-    // State interfaces for these axes were implemented with a mock hardware and a JointgroupController
-    // Consider adding the hardware interface for moving the pneumatic axes in here properly
+    // State interfaces for these axes were implemented with a mock hardware and a
+    // JointgroupController Consider adding the hardware interface for moving the pneumatic axes in
+    // here properly
 
     // std::vector<std::string> dummies{
     //     "Calibration_Qube_Joint",
