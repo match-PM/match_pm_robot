@@ -71,11 +71,14 @@ struct PneumaticState
     {
         auto &pm_pneumatic = robot.get_pneumatic(this->id);
 
+        bool invert_physical_pos =
+            this->id == PneumaticId::ProtectDoseur || this->id == PneumaticId::Glue;
+
         switch (pm_pneumatic.get_position())
         {
             case Position::Forward:
                 this->fwd_or_bwd = 1.0;
-                this->physical_position = lower_limit;
+                this->physical_position = invert_physical_pos ? upper_limit : lower_limit;
                 break;
             case Position::Neutral:
                 this->fwd_or_bwd = 0.0;
@@ -83,7 +86,7 @@ struct PneumaticState
                 break;
             case Position::Backward:
                 this->fwd_or_bwd = -1.0;
-                this->physical_position = upper_limit;
+                this->physical_position = invert_physical_pos ? lower_limit : upper_limit;
                 break;
         }
 
