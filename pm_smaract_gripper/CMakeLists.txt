@@ -24,32 +24,6 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_library(
-  action_server_lib SHARED
-  src/server.cpp
-)
-target_include_directories(
-  action_server_lib PRIVATE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-target_link_libraries(action_server_lib smaractctl)
-ament_target_dependencies(
-  action_server_lib
-  rclcpp
-  rclcpp_action
-  rclcpp_components
-  pm_msgs
-)
-rclcpp_components_register_node(action_server_lib PLUGIN "SmaractGripperActionServer" EXECUTABLE action_server)
-
-install(TARGETS
-  action_server_lib
-  ARCHIVE DESTINATION lib/${PROJECT_NAME}
-  LIBRARY DESTINATION lib/${PROJECT_NAME}
-  RUNTIME DESTINATION bin/${PROJECT_NAME}
-)
-
 add_executable(
   example
   src/example.cpp
@@ -60,9 +34,7 @@ ament_target_dependencies(example)
 
 install(
   TARGETS example
-  LIBRARY DESTINATION lib/${PROJECT_NAME}
-  ARCHIVE DESTINATION lib/${PROJECT_NAME}
-  RUNTIME DESTINATION bin/${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()

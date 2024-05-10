@@ -150,6 +150,7 @@ int main()
     exitOnError(result);
     if (type == SA_CTL_STICK_SLIP_PIEZO_DRIVER)
     {
+        printf("type == SA_CTL_STICK_SLIP_PIEZO_DRIVER\n");
         // Set max closed loop frequency (maxCLF) to 6 kHz. This properties sets a limit for the
         // maximum actuator driving frequency. The maxCLF is not persistent thus set to a default
         // value at startup.
@@ -165,6 +166,7 @@ int main()
     }
     else if (type == SA_CTL_PIEZO_SCANNER_DRIVER)
     {
+        printf("type == SA_CTL_PIEZO_SCANNER_DRIVER\n");
         // Enable the amplifier.
         result =
             SA_CTL_SetProperty_i32(dHandle, channel, SA_CTL_PKEY_AMPLIFIER_ENABLED, SA_CTL_TRUE);
@@ -179,6 +181,7 @@ int main()
     }
     else if (type == SA_CTL_MAGNETIC_DRIVER)
     {
+        printf("type == SA_CTL_MAGNETIC_DRIVER\n");
         // Enable the amplifier (and start the phasing sequence).
         result =
             SA_CTL_SetProperty_i32(dHandle, channel, SA_CTL_PKEY_AMPLIFIER_ENABLED, SA_CTL_TRUE);
