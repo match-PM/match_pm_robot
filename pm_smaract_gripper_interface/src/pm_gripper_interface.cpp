@@ -302,6 +302,9 @@ std::vector<StateInterface> PMGripperInterface::export_state_interfaces()
     std::vector<StateInterface> state_interfaces;
 
     state_interfaces.emplace_back("Gripper", "Position", &m_current_position);
+    state_interfaces.emplace_back("Gripper", "ForceX", &m_force.x);
+    state_interfaces.emplace_back("Gripper", "ForceY", &m_force.y);
+    state_interfaces.emplace_back("Gripper", "ForceZ", &m_force.z);
 
     return state_interfaces;
 }
@@ -311,6 +314,8 @@ std::vector<CommandInterface> PMGripperInterface::export_command_interfaces()
     std::vector<CommandInterface> command_interfaces;
 
     command_interfaces.emplace_back("Gripper", "TargetPosition", &m_target_position);
+    command_interfaces.emplace_back("Gripper", "TargetVelocity", &m_target_velocity);
+    command_interfaces.emplace_back("Gripper", "TargetAcceleration", &m_target_acceleration);
 
     return command_interfaces;
 }
@@ -328,6 +333,24 @@ PMGripperInterface::read(const rclcpp::Time &time, const rclcpp::Duration &perio
     assert(result == SA_CTL_ERROR_NONE);
     m_current_position = static_cast<double>(position);
 
+    int64_t force_x = 0;
+    result =
+        SA_CTL_GetProperty_i64(m_handle, 0, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_x, 0);
+    assert(result == SA_CTL_ERROR_NONE);
+    m_force.x = static_cast<double>(force_x);
+
+    int64_t force_y = 0;
+    result =
+        SA_CTL_GetProperty_i64(m_handle, 1, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_y, 0);
+    assert(result == SA_CTL_ERROR_NONE);
+    m_force.y = static_cast<double>(force_y);
+
+    int64_t force_z = 0;
+    result =
+        SA_CTL_GetProperty_i64(m_handle, 2, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_z, 0);
+    assert(result == SA_CTL_ERROR_NONE);
+    m_force.z = static_cast<double>(force_z);
+
     return hardware_interface::return_type::OK;
 }
 
@@ -339,19 +362,38 @@ PMGripperInterface::write(const rclcpp::Time &time, const rclcpp::Duration &peri
 
     // RCLCPP_INFO(rclcpp::get_logger("PMGripperInterface"), "PMGripperInterface::write called.");
 
-    RCLCPP_INFO(
-        rclcpp::get_logger("PMGripperInterface"),
-        "m_target_position: %f; m_previous_target_position: %f",
-        m_target_position,
-        m_previous_target_position
-    );
-
-    if (m_target_position != m_previous_target_position)
+    if (!std::isnan(m_target_position))
     {
         auto result = SA_CTL_Move(m_handle, m_channel, static_cast<int64_t>(m_target_position), 0);
         if (result != SA_CTL_ERROR_NONE)
             RCLCPP_ERROR(rclcpp::get_logger("PMGripperInterface"), "move failed");
-        m_previous_target_position = m_target_position;
+        m_target_position = double_limits::quiet_NaN();
+    }
+
+    if (!std::isnan(m_target_velocity))
+    {
+        auto result = SA_CTL_SetProperty_i64(
+            m_handle,
+            m_channel,
+            SA_CTL_PKEY_MOVE_VELOCITY,
+            static_cast<int64_t>(m_target_velocity)
+        );
+        if (result != SA_CTL_ERROR_NONE)
+            RCLCPP_ERROR(rclcpp::get_logger("PMGripperInterface"), "setting velocity failed");
+        m_target_velocity = double_limits::quiet_NaN();
+    }
+
+    if (!std::isnan(m_target_acceleration))
+    {
+        auto result = SA_CTL_SetProperty_i64(
+            m_handle,
+            m_channel,
+            SA_CTL_PKEY_MOVE_ACCELERATION,
+            static_cast<int64_t>(m_target_acceleration)
+        );
+        if (result != SA_CTL_ERROR_NONE)
+            RCLCPP_ERROR(rclcpp::get_logger("PMGripperInterface"), "setting acceleration failed");
+        m_target_acceleration = double_limits::quiet_NaN();
     }
 
     return hardware_interface::return_type::OK;

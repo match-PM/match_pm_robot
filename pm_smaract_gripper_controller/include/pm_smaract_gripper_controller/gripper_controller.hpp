@@ -6,21 +6,35 @@
 
 #include "std_msgs/msg/float64.hpp"
 
+#include "pm_msgs/msg/gripper_forces.hpp"
 #include "pm_msgs/srv/gripper_move.hpp"
+#include "pm_msgs/srv/gripper_set_accel.hpp"
+#include "pm_msgs/srv/gripper_set_vel.hpp"
 
 namespace pm_smaract_gripper_controller
 {
 
+using namespace pm_msgs::msg;
 using namespace pm_msgs::srv;
+
+using double_limits = std::numeric_limits<double>;
 
 class PMGripperController : public controller_interface::ControllerInterface
 {
   private:
-    rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr m_current_position_pub;
-    rclcpp::Service<GripperMove>::SharedPtr m_move_srv;
+    static constexpr double MIN_POSITION = -100e12;
+    static constexpr double MAX_POSITION = 100e12;
 
-    bool m_got_move_command{false};
-    double m_target_position{0.0};
+    rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr m_current_position_pub;
+    rclcpp::Publisher<GripperForces>::SharedPtr m_forces_pub;
+
+    rclcpp::Service<GripperMove>::SharedPtr m_move_srv;
+    rclcpp::Service<GripperSetVel>::SharedPtr m_set_velocity_srv;
+    rclcpp::Service<GripperSetAccel>::SharedPtr m_set_acceleration_srv;
+
+    double m_target_position{double_limits::quiet_NaN()};
+    double m_target_velocity{double_limits::quiet_NaN()};
+    double m_target_acceleration{double_limits::quiet_NaN()};
 
   public:
     PMGripperController();

@@ -37,14 +37,45 @@ PMGripperController::on_configure(const rclcpp_lifecycle::State &previous_state)
     m_current_position_pub =
         get_node()->create_publisher<std_msgs::msg::Float64>("~/Position/Stream", 1000);
 
+    m_forces_pub = get_node()->create_publisher<GripperForces>("~/Forces/Stream", 1000);
+
     m_move_srv = get_node()->create_service<GripperMove>(
         "~/Move",
         [this](
             const GripperMove::Request::SharedPtr request,
             GripperMove::Response::SharedPtr response
         ) {
+            if (request->target_position < MIN_POSITION || request->target_position > MAX_POSITION)
+            {
+                response->error_msg = "Position outside allowed range.";
+                response->success = false;
+                return;
+            }
+
             m_target_position = request->target_position;
-            m_got_move_command = true;
+            response->error_msg = "No error.";
+            response->success = true;
+        }
+    );
+
+    m_set_velocity_srv = get_node()->create_service<GripperSetVel>(
+        "~/SetVelocity",
+        [this](
+            const GripperSetVel::Request::SharedPtr request,
+            GripperSetVel::Response::SharedPtr response
+        ) {
+            m_target_velocity = request->target_velocity;
+            response->success = true;
+        }
+    );
+
+    m_set_acceleration_srv = get_node()->create_service<GripperSetAccel>(
+        "~/SetAcceleration",
+        [this](
+            const GripperSetAccel::Request::SharedPtr request,
+            GripperSetAccel::Response::SharedPtr response
+        ) {
+            m_target_acceleration = request->target_acceleration;
             response->success = true;
         }
     );
@@ -73,7 +104,11 @@ PMGripperController::command_interface_configuration() const
 {
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
-    config.names = {"Gripper/TargetPosition"};
+    config.names = {
+        "Gripper/TargetPosition",
+        "Gripper/TargetVelocity",
+        "Gripper/TargetAcceleration",
+    };
     return config;
 }
 
@@ -82,7 +117,12 @@ PMGripperController::state_interface_configuration() const
 {
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
-    config.names = {"Gripper/Position"};
+    config.names = {
+        "Gripper/Position",
+        "Gripper/ForceX",
+        "Gripper/ForceY",
+        "Gripper/ForceZ",
+    };
     return config;
 }
 
@@ -98,10 +138,30 @@ PMGripperController::update(const rclcpp::Time &time, const rclcpp::Duration &pe
         m_current_position_pub->publish(msg);
     }
 
-    if (m_got_move_command)
     {
-        m_got_move_command = false;
+        GripperForces msg;
+        msg.fx = state_interfaces_[1].get_value();
+        msg.fy = state_interfaces_[2].get_value();
+        msg.fz = state_interfaces_[3].get_value();
+        m_forces_pub->publish(msg);
+    }
+
+    if (!std::isnan(m_target_position))
+    {
         command_interfaces_[0].set_value(m_target_position);
+        m_target_position = double_limits::quiet_NaN();
+    }
+
+    if (!std::isnan(m_target_velocity))
+    {
+        command_interfaces_[1].set_value(m_target_velocity);
+        m_target_velocity = double_limits::quiet_NaN();
+    }
+
+    if (!std::isnan(m_target_acceleration))
+    {
+        command_interfaces_[2].set_value(m_target_acceleration);
+        m_target_acceleration = double_limits::quiet_NaN();
     }
 
     return controller_interface::return_type::OK;

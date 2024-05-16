@@ -2,6 +2,7 @@
 #define PM_GRIPPER_INTERFACE_H
 
 #include <array>
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -25,14 +26,24 @@ using StateInterface = hardware_interface::StateInterface;
 
 using CommandInterface = hardware_interface::CommandInterface;
 
+using double_limits = std::numeric_limits<double>;
+
 class PMGripperInterface : public hardware_interface::SystemInterface
 {
     SA_CTL_DeviceHandle_t m_handle;
     int8_t m_channel = 0;
 
-    double m_target_position{0.0};
-    double m_previous_target_position{0.0};
+    double m_target_position{double_limits::quiet_NaN()};
+    double m_target_velocity{double_limits::quiet_NaN()};
+    double m_target_acceleration{double_limits::quiet_NaN()};
+
     double m_current_position{0.0};
+    struct
+    {
+        double x;
+        double y;
+        double z;
+    } m_force{};
 
   public:
     PMGripperInterface();
