@@ -91,6 +91,11 @@
         "__split_buffer": "cpp",
         "__tree": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "charconv": "cpp",
+        "__locale": "cpp",
+        "__verbose_abort": "cpp",
+        "locale": "cpp",
+        "print": "cpp"
     }
 }

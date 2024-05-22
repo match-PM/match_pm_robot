@@ -321,7 +321,7 @@ def generate_launch_description():
     # ld.add_action(control_manager)
     ld.add_action(delayed_controller_manager)
     ld.add_action(launch_XYZT_controllers)
-    ld.add_action(delayed_pneumatic_controller_listener)
+    #ld.add_action(delayed_pneumatic_controller_listener)
     if launch_moveit:
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)

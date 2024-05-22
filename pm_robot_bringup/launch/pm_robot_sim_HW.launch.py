@@ -230,6 +230,20 @@ def generate_launch_description():
             ])
         ])
         )  
+    
+    pm_moveit_server = Node(
+        package="pm_moveit_server",
+        executable="pm_moveit_server",
+        name="pm_moveit_server",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time},
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+        ],
+        emulate_tty=True,
+    )
 
     # delay_spawn_pm_robot_gonio_left_controllers = RegisterEventHandler(
     #     event_handler=OnProcessExit(
@@ -257,6 +271,7 @@ def generate_launch_description():
     if launch_moveit:
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
+        ld.add_action(pm_moveit_server)
     ld.add_action(launch_XYZT_controllers)
 
     if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:

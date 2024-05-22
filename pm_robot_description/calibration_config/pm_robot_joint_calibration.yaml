@@ -65,3 +65,7 @@ PM_Robot_Tool_TCP_Joint:
   ry_offset: 0
   rz_offset: 0
 
+PM_Robot_XYZ_Calibration:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 5000

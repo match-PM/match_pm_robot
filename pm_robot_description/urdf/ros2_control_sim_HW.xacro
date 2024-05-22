@@ -2,11 +2,11 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:macro name="pm_robot_ros2_control_hw_sim" params="name initial_positions_file">
 
-                <!-- Loading of the Robot bringup config -->
-                <xacro:if value="${launch_mode == 'sim_HW'}">
-                    <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
-                </xacro:if>               
-                <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+            <!-- Loading of the Robot bringup config -->
+            <xacro:if value="${launch_mode == 'sim_HW'}">
+                <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+            </xacro:if>               
+            <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
         
         <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 

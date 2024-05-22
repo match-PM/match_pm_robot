@@ -125,6 +125,14 @@
 
     <!--%%%%%%%%%%%%% X Axis Definitions %%%%%%%%%%%%%-->
 
+    <!-- Init Definition of 1K Dispenser tip -->
+
+    <!-- Property names should not start with a number -->
+    <xacro:property name="X_Axis_Offset" value="${calibration_dict['PM_Robot_XYZ_Calibration']['x_offset']}"/>
+    <xacro:property name="Y_Axis_Offset" value="${calibration_dict['PM_Robot_XYZ_Calibration']['y_offset']}"/>
+    <xacro:property name="Z_Axis_Offset" value="${calibration_dict['PM_Robot_XYZ_Calibration']['z_offset']}"/>
+
+
     <link name="X_Axis">
       <inertial>
         <origin xyz="0.13867117656886 0.0294673421865695 0.0322225410424505" rpy="0 0 0" />
@@ -146,7 +154,7 @@
       </collision>
     </link>
     <joint name="X_Axis_Joint" type="prismatic">
-      <origin xyz="0.64699 0.11775 0.47499" rpy="0 0 0" />
+      <origin xyz="${0.64699 + X_Axis_Offset*0.000001} 0.11775 0.47499" rpy="0 0 0" />
       <parent link="axis_base" />
       <child link="X_Axis" />
       <axis xyz="1 0 0" />
@@ -176,7 +184,7 @@
       </collision>
     </link>
     <joint name="Y_Axis_Joint" type="prismatic">
-      <origin xyz="0.10865 0.25835 0.06525" rpy="0 0 0" />
+      <origin xyz="0.10865 ${0.25835 + Y_Axis_Offset*0.000001} 0.06525" rpy="0 0 0" />
       <parent link="X_Axis" />
       <child link="Y_Axis" />
       <axis xyz="0 1 0" />
@@ -211,7 +219,7 @@
     </gazebo>
 
     <joint name="Z_Axis_Joint" type="prismatic">
-      <origin xyz="-0.00365 -0.499 0.28025" rpy="0 0 0" />
+      <origin xyz="-0.00365 -0.499 ${0.28025 + Z_Axis_Offset*0.000001}" rpy="0 0 0" />
       <parent link="Y_Axis" />
       <child link="Z_Axis" />
       <axis xyz="0 0 -1" />
@@ -346,8 +354,8 @@
       <origin xyz="-0.0315 -0.02479 -0.424" rpy="0 0 0" />
       <parent link="Z_Axis" />
       <child link="1K_Dispenser_Flap" />
-      <axis xyz="1 0 0" />
-      <limit lower="0.025" upper="0.00" effort="100" velocity="0.5" />
+      <axis xyz="-1 0 0" />
+      <limit lower="-0.025" upper="0.00" effort="100" velocity="0.5" />
     </joint>
 
 
@@ -739,9 +747,10 @@
 
       <joint name="Station_Laser_Bottom_TCP_Joint" type="fixed">
         <origin xyz="
-            ${0.179998910097098 + Station_Laser_Bottom_TCP_Joint_Cal_x*0.000001} 
+            ${0.181998910097099 + Station_Laser_Bottom_TCP_Joint_Cal_x*0.000001} 
             ${0.0939999732334105 + Station_Laser_Bottom_TCP_Joint_Cal_y*0.000001} 
-            ${0.328500000000003 + Station_Laser_Bottom_TCP_Joint_Cal_z*0.000001}" rpy="
+            ${0.307500000000001 + Station_Laser_Bottom_TCP_Joint_Cal_z*0.000001}" 
+            rpy="
             ${0 + Station_Laser_Bottom_TCP_Joint_Cal_rx*3.14159265359/180} 
             ${0 + Station_Laser_Bottom_TCP_Joint_Cal_ry*3.14159265359/180} 
             ${0 + Station_Laser_Bottom_TCP_Joint_Cal_rz*3.14159265359/180}" />
@@ -816,9 +825,9 @@
 
     <joint name="Calibration_Qube_Joint" type="prismatic">
       <origin xyz="
-          ${0.152 + Calibration_Qube_Joint_Cal_x*0.000001} 
+          ${0.154 + Calibration_Qube_Joint_Cal_x*0.000001} 
           ${0.108 + Calibration_Qube_Joint_Cal_y*0.000001} 
-          ${0.326 + Calibration_Qube_Joint_Cal_z*0.000001}" rpy="
+          ${0.305 + Calibration_Qube_Joint_Cal_z*0.000001}" rpy="
           ${0 + Calibration_Qube_Joint_Cal_rx*3.14159265359/180} 
           ${0 + Calibration_Qube_Joint_Cal_ry*3.14159265359/180} 
           ${0 + Calibration_Qube_Joint_Cal_rz*3.14159265359/180}" />
