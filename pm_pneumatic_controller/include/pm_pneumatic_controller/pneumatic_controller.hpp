@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <vector>
@@ -18,6 +19,7 @@ namespace pm_pneumatic_controller
 
 using namespace pm_msgs::srv;
 
+constexpr int POSITION_UNSET = std::numeric_limits<int>::max();
 constexpr int POSITION_FORWARD = 1;
 constexpr int POSITION_BACK = -1;
 

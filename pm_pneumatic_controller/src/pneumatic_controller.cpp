@@ -51,7 +51,7 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
         return controller_interface::CallbackReturn::ERROR;
     }
 
-    m_commands.resize(m_params.cylinders.size(), -1);
+    m_commands.resize(m_params.cylinders.size(), POSITION_UNSET);
     m_positions.resize(m_params.cylinders.size(), -1);
     m_upper_limits.resize(m_params.cylinders.size(), 0.0);
     m_lower_limits.resize(m_params.cylinders.size(), 0.0);
@@ -238,7 +238,12 @@ PMPneumaticController::update(const rclcpp::Time &time, const rclcpp::Duration &
 
     for (std::size_t i = 0; i < m_params.cylinders.size(); i++)
     {
-        command_interfaces_[3 * i + 0].set_value(static_cast<double>(m_commands[i]));
+        if (m_commands[i] != POSITION_UNSET)
+        {
+            command_interfaces_[3 * i + 0].set_value(static_cast<double>(m_commands[i]));
+            m_commands[i] = POSITION_UNSET;
+        }
+
         command_interfaces_[3 * i + 1].set_value(static_cast<double>(m_upper_limits[i]));
         command_interfaces_[3 * i + 2].set_value(static_cast<double>(m_lower_limits[i]));
     }

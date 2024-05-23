@@ -100,7 +100,7 @@
   <!-- Switch between Gazebo-Simulation and Real Robot -->
 
   <!-- Import control_xacro -->
-  <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_sim_HW.xacro" />
+  <!-- <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_sim_HW.xacro" /> -->
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_real_HW.xacro" />
 
   <xacro:if value="${launch_mode == 'real_HW'}">
@@ -110,8 +110,8 @@
     <!-- <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW"/> -->
   </xacro:if>
 
-  <xacro:if value="${launch_mode == 'sim_HW'}">
+  <!-- <xacro:if value="${launch_mode == 'sim_HW'}">
     <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW" initial_positions_file="$(arg initial_positions_file)"/>
-  </xacro:if>
+  </xacro:if> -->
 
 </robot>

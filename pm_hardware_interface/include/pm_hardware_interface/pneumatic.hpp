@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "hardware_interface/system_interface.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 namespace pm_hardware_interface
 {
@@ -16,6 +17,8 @@ using PneumaticId = PMClient::PneumaticId;
 
 using Position = PMClient::Position;
 
+using double_limits = std::numeric_limits<double>;
+
 struct PneumaticState
 {
     PneumaticId id;
@@ -25,7 +28,7 @@ struct PneumaticState
     double lower_limit = 0.0;
     double physical_position = 0.0;
     double fwd_or_bwd = -1.0;
-    double move_command = -1.0;
+    double move_command = double_limits::quiet_NaN();
 
     bool initialized = false;
 
@@ -101,17 +104,22 @@ struct PneumaticState
     {
         auto &pm_pneumatic = robot.get_pneumatic(this->id);
 
-        if (this->move_command > 0.0)
+        if (!std::isnan(this->move_command))
         {
-            pm_pneumatic.move(Position::Forward);
-        }
-        else if (this->move_command < 0.0)
-        {
-            pm_pneumatic.move(Position::Backward);
-        }
-        else
-        {
-            pm_pneumatic.move(Position::Neutral);
+            if (this->move_command > 0.0)
+            {
+                pm_pneumatic.move(Position::Forward);
+            }
+            else if (this->move_command < 0.0)
+            {
+                pm_pneumatic.move(Position::Backward);
+            }
+            else
+            {
+                pm_pneumatic.move(Position::Neutral);
+            }
+
+            this->move_command = double_limits::quiet_NaN();
         }
     }
 };
