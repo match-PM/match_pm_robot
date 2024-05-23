@@ -74,8 +74,8 @@ struct PneumaticState
     {
         auto &pm_pneumatic = robot.get_pneumatic(this->id);
 
-        bool invert_physical_pos =
-            this->id == PneumaticId::ProtectDoseur || this->id == PneumaticId::Glue;
+        bool invert_physical_pos = this->id == PneumaticId::ProtectDoseur ||
+                                   this->id == PneumaticId::Glue || this->id == PneumaticId::UV1;
 
         switch (pm_pneumatic.get_position())
         {
