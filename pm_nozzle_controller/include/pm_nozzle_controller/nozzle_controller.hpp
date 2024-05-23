@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <vector>
@@ -17,6 +18,7 @@ namespace pm_nozzle_controller
 
 using namespace pm_msgs::srv;
 
+constexpr int STATE_UNSET = std::numeric_limits<int>::max();
 constexpr int STATE_VACUUM = -1;
 constexpr int STATE_IDLE = 0;
 constexpr int STATE_PRESSURE = 1;

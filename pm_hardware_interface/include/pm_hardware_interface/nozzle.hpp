@@ -14,13 +14,15 @@ using CommandInterface = hardware_interface::CommandInterface;
 
 using NozzleId = PMClient::NozzleId;
 
+using double_limits = std::numeric_limits<double>;
+
 struct NozzleState
 {
     NozzleId id;
     std::string name;
 
     double pressure = 0.0;
-    double pressure_cmd = 0.0;
+    double pressure_cmd = double_limits::quiet_NaN();
 
     bool initialized = false;
 
@@ -82,18 +84,23 @@ struct NozzleState
 
     void write(PMClient::Robot &robot)
     {
-        auto &pm_nozzle = robot.get_nozzle(this->id);
-        if (this->pressure_cmd > 0.0)
+        if (!std::isnan(this->pressure_cmd))
         {
-            pm_nozzle.set_state(PMClient::NozzleState::Air);
-        }
-        else if (this->pressure_cmd < 0.0)
-        {
-            pm_nozzle.set_state(PMClient::NozzleState::Vacuum);
-        }
-        else
-        {
-            pm_nozzle.set_state(PMClient::NozzleState::Off);
+            auto &pm_nozzle = robot.get_nozzle(this->id);
+            if (this->pressure_cmd > 0.0)
+            {
+                pm_nozzle.set_state(PMClient::NozzleState::Air);
+            }
+            else if (this->pressure_cmd < 0.0)
+            {
+                pm_nozzle.set_state(PMClient::NozzleState::Vacuum);
+            }
+            else
+            {
+                pm_nozzle.set_state(PMClient::NozzleState::Off);
+            }
+
+            this->pressure_cmd = double_limits::quiet_NaN();
         }
     }
 };

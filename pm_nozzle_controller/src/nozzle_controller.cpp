@@ -47,8 +47,8 @@ PMNozzleController::on_configure(const rclcpp_lifecycle::State &previous_state)
         return controller_interface::CallbackReturn::ERROR;
     }
 
-    m_commands.resize(m_params.nozzles.size(), 0);
-    m_positions.resize(m_params.nozzles.size(), 0);
+    m_commands.resize(m_params.nozzles.size(), STATE_UNSET);
+    m_positions.resize(m_params.nozzles.size(), STATE_UNSET);
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {
@@ -194,7 +194,11 @@ PMNozzleController::update(const rclcpp::Time &time, const rclcpp::Duration &per
 
     for (std::size_t i = 0; i < m_params.nozzles.size(); i++)
     {
-        command_interfaces_[i].set_value(static_cast<double>(m_commands[i]));
+        if (m_commands[i] != STATE_UNSET)
+        {
+            command_interfaces_[i].set_value(static_cast<double>(m_commands[i]));
+            m_commands[i] = STATE_UNSET;
+        }
     }
 
     return controller_interface::return_type::OK;
