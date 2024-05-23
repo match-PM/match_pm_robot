@@ -23,6 +23,8 @@ endif()
 
 rosidl_generate_interfaces(
   ${PROJECT_NAME}
+  "msg/GripperForces.msg"
+
   "srv/EmptyWithSuccess.srv"
   "srv/UVSetOnOff.srv"
   "srv/UVGetOnOff.srv"
@@ -45,7 +47,10 @@ rosidl_generate_interfaces(
   "srv/LaserGetMeasurement.srv"
   "srv/ReferenceCubeState.srv"
 
-  "action/SmaractMove.action"
+  "srv/GripperMove.srv"
+  "srv/GripperMoveRel.srv"
+  "srv/GripperSetVel.srv"
+  "srv/GripperSetAccel.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)

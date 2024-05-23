@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>pm_smaract_gripper</name>
+  <name>pm_smaract_gripper_controller</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="pmlab@pmlab.com">pmlab</maintainer>
+  <maintainer email="114574121+Florwie@users.noreply.github.com">pmlab</maintainer>
   <license>TODO: License declaration</license>
 
-  <depend>rclcpp</depend>
-  <depend>rclcpp_action</depend>
-  <depend>rclcpp_components</depend>
-  <depend>pm_msgs</depend>
-
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>controller_interface</depend>
+  <depend>pluginlib</depend>
+  <depend>hardware_interface</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+
+  <depend>pm_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
