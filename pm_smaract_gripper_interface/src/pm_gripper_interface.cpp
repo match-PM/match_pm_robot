@@ -313,7 +313,8 @@ std::vector<CommandInterface> PMGripperInterface::export_command_interfaces()
 {
     std::vector<CommandInterface> command_interfaces;
 
-    command_interfaces.emplace_back("Gripper", "TargetPosition", &m_target_position);
+    command_interfaces.emplace_back("Gripper", "TargetPositionRel", &m_rel_target_position);
+    command_interfaces.emplace_back("Gripper", "TargetPositionAbs", &m_abs_target_position);
     command_interfaces.emplace_back("Gripper", "TargetVelocity", &m_target_velocity);
     command_interfaces.emplace_back("Gripper", "TargetAcceleration", &m_target_acceleration);
 
@@ -362,12 +363,24 @@ PMGripperInterface::write(const rclcpp::Time &time, const rclcpp::Duration &peri
 
     // RCLCPP_INFO(rclcpp::get_logger("PMGripperInterface"), "PMGripperInterface::write called.");
 
-    if (!std::isnan(m_target_position))
+    if (!std::isnan(m_abs_target_position))
     {
-        auto result = SA_CTL_Move(m_handle, m_channel, static_cast<int64_t>(m_target_position), 0);
+        set_move_mode(SA_CTL_MOVE_MODE_CL_ABSOLUTE);
+        auto result =
+            SA_CTL_Move(m_handle, m_channel, static_cast<int64_t>(m_abs_target_position), 0);
         if (result != SA_CTL_ERROR_NONE)
-            RCLCPP_ERROR(rclcpp::get_logger("PMGripperInterface"), "move failed");
-        m_target_position = double_limits::quiet_NaN();
+            RCLCPP_ERROR(rclcpp::get_logger("PMGripperInterface"), "absolute move failed");
+        m_abs_target_position = double_limits::quiet_NaN();
+    }
+
+    if (!std::isnan(m_rel_target_position))
+    {
+        set_move_mode(SA_CTL_MOVE_MODE_CL_RELATIVE);
+        auto result =
+            SA_CTL_Move(m_handle, m_channel, static_cast<int64_t>(m_rel_target_position), 0);
+        if (result != SA_CTL_ERROR_NONE)
+            RCLCPP_ERROR(rclcpp::get_logger("PMGripperInterface"), "relative move failed");
+        m_rel_target_position = double_limits::quiet_NaN();
     }
 
     if (!std::isnan(m_target_velocity))
@@ -397,6 +410,24 @@ PMGripperInterface::write(const rclcpp::Time &time, const rclcpp::Duration &peri
     }
 
     return hardware_interface::return_type::OK;
+}
+
+//
+// ---------------------------------------------
+//
+
+///
+/// PMGripperInterface methods
+///
+
+void PMGripperInterface::set_move_mode(int32_t move_mode)
+{
+    if (m_current_move_mode != move_mode)
+    {
+        auto result = SA_CTL_SetProperty_i32(m_handle, m_channel, SA_CTL_PKEY_MOVE_MODE, move_mode);
+        assert(result == SA_CTL_ERROR_NONE);
+        m_current_move_mode = move_mode;
+    }
 }
 
 //

@@ -46,7 +46,9 @@ rosidl_generate_interfaces(
   "srv/ForceSensorBias.srv"
   "srv/LaserGetMeasurement.srv"
   "srv/ReferenceCubeState.srv"
+
   "srv/GripperMove.srv"
+  "srv/GripperMoveRel.srv"
   "srv/GripperSetVel.srv"
   "srv/GripperSetAccel.srv"
 )

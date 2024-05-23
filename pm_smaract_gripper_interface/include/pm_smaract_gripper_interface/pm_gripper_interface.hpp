@@ -33,7 +33,10 @@ class PMGripperInterface : public hardware_interface::SystemInterface
     SA_CTL_DeviceHandle_t m_handle;
     int8_t m_channel = 0;
 
-    double m_target_position{double_limits::quiet_NaN()};
+    int32_t m_current_move_mode = -1;
+
+    double m_rel_target_position{double_limits::quiet_NaN()};
+    double m_abs_target_position{double_limits::quiet_NaN()};
     double m_target_velocity{double_limits::quiet_NaN()};
     double m_target_acceleration{double_limits::quiet_NaN()};
 
@@ -85,6 +88,16 @@ class PMGripperInterface : public hardware_interface::SystemInterface
 
     PM_SYSTEM_PUBLIC hardware_interface::return_type
     write(const rclcpp::Time &time, const rclcpp::Duration &period) override;
+
+    //
+    // ---------------------------------------------
+    //
+
+    ///
+    /// PMGripperInterface methods
+    ///
+
+    void set_move_mode(int32_t move_mode);
 
     //
     // ---------------------------------------------

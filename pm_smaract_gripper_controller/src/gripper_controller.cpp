@@ -39,7 +39,26 @@ PMGripperController::on_configure(const rclcpp_lifecycle::State &previous_state)
 
     m_forces_pub = get_node()->create_publisher<GripperForces>("~/Forces/Stream", 1000);
 
-    m_move_srv = get_node()->create_service<GripperMove>(
+    m_move_rel_srv = get_node()->create_service<GripperMoveRel>(
+        "~/MoveRelative",
+        [this](
+            const GripperMoveRel::Request::SharedPtr request,
+            GripperMoveRel::Response::SharedPtr response
+        ) {
+            if (request->offset < MIN_POSITION || request->offset > MAX_POSITION)
+            {
+                response->error_msg = "Position outside allowed range.";
+                response->success = false;
+                return;
+            }
+
+            m_target_position_rel = request->offset;
+            response->error_msg = "No error.";
+            response->success = true;
+        }
+    );
+
+    m_move_abs_srv = get_node()->create_service<GripperMove>(
         "~/Move",
         [this](
             const GripperMove::Request::SharedPtr request,
@@ -52,7 +71,7 @@ PMGripperController::on_configure(const rclcpp_lifecycle::State &previous_state)
                 return;
             }
 
-            m_target_position = request->target_position;
+            m_target_position_abs = request->target_position;
             response->error_msg = "No error.";
             response->success = true;
         }
@@ -105,7 +124,8 @@ PMGripperController::command_interface_configuration() const
     controller_interface::InterfaceConfiguration config;
     config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
     config.names = {
-        "Gripper/TargetPosition",
+        "Gripper/TargetPositionRel",
+        "Gripper/TargetPositionAbs",
         "Gripper/TargetVelocity",
         "Gripper/TargetAcceleration",
     };
@@ -146,21 +166,27 @@ PMGripperController::update(const rclcpp::Time &time, const rclcpp::Duration &pe
         m_forces_pub->publish(msg);
     }
 
-    if (!std::isnan(m_target_position))
+    if (!std::isnan(m_target_position_rel))
     {
-        command_interfaces_[0].set_value(m_target_position);
-        m_target_position = double_limits::quiet_NaN();
+        command_interfaces_[0].set_value(m_target_position_rel);
+        m_target_position_rel = double_limits::quiet_NaN();
+    }
+
+    if (!std::isnan(m_target_position_abs))
+    {
+        command_interfaces_[1].set_value(m_target_position_abs);
+        m_target_position_abs = double_limits::quiet_NaN();
     }
 
     if (!std::isnan(m_target_velocity))
     {
-        command_interfaces_[1].set_value(m_target_velocity);
+        command_interfaces_[2].set_value(m_target_velocity);
         m_target_velocity = double_limits::quiet_NaN();
     }
 
     if (!std::isnan(m_target_acceleration))
     {
-        command_interfaces_[2].set_value(m_target_acceleration);
+        command_interfaces_[3].set_value(m_target_acceleration);
         m_target_acceleration = double_limits::quiet_NaN();
     }
 
