@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "controller_interface/controller_interface.hpp"
 
 #include "pm_msgs/srv/uv_get_on_off.hpp"
@@ -18,19 +20,19 @@ class PMUVController : public controller_interface::ControllerInterface
 {
   private:
     rclcpp::Service<UVSetOnOff>::SharedPtr m_set_on_off_service;
-    std::array<bool, 4> m_on_off_cmd;
+    std::array<std::optional<bool>, 4> m_on_off_cmd;
 
     rclcpp::Service<UVGetOnOff>::SharedPtr m_get_on_off_service;
     std::array<bool, 4> m_on_off_state;
 
     rclcpp::Service<UVSetPower>::SharedPtr m_set_power_service;
-    std::array<int, 4> m_power_cmd;
+    std::array<std::optional<int>, 4> m_power_cmd;
 
     rclcpp::Service<UVGetPower>::SharedPtr m_get_power_service;
     std::array<int, 4> m_power_state;
 
     rclcpp::Service<UVSetTime>::SharedPtr m_set_time_service;
-    std::array<double, 4> m_time_cmd;
+    std::array<std::optional<double>, 4> m_time_cmd;
 
     rclcpp::Service<UVGetTime>::SharedPtr m_get_time_service;
     std::array<double, 4> m_time_state;

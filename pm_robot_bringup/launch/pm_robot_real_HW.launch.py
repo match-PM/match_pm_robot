@@ -253,6 +253,17 @@ def generate_launch_description():
         emulate_tty=True
     )
 
+    pm_uv_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "pm_uv_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+        emulate_tty=True
+    )
+
     launch_gonio_left_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
@@ -335,6 +346,7 @@ def generate_launch_description():
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)
     ld.add_action(pm_nozzle_controller_spawner)
+    # ld.add_action(pm_uv_controller)
 
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)

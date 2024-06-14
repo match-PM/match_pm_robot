@@ -40,9 +40,9 @@ PMUVController::on_configure(const rclcpp_lifecycle::State &previous_state)
         ) {
             (void)response;
             std::copy_n(
-                std::begin(m_on_off_cmd),
+                std::begin(request->turn_on),
                 m_on_off_cmd.size(),
-                std::begin(request->turn_on)
+                std::begin(m_on_off_cmd)
             );
         }
     );
@@ -54,7 +54,11 @@ PMUVController::on_configure(const rclcpp_lifecycle::State &previous_state)
             UVGetOnOff::Response::SharedPtr response
         ) {
             (void)request;
-            std::copy_n(std::begin(response->is_on), m_on_off_cmd.size(), std::begin(m_on_off_cmd));
+            std::copy_n(
+                std::begin(m_on_off_state),
+                m_on_off_state.size(),
+                std::begin(response->is_on)
+            );
         }
     );
 
@@ -65,7 +69,7 @@ PMUVController::on_configure(const rclcpp_lifecycle::State &previous_state)
             UVSetPower::Response::SharedPtr response
         ) {
             (void)response;
-            std::copy_n(std::begin(m_power_cmd), m_power_cmd.size(), std::begin(request->power));
+            std::copy_n(std::begin(request->power), m_power_cmd.size(), std::begin(m_power_cmd));
         }
     );
 
@@ -76,7 +80,11 @@ PMUVController::on_configure(const rclcpp_lifecycle::State &previous_state)
             UVGetPower::Response::SharedPtr response
         ) {
             (void)request;
-            std::copy_n(std::begin(response->power), m_power_cmd.size(), std::begin(m_power_cmd));
+            std::copy_n(
+                std::begin(m_power_state),
+                m_power_state.size(),
+                std::begin(response->power)
+            );
         }
     );
 
@@ -87,7 +95,7 @@ PMUVController::on_configure(const rclcpp_lifecycle::State &previous_state)
             UVSetTime::Response::SharedPtr response
         ) {
             (void)response;
-            std::copy_n(std::begin(m_time_cmd), m_time_cmd.size(), std::begin(request->time));
+            std::copy_n(std::begin(request->time), m_time_cmd.size(), std::begin(m_time_cmd));
         }
     );
 
@@ -98,7 +106,7 @@ PMUVController::on_configure(const rclcpp_lifecycle::State &previous_state)
             UVGetTime::Response::SharedPtr response
         ) {
             (void)request;
-            std::copy_n(std::begin(response->time), m_time_cmd.size(), std::begin(m_time_cmd));
+            std::copy_n(std::begin(m_time_state), m_time_state.size(), std::begin(response->time));
         }
     );
 
@@ -166,18 +174,21 @@ PMUVController::update(const rclcpp::Time &time, const rclcpp::Duration &period)
 
     for (auto i = 0; i < 4; i++)
     {
-        command_interfaces_[i].set_value(static_cast<double>(m_on_off_cmd[i]));
+        if (m_on_off_cmd[i].has_value())
+            command_interfaces_[i].set_value(static_cast<double>(*m_on_off_cmd[i]));
         m_on_off_state[i] = static_cast<bool>(state_interfaces_[i].get_value());
-    }
-    for (auto i = 0; i < 4; i++)
-    {
-        command_interfaces_[4 + i].set_value(static_cast<double>(m_power_cmd[i]));
+
+        if (m_power_cmd[i].has_value())
+            command_interfaces_[4 + i].set_value(static_cast<double>(*m_power_cmd[i]));
         m_power_state[i] = static_cast<int>(state_interfaces_[4 + i].get_value());
-    }
-    for (auto i = 0; i < 4; i++)
-    {
-        command_interfaces_[8 + i].set_value(static_cast<double>(m_time_cmd[i]));
+
+        if (m_time_cmd[i].has_value())
+            command_interfaces_[8 + i].set_value(static_cast<double>(*m_time_cmd[i]));
         m_time_state[i] = static_cast<double>(state_interfaces_[8 + i].get_value());
+
+        m_on_off_cmd[i].reset();
+        m_power_cmd[i].reset();
+        m_time_cmd[i].reset();
     }
 
     return controller_interface::return_type::OK;

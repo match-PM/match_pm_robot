@@ -12,20 +12,70 @@ using StateInterface = hardware_interface::StateInterface;
 
 using CommandInterface = hardware_interface::CommandInterface;
 
+using double_limits = std::numeric_limits<double>;
+
+/**
+ * Check if `arr` contains a value that is not NaN.
+ */
+bool has_number(const std::array<double, 4> &arr)
+{
+    for (const auto val : arr)
+    {
+        if (!std::isnan(val))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Copy values from `src` into `dst` where `dst` has NaN.
+ */
+void merge(std::array<double, 4> &dst, const std::array<double, 4> &src)
+{
+    for (auto i = 0; i < 4; ++i)
+    {
+        if (std::isnan(dst[i]))
+        {
+            dst[i] = src[i];
+        }
+    }
+}
+
+/**
+ * Set all elements of `arr` to NaN.
+ */
+void fill_nan(std::array<double, 4> &arr)
+{
+    std::fill(std::begin(arr), std::end(arr), double_limits::quiet_NaN());
+}
+
 struct HoenleUVState
 {
     std::string name{"HoenleUV"};
 
     std::array<double, 4> on_off_state{0.0, 0.0, 0.0, 0.0};
-    std::array<double, 4> on_off_cmd{0.0, 0.0, 0.0, 0.0};
+    std::array<double, 4> on_off_cmd{
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN()
+    };
     std::array<double, 4> power_state{0.0, 0.0, 0.0, 0.0};
-    std::array<double, 4> power_cmd{0.0, 0.0, 0.0, 0.0};
+    std::array<double, 4> power_cmd{
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN()
+    };
     std::array<double, 4> time_state{0.0, 0.0, 0.0, 0.0};
-    std::array<double, 4> time_cmd{0.0, 0.0, 0.0, 0.0};
-
-    explicit HoenleUVState()
-    {
-    }
+    std::array<double, 4> time_cmd{
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN(),
+        double_limits::quiet_NaN()
+    };
 
     void add_state_interfaces(std::vector<StateInterface> &interfaces)
     {
@@ -75,18 +125,69 @@ struct HoenleUVState
 
     void write(PMClient::Robot &robot)
     {
-        std::array<bool, 4> b_on_off_cmd;
-        std::array<int, 4> i_power_cmd;
-
-        for (auto i = 0; i < 4; i++)
+        if (has_number(this->on_off_cmd))
         {
-            b_on_off_cmd[i] = static_cast<bool>(this->on_off_cmd[i]);
-            i_power_cmd[i] = static_cast<bool>(this->power_cmd[i]);
+            merge(this->on_off_cmd, this->on_off_state);
+
+            RCLCPP_INFO(
+                rclcpp::get_logger("PMSystem"),
+                "ON/OFF: %f %f %f %f",
+                on_off_cmd[0],
+                on_off_cmd[1],
+                on_off_cmd[2],
+                on_off_cmd[3]
+            );
+
+            std::array<bool, 4> b_on_off_cmd;
+            for (auto i = 0; i < 4; i++)
+            {
+                b_on_off_cmd[i] = static_cast<bool>(this->on_off_cmd[i]);
+            }
+            robot.hoenle_uv->set_on_off(b_on_off_cmd);
+
+            fill_nan(this->on_off_cmd);
         }
 
-        robot.hoenle_uv->set_on_off(b_on_off_cmd);
-        robot.hoenle_uv->set_power(i_power_cmd);
-        robot.hoenle_uv->set_time(this->time_cmd);
+        if (has_number(this->power_cmd))
+        {
+            merge(this->power_cmd, this->power_state);
+
+            RCLCPP_INFO(
+                rclcpp::get_logger("PMSystem"),
+                "POWER: %f %f %f %f",
+                power_cmd[0],
+                power_cmd[1],
+                power_cmd[2],
+                power_cmd[3]
+            );
+
+            std::array<int, 4> i_power_cmd;
+            for (auto i = 0; i < 4; i++)
+            {
+                i_power_cmd[i] = static_cast<int>(this->power_cmd[i]);
+            }
+            robot.hoenle_uv->set_power(i_power_cmd);
+
+            fill_nan(this->power_cmd);
+        }
+
+        if (has_number(this->time_cmd))
+        {
+            merge(this->time_cmd, this->time_state);
+
+            RCLCPP_INFO(
+                rclcpp::get_logger("PMSystem"),
+                "TIME: %f %f %f %f",
+                time_cmd[0],
+                time_cmd[1],
+                time_cmd[2],
+                time_cmd[3]
+            );
+
+            robot.hoenle_uv->set_time(this->time_cmd);
+
+            fill_nan(this->time_cmd);
+        }
     }
 };
 
