@@ -129,15 +129,6 @@ struct HoenleUVState
         {
             merge(this->on_off_cmd, this->on_off_state);
 
-            RCLCPP_INFO(
-                rclcpp::get_logger("PMSystem"),
-                "ON/OFF: %f %f %f %f",
-                on_off_cmd[0],
-                on_off_cmd[1],
-                on_off_cmd[2],
-                on_off_cmd[3]
-            );
-
             std::array<bool, 4> b_on_off_cmd;
             for (auto i = 0; i < 4; i++)
             {
@@ -152,15 +143,6 @@ struct HoenleUVState
         {
             merge(this->power_cmd, this->power_state);
 
-            RCLCPP_INFO(
-                rclcpp::get_logger("PMSystem"),
-                "POWER: %f %f %f %f",
-                power_cmd[0],
-                power_cmd[1],
-                power_cmd[2],
-                power_cmd[3]
-            );
-
             std::array<int, 4> i_power_cmd;
             for (auto i = 0; i < 4; i++)
             {
@@ -174,15 +156,6 @@ struct HoenleUVState
         if (has_number(this->time_cmd))
         {
             merge(this->time_cmd, this->time_state);
-
-            RCLCPP_INFO(
-                rclcpp::get_logger("PMSystem"),
-                "TIME: %f %f %f %f",
-                time_cmd[0],
-                time_cmd[1],
-                time_cmd[2],
-                time_cmd[3]
-            );
 
             robot.hoenle_uv->set_time(this->time_cmd);
 
