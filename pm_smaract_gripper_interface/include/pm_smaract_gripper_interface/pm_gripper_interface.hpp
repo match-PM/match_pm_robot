@@ -39,6 +39,8 @@ class PMGripperInterface : public hardware_interface::SystemInterface
     double m_abs_target_position{double_limits::quiet_NaN()};
     double m_target_velocity{double_limits::quiet_NaN()};
     double m_target_acceleration{double_limits::quiet_NaN()};
+    double m_current_velocity{double_limits::quiet_NaN()};
+    double m_current_acceleration{double_limits::quiet_NaN()};
 
     double m_current_position{0.0};
     struct

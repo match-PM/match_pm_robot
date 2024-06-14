@@ -302,9 +302,13 @@ std::vector<StateInterface> PMGripperInterface::export_state_interfaces()
     std::vector<StateInterface> state_interfaces;
 
     state_interfaces.emplace_back("Gripper", "Position", &m_current_position);
+
     state_interfaces.emplace_back("Gripper", "ForceX", &m_force.x);
     state_interfaces.emplace_back("Gripper", "ForceY", &m_force.y);
     state_interfaces.emplace_back("Gripper", "ForceZ", &m_force.z);
+
+    state_interfaces.emplace_back("Gripper", "Velocity", &m_current_velocity);
+    state_interfaces.emplace_back("Gripper", "Acceleration", &m_current_acceleration);
 
     return state_interfaces;
 }
@@ -351,6 +355,28 @@ PMGripperInterface::read(const rclcpp::Time &time, const rclcpp::Duration &perio
         SA_CTL_GetProperty_i64(m_handle, 2, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_z, 0);
     assert(result == SA_CTL_ERROR_NONE);
     m_force.z = static_cast<double>(force_z);
+
+    int64_t current_velocity = 0;
+    result = SA_CTL_GetProperty_i64(
+        m_handle,
+        m_channel,
+        SA_CTL_PKEY_MOVE_VELOCITY,
+        &current_velocity,
+        0
+    );
+    assert(result == SA_CTL_ERROR_NONE);
+    m_current_velocity = static_cast<double>(current_velocity);
+
+    int64_t current_acceleration = 0;
+    result = SA_CTL_GetProperty_i64(
+        m_handle,
+        m_channel,
+        SA_CTL_PKEY_MOVE_ACCELERATION,
+        &current_acceleration,
+        0
+    );
+    assert(result == SA_CTL_ERROR_NONE);
+    m_current_acceleration = static_cast<double>(current_acceleration);
 
     return hardware_interface::return_type::OK;
 }

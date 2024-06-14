@@ -99,6 +99,28 @@ PMGripperController::on_configure(const rclcpp_lifecycle::State &previous_state)
         }
     );
 
+    m_get_velocity_srv = get_node()->create_service<GripperGetVel>(
+        "~/GetVelocity",
+        [this](
+            const GripperGetVel::Request::SharedPtr request,
+            GripperGetVel::Response::SharedPtr response
+        ) {
+            (void)request;
+            response->current_velocity = m_current_velocity;
+        }
+    );
+
+    m_get_acceleration_srv = get_node()->create_service<GripperGetAccel>(
+        "~/GetAcceleration",
+        [this](
+            const GripperGetAccel::Request::SharedPtr request,
+            GripperGetAccel::Response::SharedPtr response
+        ) {
+            (void)request;
+            response->current_acceleration = m_current_acceleration;
+        }
+    );
+
     return controller_interface::CallbackReturn::SUCCESS;
 }
 
@@ -142,6 +164,8 @@ PMGripperController::state_interface_configuration() const
         "Gripper/ForceX",
         "Gripper/ForceY",
         "Gripper/ForceZ",
+        "Gripper/Velocity",
+        "Gripper/Acceleration",
     };
     return config;
 }
@@ -189,6 +213,9 @@ PMGripperController::update(const rclcpp::Time &time, const rclcpp::Duration &pe
         command_interfaces_[3].set_value(m_target_acceleration);
         m_target_acceleration = double_limits::quiet_NaN();
     }
+
+    m_current_velocity = state_interfaces_[4].get_value();
+    m_current_acceleration = state_interfaces_[5].get_value();
 
     return controller_interface::return_type::OK;
 }

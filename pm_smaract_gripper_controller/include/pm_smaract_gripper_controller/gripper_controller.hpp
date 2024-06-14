@@ -7,6 +7,8 @@
 #include "std_msgs/msg/float64.hpp"
 
 #include "pm_msgs/msg/gripper_forces.hpp"
+#include "pm_msgs/srv/gripper_get_accel.hpp"
+#include "pm_msgs/srv/gripper_get_vel.hpp"
 #include "pm_msgs/srv/gripper_move.hpp"
 #include "pm_msgs/srv/gripper_move_rel.hpp"
 #include "pm_msgs/srv/gripper_set_accel.hpp"
@@ -33,11 +35,15 @@ class PMGripperController : public controller_interface::ControllerInterface
     rclcpp::Service<GripperMove>::SharedPtr m_move_abs_srv;
     rclcpp::Service<GripperSetVel>::SharedPtr m_set_velocity_srv;
     rclcpp::Service<GripperSetAccel>::SharedPtr m_set_acceleration_srv;
+    rclcpp::Service<GripperGetVel>::SharedPtr m_get_velocity_srv;
+    rclcpp::Service<GripperGetAccel>::SharedPtr m_get_acceleration_srv;
 
     double m_target_position_rel{double_limits::quiet_NaN()};
     double m_target_position_abs{double_limits::quiet_NaN()};
     double m_target_velocity{double_limits::quiet_NaN()};
     double m_target_acceleration{double_limits::quiet_NaN()};
+    double m_current_velocity{double_limits::quiet_NaN()};
+    double m_current_acceleration{double_limits::quiet_NaN()};
 
   public:
     PMGripperController();

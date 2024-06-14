@@ -51,6 +51,8 @@ rosidl_generate_interfaces(
   "srv/GripperMoveRel.srv"
   "srv/GripperSetVel.srv"
   "srv/GripperSetAccel.srv"
+  "srv/GripperGetVel.srv"
+  "srv/GripperGetAccel.srv"
 )
 
 ament_export_dependencies(rosidl_default_runtime)
