@@ -59,7 +59,10 @@ CallbackReturn PMGripperInterface::on_configure(const State &previous_state)
 
     int32_t type;
     result = SA_CTL_GetProperty_i32(m_handle, m_channel, SA_CTL_PKEY_CHANNEL_TYPE, &type, 0);
-    assert(type == SA_CTL_STICK_SLIP_PIEZO_DRIVER);
+    assert(
+        (type == SA_CTL_STICK_SLIP_PIEZO_DRIVER) &&
+        "Gripper has unexpected channel type (not slip piezo driver)."
+    );
 
     if (type != SA_CTL_STICK_SLIP_PIEZO_DRIVER)
     {
@@ -335,25 +338,27 @@ PMGripperInterface::read(const rclcpp::Time &time, const rclcpp::Duration &perio
 
     int64_t position = 0;
     auto result = SA_CTL_GetProperty_i64(m_handle, m_channel, SA_CTL_PKEY_POSITION, &position, 0);
-    assert(result == SA_CTL_ERROR_NONE);
+    if (result != SA_CTL_ERROR_NONE)
+        RCLCPP_INFO(rclcpp::get_logger("PMGripperInterface"), "result = %d", result);
+    assert((result == SA_CTL_ERROR_NONE) && "Failed to read current position.");
     m_current_position = static_cast<double>(position);
 
     int64_t force_x = 0;
     result =
         SA_CTL_GetProperty_i64(m_handle, 0, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_x, 0);
-    assert(result == SA_CTL_ERROR_NONE);
+    assert((result == SA_CTL_ERROR_NONE) && "Failed to read X force (AUX IO channel 0)");
     m_force.x = static_cast<double>(force_x);
 
     int64_t force_y = 0;
     result =
         SA_CTL_GetProperty_i64(m_handle, 1, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_y, 0);
-    assert(result == SA_CTL_ERROR_NONE);
+    assert((result == SA_CTL_ERROR_NONE) && "Failed to read Y force (AUX IO channel 1)");
     m_force.y = static_cast<double>(force_y);
 
     int64_t force_z = 0;
     result =
         SA_CTL_GetProperty_i64(m_handle, 2, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_z, 0);
-    assert(result == SA_CTL_ERROR_NONE);
+    assert((result == SA_CTL_ERROR_NONE) && "Failed to read Z force (AUX IO channel 2)");
     m_force.z = static_cast<double>(force_z);
 
     int64_t current_velocity = 0;
@@ -364,7 +369,7 @@ PMGripperInterface::read(const rclcpp::Time &time, const rclcpp::Duration &perio
         &current_velocity,
         0
     );
-    assert(result == SA_CTL_ERROR_NONE);
+    assert((result == SA_CTL_ERROR_NONE) && "Failed to read current velocity.");
     m_current_velocity = static_cast<double>(current_velocity);
 
     int64_t current_acceleration = 0;
@@ -375,7 +380,7 @@ PMGripperInterface::read(const rclcpp::Time &time, const rclcpp::Duration &perio
         &current_acceleration,
         0
     );
-    assert(result == SA_CTL_ERROR_NONE);
+    assert((result == SA_CTL_ERROR_NONE) && "Failed to read current acceleration.");
     m_current_acceleration = static_cast<double>(current_acceleration);
 
     return hardware_interface::return_type::OK;
@@ -451,7 +456,7 @@ void PMGripperInterface::set_move_mode(int32_t move_mode)
     if (m_current_move_mode != move_mode)
     {
         auto result = SA_CTL_SetProperty_i32(m_handle, m_channel, SA_CTL_PKEY_MOVE_MODE, move_mode);
-        assert(result == SA_CTL_ERROR_NONE);
+        assert((result == SA_CTL_ERROR_NONE) && "Failed to set move mode.");
         m_current_move_mode = move_mode;
     }
 }
