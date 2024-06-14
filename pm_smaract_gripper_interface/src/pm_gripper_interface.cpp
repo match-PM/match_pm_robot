@@ -336,52 +336,73 @@ PMGripperInterface::read(const rclcpp::Time &time, const rclcpp::Duration &perio
 
     // RCLCPP_INFO(rclcpp::get_logger("PMGripperInterface"), "PMGripperInterface::read called.");
 
-    int64_t position = 0;
-    auto result = SA_CTL_GetProperty_i64(m_handle, m_channel, SA_CTL_PKEY_POSITION, &position, 0);
+    SA_CTL_Result_t result;
+
+    result = try_read_property(m_channel, SA_CTL_PKEY_POSITION, m_current_position);
     if (result != SA_CTL_ERROR_NONE)
-        RCLCPP_INFO(rclcpp::get_logger("PMGripperInterface"), "result = %d", result);
-    assert((result == SA_CTL_ERROR_NONE) && "Failed to read current position.");
-    m_current_position = static_cast<double>(position);
+    {
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PMGripperInterface"),
+            "Failed to read position after %d attempts: result = %",
+            MAX_READ_ATTEMPTS,
+            result
+        );
+    }
 
-    int64_t force_x = 0;
-    result =
-        SA_CTL_GetProperty_i64(m_handle, 0, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_x, 0);
-    assert((result == SA_CTL_ERROR_NONE) && "Failed to read X force (AUX IO channel 0)");
-    m_force.x = static_cast<double>(force_x);
+    result = try_read_property(0, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, m_force.x);
+    if (result != SA_CTL_ERROR_NONE)
+    {
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PMGripperInterface"),
+            "Failed to read X force (AUX IO channel 0) after %d attempts: result = %",
+            MAX_READ_ATTEMPTS,
+            result
+        );
+    }
 
-    int64_t force_y = 0;
-    result =
-        SA_CTL_GetProperty_i64(m_handle, 1, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_y, 0);
-    assert((result == SA_CTL_ERROR_NONE) && "Failed to read Y force (AUX IO channel 1)");
-    m_force.y = static_cast<double>(force_y);
+    result = try_read_property(1, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, m_force.y);
+    if (result != SA_CTL_ERROR_NONE)
+    {
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PMGripperInterface"),
+            "Failed to read Y force (AUX IO channel 1) after %d attempts: result = %",
+            MAX_READ_ATTEMPTS,
+            result
+        );
+    }
 
-    int64_t force_z = 0;
-    result =
-        SA_CTL_GetProperty_i64(m_handle, 2, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, &force_z, 0);
-    assert((result == SA_CTL_ERROR_NONE) && "Failed to read Z force (AUX IO channel 2)");
-    m_force.z = static_cast<double>(force_z);
+    result = try_read_property(2, SA_CTL_PKEY_AUX_IO_MODULE_INPUT0_VALUE, m_force.z);
+    if (result != SA_CTL_ERROR_NONE)
+    {
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PMGripperInterface"),
+            "Failed to read Z force (AUX IO channel 2) after %d attempts: result = %",
+            MAX_READ_ATTEMPTS,
+            result
+        );
+    }
 
-    int64_t current_velocity = 0;
-    result = SA_CTL_GetProperty_i64(
-        m_handle,
-        m_channel,
-        SA_CTL_PKEY_MOVE_VELOCITY,
-        &current_velocity,
-        0
-    );
-    assert((result == SA_CTL_ERROR_NONE) && "Failed to read current velocity.");
-    m_current_velocity = static_cast<double>(current_velocity);
+    result = try_read_property(m_channel, SA_CTL_PKEY_MOVE_VELOCITY, m_current_velocity);
+    if (result != SA_CTL_ERROR_NONE)
+    {
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PMGripperInterface"),
+            "Failed to read current velocity after %d attempts: result = %",
+            MAX_READ_ATTEMPTS,
+            result
+        );
+    }
 
-    int64_t current_acceleration = 0;
-    result = SA_CTL_GetProperty_i64(
-        m_handle,
-        m_channel,
-        SA_CTL_PKEY_MOVE_ACCELERATION,
-        &current_acceleration,
-        0
-    );
-    assert((result == SA_CTL_ERROR_NONE) && "Failed to read current acceleration.");
-    m_current_acceleration = static_cast<double>(current_acceleration);
+    result = try_read_property(m_channel, SA_CTL_PKEY_MOVE_ACCELERATION, m_current_acceleration);
+    if (result != SA_CTL_ERROR_NONE)
+    {
+        RCLCPP_ERROR(
+            rclcpp::get_logger("PMGripperInterface"),
+            "Failed to read current acceleration after %d attempts: result = %",
+            MAX_READ_ATTEMPTS,
+            result
+        );
+    }
 
     return hardware_interface::return_type::OK;
 }
@@ -459,6 +480,26 @@ void PMGripperInterface::set_move_mode(int32_t move_mode)
         assert((result == SA_CTL_ERROR_NONE) && "Failed to set move mode.");
         m_current_move_mode = move_mode;
     }
+}
+
+SA_CTL_Result_t PMGripperInterface ::try_read_property(
+    int8_t channel, SA_CTL_PropertyKey_t property, double &out_value
+)
+{
+    SA_CTL_Result_t result;
+
+    for (auto i = 0; i < MAX_READ_ATTEMPTS; ++i)
+    {
+        int64_t value;
+        result = SA_CTL_GetProperty_i64(m_handle, channel, property, &value, 0);
+        if (result != SA_CTL_ERROR_NONE)
+            continue;
+
+        out_value = static_cast<double>(value);
+        return SA_CTL_ERROR_NONE;
+    }
+
+    return result;
 }
 
 //

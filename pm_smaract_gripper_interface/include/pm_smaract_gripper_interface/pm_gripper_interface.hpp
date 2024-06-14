@@ -30,6 +30,8 @@ using double_limits = std::numeric_limits<double>;
 
 class PMGripperInterface : public hardware_interface::SystemInterface
 {
+    constexpr static int MAX_READ_ATTEMPTS = 5;
+
     SA_CTL_DeviceHandle_t m_handle;
     int8_t m_channel = 0;
 
@@ -100,6 +102,9 @@ class PMGripperInterface : public hardware_interface::SystemInterface
     ///
 
     void set_move_mode(int32_t move_mode);
+
+    SA_CTL_Result_t
+    try_read_property(int8_t channel, SA_CTL_PropertyKey_t property, double &out_value);
 
     //
     // ---------------------------------------------
