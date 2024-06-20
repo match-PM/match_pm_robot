@@ -5950,6 +5950,8 @@ static UA_StatusCode function_pm_opcua_server_133_begin(UA_Server *server, UA_UI
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
     attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+    UA_Double init_val = 0.000076;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
     attr.description = UA_LOCALIZEDTEXT("", "The number of units per increment.");
 #endif

@@ -7,9 +7,9 @@
         <ros2_control name="PMSystem" type="system">
             <hardware>
                 <plugin>pm_hardware_interface/PMSystem</plugin>
-                <param name="opcua_endpoint">opc.tcp://PC1M0484-1:4840</param>
+                <!-- <param name="opcua_endpoint">opc.tcp://PC1M0484-1:4840</param> -->
 
-                <!-- <param name="opcua_endpoint">opc.tcp://localhost:4840</param> -->
+                <param name="opcua_endpoint">opc.tcp://localhost:4840</param>
             </hardware>
 
             <joint name="X_Axis_Joint">

@@ -630,7 +630,7 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     float current_joint_value = global_joint_state->position[current_joint_index];
     float differrence = std::abs(current_joint_value - target_joint_values[i]);
 
-    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta: %.9f", target_joints[i].c_str(), target_joint_values[i], current_joint_value, differrence);
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta: %.9f, Delta_Velue: %.9f", target_joints[i].c_str(), target_joint_values[i], current_joint_value, differrence, delta_value);
 
     if (differrence > delta_value)
     {
@@ -987,7 +987,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
 
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
-  float lateral_tolerance_fine = 1e-7;
+  float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
@@ -1056,7 +1056,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
 
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
-  float lateral_tolerance_fine = 1e-7;
+  float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
@@ -1109,7 +1109,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
 
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
-  float lateral_tolerance_fine = 1e-7;
+  float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
