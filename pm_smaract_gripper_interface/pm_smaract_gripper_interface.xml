@@ -1,7 +1,0 @@
-<library path="pm_smaract_gripper_interface">
-    <class name="pm_smaract_gripper_interface/PMGripperInterface" type="pm_smaract_gripper_interface::PMGripperInterface" base_class_type="hardware_interface::SystemInterface">
-        <description>
-            ROS2 Hardware Interface for Smaract Gripper.
-        </description>
-    </class>
-</library>

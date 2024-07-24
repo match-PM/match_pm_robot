@@ -46,6 +46,21 @@ Eigen::Affine3d poseMsgToAffine(const geometry_msgs::msg::Pose &pose_msg)
   return affine;
 }
 
+geometry_msgs::msg::Pose round_pose(geometry_msgs::msg::Pose pose_to_round)
+{
+  geometry_msgs::msg::Pose rounded_pose;
+  int decimal_precision = 4;
+  
+  const double multiplier = std::pow(10, decimal_precision);
+
+  rounded_pose.orientation.x = std::round(pose_to_round.orientation.x*multiplier)/multiplier;
+  rounded_pose.orientation.y = std::round(pose_to_round.orientation.y*multiplier)/multiplier;
+  rounded_pose.orientation.z = std::round(pose_to_round.orientation.z*multiplier)/multiplier;
+  rounded_pose.orientation.w = std::round(pose_to_round.orientation.w*multiplier)/multiplier;
+  rounded_pose.position = pose_to_round.position;
+  return rounded_pose;
+}
+
 geometry_msgs::msg::Quaternion quaternion_multiply(geometry_msgs::msg::Quaternion q0, geometry_msgs::msg::Quaternion q1)
 {
   // Extract the values from q0
@@ -630,7 +645,7 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     float current_joint_value = global_joint_state->position[current_joint_index];
     float differrence = std::abs(current_joint_value - target_joint_values[i]);
 
-    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta: %.9f", target_joints[i].c_str(), target_joint_values[i], current_joint_value, differrence);
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta: %.9f, Delta_Velue: %.9f", target_joints[i].c_str(), target_joint_values[i], current_joint_value, differrence, delta_value);
 
     if (differrence > delta_value)
     {
@@ -987,7 +1002,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
 
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
-  float lateral_tolerance_fine = 1e-7;
+  float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
@@ -1021,6 +1036,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   //  Get the target_pose
   auto [extract_frame_success, target_pose] = get_pose_of_frame(target_frame);
 
+  //lo
   // This should normaly not happen, because the searched frame is the endeffector, which must exist
   if (!extract_frame_success)
   {
@@ -1035,11 +1051,16 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
     target_pose = get_pose_endeffector_override(endeffector, endeffector_frame_override, target_pose);
   }
 
+  // !!!!!!!! Here the rotation is rounded to account for small deviations in the pose !!!!
+  // This should later be deleted!!!
+  target_pose = round_pose(target_pose);
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "BE AWARE! Rotations are rounded to account for small deviations in the pose!! This might cause errors in the orientation.");
+
   // Check if rotation is valid and set to default if not
   rotation = check_rotation(rotation);
 
   target_pose = add_translation_rotation_to_pose(target_pose, translation, rotation);
-  log_pose("Calculated Endeffector Pose: ", target_pose);
+  log_pose("Calculated target endeffector pose: ", target_pose);
 
   std::tie(success_ik, joint_names, target_joint_values) = calculate_IK(planning_group, move_group, target_pose);
 
@@ -1056,7 +1077,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
 
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
-  float lateral_tolerance_fine = 1e-7;
+  float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
@@ -1072,6 +1093,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
 
   return std::make_tuple(move_success, joint_names, target_joint_values);
 }
+
+
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_pose(std::string planning_group,
                                                                                    std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
@@ -1109,7 +1132,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
 
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
-  float lateral_tolerance_fine = 1e-7;
+  float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);

@@ -9,14 +9,17 @@
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_housing.xacro" />
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_left.xacro" />
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_robot_gonio_right.xacro" />
+  <xacro:include filename="$(find pm_robot_description)/urdf/pm_smarpod_station.xacro" />
   <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/Schunk_Vacuum_Tools.xacro" />
 
   <xacro:arg name="launch_mode" default="sim_HW" />
   <xacro:property name="launch_mode" value="$(arg launch_mode)"/>
   <xacro:arg name="initial_positions_file" default="pm_robot_initial_positions.yaml" />
-  <xacro:arg name="with_Gonio_Left" default="true" />
+  
+  <!-- <xacro:arg name="with_Gonio_Left" default="true" />
   <xacro:arg name="with_Gonio_Right" default="true" />
-
+  <xacro:arg name="with_smarpod_station" default="false" /> -->
+  
   <xacro:pm_robot launch_mode="$(arg launch_mode)"/>
 
   <!-- START - Loading Config Files-->
@@ -83,24 +86,39 @@
   <!-- START - Gonio Defines-->  
 
   <!-- Gonio Right Defines-->
-  <xacro:if value="$(arg with_Gonio_Right)">
+  <xacro:if value="${current_pm_robot_bringup_config['pm_robot_gonio_right']['with_Gonio_Right']}">
     <xacro:pm_robot_gonio_right launch_mode="$(arg launch_mode)"/>
   </xacro:if>
 
+  <!-- Gonio Right old version-->
+  <!-- <xacro:if value="$(arg with_Gonio_Right)">
+    <xacro:pm_robot_gonio_right launch_mode="$(arg launch_mode)"/>
+  </xacro:if> -->
+
   <!-- Gonio Right Defines-->
-  <xacro:if value="$(arg with_Gonio_Left)">
+  <xacro:if value="${current_pm_robot_bringup_config['pm_robot_gonio_left']['with_Gonio_Left']}">
     <xacro:pm_robot_gonio_left launch_mode="$(arg launch_mode)"/>
   </xacro:if>
 
+
+  <!-- Gonio Left old version-->
+  <!-- <xacro:if value="$(arg with_Gonio_Left)">
+    <xacro:pm_robot_gonio_left launch_mode="$(arg launch_mode)"/>
+  </xacro:if> -->
+
   <!-- END - Gonio Defines-->  
 
+  <!-- Smarpod Station -->
+  <xacro:if value="${current_pm_robot_bringup_config['pm_smparpod_station']['with_smarpod_station']}">
+    <xacro:pm_smarpod_station launch_mode="$(arg launch_mode)"/>
+  </xacro:if>
 
   <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />
 
   <!-- Switch between Gazebo-Simulation and Real Robot -->
 
   <!-- Import control_xacro -->
-  <!-- <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_sim_HW.xacro" /> -->
+  <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_sim_HW.xacro" />
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_real_HW.xacro" />
 
   <xacro:if value="${launch_mode == 'real_HW'}">
@@ -110,8 +128,8 @@
     <!-- <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW"/> -->
   </xacro:if>
 
-  <!-- <xacro:if value="${launch_mode == 'sim_HW'}">
+  <xacro:if value="${launch_mode == 'sim_HW'}">
     <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW" initial_positions_file="$(arg initial_positions_file)"/>
-  </xacro:if> -->
+  </xacro:if>
 
 </robot>

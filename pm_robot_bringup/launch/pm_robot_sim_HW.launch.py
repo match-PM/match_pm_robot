@@ -165,6 +165,16 @@ def generate_launch_description():
             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
     )
 
+    # this node listens to the states of the pneumatic and sets the joints
+    pneumatic_controller_listener_node = Node(
+        package="pneumatic_controller_listener",
+        executable="pneumatic_controller_listener",
+        name="pneumatic_controller_listener",
+        output="both",
+        parameters=[],
+        emulate_tty=True  
+    )
+
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
                                    '-entity', 'pm_robot'],
@@ -221,7 +231,16 @@ def generate_launch_description():
             ])
         ])
         )
-    
+
+    launch_smarpod_controller = IncludeLaunchDescription(PythonLaunchDescriptionSource([
+        PathJoinSubstitution([
+            FindPackageShare("smaract_hexapod_description"),
+            'launch',
+            'smaract_controller.launch.py'
+            ])
+        ])
+        )
+        
     launch_gonio_parallel_gripper_controller = IncludeLaunchDescription(PythonLaunchDescriptionSource([
         PathJoinSubstitution([
             FindPackageShare(pkg_name),
@@ -230,7 +249,17 @@ def generate_launch_description():
             ])
         ])
         )  
-    
+        # T Axis Joint Trajectory Controller
+    forward_launch = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "pm_pneumatic_forward_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+
     pm_moveit_server = Node(
         package="pm_moveit_server",
         executable="pm_moveit_server",
@@ -273,11 +302,15 @@ def generate_launch_description():
         ld.add_action(run_move_group_node)
         ld.add_action(pm_moveit_server)
     ld.add_action(launch_XYZT_controllers)
-
+    ld.add_action(forward_launch)
+    ld.add_action(pneumatic_controller_listener_node)
     if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)
     if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
+    if bringup_config['pm_smparpod_station']['with_smarpod_station']:
+        #ld.add_action(launch_smarpod_controller)
+        pass
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
     #ld.add_action(forward_command_action_server)

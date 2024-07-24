@@ -9,6 +9,7 @@ from rcl_interfaces.srv import GetParameters
 from rcl_interfaces.msg import ParameterValue, Parameter, ParameterType
 import xml.etree.ElementTree as ET 
 from collections import defaultdict
+from example_interfaces.srv import SetBool
 
 def etree_to_dict(t):
     d = {t.tag: {} if t.attrib else None}
@@ -42,7 +43,7 @@ class PneumaticControllerListener(Node):
         self.pneumatic_controller_names = []
         self.forward_controller_names = []
         self.init_controller_names()
-        self.init_subscriber()
+        #self.init_subscriber()
 
         self.bool= False
         self.robot_desciption = None
@@ -51,8 +52,29 @@ class PneumaticControllerListener(Node):
         self.state = []
 
         self.init_robot_description()
-        self.extract_limits()       
+        self.extract_limits()     
+        self.init_services()  
+        # create a service
+        #self.srv_flap = self.create_service(SetBool, '/pm_pneumatic_dummy/set_dispenser_flap', self.set_flap)
+        #self.srv_dispenser = self.create_service(SetBool, '/pm_pneumatic_dummy/set_dispenser', self.set_dispenser)
 
+    def init_services(self):
+        for controller_name in self.forward_controller_names:
+            srv = self.create_service(SetBool, f'/pm_pneumatic_dummy/set_{controller_name}', partial(self.set_srv, controller_name=controller_name))
+
+    def set_srv(self, request:SetBool.Request, response:SetBool.Response, controller_name:str):
+        has_changed, new_value = self.set_axis_forward(controller_name, request.data)
+
+        if has_changed:
+            cmd = Float64MultiArray()
+            cmd.data = self.state
+            self.test_publisher.publish(cmd)
+            self.logger.error(f"Setting '{controller_name}' to '{new_value}', isForward=={request.data}!")
+        
+        response.success = True
+        
+        return response  
+    
     def init_robot_description(self):
         cli = self.create_client(GetParameters, '/robot_state_publisher/get_parameters')
         while not cli.wait_for_service(timeout_sec=10.0):

@@ -1,7 +1,0 @@
-<library path="pm_smaract_gripper_controller">
-    <class name="pm_smaract_gripper_controller/PMGripperController" type="pm_smaract_gripper_controller::PMGripperController" base_class_type="controller_interface::ControllerInterface">
-        <description>
-    Controller for PM GPIOs.
-        </description>
-    </class>
-</library>

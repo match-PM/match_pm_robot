@@ -57,3 +57,9 @@ pm_robot_tools:
     use_tip: Tip_R_A1000_I500
     use_tool: Tool_SPT_Toolholder
     use_vacuum_tool: true
+pm_smparpod_station:
+  with_smarpod_station: false
+  available_chucks:
+  - test1
+  - test2
+  use_chuck: test1

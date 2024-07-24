@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="pm_smarpod_station" params="launch_mode">
+
+    <xacro:include filename="$(find smaract_hexapod_description)/urdf/smaract_hexapod_macro.xacro" />
+
+    <xacro:smaract_hexapod launch_mode="$(arg launch_mode)" base_link="Smarpod_Station_Base"/>
+
+    <!-- Loading of the Robot Joint calibrations -->
+    <xacro:if value="${launch_mode == 'sim_HW'}">
+      <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+    </xacro:if>
+
+    <!-- If launch_mode 'real' a local path can be specified for the calibration file -->
+    <xacro:if value="${launch_mode == 'real_HW'}">
+      <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
+      <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
+
+      <xacro:property name="local_calibration_file_path" value="${path_dict['pm_robot_calibration_file_path']}"/>
+      <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
+
+      <!-- REAL -->
+      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+    <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/> -->
+
+      <!-- SIM -->
+      <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+
+    </xacro:if>
+
+    <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+    <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
+
+    <!-- Smarpod Station -->
+
+    <link
+    name="Smarpod_Station">
+    <inertial>
+      <origin
+        xyz="0.0921880695439856 0.106740010574494 0.186664921950654"
+        rpy="0 0 0" />
+      <mass
+        value="0.782282249809798" />
+      <inertia
+        ixx="0.00477442216909529"
+        ixy="-5.89281059975844E-08"
+        ixz="2.37578030999895E-10"
+        iyy="0.00354235482448058"
+        iyz="2.44320538923886E-08"
+        izz="0.00631238764877303" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find pm_robot_description)/meshes/Smarpod_Station.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find pm_robot_description)/meshes/Smarpod_Station.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Smarpod_Station_Joint"
+    type="fixed">
+    <origin
+      xyz="0.750000000000003 0.31 0"
+      rpy="0 0 0" />
+    <parent
+      link="pm_robot_base_link" />
+    <child
+      link="Smarpod_Station" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Smarpod_Station_Base">
+    <!-- <inertial>
+      <origin
+        xyz="0.00218806954398554 0.016740010574494 -0.0260350780485463"
+        rpy="0 0 0" />
+      <mass
+        value="0.782282249809798" />
+      <inertia
+        ixx="0.00477442216909529"
+        ixy="-5.89281059976034E-08"
+        ixz="2.37578030999863E-10"
+        iyy="0.00354235482448058"
+        iyz="2.44320538923888E-08"
+        izz="0.00631238764877303" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://BAUGRUPPE_PM_ROBOT_Export_22052024_2/meshes/Smarpod_Station_Base.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://BAUGRUPPE_PM_ROBOT_Export_22052024_2/meshes/Smarpod_Station_Base.STL" />
+      </geometry>
+    </collision> -->
+  </link>
+  
+  <joint
+    name="Smarpod_Station_Base_Joint"
+    type="fixed">
+    <origin
+      xyz="0.09 0.0899999999999999 0.2126999999992"
+      rpy="0 0 0" />
+    <parent
+      link="Smarpod_Station" />
+    <child
+      link="Smarpod_Station_Base" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+
+
+  </xacro:macro>
+
+</robot>

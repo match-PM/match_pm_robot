@@ -3,8 +3,8 @@ controller_manager:
     update_rate: 100
     use_sim_time: true
 
-    pm_robot_IO_Axis_controller:
-      type: position_controllers/JointGroupPositionController
+    # pm_robot_IO_Axis_controller:
+    #   type: position_controllers/JointGroupPositionController
 
     pm_robot_xyz_axis_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -15,22 +15,39 @@ controller_manager:
     pm_robot_JSB:
       type: joint_state_broadcaster/JointStateBroadcaster
 
+    pm_pneumatic_forward_controller:
+      type: position_controllers/JointGroupPositionController
 
-pm_robot_IO_Axis_controller:
+# pm_robot_IO_Axis_controller:
+#   ros__parameters:
+#     joints:
+#       - 1K_Dispenser_Flap_Joint
+#       #- 2K_Dispenser_Joint
+#       #- Calibration_Qube_Joint
+#       - 1K_Dispenser_Joint
+#       # - EQ_Joint
+#       # - Camera_Calibartion_Joint
+#       # - UV_Cart_Left_Joint
+#       # - UV_Module_Left_Joint
+#       # - UV_Cart_Right_Joint
+#       # - UV_Module_Right_Joint
+
+#     interface_name: position
+    
+pm_pneumatic_forward_controller:
   ros__parameters:
     joints:
-      - 1K_Dispenser_Flap_Joint
-      #- 2K_Dispenser_Joint
-      #- Calibration_Qube_Joint
+      - UV_LED_Front_Joint
+      - UV_LED_Back_Joint
       - 1K_Dispenser_Joint
-      # - EQ_Joint
-      # - Camera_Calibartion_Joint
-      # - UV_Cart_Left_Joint
-      # - UV_Module_Left_Joint
-      # - UV_Cart_Right_Joint
-      # - UV_Module_Right_Joint
+      - 2K_Dispenser_Joint
+      - Camera_Calibration_Platelet_Joint
+      - 1K_Dispenser_Flap_Joint
+    command_interfaces:
+      - position
 
-    interface_name: position
+    state_interfaces:
+      - position
 
 pm_robot_t_axis_controller:
   ros__parameters:
