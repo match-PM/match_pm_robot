@@ -19,6 +19,7 @@ find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(graph_msgs REQUIRED)
 find_package(moveit_visual_tools REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
 
 # uncomment the following section in order to fill in further dependencies manually.
 # find_package(<dependency> REQUIRED)

@@ -1,0 +1,9 @@
+string endeffector_frame_override "use_default_frame"
+string target_frame
+geometry_msgs/Vector3 rotation_offset_deg
+bool execute_movement true
+---
+bool success
+string[] joint_names
+float32[] joint_values
+string message

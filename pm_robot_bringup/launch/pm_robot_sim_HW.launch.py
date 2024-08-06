@@ -274,6 +274,17 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
+    gonio_orientation_solver_node = Node(
+        package="gonio_orientation_solver",
+        executable="gonio_orientation_solver",
+        name="gonio_orientation_solver",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+
     # delay_spawn_pm_robot_gonio_left_controllers = RegisterEventHandler(
     #     event_handler=OnProcessExit(
     #         target_action=launch_XYZT_controllers,
@@ -301,6 +312,7 @@ def generate_launch_description():
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
         ld.add_action(pm_moveit_server)
+        ld.add_action(gonio_orientation_solver_node)
     ld.add_action(launch_XYZT_controllers)
     ld.add_action(forward_launch)
     ld.add_action(pneumatic_controller_listener_node)

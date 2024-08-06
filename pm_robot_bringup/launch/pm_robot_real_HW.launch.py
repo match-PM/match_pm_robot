@@ -320,6 +320,17 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
+    gonio_orientation_solver_node = Node(
+        package="gonio_orientation_solver",
+        executable="gonio_orientation_solver",
+        name="gonio_orientation_solver",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+
     delayed_rviz = TimerAction(period=15.0, actions=[rviz_node])
     delayed_move_group = TimerAction(period=15.0, actions=[run_move_group_node])
     delayed_pm_moveit_server = TimerAction(period=15.0, actions=[pm_moveit_server])
@@ -337,6 +348,7 @@ def generate_launch_description():
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)
         ld.add_action(delayed_pm_moveit_server)
+        ld.add_action(gonio_orientation_solver_node)
 
     if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)

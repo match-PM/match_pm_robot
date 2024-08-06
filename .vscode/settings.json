@@ -96,6 +96,7 @@
         "charconv": "cpp",
         "__verbose_abort": "cpp",
         "locale": "cpp",
-        "print": "cpp"
+        "print": "cpp",
+        "*.ipp": "cpp"
     }
 }
