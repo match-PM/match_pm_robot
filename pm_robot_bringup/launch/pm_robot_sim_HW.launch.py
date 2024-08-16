@@ -166,7 +166,7 @@ def generate_launch_description():
     )
 
     # this node listens to the states of the pneumatic and sets the joints
-    pneumatic_controller_listener_node = Node(
+    gazebo_pneumatic_controller = Node(
         package="pneumatic_controller_listener",
         executable="pneumatic_controller_listener",
         name="pneumatic_controller_listener",
@@ -284,6 +284,16 @@ def generate_launch_description():
         ],
         emulate_tty=True,
     )
+    primitive_skills_node = Node(
+        package="pm_robot_primitive_skills",
+        executable="pm_robot_primitive_skills",
+        name="pm_robot_primitive_skills",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
 
     # delay_spawn_pm_robot_gonio_left_controllers = RegisterEventHandler(
     #     event_handler=OnProcessExit(
@@ -315,7 +325,8 @@ def generate_launch_description():
         ld.add_action(gonio_orientation_solver_node)
     ld.add_action(launch_XYZT_controllers)
     ld.add_action(forward_launch)
-    ld.add_action(pneumatic_controller_listener_node)
+    ld.add_action(gazebo_pneumatic_controller)
+    ld.add_action(primitive_skills_node)
     if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)
     if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:

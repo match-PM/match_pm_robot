@@ -259,6 +259,29 @@ def generate_launch_description():
         ],
     )
 
+    gonio_orientation_solver_node = Node(
+        package="gonio_orientation_solver",
+        executable="gonio_orientation_solver",
+        name="gonio_orientation_solver",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    ) 
+
+    primitive_skills_node = Node(
+        package="pm_robot_primitive_skills",
+        executable="pm_robot_primitive_skills",
+        name="pm_robot_primitive_skills",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+
+
     launch_gonio_left_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
@@ -314,6 +337,8 @@ def generate_launch_description():
     if launch_moveit:
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)
+        #ld.add_action(gonio_orientation_solver_node)
+        #ld.add_action(pm_moveit_server)
 
     if mappings["with_Gonio_Left"] == "True":
         ld.add_action(launch_gonio_left_controller)

@@ -331,6 +331,17 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
+    primitive_skills_node = Node(
+        package="pm_robot_primitive_skills",
+        executable="pm_robot_primitive_skills",
+        name="pm_robot_primitive_skills",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+
     delayed_rviz = TimerAction(period=15.0, actions=[rviz_node])
     delayed_move_group = TimerAction(period=15.0, actions=[run_move_group_node])
     delayed_pm_moveit_server = TimerAction(period=15.0, actions=[pm_moveit_server])
@@ -355,6 +366,7 @@ def generate_launch_description():
     if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
 
+    #ld.add_action(primitive_skills_node)
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)
     ld.add_action(pm_nozzle_controller_spawner)
