@@ -295,6 +295,16 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
+    spawn_smaract_hexapod_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "smaract_hexapod_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+    )
+       
     # delay_spawn_pm_robot_gonio_left_controllers = RegisterEventHandler(
     #     event_handler=OnProcessExit(
     #         target_action=launch_XYZT_controllers,
@@ -332,7 +342,8 @@ def generate_launch_description():
     if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
     if bringup_config['pm_smparpod_station']['with_smarpod_station']:
-        #ld.add_action(launch_smarpod_controller)
+        #ld.add_action(spawn_smaract_hexapod_controller)
+        ld.add_action(launch_smarpod_controller)
         pass
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
