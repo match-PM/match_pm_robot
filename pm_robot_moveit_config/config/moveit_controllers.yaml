@@ -17,6 +17,7 @@ moveit_simple_controller_manager:
     #- pm_robot_parallel_gripper_GAC
     - pm_robot_gonio_right_controller
     - pm_robot_gonio_left_controller
+    - smaract_hexapod_controller
 
   pm_robot_t_axis_controller:
     type: FollowJointTrajectory
@@ -57,3 +58,15 @@ moveit_simple_controller_manager:
     default: true
     joints:
       - pm_robot_Tool_Parallel_Joint
+
+  smaract_hexapod_controller:
+    type: FollowJointTrajectory
+    action_ns: follow_joint_trajectory
+    default: true
+    joints:
+      - SP_X_Joint
+      - SP_Y_Joint
+      - SP_Z_Joint
+      - SP_A_Joint
+      - SP_B_Joint
+      - SP_C_Joint

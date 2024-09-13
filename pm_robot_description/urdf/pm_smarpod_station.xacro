@@ -83,7 +83,7 @@
     name="Smarpod_Station_Joint"
     type="fixed">
     <origin
-      xyz="0.750000000000003 0.31 0"
+      xyz="0.750000000000003 0.315 0"
       rpy="0 0 0" />
     <parent
       link="pm_robot_base_link" />
