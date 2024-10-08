@@ -8,6 +8,7 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include <ament_index_cpp/get_package_share_directory.hpp>
 #include "std_msgs/msg/string.hpp"
 #include <tf2_msgs/msg/tf_message.hpp>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
@@ -99,6 +100,9 @@ std::shared_ptr<moveit::planning_interface::MoveGroupInterface> tool_move_group;
 std::shared_ptr<moveit::planning_interface::MoveGroupInterface> dispenser_1k_move_group;
 std::shared_ptr<moveit::planning_interface::MoveGroupInterface> gonio_left_move_group;
 std::shared_ptr<moveit::planning_interface::MoveGroupInterface> gonio_right_move_group;
+
+std::shared_ptr<moveit::planning_interface::MoveGroupInterface> smarpod_move_group;
+
 std::shared_ptr<rclcpp::Node> pm_moveit_server_node;
 std::shared_ptr<moveit_visual_tools::MoveItVisualTools> laser_grp_visual_tools;
 
@@ -113,6 +117,7 @@ sensor_msgs::msg::JointState::SharedPtr global_joint_state;
 // create shared pointer to node publisher
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> xyz_trajectory_publisher;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> t_trajectory_publisher;
+std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> smarpod_trajectory_publisher;
 std::string default_endeffector_string;
 std::string global_return_massage;
 
@@ -157,7 +162,7 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
   float delta_value;
   for (size_t i = 0; i < target_joints.size(); i++)
   {
-    if (target_joints[i] == "T_Axis_Joint")
+    if (target_joints[i] == "T_Axis_Joint" || target_joints[i] =="SP_A_Joint" || target_joints[i] =="SP_B_Joint" || target_joints[i] =="SP_C_Joint")
     {
       // This means rotation
       delta_value = delta_rot;
@@ -174,6 +179,7 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     {
       // Joint not found
       // Handle error or return false
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Joint not found in joint state!");
       return false;
     }
     int current_joint_index = std::distance(global_joint_state->name.begin(), it);
@@ -190,7 +196,9 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
   return true;
 }
 
-std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std::string planning_group, std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group, geometry_msgs::msg::Pose target_pose)
+std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std::string planning_group, 
+                                                                              std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group, 
+                                                                              geometry_msgs::msg::Pose target_pose)
 {
   std::vector<double> target_joint_values;
   std::vector<double> min_joint_values;
@@ -216,6 +224,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
     max_joint_values.push_back(joint_bounds[i][0][0].max_position_);
 
     RCLCPP_DEBUG(rclcpp::get_logger("pm_moveit"), " Lower: %.9f, Upper: %.9f", joint_bounds[i][0][0].min_position_, joint_bounds[i][0][0].max_position_);
+    //RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), " Lower: %.9f, Upper: %.9f", joint_bounds[i][0][0].min_position_, joint_bounds[i][0][0].max_position_);
+
   }
 
   robot_state->setJointGroupPositions(joint_model_group, max_joint_values);
@@ -554,6 +564,20 @@ void publish_target_joint_trajectory_xyzt(std::string planning_group, std::vecto
   }
 }
 
+void publish_target_joint_trajectory_smarpod(std::string planning_group, std::vector<double> target_joint_values)
+{
+  auto trajectory_msg = std::make_shared<trajectory_msgs::msg::JointTrajectory>();
+  trajectory_msg->joint_names = {"SP_X_Joint", "SP_Y_Joint", "SP_Z_Joint", "SP_A_Joint", "SP_B_Joint", "SP_C_Joint"}; // Specify joint names
+
+  trajectory_msgs::msg::JointTrajectoryPoint point;
+  point.positions = {target_joint_values[0], target_joint_values[1], target_joint_values[2], target_joint_values[3],target_joint_values[4],target_joint_values[5]}; // Specify joint positions
+  point.velocities = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};                                                         // Specify joint velocities
+  point.accelerations = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};                                                      // Specify joint accelerations
+  point.time_from_start.sec = 0.5;                                                            // Specify duration
+  trajectory_msg->points.push_back(point);
+  smarpod_trajectory_publisher->publish(*trajectory_msg);
+}
+
 void wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vector<double> target_joint_values, float lateral_tolerance, float angular_tolerance)
 {
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for goal to be reached...");
@@ -593,6 +617,17 @@ void log_target_pose_delta(std::string endeffector, geometry_msgs::msg::Pose tar
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Q_z: %f", deltaOrientZ);
 }
 
+void set_initial_state_move_groups()
+{
+  laser_move_group->setStartStateToCurrentState();
+  tool_move_group->setStartStateToCurrentState();
+  Cam1_move_group->setStartStateToCurrentState();
+  dispenser_1k_move_group->setStartStateToCurrentState();
+  gonio_left_move_group->setStartStateToCurrentState();
+  gonio_right_move_group->setStartStateToCurrentState();
+  smarpod_move_group->setStartStateToCurrentState();
+}
+
 std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relative(std::string planning_group,
                                                                                     std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
                                                                                     geometry_msgs::msg::Vector3 translation,
@@ -604,6 +639,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
   geometry_msgs::msg::Quaternion target_rotation;
   std::vector<double> target_joint_values;
   std::vector<std::string> joint_names;
+
+  move_group->setStartStateToCurrentState();
+
   bool success_ik;
   // bool extract_frame_success;
   //  Get the target_pose
@@ -645,9 +683,20 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
 
   log_target_pose_delta(endeffector, target_pose);
 
+  
   // this may not be necessary anymore
-  publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  if (planning_group == "smarpod_endeffector")
+  {
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values);
+    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  }
+  
+  else
+  {
+    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
+    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  }
+
   log_target_pose_delta(endeffector, target_pose);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
@@ -690,7 +739,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   // !!!!!!!! Here the rotation is rounded to account for small deviations in the pose !!!!
   // This should later be deleted!!!
   target_pose = round_pose(target_pose);
-  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "BE AWARE! Rotations are rounded to account for small deviations in the pose!! This might cause errors in the orientation.");
+  RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "BE AWARE! Rotations are rounded to account for small deviations in the pose!! This might cause errors in the orientation.");
 
   // Check if rotation is valid and set to default if not
   rotation = check_rotation(rotation);
@@ -721,8 +770,19 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   log_target_pose_delta(endeffector, target_pose);
 
   // this may not be necessary anymore
-  publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  if (planning_group == "smarpod_endeffector")
+  {
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values);
+    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  }
+
+  else
+  {
+    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
+    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  }
+
+
   log_target_pose_delta(endeffector, target_pose);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
@@ -776,8 +836,18 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
   log_target_pose_delta(endeffector, target_pose);
 
   // this may not be necessary anymore
-  publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  if (planning_group == "smarpod_endeffector")
+  {
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values);
+    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  }
+  
+  else
+  {
+    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
+    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  }
+
   log_target_pose_delta(endeffector, target_pose);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
@@ -966,6 +1036,26 @@ void move_laser_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRe
   return;
 }
 
+void move_smarpod_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Request> request,
+                         std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Response> response)
+{
+
+  auto [success, joint_names, joint_values] = move_group_relative("smarpod_endeffector",
+                                                                  smarpod_move_group,
+                                                                  request->translation,
+                                                                  request->rotation,
+                                                                  request->execute_movement);
+
+  response->success = success;
+  response->joint_names = joint_names;
+  std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
+  response->joint_values = joint_values_float;
+
+  return;
+}
+
+
+
 // ABSOLUTE MOVEMENT
 void move_cam_one_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Request> request,
                           std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Response> response)
@@ -984,6 +1074,26 @@ void move_cam_one_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveT
 
   return;
 }
+
+void move_smarpod_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Request> request,
+                          std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Response> response)
+{
+
+  auto [success, joint_names, joint_values] = move_group_to_pose("smarpod_endeffector",
+                                                                 smarpod_move_group,
+                                                                 request->move_to_pose,
+                                                                 request->endeffector_frame_override,
+                                                                 request->execute_movement);
+  set_initial_state_move_groups();
+  response->success = success;
+  response->joint_names = joint_names;
+  std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
+  response->joint_values = joint_values_float;
+
+  return;
+}
+
+
 
 void move_tool_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Request> request,
                        std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Response> response)
@@ -1028,6 +1138,26 @@ void move_cam_one_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::Move
 
   auto [success, joint_names, joint_values] = move_group_to_frame("PM_Robot_Cam1_TCP",
                                                                   Cam1_move_group,
+                                                                  request->endeffector_frame_override,
+                                                                  request->target_frame,
+                                                                  request->translation,
+                                                                  request->rotation,
+                                                                  request->execute_movement);
+
+  response->success = success;
+  response->joint_names = joint_names;
+  std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
+  response->joint_values = joint_values_float;
+
+  return;
+}
+
+void move_smarpod_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Request> request,
+                           std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Response> response)
+{
+
+  auto [success, joint_names, joint_values] = move_group_to_frame("smarpod_endeffector",
+                                                                  smarpod_move_group,
                                                                   request->endeffector_frame_override,
                                                                   request->target_frame,
                                                                   request->translation,
@@ -1122,6 +1252,8 @@ void align_gonio_right(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGon
   response->success = success;
   return;
 }
+
+
 
 void align_gonio_left(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Request> request,
                         std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Response> response)
@@ -1220,6 +1352,25 @@ int main(int argc, char **argv)
   auto move_cam_one_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_cam1_to_pose", std::bind(&move_cam_one_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_tool_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_tool_to_pose", std::bind(&move_tool_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_laser_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_laser_to_pose", std::bind(&move_laser_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  
+  std::string bringup_package_share_directory = ament_index_cpp::get_package_share_directory("pm_robot_bringup");
+  std::string file_path = bringup_package_share_directory + "/config/pm_robot_bringup_config.yaml";
+
+  YAML::Node config = YAML::LoadFile(file_path);
+  bool with_smarpod_station = config["pm_smparpod_station"]["with_smarpod_station"].as<bool>();
+
+  // print with_smarpod_station
+  RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "With Smarpod Station: %s", with_smarpod_station ? "true" : "false");
+
+  if (with_smarpod_station)
+  {
+  smarpod_move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(pm_moveit_server_node, "smarpod_endeffector");
+  auto move_smarpod_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_smarpod_to_pose", std::bind(&move_smarpod_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  auto move_smarpod_to_frame_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToFrame>("pm_moveit_server/move_smarpod_to_frame", std::bind(&move_smarpod_to_frame, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  auto move_smarpod_relative_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveRelative>("pm_moveit_server/move_smarpod_relative", std::bind(&move_smarpod_relative, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  smarpod_trajectory_publisher = pm_moveit_server_node->create_publisher<trajectory_msgs::msg::JointTrajectory>("/smaract_hexapod_controller/joint_trajectory", 10);
+
+  } 
 
   auto align_gonio_right_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::AlignGonio>("pm_moveit_server/align_gonio_right", std::bind(&align_gonio_right, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto align_gonio_left_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::AlignGonio>("pm_moveit_server/align_gonio_left", std::bind(&align_gonio_left, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);

@@ -28,12 +28,13 @@
 
     <xacro:if value="${current_pm_robot_bringup_config['pm_smparpod_station']['with_smarpod_station']}">
         <group name="smarpod_endeffector">
-            <joint name="SP_X_Joint"/>
+            <chain base_link="pm_robot_base_link" tip_link="Smarpod_Top_Plate" />
+            <!-- <joint name="SP_X_Joint"/>
             <joint name="SP_Y_Joint"/>
             <joint name="SP_Z_Joint"/>
             <joint name="SP_A_Joint"/>
             <joint name="SP_B_Joint"/>
-            <joint name="SP_C_Joint"/>
+            <joint name="SP_C_Joint"/> -->
         </group> 
     </xacro:if>
 
