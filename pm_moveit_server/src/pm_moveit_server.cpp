@@ -118,6 +118,7 @@ sensor_msgs::msg::JointState::SharedPtr global_joint_state;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> xyz_trajectory_publisher;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> t_trajectory_publisher;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> smarpod_trajectory_publisher;
+
 std::string default_endeffector_string;
 std::string global_return_massage;
 
@@ -1362,12 +1363,17 @@ int main(int argc, char **argv)
   // print with_smarpod_station
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "With Smarpod Station: %s", with_smarpod_station ? "true" : "false");
 
+  rclcpp::Service<pm_moveit_interfaces::srv::MoveToPose>::SharedPtr move_smarpod_to_pose_srv;
+  rclcpp::Service<pm_moveit_interfaces::srv::MoveRelative>::SharedPtr move_smarpod_relative_srv;
+  rclcpp::Service<pm_moveit_interfaces::srv::MoveToFrame>::SharedPtr move_smarpod_to_frame_srv;
+  
   if (with_smarpod_station)
   {
   smarpod_move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(pm_moveit_server_node, "smarpod_endeffector");
-  auto move_smarpod_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_smarpod_to_pose", std::bind(&move_smarpod_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
-  auto move_smarpod_to_frame_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToFrame>("pm_moveit_server/move_smarpod_to_frame", std::bind(&move_smarpod_to_frame, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
-  auto move_smarpod_relative_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveRelative>("pm_moveit_server/move_smarpod_relative", std::bind(&move_smarpod_relative, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+
+  move_smarpod_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_smarpod_to_pose", std::bind(&move_smarpod_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  move_smarpod_to_frame_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToFrame>("pm_moveit_server/move_smarpod_to_frame", std::bind(&move_smarpod_to_frame, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  move_smarpod_relative_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveRelative>("pm_moveit_server/move_smarpod_relative", std::bind(&move_smarpod_relative, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   smarpod_trajectory_publisher = pm_moveit_server_node->create_publisher<trajectory_msgs::msg::JointTrajectory>("/smaract_hexapod_controller/joint_trajectory", 10);
 
   } 
