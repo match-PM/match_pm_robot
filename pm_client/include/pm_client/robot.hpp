@@ -96,6 +96,10 @@ class Robot
 
     std::unique_ptr<Nozzle> doseur_glue_2k;
 
+    std::unique_ptr<Nozzle> tool_changer;
+
+    std::unique_ptr<Nozzle> tool_changer_air_pressure;
+
     std::unique_ptr<Laser> laser;
 
     std::unique_ptr<ForceSensor> force_sensor;
@@ -149,6 +153,8 @@ class Robot
             nest_nozzle.get(),
             doseur_glue.get(),
             doseur_glue_2k.get(),
+            tool_changer.get(),
+            tool_changer_air_pressure.get(),
         };
         for (const auto &nozzle : nozzles)
         {
@@ -217,6 +223,10 @@ class Robot
                 return *doseur_glue;
             case NozzleId::DoseurGlue2K:
                 return *doseur_glue_2k;
+            case NozzleId::ToolChanger:
+                return *tool_changer;
+            case NozzleId::ToolChangerAirPressure:
+                return *tool_changer_air_pressure;
         }
     }
 };

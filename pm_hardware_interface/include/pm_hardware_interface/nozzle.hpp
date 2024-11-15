@@ -45,6 +45,12 @@ struct NozzleState
             case NozzleId::DoseurGlue2K:
                 name = "Glue_2K_Doseur";
                 break;
+            case NozzleId::ToolChanger:
+                name = "Tool_Changer";
+                break;
+            case NozzleId::ToolChangerAirPressure:
+                name = "Tool_Changer_Air_Pressure";
+                break;
         }
     }
 

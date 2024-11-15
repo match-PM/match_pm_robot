@@ -60,12 +60,14 @@ class PMSystem : public hardware_interface::SystemInterface
         PneumaticState{PneumaticId::ProtectDoseur},
     };
 
-    std::array<NozzleState, 5> m_nozzles{
+    std::array<NozzleState, 7> m_nozzles{
         NozzleState{NozzleId::Head},
         NozzleState{NozzleId::Gonio},
         NozzleState{NozzleId::Nest},
         NozzleState{NozzleId::DoseurGlue},
         NozzleState{NozzleId::DoseurGlue2K},
+        NozzleState{NozzleId::ToolChanger},
+        NozzleState{NozzleId::ToolChangerAirPressure},
     };
 
     HoenleUVState hoenle_uv;

@@ -14,6 +14,8 @@ enum class NozzleId
     Nest,
     DoseurGlue,
     DoseurGlue2K,
+    ToolChanger,
+    ToolChangerAirPressure,
 };
 
 enum class NozzleState

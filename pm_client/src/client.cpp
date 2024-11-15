@@ -446,6 +446,16 @@ void Client::init()
                     m_robot->doseur_glue_2k =
                         browse_nozzle(ref->nodeId.nodeId, NozzleId::DoseurGlue2K);
                 }
+                else if (browse_name == "ToolChanger")
+                {
+                    m_robot->tool_changer =
+                        browse_nozzle(ref->nodeId.nodeId, NozzleId::ToolChanger);
+                }
+                else if (browse_name == "ToolChangerAirPressure")
+                {
+                    m_robot->tool_changer_air_pressure =
+                        browse_nozzle(ref->nodeId.nodeId, NozzleId::ToolChangerAirPressure);
+                }
                 else if (browse_name == "Camera1")
                 {
                     m_robot->camera1 = browse_camera1(ref->nodeId.nodeId);
