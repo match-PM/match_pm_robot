@@ -2796,6 +2796,8 @@ static UA_StatusCode function_pm_opcua_server_67_begin(UA_Server *server, UA_UIn
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
     attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+    UA_Double init_val = 1.66666666667e-05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 
@@ -3545,6 +3547,8 @@ static UA_StatusCode function_pm_opcua_server_83_begin(UA_Server *server, UA_UIn
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
     attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+    UA_Double init_val = 1.66666666667e-05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 
@@ -4294,6 +4298,8 @@ static UA_StatusCode function_pm_opcua_server_99_begin(UA_Server *server, UA_UIn
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
     attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+    UA_Double init_val = 0.000804634695848;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 
@@ -5043,6 +5049,8 @@ static UA_StatusCode function_pm_opcua_server_115_begin(UA_Server *server, UA_UI
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
     attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+    UA_Double init_val = 0.000804634695848;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 
@@ -5792,6 +5800,8 @@ static UA_StatusCode function_pm_opcua_server_131_begin(UA_Server *server, UA_UI
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
     attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
+    UA_Double init_val = 7.60006755616e-05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
 
