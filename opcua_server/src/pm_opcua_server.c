@@ -4298,7 +4298,7 @@ static UA_StatusCode function_pm_opcua_server_99_begin(UA_Server *server, UA_UIn
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
     attr.displayName = UA_LOCALIZEDTEXT("", "UnitsPerIncrement");
-    UA_Double init_val = 0.000804634695848;
+    UA_Double init_val = 0.000563936275201;
     UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
 
 #ifdef UA_ENABLE_NODESET_COMPILER_DESCRIPTIONS
