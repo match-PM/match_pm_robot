@@ -122,10 +122,7 @@
   <xacro:include filename="$(find pm_robot_description)/urdf/ros2_control_real_HW.xacro" />
 
   <xacro:if value="${launch_mode == 'real_HW'}">
-    <xacro:pm_robot_ros2_control_hw_real name="Real_HW" initial_positions_file="$(arg initial_positions_file)"/>
-    <!-- <xacro:pm_robot_pneumatic_mock  />  -->
-    
-    <!-- <xacro:pm_robot_ros2_control_hw_sim name="Sim_HW"/> -->
+    <xacro:pm_robot_ros2_control_hw_real name="Real_HW" initial_positions_file="$(arg initial_positions_file)" launch_mode="$(arg launch_mode)"/>
   </xacro:if>
 
   <xacro:if value="${launch_mode == 'sim_HW'}">

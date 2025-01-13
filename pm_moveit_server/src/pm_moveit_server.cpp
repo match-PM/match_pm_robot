@@ -456,7 +456,7 @@ geometry_msgs::msg::Quaternion check_rotation(geometry_msgs::msg::Quaternion rot
   return rotation;
 }
 
-bool set_move_group(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
                     std::vector<double> target_joint_values,
                     bool execute_movement)
 {
@@ -473,7 +473,7 @@ bool set_move_group(std::shared_ptr<moveit::planning_interface::MoveGroupInterfa
   if (!success_calculate_plan)
   {
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Planing failed!");
-    return false;
+    return std::make_tuple(false, "Planing failed!");
   }
 
   // laser_grp_visual_tools->deleteAllMarkers();
@@ -487,15 +487,16 @@ bool set_move_group(std::shared_ptr<moveit::planning_interface::MoveGroupInterfa
   if (success_calculate_plan && execute_movement)
   {
     move_group->execute(*plan);
+    return std::make_tuple(true, "Planing successfull!");
   }
   else
   {
     RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Plan calculated successfull, but not execution was not demanded!");
+    return std::make_tuple(true, "Plan calculated successfull, but the plan was not executed because 'execute_movement' was not set to true!");
   }
-  return true;
 }
 
-bool set_move_group_orientation(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+std::tuple<bool, std::string> set_move_group_orientation(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
                     double x,
                     double y,
                     double z,
@@ -515,7 +516,7 @@ bool set_move_group_orientation(std::shared_ptr<moveit::planning_interface::Move
   if (!success_calculate_plan)
   {
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Planing failed!");
-    return false;
+    return std::make_tuple(false, "Planing failed!");
   }
 
   // laser_grp_visual_tools->deleteAllMarkers();
@@ -529,12 +530,13 @@ bool set_move_group_orientation(std::shared_ptr<moveit::planning_interface::Move
   if (success_calculate_plan && execute_movement)
   {
     move_group->execute(*plan);
+    return std::make_tuple(true, "Planing successfull!");
   }
   else
   {
     RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Plan calculated successfull, but not execution was not demanded!");
+    return std::make_tuple(true, "Plan calculated successfull, but the plan was not executed because 'execute_movement' was not set to true!");
   }
-  return true;
 }
 
 void publish_target_joint_trajectory_xyzt(std::string planning_group, std::vector<double> target_joint_values)
@@ -629,7 +631,7 @@ void set_initial_state_move_groups()
   smarpod_move_group->setStartStateToCurrentState();
 }
 
-std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relative(std::string planning_group,
+std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> move_group_relative(std::string planning_group,
                                                                                     std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
                                                                                     geometry_msgs::msg::Vector3 translation,
                                                                                     geometry_msgs::msg::Quaternion rotation,
@@ -640,6 +642,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
   geometry_msgs::msg::Quaternion target_rotation;
   std::vector<double> target_joint_values;
   std::vector<std::string> joint_names;
+  std::string msg;
 
   move_group->setStartStateToCurrentState();
 
@@ -653,7 +656,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
   {
     // If frame is not found, return false
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Specified frame not found!");
-    return std::make_tuple(false, joint_names, target_joint_values);
+    msg = "Specified frame not found!";
+    return std::make_tuple(false, joint_names, target_joint_values, msg);
   }
 
   // Check if rotation is valid and set to default if not
@@ -666,13 +670,14 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
 
   if (!success_ik)
   {
-    return {false, joint_names, target_joint_values};
+    msg = "IK solution not found!";
+    return {false, joint_names, target_joint_values, msg};
   }
-  bool move_success = set_move_group(move_group, target_joint_values, execute_movement);
+  auto [move_success, move_msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
   if (!move_success || !execute_movement)
   {
-    return {move_success, joint_names, target_joint_values};
+    return {move_success, joint_names, target_joint_values, move_msg};
   }
 
   float lateral_tolerance_coarse = 1e-2;
@@ -701,7 +706,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_relat
   log_target_pose_delta(endeffector, target_pose);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
-  return std::make_tuple(move_success, joint_names, target_joint_values);
+  msg = "Movement successfull!";
+  return std::make_tuple(move_success, joint_names, target_joint_values, msg);
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_frame(std::string planning_group,
@@ -754,7 +760,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   {
     return {false, joint_names, target_joint_values};
   }
-  bool move_success = set_move_group(move_group, target_joint_values, execute_movement);
+  auto [move_success, msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
   if (!move_success || !execute_movement)
   {
@@ -820,7 +826,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
   {
     return {false, joint_names, target_joint_values};
   }
-  bool move_success = set_move_group(move_group, target_joint_values, execute_movement);
+  auto [move_success, msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
   if (!move_success || !execute_movement)
   {
@@ -951,10 +957,10 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
     RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint %s: %f", response->joint_names[i].c_str(), response->joint_values[i]);
   }
 
-  bool move_success = false;
+  //bool move_success = false;
   target_joint_values.push_back(response->joint_values[1]);
   target_joint_values.push_back(response->joint_values[2]);
-  move_success = set_move_group(move_group, target_joint_values, execute_movement);
+  auto [move_success, move_msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
   if (!move_success || !execute_movement)
   {
@@ -982,12 +988,13 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
 
 
 
+
 // RELATIVE MOVEMENT
 void move_cam1_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Request> request,
                         std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_relative("PM_Robot_Cam1_TCP",
+  auto [success, joint_names, joint_values, msg] = move_group_relative("PM_Robot_Cam1_TCP",
                                                                   Cam1_move_group,
                                                                   request->translation,
                                                                   request->rotation,
@@ -997,6 +1004,7 @@ void move_cam1_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRel
   response->joint_names = joint_names;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
+  response->message = msg;
 
   return;
 }
@@ -1005,7 +1013,7 @@ void move_tool_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRel
                         std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_relative("PM_Robot_Tool_TCP",
+  auto [success, joint_names, joint_values, msg] = move_group_relative("PM_Robot_Tool_TCP",
                                                                   tool_move_group,
                                                                   request->translation,
                                                                   request->rotation,
@@ -1015,6 +1023,7 @@ void move_tool_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRel
   response->joint_names = joint_names;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
+  response->message = msg;
 
   return;
 }
@@ -1023,7 +1032,7 @@ void move_laser_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRe
                          std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_relative("PM_Robot_Laser_TCP",
+  auto [success, joint_names, joint_values, msg] = move_group_relative("PM_Robot_Laser_TCP",
                                                                   laser_move_group,
                                                                   request->translation,
                                                                   request->rotation,
@@ -1033,6 +1042,7 @@ void move_laser_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRe
   response->joint_names = joint_names;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
+  response->message = msg;
 
   return;
 }
@@ -1041,7 +1051,7 @@ void move_smarpod_relative(const std::shared_ptr<pm_moveit_interfaces::srv::Move
                          std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_relative("smarpod_endeffector",
+  auto [success, joint_names, joint_values, msg] = move_group_relative("smarpod_endeffector",
                                                                   smarpod_move_group,
                                                                   request->translation,
                                                                   request->rotation,
@@ -1051,6 +1061,7 @@ void move_smarpod_relative(const std::shared_ptr<pm_moveit_interfaces::srv::Move
   response->joint_names = joint_names;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
+  response->message = msg;
 
   return;
 }

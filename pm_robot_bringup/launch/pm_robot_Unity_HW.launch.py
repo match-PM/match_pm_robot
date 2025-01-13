@@ -1,7 +1,7 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription,DeclareLaunchArgument
 from launch.substitutions import (
     Command,
     FindExecutable,
@@ -27,41 +27,26 @@ from launch.substitutions import Command
 
 
 def generate_launch_description():
-    bringup_config_path = os.path.join(
-        get_package_share_directory("pm_robot_bringup"),
-        "config/pm_robot_bringup_config.yaml",
-    )
+    bringup_config_path = os.path.join(get_package_share_directory("pm_robot_bringup"),"config/pm_robot_bringup_config.yaml",)
 
-    f = open(bringup_config_path)
-    bringup_config = yaml.load(f, Loader=SafeLoader)
-    f.close()
-
+    with open(bringup_config_path) as f:
+        bringup_config = yaml.safe_load(f)
+    
     # Specify the name of the package and path to xacro file within the package
     pkg_name = "pm_robot_description"
     file_subpath = "urdf/pm_robot_main.xacro"
 
     # Use xacro to process the file
-    pm_main_xacro_file = os.path.join(
-        get_package_share_directory(pkg_name), file_subpath
-    )
+    pm_main_xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
 
     launch_moveit = True
-
     sim_time = False
 
-    mappings = {
-        "launch_mode": "real_HW",
-        "with_Gonio_Left": str(
-            bringup_config["pm_robot_gonio_left"]["with_Gonio_Left"]
-        ),
-        "with_Gonio_Right": str(
-            bringup_config["pm_robot_gonio_right"]["with_Gonio_Right"]
-        ),
+    mappings={
+        'launch_mode': 'real_HW'
     }
 
-    robot_description_raw = xacro.process_file(
-        pm_main_xacro_file, mappings=mappings
-    ).toxml()
+    robot_description_raw = xacro.process_file(pm_main_xacro_file, mappings=mappings).toxml()
 
     controler_param = PathJoinSubstitution(
         [
@@ -69,6 +54,13 @@ def generate_launch_description():
             "config",
             "pm_robot_control_real_HW.yaml",
         ]
+    )
+
+    opcua_server_node = Node(
+            package='opcua_server',
+            executable='opcua_server',
+            name='opcua_server_node',
+            output='screen',
     )
 
     moveit_config = (
@@ -113,8 +105,7 @@ def generate_launch_description():
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        parameters=move_group_params,
-    )
+        parameters=move_group_params,    )
 
     # RViz
     rviz_base = os.path.join(
@@ -136,6 +127,7 @@ def generate_launch_description():
             moveit_config.planning_pipelines,
             moveit_config.robot_description_kinematics,
         ],
+        emulate_tty=True
     )
 
     # Configure the node
@@ -146,16 +138,10 @@ def generate_launch_description():
         output="both",
         parameters=[
             {"robot_description": robot_description_raw, "use_sim_time": sim_time}
-        ]  # add other parameters here if required
+        ],
+        emulate_tty=True  
+        # add other parameters here if required
         # parameters=[moveit_config.robot_description],
-    )
-
-    robot_state_publisher_node_mov = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        name="robot_state_publisher",
-        output="both",
-        parameters=[moveit_config.robot_description],
     )
 
     robot_controllers_path = PathJoinSubstitution(
@@ -203,11 +189,23 @@ def generate_launch_description():
             robot_gonio_right_controllers_path,
         ],
         output="both",
+        emulate_tty=True
         # arguments=[                   # Set log level to debug
         #     "--ros-args",
         #     "--log-level",
         #     "debug",
         # ],
+    )
+
+        # Configure the node
+    # this node listens to the states of the pneumatic and sets the joints
+    pneumatic_controller_listener_node = Node(
+        package="pneumatic_controller_listener",
+        executable="pneumatic_controller_listener",
+        name="pneumatic_controller_listener",
+        output="both",
+        parameters=[],
+        emulate_tty=True  
     )
 
     delayed_controller_manager = TimerAction(period=3.0, actions=[control_manager])
@@ -237,6 +235,7 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
+        emulate_tty=True
     )
 
     pm_pneumatic_controller_spawner = Node(
@@ -247,6 +246,7 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
+        emulate_tty=True
     )
 
     pm_nozzle_controller_spawner = Node(
@@ -257,30 +257,19 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
+        emulate_tty=True
     )
 
-    gonio_orientation_solver_node = Node(
-        package="gonio_orientation_solver",
-        executable="gonio_orientation_solver",
-        name="gonio_orientation_solver",
-        # output="log",
-        parameters=[
-            {"use_sim_time": sim_time}
+    pm_uv_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "pm_uv_controller",
+            "--controller-manager",
+            "/controller_manager",
         ],
-        emulate_tty=True,
-    ) 
-
-    primitive_skills_node = Node(
-        package="pm_robot_primitive_skills",
-        executable="pm_robot_primitive_skills",
-        name="pm_robot_primitive_skills",
-        # output="log",
-        parameters=[
-            {"use_sim_time": sim_time}
-        ],
-        emulate_tty=True,
+        emulate_tty=True
     )
-
 
     launch_gonio_left_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -324,30 +313,72 @@ def generate_launch_description():
         )
     )
 
+    pm_moveit_server = Node(
+        package="pm_moveit_server",
+        executable="pm_moveit_server",
+        name="pm_moveit_server",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time},
+            moveit_config.robot_description,
+            moveit_config.robot_description_semantic,
+            moveit_config.robot_description_kinematics,
+        ],
+        emulate_tty=True,
+    )
+
+    gonio_orientation_solver_node = Node(
+        package="gonio_orientation_solver",
+        executable="gonio_orientation_solver",
+        name="gonio_orientation_solver",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+
+    primitive_skills_node = Node(
+        package="pm_robot_primitive_skills",
+        executable="pm_robot_primitive_skills",
+        name="pm_robot_primitive_skills",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+
     delayed_rviz = TimerAction(period=15.0, actions=[rviz_node])
     delayed_move_group = TimerAction(period=15.0, actions=[run_move_group_node])
+    delayed_pm_moveit_server = TimerAction(period=15.0, actions=[pm_moveit_server])
+    delayed_pneumatic_controller_listener = TimerAction(period=15.0, actions=[pneumatic_controller_listener_node])
 
     # Define Launch Description
     ld = LaunchDescription()
 
+    ld.add_action(opcua_server_node)
     ld.add_action(robot_state_publisher_node)
     # ld.add_action(control_manager)
     ld.add_action(delayed_controller_manager)
     ld.add_action(launch_XYZT_controllers)
+    #ld.add_action(delayed_pneumatic_controller_listener)
     if launch_moveit:
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)
-        #ld.add_action(gonio_orientation_solver_node)
-        #ld.add_action(pm_moveit_server)
+        ld.add_action(delayed_pm_moveit_server)
+        ld.add_action(gonio_orientation_solver_node)
 
-    if mappings["with_Gonio_Left"] == "True":
+    if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)
-    if mappings["with_Gonio_Right"] == "True":
+    if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
 
+    #ld.add_action(primitive_skills_node)
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)
     ld.add_action(pm_nozzle_controller_spawner)
+    # ld.add_action(pm_uv_controller)
 
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)

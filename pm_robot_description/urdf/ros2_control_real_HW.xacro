@@ -1,15 +1,23 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="pm_robot_ros2_control_hw_real" params="name initial_positions_file">
+    <xacro:macro name="pm_robot_ros2_control_hw_real" params="name initial_positions_file launch_mode">
 
         <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 
         <ros2_control name="PMSystem" type="system">
             <hardware>
                 <plugin>pm_hardware_interface/PMSystem</plugin>
-                <param name="opcua_endpoint">opc.tcp://PC1M0484-1:4840</param>
+                <!-- <param name="opcua_endpoint">opc.tcp://PC1M0484-1:4840</param> -->
 
                 <!-- <param name="opcua_endpoint">opc.tcp://localhost:4840</param> -->
+
+                <!-- Conditionally set the opcua_endpoint based on launch_mode -->
+                <xacro:if value="${launch_mode == 'sim_HW'}">
+                    <param name="opcua_endpoint">opc.tcp://PC1M0484-1:4840</param>
+                </xacro:if>
+                <xacro:if value="${launch_mode == 'real_HW'}">
+                    <param name="opcua_endpoint">opc.tcp://localhost:4840</param>
+                </xacro:if>
             </hardware>
 
             <joint name="X_Axis_Joint">
