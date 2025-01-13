@@ -9,7 +9,7 @@
     <xacro:include filename="$(find smaract_hexapod_description)/urdf/smaract_hexapod_macro.xacro" />
 
     <xacro:smaract_hexapod launch_mode="$(arg launch_mode)" base_link="Smarpod_Station_Base"/>
-
+  
     <!-- Loading of the Robot Joint calibrations -->
     <xacro:if value="${launch_mode == 'sim_HW'}">
       <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
@@ -83,7 +83,7 @@
     name="Smarpod_Station_Joint"
     type="fixed">
     <origin
-      xyz="0.750000000000003 0.31 0"
+      xyz="0.750000000000003 0.315 0"
       rpy="0 0 0" />
     <parent
       link="pm_robot_base_link" />
@@ -137,7 +137,7 @@
     name="Smarpod_Station_Base_Joint"
     type="fixed">
     <origin
-      xyz="0.09 0.0899999999999999 0.2126999999992"
+      xyz="0.09 0.0899999999999999 0.2136999999992"
       rpy="0 0 0" />
     <parent
       link="Smarpod_Station" />

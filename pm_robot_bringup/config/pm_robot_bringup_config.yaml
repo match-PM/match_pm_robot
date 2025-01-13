@@ -18,7 +18,7 @@ pm_robot_gonio_right:
   - chuck_gonio_right_Siemens_UFC
   - chuck_gonio_right_double_lens_holder_12_7
   - chuck_gonio_right_ipeg_active_alignment_station
-  use_chuck: chuck_gonio_right_Siemens_UFC
+  use_chuck: chuck_gonio_right_double_lens_holder_12_7
   with_Gonio_Right: true
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:
@@ -58,8 +58,8 @@ pm_robot_tools:
     use_tool: Tool_SPT_Toolholder
     use_vacuum_tool: true
 pm_smparpod_station:
-  with_smarpod_station: false
-  available_chucks:
+  with_smarpod_station: false 
+  availabe_chucks:
   - test1
   - test2
   use_chuck: test1

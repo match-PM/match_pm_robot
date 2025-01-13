@@ -42,6 +42,15 @@
 
 <!--%%%%%%%%%%%%% Gonio_Right Definitions %%%%%%%%-->
 
+  <xacro:property name="gonio_offset_smarpod_x" value="0.0"/>
+  <xacro:property name="gonio_offset_smarpod_y" value="0.0"/>
+
+  <xacro:if value="${current_pm_robot_bringup_config['pm_smparpod_station']['with_smarpod_station']}">
+    <xacro:property name="gonio_offset_smarpod_x" value="0.0"/>
+    <xacro:property name="gonio_offset_smarpod_y" value="0.6"/>
+  </xacro:if>
+
+
   <link
     name="Gonio_Base_Right">
     <inertial>
@@ -80,7 +89,7 @@
     name="Gonio_Base_Right_Joint"
     type="fixed">
     <origin
-      xyz="0.750000000000003 0.31 0"
+      xyz="${0.750000000000003+gonio_offset_smarpod_x} ${0.31+gonio_offset_smarpod_y} 0"
       rpy="0 0 0" />
     <parent
       link="pm_robot_base_link" />
