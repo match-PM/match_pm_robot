@@ -37,6 +37,8 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
     # Set use_keyence_bottom in yaml file to True
     original_config['measuring_systems']['use_keyence_bottom'] = True 
 
+    original_config['pm_smparpod_station']['with_smarpod_station'] = True
+
     # Extract the sets of known tips for easy checking
     dispenser_tips = set(original_config['pm_robot_1K_dispenser_tip']['availabe_dispenser_tips'])
     vacuum_tips = set()
@@ -196,8 +198,20 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
                 # This is a vacuum tool tip scenario, so PM_Robot_Tool_TCP may be renamed with the tip name
                 process_urdf_file(urdf_file, tip)
 
+        # for chuck in original_config['pm_smarpod_station']['availabe_chucks']:
+        #     original_config['pm_smarpod_station']['use_chuck'] = chuck
+        #     with open(yaml_path, 'w') as temp_yaml:
+        #         yaml.dump(original_config, temp_yaml)
+
+        #     urdf_file = os.path.join(output_dir, f'temp_smarpod_{chuck}.urdf')
+        #     subprocess.run(['ros2', 'run', 'xacro', 'xacro', xacro_path, '-o', urdf_file], check=True)
+
+        #     generated_urdfs.append(urdf_file)
+        #     # Here 'chuck' is not a tip, so PM_Robot_Tool_TCP won't get a tip-based rename
+        #     process_urdf_file(urdf_file, chuck)
+
         # Write out the combined URDF (with a single <robot>), now with relative mesh paths
-        combined_urdf_path = os.path.join(output_dir, 'pm_robot_unity.urdf')
+        combined_urdf_path = os.path.join(output_dir, 'pm_robot_unity_smarpod.urdf')
         ET.ElementTree(combined_robot_el).write(combined_urdf_path, encoding='utf-8', xml_declaration=True)
         print(f'pm_robot_unity.urdf file created at: {combined_urdf_path}')
 
