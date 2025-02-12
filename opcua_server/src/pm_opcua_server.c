@@ -2638,8 +2638,8 @@ static UA_StatusCode function_pm_opcua_server_63_begin(UA_Server *server, UA_UIn
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
     attr.minimumSamplingInterval = 0.000000;
-    attr.userAccessLevel = 1;
-    attr.accessLevel = 1;
+    attr.userAccessLevel = 3;
+    attr.accessLevel = 3;
     /* Value rank inherited */
     attr.valueRank = -2;
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
