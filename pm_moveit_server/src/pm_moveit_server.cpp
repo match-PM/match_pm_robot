@@ -100,6 +100,7 @@ std::shared_ptr<moveit::planning_interface::MoveGroupInterface> tool_move_group;
 std::shared_ptr<moveit::planning_interface::MoveGroupInterface> dispenser_1k_move_group;
 std::shared_ptr<moveit::planning_interface::MoveGroupInterface> gonio_left_move_group;
 std::shared_ptr<moveit::planning_interface::MoveGroupInterface> gonio_right_move_group;
+std::shared_ptr<moveit::planning_interface::MoveGroupInterface> confocal_head_move_group;
 
 std::shared_ptr<moveit::planning_interface::MoveGroupInterface> smarpod_move_group;
 
@@ -1066,7 +1067,24 @@ void move_smarpod_relative(const std::shared_ptr<pm_moveit_interfaces::srv::Move
   return;
 }
 
+void move_confocal_head_relative(const std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Request> request,
+                         std::shared_ptr<pm_moveit_interfaces::srv::MoveRelative::Response> response)
+{
 
+  auto [success, joint_names, joint_values, msg] = move_group_relative("PM_Robot_Confocal_Head_TCP",
+                                                                  confocal_head_move_group,
+                                                                  request->translation,
+                                                                  request->rotation,
+                                                                  request->execute_movement);
+
+  response->success = success;
+  response->joint_names = joint_names;
+  std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
+  response->joint_values = joint_values_float;
+  response->message = msg;
+
+  return;
+}
 
 // ABSOLUTE MOVEMENT
 void move_cam_one_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Request> request,
@@ -1131,6 +1149,24 @@ void move_laser_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToP
 
   auto [success, joint_names, joint_values] = move_group_to_pose("PM_Robot_Laser_TCP",
                                                                  laser_move_group,
+                                                                 request->move_to_pose,
+                                                                 request->endeffector_frame_override,
+                                                                 request->execute_movement);
+
+  response->success = success;
+  response->joint_names = joint_names;
+  std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
+  response->joint_values = joint_values_float;
+
+  return;
+}
+
+void move_confocal_head_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Request> request,
+                        std::shared_ptr<pm_moveit_interfaces::srv::MoveToPose::Response> response)
+{
+
+  auto [success, joint_names, joint_values] = move_group_to_pose("PM_Robot_Confocal_Head_TCP",
+                                                                 confocal_head_move_group,
                                                                  request->move_to_pose,
                                                                  request->endeffector_frame_override,
                                                                  request->execute_movement);
@@ -1245,6 +1281,27 @@ void move_1k_dispenser_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv:
   return;
 }
 
+void move_confocal_head_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Request> request,
+                                std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Response> response)
+{
+
+  auto [success, joint_names, joint_values] = move_group_to_frame("PM_Robot_Confocal_Head_TCP",
+                                                                  confocal_head_move_group,
+                                                                  request->endeffector_frame_override,
+                                                                  request->target_frame,
+                                                                  request->translation,
+                                                                  request->rotation,
+                                                                  request->execute_movement);
+
+  response->success = success;
+  response->joint_names = joint_names;
+  std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
+  response->joint_values = joint_values_float;
+
+  return;
+}
+
+
 void align_gonio_right(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Request> request,
                         std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Response> response)
 {
@@ -1319,6 +1376,7 @@ int main(int argc, char **argv)
   dispenser_1k_move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(pm_moveit_server_node, "PM_Robot_1K_Dispenser_TCP");
   gonio_left_move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(pm_moveit_server_node, "PM_Robot_Gonio_Left");
   gonio_right_move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(pm_moveit_server_node, "PM_Robot_Gonio_Right");
+  confocal_head_move_group = std::make_shared<moveit::planning_interface::MoveGroupInterface>(pm_moveit_server_node, "PM_Robot_Confocal_Head_TCP");
 
   get_gonio_right_solution_client = pm_moveit_server_node->create_client<pm_moveit_interfaces::srv::GetGonioSolution>("/gonio_orientation_solver/get_gonio_right_solution");
   get_gonio_left_solution_client = pm_moveit_server_node->create_client<pm_moveit_interfaces::srv::GetGonioSolution>("/gonio_orientation_solver/get_gonio_left_solution");
@@ -1356,14 +1414,20 @@ int main(int argc, char **argv)
   auto move_tool_to_frame_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToFrame>("pm_moveit_server/move_tool_to_frame", std::bind(&move_tool_to_frame, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_laser_to_frame_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToFrame>("pm_moveit_server/move_laser_to_frame", std::bind(&move_laser_to_frame, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_1k_to_frame_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToFrame>("pm_moveit_server/move_1k_dispenser_to_frame", std::bind(&move_1k_dispenser_to_frame, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  auto move_confocal_head_to_frame_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToFrame>("pm_moveit_server/move_confocal_head_to_frame", std::bind(&move_confocal_head_to_frame, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+
 
   auto move_cam_one_relative_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveRelative>("pm_moveit_server/move_cam1_relative", std::bind(&move_cam1_relative, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_tool_relative_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveRelative>("pm_moveit_server/move_tool_relative", std::bind(&move_tool_relative, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_laser_relative_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveRelative>("pm_moveit_server/move_laser_relative", std::bind(&move_laser_relative, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  auto move_confocal_head_relative_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveRelative>("pm_moveit_server/move_confocal_head_relative", std::bind(&move_confocal_head_relative, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+
 
   auto move_cam_one_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_cam1_to_pose", std::bind(&move_cam_one_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_tool_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_tool_to_pose", std::bind(&move_tool_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_laser_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_laser_to_pose", std::bind(&move_laser_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  auto move_confocal_head_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_confocal_head_to_pose", std::bind(&move_confocal_head_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+
   
   std::string bringup_package_share_directory = ament_index_cpp::get_package_share_directory("pm_robot_bringup");
   std::string file_path = bringup_package_share_directory + "/config/pm_robot_bringup_config.yaml";

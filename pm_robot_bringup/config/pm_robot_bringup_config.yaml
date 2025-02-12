@@ -1,5 +1,7 @@
 measuring_systems:
   use_keyence_bottom: false
+  use_confocal_bottom: true
+  use_confocal_head: true
 pm_robot_1K_dispenser_tip:
   availabe_dispenser_tips:
   - Dis_Tip_Yellow_I_100_A240_L12700

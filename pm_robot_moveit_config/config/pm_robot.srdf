@@ -48,6 +48,13 @@
         <!-- <joint name="Cam1_Toolhead_TCP_Joint"/> -->
     </group>
 
+    <group name="PM_Robot_Confocal_Head_TCP">
+        <chain base_link="pm_robot_base_link" tip_link="TCP_Confocal_Sensor_Top" />
+        <!-- <joint name="X_Axis_Joint"/>
+        <joint name="Y_Axis_Joint"/>
+        <joint name="Z_Axis_Joint"/> -->
+    </group>
+
     <group name="PM_Robot_1K_Dispenser_TCP">
         <!-- <chain base_link="pm_robot_base_link" tip_link="1K_Dispenser" /> -->
         <joint name="X_Axis_Joint"/>
@@ -597,9 +604,83 @@
         <disable_collisions link1="2K_Dispenser_Cartridge" link2="Station_Laser_Bottom_TCP" reason="Never"/>
         <disable_collisions link1="Station_Laser_Bottom_TCP" link2="left_match_logo_background" reason="Never"/>
         <disable_collisions link1="Station_Laser_Bottom_TCP" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="Camera_Station" link2="Station_Laser_Bottom_TCP" reason="Never"/>
     </xacro:if>
-    
-    
+
+    <!-- Settings for Laser Bottom -->
+    <xacro:if value="${current_pm_robot_bringup_config['measuring_systems']['use_confocal_bottom']}">
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="Test_Station" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="UV_LED_Back" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="UV_LED_Front" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="UV_Slider_X_Back" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="UV_Slider_X_Front" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="housing" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="t_axis_toolchanger" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Chuck" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Chuck" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="Calibration_Qube" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="left_match_logo_background" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Bottom" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="Camera_Station" link2="TCP_Confocal_Sensor_Bottom" reason="Never"/>
+    </xacro:if>    
+
+
+
+    <xacro:if value="${current_pm_robot_bringup_config['measuring_systems']['use_confocal_head']}">
+        <!-- Vacuum tool holder -->
+        <disable_collisions link1="1K_Dispenser" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Flap" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gonio_Base_Right" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Base" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_1_Top" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gonio_Left_Stage_2_Bottom" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Bottom" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_1_Top" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gonio_Right_Stage_2_Bottom" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Gripper_Rot_Plate" link2="TCP_Confocal_Sensor_Top" reason="Adjacent"/>
+        <disable_collisions link1="Laser_Toolhead_TCP" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+        <disable_collisions link1="Test_Station" link2="TCP_Confocal_Sensor_Top" reason="Never"/>
+
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="housing" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="TCP_Confocal_Sensor_Top" link2="t_axis_toolchanger" reason="Default"/>
+    </xacro:if>
+
+
+
     <disable_collisions link1="Test_Station" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="UV_LED_Front" reason="Never"/>
     <disable_collisions link1="Test_Station" link2="UV_Slider_X_Back" reason="Never"/>
