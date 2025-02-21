@@ -216,9 +216,12 @@ class GonioOrientationSolver(Node):
         gonio_left_endeffector_matrix = get_rotation_matrix_from_tf(gonio_left_endeffector)
         transform_gonio_left_matrix = get_rotation_matrix_from_tf(transform_gonio_left)
         
-        joint_transformation = get_euler_rotation_matrix(0, -self.gonio_left_q2, -self.gonio_left_q3)
-        joint_transform_sym = get_euler_rotation_matrix(0, q2, -q3)
+        #joint_transformation = get_euler_rotation_matrix(0, -self.gonio_left_q2, -self.gonio_left_q3)
+        #joint_transform_sym = get_euler_rotation_matrix(0, q2, -q3)
 
+        joint_transformation = get_euler_rotation_matrix(0, -self.gonio_left_q3, -self.gonio_left_q2)
+        joint_transform_sym = get_euler_rotation_matrix(0,  -q3, q2)
+        
         final_gonio_rotations_matrix = transform_gonio_left_matrix * joint_transformation * gonio_left_endeffector_matrix
         final_gonio_equation = transform_gonio_left_matrix * joint_transform_sym * gonio_left_endeffector_matrix
 

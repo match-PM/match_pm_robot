@@ -97,6 +97,7 @@
         "__verbose_abort": "cpp",
         "locale": "cpp",
         "print": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "core": "cpp"
     }
 }

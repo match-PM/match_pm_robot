@@ -52,9 +52,10 @@ Eigen::Affine3d poseMsgToAffine(const geometry_msgs::msg::Pose &pose_msg)
 geometry_msgs::msg::Pose round_pose(geometry_msgs::msg::Pose pose_to_round)
 {
   geometry_msgs::msg::Pose rounded_pose;
-  int decimal_precision = 4;
+  int decimal_precision = 5;
   
   const double multiplier = std::pow(10, decimal_precision);
+
 
   rounded_pose.orientation.x = std::round(pose_to_round.orientation.x*multiplier)/multiplier;
   rounded_pose.orientation.y = std::round(pose_to_round.orientation.y*multiplier)/multiplier;
@@ -747,6 +748,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   // !!!!!!!! Here the rotation is rounded to account for small deviations in the pose !!!!
   // This should later be deleted!!!
   target_pose = round_pose(target_pose);
+
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "BE AWARE! Rotations are rounded to account for small deviations in the pose!! This might cause errors in the orientation.");
 
   // Check if rotation is valid and set to default if not

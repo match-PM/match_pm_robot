@@ -13,14 +13,14 @@ pm_robot_gonio_left:
   - chuck_gonio_left_Siemens_Carrier
   - chuck_gonio_left_Siemens_Sensor
   - chuck_gonio_left_IPEG_Demonstrator
-  use_chuck: chuck_gonio_left_IPEG_Demonstrator
+  use_chuck: chuck_gonio_left_Siemens_Sensor
   with_Gonio_Left: true
 pm_robot_gonio_right:
   availabe_chucks:
   - chuck_gonio_right_Siemens_UFC
   - chuck_gonio_right_double_lens_holder_12_7
   - chuck_gonio_right_ipeg_active_alignment_station
-  use_chuck: chuck_gonio_right_double_lens_holder_12_7
+  use_chuck: chuck_gonio_right_Siemens_UFC
   with_Gonio_Right: true
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:
@@ -56,8 +56,8 @@ pm_robot_tools:
     - availabe_tips:
       - Tip_Lens_12_7_long
       tool_name: Schunk_Lens_Gripper_long
-    use_tip: Tip_R_A1000_I500
-    use_tool: Tool_SPT_Toolholder
+    use_tip: Tip_Siemens_Vacuum_Array
+    use_tool: Siemens_Vacuum_Array
     use_vacuum_tool: true
 pm_smparpod_station:
   with_smarpod_station: false   
