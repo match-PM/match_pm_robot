@@ -43,7 +43,8 @@ def generate_launch_description():
     sim_time = False
 
     mappings={
-        'launch_mode': 'real_HW'
+        'launch_mode': 'real_HW',
+        'hardware': 'unity',
     }
 
     robot_description_raw = xacro.process_file(pm_main_xacro_file, mappings=mappings).toxml()

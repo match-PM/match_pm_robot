@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="pm_robot_ros2_control_hw_real" params="name initial_positions_file launch_mode">
+    <xacro:macro name="pm_robot_ros2_control_hw_real" params="name initial_positions_file launch_mode hardware">
 
         <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 
@@ -12,10 +12,10 @@
                 <!-- <param name="opcua_endpoint">opc.tcp://localhost:4840</param> -->
 
                 <!-- Conditionally set the opcua_endpoint based on launch_mode -->
-                <xacro:if value="${launch_mode == 'sim_HW'}">
+                <xacro:if value="${hardware == 'robot'}">
                     <param name="opcua_endpoint">opc.tcp://PC1M0484-1:4840</param>
                 </xacro:if>
-                <xacro:if value="${launch_mode == 'real_HW'}">
+                <xacro:if value="${hardware == 'unity'}">
                     <param name="opcua_endpoint">opc.tcp://localhost:4840</param>
                 </xacro:if>
             </hardware>

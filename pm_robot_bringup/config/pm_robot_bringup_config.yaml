@@ -64,7 +64,7 @@ pm_robot_tools:
     use_vacuum_tool: true
     unity_parent: RobotAxisT
 pm_smparpod_station:
-  with_smarpod_station: false 
+  with_smarpod_station: false   
   availabe_chucks:
   - test1
   - test2
