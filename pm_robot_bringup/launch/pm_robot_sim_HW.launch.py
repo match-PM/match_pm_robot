@@ -240,6 +240,17 @@ def generate_launch_description():
             ])
         ])
         )
+    
+    launch_smarpod_translator = Node(
+        package="smarpod_translator",
+        executable="smarpod_translator",
+        name="smarpod_translator",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
         
     launch_gonio_parallel_gripper_controller = IncludeLaunchDescription(PythonLaunchDescriptionSource([
         PathJoinSubstitution([
@@ -344,6 +355,7 @@ def generate_launch_description():
     if bringup_config['pm_smparpod_station']['with_smarpod_station']:
         #ld.add_action(spawn_smaract_hexapod_controller)
         ld.add_action(launch_smarpod_controller)
+        ld.add_action(launch_smarpod_translator)
         pass
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
