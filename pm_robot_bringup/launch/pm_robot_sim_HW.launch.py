@@ -347,7 +347,7 @@ def generate_launch_description():
     ld.add_action(launch_XYZT_controllers)
     ld.add_action(forward_launch)
     ld.add_action(gazebo_pneumatic_controller)
-    ld.add_action(primitive_skills_node)
+    #ld.add_action(primitive_skills_node)
     if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)
     if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:

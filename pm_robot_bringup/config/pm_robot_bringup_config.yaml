@@ -65,3 +65,30 @@ pm_smparpod_station:
   - test1
   - test2
   use_chuck: test1
+adhesive_test_point_station:
+  - num_x_points: 8
+    num_y_points: 8
+    grid_x_spacing: 5
+    grid_y_spacing: 5
+    current_point: 0
+    parent_frame:
+      frame_id: Test_Station
+      offset_x: 4
+      offset_y: 4
+      offset_z: 0
+      roll: 0
+      pitch: 0
+      yaw: 0
+  - num_x_points: 8
+    num_y_points: 8
+    grid_x_spacing: 5
+    grid_y_spacing: 5
+    current_point: 0
+    parent_frame:
+      frame_id: Test_Station
+      offset_x: 4
+      offset_y: 58
+      offset_z: 0
+      roll: 0
+      pitch: 0
+      yaw: 0
