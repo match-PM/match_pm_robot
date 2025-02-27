@@ -231,7 +231,7 @@ def generate_launch_description():
             ])
         ])
         )
-
+    
     launch_smarpod_controller = IncludeLaunchDescription(PythonLaunchDescriptionSource([
         PathJoinSubstitution([
             FindPackageShare("smaract_hexapod_description"),

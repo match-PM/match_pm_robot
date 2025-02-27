@@ -1,5 +1,5 @@
 from example_interfaces.srv import AddTwoInts
-from pm_msgs.srv import DispenseForTime, EmptyWithSuccess
+from pm_msgs.srv import DispenseForTime, EmptyWithSuccess,CreateVizAdhesivePoint
 import rclpy
 from rclpy.node import Node
 import time
@@ -41,6 +41,8 @@ class PrimitiveSkillsNode(Node):
 
         self.dispenser_joint_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Joint',callback_group = self.callback_group_re)
         
+        self.create_adhesive_viz_point_srv = self.create_client(CreateVizAdhesivePoint, '/adhesive_display_node/add_point',callback_group = self.callback_group_re)
+        
     def move_dispenser_to_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)-> bool:
         call_async = False
 
@@ -64,6 +66,14 @@ class PrimitiveSkillsNode(Node):
         else:
             response:pm_moveit_srv.MoveToFrame.Response = self.move_robot_tool_client.call(req)
             return response.success 
+    
+    def create_adhesive_viz_point(self, request: CreateVizAdhesivePoint.Request)->bool:
+        if not self.create_adhesive_viz_point_srv.wait_for_service(timeout_sec=1.0):
+            self.logger.error("Service '/adhesive_display_node/add_point' not available")
+            return False
+        
+        response:CreateVizAdhesivePoint.Response = self.create_adhesive_viz_point_srv.call(request)
+        return response.success
     
     def open_flap(self):
         if not self.open_flap_srv.wait_for_service(timeout_sec=1.0):
@@ -193,6 +203,7 @@ class PrimitiveSkillsNode(Node):
             
             if success:
                 current_station.increment_current_point()
+
             else:
                 self.logger.error("Dispensing at frame failed!")
                 return response
@@ -220,6 +231,12 @@ class PrimitiveSkillsNode(Node):
         if not success:
             return False
         
+        create_adhesive_viz_point_request = CreateVizAdhesivePoint.Request()
+        create_adhesive_viz_point_request.point.parent_frame = '1K_Dispenser_TCP'
+        create_adhesive_viz_point_request.point.hight = 1.0 # in mm
+        create_adhesive_viz_point_request.point.diameter = 1.0 # in mm
+        success_create_viz_point = self.create_adhesive_viz_point(create_adhesive_viz_point_request)
+
         move_to_frame_request.translation.z += offset_value
         
         success = self.move_dispenser_to_frame(move_to_frame_request)

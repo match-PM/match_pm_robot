@@ -8,6 +8,8 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(geometry_msgs REQUIRED)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -24,6 +26,8 @@ endif()
 rosidl_generate_interfaces(
   ${PROJECT_NAME}
   "msg/GripperForces.msg"
+  "msg/VizAdhesivePoint.msg"
+  "msg/VizAdhesivePoints.msg"
 
   "srv/EmptyWithSuccess.srv"
   "srv/UVSetOnOff.srv"
@@ -47,13 +51,14 @@ rosidl_generate_interfaces(
   "srv/LaserGetMeasurement.srv"
   "srv/ReferenceCubeState.srv"
   "srv/DispenseForTime.srv"
-
+  "srv/CreateVizAdhesivePoint.srv"
   "srv/GripperMove.srv"
   "srv/GripperMoveRel.srv"
   "srv/GripperSetVel.srv"
   "srv/GripperSetAccel.srv"
   "srv/GripperGetVel.srv"
   "srv/GripperGetAccel.srv"
+  DEPENDENCIES geometry_msgs
 )
 
 ament_export_dependencies(rosidl_default_runtime)
