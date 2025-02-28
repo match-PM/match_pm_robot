@@ -1504,8 +1504,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -2686,8 +2686,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -2840,8 +2840,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -2888,8 +2888,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -2936,8 +2936,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3080,8 +3080,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3128,8 +3128,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -3176,8 +3176,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -3273,8 +3273,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -3321,8 +3321,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3417,8 +3417,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3591,8 +3591,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -3639,8 +3639,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3687,8 +3687,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3831,8 +3831,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -3879,8 +3879,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -3927,8 +3927,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -4024,8 +4024,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -4072,8 +4072,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4168,8 +4168,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4342,8 +4342,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -4390,8 +4390,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4438,8 +4438,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4582,8 +4582,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4630,8 +4630,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -4678,8 +4678,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -4775,8 +4775,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -4823,8 +4823,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -4919,8 +4919,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5093,8 +5093,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -5141,8 +5141,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5189,8 +5189,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5333,8 +5333,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5381,8 +5381,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -5429,8 +5429,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -5526,8 +5526,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -5574,8 +5574,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5670,8 +5670,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5844,8 +5844,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -5892,8 +5892,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -5940,8 +5940,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -6084,8 +6084,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -6132,8 +6132,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -6180,8 +6180,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -6277,8 +6277,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -6325,8 +6325,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -6421,8 +6421,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -6595,8 +6595,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -6643,8 +6643,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -6691,8 +6691,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -6835,8 +6835,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -6883,8 +6883,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -6931,8 +6931,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -7028,8 +7028,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -7076,8 +7076,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -7172,8 +7172,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -7346,8 +7346,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -7394,8 +7394,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -7442,8 +7442,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -7586,8 +7586,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -7634,8 +7634,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -7682,8 +7682,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -7779,8 +7779,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -7827,8 +7827,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -7923,8 +7923,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -8097,8 +8097,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -8145,8 +8145,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -8193,8 +8193,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -8337,8 +8337,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -8385,8 +8385,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -8433,8 +8433,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -8530,8 +8530,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -8578,8 +8578,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -8674,8 +8674,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -8770,8 +8770,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
@@ -8818,8 +8818,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -8866,8 +8866,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -8914,8 +8914,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -9010,8 +9010,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -9058,8 +9058,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -9106,8 +9106,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -9154,8 +9154,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -9251,8 +9251,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 1LU);
@@ -9299,8 +9299,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -9395,8 +9395,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      /* Value rank inherited */
      attr.valueRank = -2;
      attr.dataType = UA_NODEID_NUMERIC(ns[0], 6LU);
@@ -9695,8 +9695,8 @@
      UA_StatusCode retVal = UA_STATUSCODE_GOOD;
      UA_VariableAttributes attr = UA_VariableAttributes_default;
      attr.minimumSamplingInterval = 0.000000;
-     attr.userAccessLevel = 1;
-     attr.accessLevel = 1;
+     attr.userAccessLevel = 3;
+     attr.accessLevel = 3;
      attr.valueRank = 1;
      attr.arrayDimensionsSize = 1;
      UA_UInt32 arrayDimensions[1];
