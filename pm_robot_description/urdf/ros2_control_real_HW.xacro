@@ -70,7 +70,7 @@
 
 
 <!-- 
-            <joint name="1K_Dispenser_Flap_Joint">
+            <joint name="1K_Dispenser_Protection_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position"/>
@@ -195,7 +195,7 @@
                     <param name="initial_value">0.0</param>
                 </state_interface>
             </joint>
-            <joint name="1K_Dispenser_Flap_Joint">
+            <joint name="1K_Dispenser_Protection_Joint">
                 <command_interface name="position">
                 </command_interface>
                 <state_interface name="position">

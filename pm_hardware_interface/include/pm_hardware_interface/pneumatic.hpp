@@ -52,7 +52,7 @@ struct PneumaticState
                 name = "Camera_Calibration_Platelet_Joint";
                 break;
             case PneumaticId::ProtectDoseur:
-                name = "1K_Dispenser_Flap_Joint";
+                name = "1K_Dispenser_Protection_Joint";
                 break;
         }
     }

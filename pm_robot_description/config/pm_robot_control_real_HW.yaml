@@ -32,7 +32,7 @@ controller_manager:
 # pm_robot_IO_Axis_controller:
 #   ros__parameters:
 #     joints:
-#       - 1K_Dispenser_Flap_Joint
+#       - 1K_Dispenser_Protection_Joint
 #       #- 2K_Dispenser_Joint
 #       - Calibration_Qube_Joint
 #       #- 1K_Dispenser_Joint
@@ -59,7 +59,7 @@ pm_pneumatic_controller:
       - 1K_Dispenser_Joint
       - 2K_Dispenser_Joint
       - Camera_Calibration_Platelet_Joint
-      - 1K_Dispenser_Flap_Joint
+      - 1K_Dispenser_Protection_Joint
     
 # Enter the joint names of the pneumatic axis here
 # Make sure the order of the joint names matches the names from the 'pm_pneumatic_controller' cylinder names
@@ -72,7 +72,7 @@ pm_pneumatic_forward_controller:
       - 1K_Dispenser_Joint
       - 2K_Dispenser_Joint
       - Camera_Calibration_Platelet_Joint
-      - 1K_Dispenser_Flap_Joint
+      - 1K_Dispenser_Protection_Joint
     command_interfaces:
       - position
 

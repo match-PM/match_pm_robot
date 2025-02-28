@@ -463,7 +463,7 @@
       <axis xyz="0 0 0" />
     </joint> -->
   <!--%%%%%%%%%%%%% 1K Dispenser Flap Definitions %%%%%%%%%%%%%-->
-  <link name="1K_Dispenser_Flap">
+  <link name="1K_Dispenser_Protection">
     <inertial>
       <origin rpy="0 0 0" xyz="-0.0475534171935499 -0.0152444446246764 -0.0129366605877314"/>
       <mass value="0.0179075605864254"/>
@@ -484,13 +484,13 @@
     </collision>
   </link>
   <!---Gravity off-->
-  <gazebo reference="1K_Dispenser_Flap">
+  <gazebo reference="1K_Dispenser_Protection">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
-  <joint name="1K_Dispenser_Flap_Joint" type="prismatic">
+  <joint name="1K_Dispenser_Protection_Joint" type="prismatic">
     <origin rpy="0 0 0" xyz="-0.0315 -0.02479 -0.424"/>
     <parent link="Z_Axis"/>
-    <child link="1K_Dispenser_Flap"/>
+    <child link="1K_Dispenser_Protection"/>
     <axis xyz="-1 0 0"/>
     <limit effort="100" lower="-0.025" upper="0.00" velocity="0.5"/>
   </joint>
@@ -1458,7 +1458,7 @@
       <state_interface name="position"/>
       <state_interface name="velocity"/>
     </joint>
-    <joint name="1K_Dispenser_Flap_Joint">
+    <joint name="1K_Dispenser_Protection_Joint">
       <command_interface name="position">
                 </command_interface>
       <state_interface name="position"/>

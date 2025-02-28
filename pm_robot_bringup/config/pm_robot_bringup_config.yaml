@@ -8,6 +8,7 @@ pm_robot_1K_dispenser_tip:
   - Dis_Tip_Lavender_I_150_A310_L12700
   - Dis_Tip_Red_I_250_A520_L12700
   use_dispenser_tip: Dis_Tip_Red_I_250_A520_L12700
+  unity_parent: 1K_Dispenser_TCP
 pm_robot_gonio_left:
   availabe_chucks:
   - chuck_gonio_left_Siemens_Carrier
@@ -15,6 +16,7 @@ pm_robot_gonio_left:
   - chuck_gonio_left_IPEG_Demonstrator
   use_chuck: chuck_gonio_left_Siemens_Sensor
   with_Gonio_Left: true
+  unity_parent: Gonio_Left_Chuck_Origin
 pm_robot_gonio_right:
   availabe_chucks:
   - chuck_gonio_right_Siemens_UFC
@@ -22,6 +24,7 @@ pm_robot_gonio_right:
   - chuck_gonio_right_ipeg_active_alignment_station
   use_chuck: chuck_gonio_right_Siemens_UFC
   with_Gonio_Right: true
+  unity_parent: Gonio_Right_Chuck_Origin
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:
     available_tools:
@@ -31,6 +34,7 @@ pm_robot_tools:
     use_jaw_type: Default_Jaw
     use_paralell_gripper: false
     use_tool: SmarAct_Piezo_Gripper
+    unity_parent: RobotAxisT
   pm_robot_tool_parallel_gripper_2_jaws:
     available_tools:
     - availabe_jaws:
@@ -39,6 +43,7 @@ pm_robot_tools:
     use_jaw_type: Jaw_3mm_Lens
     use_paralell_gripper: false
     use_tool: Schunk_MPG_10_plus
+    unity_parent: RobotAxisT
   pm_robot_vacuum_tools:
     availabe_tools:
     - availabe_tips:
@@ -59,6 +64,7 @@ pm_robot_tools:
     use_tip: Tip_Siemens_Vacuum_Array
     use_tool: Siemens_Vacuum_Array
     use_vacuum_tool: true
+    unity_parent: RobotAxisT
 pm_smparpod_station:
   with_smarpod_station: false   
   availabe_chucks:

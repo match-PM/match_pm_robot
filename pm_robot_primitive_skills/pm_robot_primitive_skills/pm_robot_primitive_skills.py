@@ -18,6 +18,12 @@ class PrimitiveSkillsNode(Node):
 
     def __init__(self):
         super().__init__('pm_robot_primitive_skills')
+
+        if not self.has_parameter('use_sim_time'):
+            self.declare_parameter('use_sim_time', False)
+
+        sim_time = self.get_parameter('use_sim_time').value
+        
         self.srv = self.create_service(DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
         self.logger = self.get_logger()
 
@@ -37,11 +43,25 @@ class PrimitiveSkillsNode(Node):
         self.reset_test_station_srv = self.create_service(EmptyWithSuccess, self.get_name()+'/reset_test_station', self.reset_test_station_callback)
         self.logger.info("Primitive skills node started!")
         
-        self.open_flap_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Flap_Joint',callback_group = self.callback_group_re)
+        self.open_protection_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint',callback_group = self.callback_group_re)
 
         self.dispenser_joint_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Joint',callback_group = self.callback_group_re)
         
         self.create_adhesive_viz_point_srv = self.create_client(CreateVizAdhesivePoint, '/adhesive_display_node/add_point',callback_group = self.callback_group_re)
+
+        if not sim_time:
+            # self.dispense_1K = self.create_service(DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
+            self.move_uv_in_curing_position_service = self.create_service(SetBool, self.get_name()+"/move_uv_in_curing_position", self.move_uv_in_curing_position_service_callback,callback_group=self.callback_group_mu_ex)
+
+            self.client_uv_front_forward= self.create_client(EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Front_Joint/MoveForward",callback_group = self.callback_group_re)
+            self.client_uv_front_backward= self.create_client(EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Front_Joint/MoveBackward",callback_group = self.callback_group_re)
+            self.client_uv_back_forward= self.create_client(EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveForward",callback_group = self.callback_group_re)
+            self.client_uv_back_backward= self.create_client(EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveBackward",callback_group = self.callback_group_re)
+
+            self.client_dips_1k_on = self.create_client(EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
+            self.client_dips_1k_off = self.create_client(EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/TurnOff',callback_group = self.callback_group_re)
+
+        self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
         
     def move_dispenser_to_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)-> bool:
         call_async = False
@@ -75,24 +95,55 @@ class PrimitiveSkillsNode(Node):
         response:CreateVizAdhesivePoint.Response = self.create_adhesive_viz_point_srv.call(request)
         return response.success
     
-    def open_flap(self):
-        if not self.open_flap_srv.wait_for_service(timeout_sec=1.0):
-            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Flap_Joint' not available")
+    def move_uv_in_curing_position_service_callback(self, request:SetBool.Request, response:SetBool.Response):
+        """Moves both UV LEDs in curing position"""
+        
+        response.success = self.move_uv_in_curing_position(request)
+        response.message = "UV LEDs moved in curing position!" if response.success else "Failed to move UV LEDs in curing position!"
+
+        return response
+    
+    def move_uv_in_curing_position(self, request:SetBool.Request)->bool:
+        
+        if not self.client_uv_front_forward.wait_for_service(timeout_sec=2.0) and not self.client_uv_front_backward.wait_for_service(timeout_sec=2.0) and not self.client_uv_back_forward.wait_for_service(timeout_sec=2.0) and not self.client_uv_back_backward.wait_for_service(timeout_sec=2.0):
+            self.get_logger().error("Services not available!")
+            return False
+
+        request_empty = EmptyWithSuccess.Request()
+
+        if request.data == True:
+            success_front = self.client_uv_front_forward.call(request_empty)
+            success_back = self.client_uv_back_forward.call(request_empty)
+        else:
+            success_front = self.client_uv_front_backward.call(request_empty)
+            success_back = self.client_uv_back_backward.call(request_empty)
+
+        self.get_logger().info(f"Service call result: success={success_front}")
+        self.get_logger().info(f"Service call result: success={success_back}")
+
+        if success_front and success_back:
+            return True
+        else:
+            return False
+
+    def open_protection(self):
+        if not self.open_protection_srv.wait_for_service(timeout_sec=1.0):
+            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint' not available")
             return False
         
         req = SetBool.Request()
         req.data = True
-        response:SetBool.Response = self.open_flap_srv.call(req)
+        response:SetBool.Response = self.open_protection_srv.call(req)
         return response.success
     
-    def close_flap(self):
-        if not self.open_flap_srv.wait_for_service(timeout_sec=1.0):
-            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Flap_Joint' not available")
+    def close_protection(self):
+        if not self.open_protection_srv.wait_for_service(timeout_sec=1.0):
+            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint' not available")
             return False
         
         req = SetBool.Request()
         req.data = False
-        response:SetBool.Response = self.open_flap_srv.call(req)
+        response:SetBool.Response = self.open_protection_srv.call(req)
         return response.success
     
     def retract_dispenser(self):
@@ -168,7 +219,7 @@ class PrimitiveSkillsNode(Node):
     def dispense_test_point_callback(self, request: EmptyWithSuccess.Request, response:EmptyWithSuccess.Response):
         num = 5
         
-        success_open_flap = self.open_flap()
+        success_open_protection = self.open_protection()
         success_extend_dispenser = self.extend_dispenser()
         time.sleep(1)
         
@@ -209,7 +260,7 @@ class PrimitiveSkillsNode(Node):
                 return response
         time.sleep(1)
         success_retract_dispenser = self.retract_dispenser()
-        success_close_flap = self.close_flap()
+        success_close_protection = self.close_protection()
         
         return response
     

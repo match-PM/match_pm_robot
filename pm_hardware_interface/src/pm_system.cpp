@@ -201,7 +201,7 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
     //     "UV_LED_Back_Joint",
     //     "UV_Slider_X_Front_Joint",
     //     "UV_LED_Front_Joint",
-    //     "1K_Dispenser_Flap_Joint",
+    //     "1K_Dispenser_Protection_Joint",
     //     "1K_Dispenser_Joint",
     //     "2K_Dispenser_Joint"
     // };
