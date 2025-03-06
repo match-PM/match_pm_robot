@@ -283,7 +283,8 @@ class PrimitiveSkillsNode(Node):
             return False
         
         create_adhesive_viz_point_request = CreateVizAdhesivePoint.Request()
-        create_adhesive_viz_point_request.point.parent_frame = '1K_Dispenser_TCP'
+        create_adhesive_viz_point_request.point.parent_frame = move_to_frame_request.target_frame
+        
         create_adhesive_viz_point_request.point.hight = 1.0 # in mm
         create_adhesive_viz_point_request.point.diameter = 1.0 # in mm
         success_create_viz_point = self.create_adhesive_viz_point(create_adhesive_viz_point_request)

@@ -6,9 +6,33 @@ from pm_msgs.srv import EmptyWithSuccess, CreateVizAdhesivePoint
 from pm_msgs.msg import VizAdhesivePoint,VizAdhesivePoints
 from visualization_msgs.msg import Marker, MarkerArray
 from tf2_ros import Buffer, TransformListener, TransformBroadcaster, StaticTransformBroadcaster
-from geometry_msgs.msg import TransformStamped
+from geometry_msgs.msg import TransformStamped, Vector3, Quaternion, Pose
 
 
+
+def adapt_transform_for_new_parent_frame(child_frame, new_parent_frame, tf_buffer: Buffer)->Pose:
+    # this function adapts the tf for parent_frame changes
+    try: 
+        t:TransformStamped = tf_buffer.lookup_transform(new_parent_frame, child_frame,rclpy.time.Time())
+
+
+        result = Pose()
+        result.position.x = t.transform.translation.x
+        result.position.y = t.transform.translation.y
+        result.position.z = t.transform.translation.z
+
+        result.orientation.x = t.transform.rotation.x
+        result.orientation.y = t.transform.rotation.y
+        result.orientation.z = t.transform.rotation.z
+        result.orientation.w = t.transform.rotation.w
+
+        return result
+    
+    except Exception as e:
+        print(f"Frame '{child_frame}' does not exist in TF! {str(e)}")
+        return None
+
+    
 
 def get_transform_for_frame_in_world(frame_name: str, tf_buffer: Buffer, logger = None) -> TransformStamped:
     # this function adapts the tf for parent_frame changes
@@ -22,6 +46,20 @@ def get_transform_for_frame_in_world(frame_name: str, tf_buffer: Buffer, logger 
         transform = None
         raise ValueError(f"Frame '{frame_name}' does not exist in TF! {str(e)}")
     return transform
+
+def get_transform_for_frame(frame_name: str, parent_frame:str, tf_buffer: Buffer, logger = None) -> TransformStamped:
+    # this function adapts the tf for parent_frame changes
+    #transform:TransformStamped = tf_buffer.lookup_transform(frame_name, 'world',rclpy.time.Time())
+    try:
+        
+        transform:TransformStamped = tf_buffer.lookup_transform(parent_frame, frame_name, rclpy.time.Time(),rclpy.duration.Duration(seconds=1.0))
+        if logger is not None:
+            logger.debug(f"Frame '{frame_name}' found in TF!")
+    except Exception as e:
+        transform = None
+        raise ValueError(f"Frame '{frame_name}' does not exist in TF! {str(e)}")
+    return transform
+
 
 class AdhesiveDisplay(Node):
 
@@ -48,16 +86,21 @@ class AdhesiveDisplay(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self, spin_thread=True)
 
     def add_adhesive_point(self, request:CreateVizAdhesivePoint.Request, response:CreateVizAdhesivePoint.Response):
-        transform = get_transform_for_frame_in_world(request.point.parent_frame, tf_buffer=self.tf_buffer, logger=self.logger)
+
+        transform = adapt_transform_for_new_parent_frame(child_frame = request.point.endeffector_frame, 
+                                                          new_parent_frame = request.point.parent_frame, 
+                                                          tf_buffer=self.tf_buffer)
         
         if transform is None:
             response.success = False
-            self.logger.error(f"Could not find transform for frame '{request.point.parent_frame}'")
+            self.logger.error(f"Could not adapt transform for frame '{request.point.endeffector_frame}'")
             return response
-        
-        request.point.point_pose.position.x = transform.transform.translation.x + request.point.point_pose.position.x
-        request.point.point_pose.position.y = transform.transform.translation.y + request.point.point_pose.position.y
-        request.point.point_pose.position.z = transform.transform.translation.z + request.point.point_pose.position.z - (request.point.hight/1000)/2
+
+        #transform = get_transform_for_frame_in_world(request.point.parent_frame, tf_buffer=self.tf_buffer, logger=self.logger)
+
+        request.point.point_pose.position.x = transform.position.x + request.point.point_pose.position.x
+        request.point.point_pose.position.y = transform.position.y + request.point.point_pose.position.y
+        request.point.point_pose.position.z = transform.position.z + request.point.point_pose.position.z - (request.point.hight/1000)/2
 
         self.adhesive_points.points.append(request.point)
         response.success = True
@@ -80,8 +123,11 @@ class AdhesiveDisplay(Node):
         marker_array = MarkerArray()
 
         for index, adhesive_point in enumerate(self.adhesive_points.points):
+            adhesive_point:VizAdhesivePoint
             marker = self.marker_from_adhesive_point(adhesive_point, index)
             marker_array.markers.append(marker)
+            self.logger.warn(f"Publishing marker for {adhesive_point.parent_frame}")
+            self.logger.warn(f"Transform marker for {str(adhesive_point.point_pose)}")
             #self.logger.warn(f"Publishing marker for {tolerance_handle.frame_name}")
 
         self.logger.info(f"Published {len(marker_array.markers)} markers.")
@@ -106,8 +152,7 @@ class AdhesiveDisplay(Node):
 
         marker = Marker()
         
-        
-        marker.header.frame_id = 'world'
+        marker.header.frame_id = adhesive_point.parent_frame
         marker.header.stamp = rclpy.time.Time().to_msg()
         marker.ns = 'adhesive_points'
         marker.id = id
