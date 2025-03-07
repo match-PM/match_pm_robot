@@ -45,10 +45,10 @@ class PMSystem : public hardware_interface::SystemInterface
         AxisState{AxisId::Y, Unit::Meters},
         AxisState{AxisId::Z, Unit::Meters},
         AxisState{AxisId::T, Unit::Degrees},
-        AxisState{AxisId::Q, Unit::Meters},
-        AxisState{AxisId::R, Unit::Meters},
-        AxisState{AxisId::U, Unit::Meters},
-        AxisState{AxisId::V, Unit::Meters},
+        AxisState{AxisId::Q, Unit::Degrees},
+        AxisState{AxisId::R, Unit::Degrees},
+        AxisState{AxisId::U, Unit::Degrees},
+        AxisState{AxisId::V, Unit::Degrees},
     };
 
     std::array<PneumaticState, 6> m_pneumatics{
