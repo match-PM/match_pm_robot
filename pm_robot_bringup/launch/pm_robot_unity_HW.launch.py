@@ -375,11 +375,11 @@ def generate_launch_description():
     if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
 
-    #ld.add_action(primitive_skills_node)
+    ld.add_action(primitive_skills_node)
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)
     ld.add_action(pm_nozzle_controller_spawner)
-    # ld.add_action(pm_uv_controller)
+    ld.add_action(pm_uv_controller)
 
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)

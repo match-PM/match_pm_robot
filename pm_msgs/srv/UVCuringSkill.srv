@@ -1,0 +1,5 @@
+int32[4] intensity_percent
+float64[4] duration
+---
+bool success
+string message

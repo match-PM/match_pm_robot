@@ -36,6 +36,7 @@ rosidl_generate_interfaces(
   "srv/UVGetPower.srv"
   "srv/UVSetTime.srv"
   "srv/UVGetTime.srv"
+  "srv/UVCuringSkill.srv"
   "srv/CoaxLightGetState.srv"
   "srv/CoaxLightSetState.srv"
   "srv/Cam2LightSetState.srv"
