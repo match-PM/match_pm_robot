@@ -13,8 +13,13 @@ import pm_msgs.srv as pm_msg_srv
 from example_interfaces.srv import SetBool
 import time
 
-class PrimitiveSkillsNode(Node):
+#import copy
+import copy
 
+class PrimitiveSkillsNode(Node):
+    DISPENSER_TRAVEL_DISTANCE = 0.04 + 0
+    DISPENSER_OFFSET_VALUE = 0.01
+    
     def __init__(self):
         super().__init__('pm_robot_primitive_skills')
 
@@ -275,9 +280,7 @@ class PrimitiveSkillsNode(Node):
     def dispense_test_point_callback(self, request: pm_msg_srv.EmptyWithSuccess.Request, response:pm_msg_srv.EmptyWithSuccess.Response):
         num = 5
         
-        success_open_protection = self.open_protection()
-        success_extend_dispenser = self.extend_dispenser()
-        time.sleep(1)
+        dispenser_prepared = False
         
         for i in range(num):
 
@@ -305,6 +308,14 @@ class PrimitiveSkillsNode(Node):
             
             move_to_frame_request.execute_movement = True
             
+            if not dispenser_prepared:
+                prepare_success = self.prepare_dispenser()
+                dispenser_prepared = True
+                if not prepare_success:
+                    self.logger.error("Preparing dispenser failed!")
+                    response.success = False
+                    return response
+                
             success = self.dispense_at_frame(move_to_frame_request)
             response.success = success
             
@@ -315,23 +326,48 @@ class PrimitiveSkillsNode(Node):
                 self.logger.error("Dispensing at frame failed!")
                 return response
         time.sleep(1)
+        
         success_retract_dispenser = self.retract_dispenser()
         success_close_protection = self.close_protection()
+        time.sleep(1)
         
         return response
     
+    def prepare_dispenser(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)->bool:
+        
+        move_to_frame_request_copy = copy.deepcopy(move_to_frame_request)
+        
+        move_to_frame_request_copy.translation.z += self.DISPENSER_TRAVEL_DISTANCE
+        
+        move_to_frame_request_copy.translation.z += self.DISPENSER_OFFSET_VALUE
+        
+        move_success = self.move_dispenser_to_frame(move_to_frame_request_copy)
+        
+        if not move_success:
+            return False 
+        
+        success_open_protection = self.open_protection()
+        
+        if not success_open_protection:
+            return False
+        
+        success_extend_dispenser = self.extend_dispenser()
+        
+        time.sleep(0.5)
+        
+        return success_extend_dispenser
+    
     def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)->bool:
-        offset_value = 0.01
         
         move_to_frame_request.translation.z += float(0.001)
-        move_to_frame_request.translation.z += offset_value
+        move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
 
         success = self.move_dispenser_to_frame(move_to_frame_request)
         
         if not success:
             return False
         
-        move_to_frame_request.translation.z -= offset_value
+        move_to_frame_request.translation.z -= self.DISPENSER_OFFSET_VALUE
         
         success = self.move_dispenser_to_frame(move_to_frame_request)
         
@@ -345,7 +381,7 @@ class PrimitiveSkillsNode(Node):
         create_adhesive_viz_point_request.point.diameter = 1.0 # in mm
         success_create_viz_point = self.create_adhesive_viz_point(create_adhesive_viz_point_request)
 
-        move_to_frame_request.translation.z += offset_value
+        move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
         
         success = self.move_dispenser_to_frame(move_to_frame_request)
 

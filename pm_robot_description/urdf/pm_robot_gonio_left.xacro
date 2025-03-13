@@ -255,7 +255,7 @@
     </link>
     <joint name="UV_Slider_X_Front_Joint" type="prismatic">
       <!-- <origin xyz="0.0785000000000391 0.0200000000000492 0.234999999999997" rpy="0 0 0" /> -->
-      <origin xyz="0.0.1241 0.0200000000000492 0.234999999999997" rpy="0 0 0" />
+      <origin xyz="0.1241 0.0200000000000492 0.234999999999997" rpy="0 0 0" />
       <parent link="Gonio_Left_Base" />
       <child link="UV_Slider_X_Front" />
       <axis xyz="1 0 0" />
@@ -317,7 +317,7 @@
     </link>
     <joint name="UV_Slider_X_Back_Joint" type="prismatic">
       <!-- <origin xyz="0.0785000000000389 0.200000000000049 0.234999999999998" rpy="0 0 0" /> -->
-      <origin xyz="0.0.1241 0.200000000000049 0.234999999999998" rpy="0 0 0" />
+      <origin xyz="0.1241 0.200000000000049 0.234999999999998" rpy="0 0 0" />
       <parent link="Gonio_Left_Base" />
       <child link="UV_Slider_X_Back" />
       <axis xyz="1 0 0" />
