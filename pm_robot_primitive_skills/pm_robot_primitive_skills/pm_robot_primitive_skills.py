@@ -13,12 +13,16 @@ import pm_msgs.srv as pm_msg_srv
 from example_interfaces.srv import SetBool
 import time
 
+# import empty_with_success from pm_msgs
+from pm_msgs.srv import EmptyWithSuccess
+
 #import copy
 import copy
 
 class PrimitiveSkillsNode(Node):
-    DISPENSER_TRAVEL_DISTANCE = 0.04 + 0
+    DISPENSER_TRAVEL_DISTANCE = 0.04
     DISPENSER_OFFSET_VALUE = 0.01
+    DEFAULT_DISPENSE_HEIGHT = 0.00001
     
     def __init__(self):
         super().__init__('pm_robot_primitive_skills')
@@ -28,7 +32,6 @@ class PrimitiveSkillsNode(Node):
 
         sim_time = self.get_parameter('use_sim_time').value
         
-        self.srv = self.create_service(pm_msg_srv.DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
         self.logger = self.get_logger()
 
         self.callback_group_re = ReentrantCallbackGroup()
@@ -37,21 +40,30 @@ class PrimitiveSkillsNode(Node):
         self.adhesive_test_point_grid_1 = TestPointGrid(ind_of_test_grid=0)
         self.adhesive_test_point_grid_2 = TestPointGrid(ind_of_test_grid=1)
         
+        # create services
+        self.srv = self.create_service(pm_msg_srv.DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
+
+        self.dispense_test_point_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/dispense_test_point', self.dispense_test_point_callback)
+        self.reset_test_station_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/reset_test_station', self.reset_test_station_callback)
+        self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DisppenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
+        self.logger.info("Primitive skills node started!")
+        
+        # create clients
+        self.open_protection_gaz_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint',callback_group = self.callback_group_re)
+        self.dispenser_joint_gaz_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Joint',callback_group = self.callback_group_re)
+        
+        self.open_protection_real_srv = self.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/N1K_Dispenser_Protection_Joint/MoveBackward',callback_group = self.callback_group_re)
+        self.close_protection_real_srv = self.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/N1K_Dispenser_Protection_Joint/MoveForward',callback_group = self.callback_group_re)
+
+        self.retract_dispenser_real_srv = self.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/N1K_Dispenser_Joint/MoveBackward',callback_group = self.callback_group_re)
+        self.extend_dispenser_real_srv = self.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/N1K_Dispenser_Joint/MoveForward',callback_group = self.callback_group_re)
+                
+        self.create_adhesive_viz_point_srv = self.create_client(pm_msg_srv.CreateVizAdhesivePoint, '/pm_adhesive_displayer/add_point',callback_group = self.callback_group_re)
+
         self.client_dips_1k_on = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
         self.client_dips_1k_off = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/TurnOff',callback_group = self.callback_group_re)
         
         self.move_robot_tool_client = self.create_client(MoveToFrame, '/pm_moveit_server/move_1k_dispenser_to_frame',callback_group=self.callback_group_re)
-
-        self.dispense_test_point_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/dispense_test_point', self.dispense_test_point_callback)
-
-        self.reset_test_station_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/reset_test_station', self.reset_test_station_callback)
-        self.logger.info("Primitive skills node started!")
-        
-        self.open_protection_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint',callback_group = self.callback_group_re)
-
-        self.dispenser_joint_srv = self.create_client(SetBool, '/pm_pneumatic_dummy/set_1K_Dispenser_Joint',callback_group = self.callback_group_re)
-        
-        self.create_adhesive_viz_point_srv = self.create_client(pm_msg_srv.CreateVizAdhesivePoint, '/adhesive_display_node/add_point',callback_group = self.callback_group_re)
 
         if not sim_time:
             # self.dispense_1K = self.create_service(DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
@@ -188,44 +200,86 @@ class PrimitiveSkillsNode(Node):
             return False
 
     def open_protection(self):
-        if not self.open_protection_srv.wait_for_service(timeout_sec=1.0):
-            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint' not available")
-            return False
         
-        req = SetBool.Request()
-        req.data = True
-        response:SetBool.Response = self.open_protection_srv.call(req)
-        return response.success
+        if self.is_gazebo_running():
+            if not self.open_protection_gaz_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint' not available")
+                return False
+            
+            req = SetBool.Request()
+            req.data = True
+            response:SetBool.Response = self.open_protection_gaz_srv.call(req)
+            
+            return response.success
+        
+        else:
+            if not self.open_protection_real_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_controller/N1K_Dispenser_Protection_Joint/MoveBackward' not available")
+                return False
+            
+            req = pm_msg_srv.EmptyWithSuccess.Request()
+            response:pm_msg_srv.EmptyWithSuccess.Response = self.open_protection_real_srv.call(req)
+            
+            return response.success
     
     def close_protection(self):
-        if not self.open_protection_srv.wait_for_service(timeout_sec=1.0):
-            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint' not available")
-            return False
         
-        req = SetBool.Request()
-        req.data = False
-        response:SetBool.Response = self.open_protection_srv.call(req)
-        return response.success
+        if self.is_gazebo_running():
+            if not self.open_protection_gaz_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Protection_Joint' not available")
+                return False
+            
+            req = SetBool.Request()
+            req.data = False
+            response:SetBool.Response = self.open_protection_gaz_srv.call(req)
+            return response.success
+        else:
+            if not self.close_protection_real_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_controller/N1K_Dispenser_Protection_Joint/MoveForward' not available")
+                return False
+            
+            req = pm_msg_srv.EmptyWithSuccess.Request()
+            response:pm_msg_srv.EmptyWithSuccess.Response = self.close_protection_real_srv.call(req)
+            return response.success
     
     def retract_dispenser(self):
-        if not self.dispenser_joint_srv.wait_for_service(timeout_sec=1.0):
-            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Joint' not available")
-            return False
         
-        req = SetBool.Request()
-        req.data = True
-        response:SetBool.Response = self.dispenser_joint_srv.call(req)
-        return response.success
+        if self.is_gazebo_running():
+            if not self.dispenser_joint_gaz_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Joint' not available")
+                return False
+            
+            req = SetBool.Request()
+            req.data = True
+            response:SetBool.Response = self.dispenser_joint_gaz_srv.call(req)
+            return response.success
+        else:
+            if not self.retract_dispenser_real_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_controller/1K_Dispenser_Joint/MoveBackward' not available")
+                return False
+            
+            req = pm_msg_srv.EmptyWithSuccess.Request()
+            response:pm_msg_srv.EmptyWithSuccess.Response = self.retract_dispenser_real_srv.call(req)
+            return response.success
     
     def extend_dispenser(self):
-        if not self.dispenser_joint_srv.wait_for_service(timeout_sec=1.0):
-            self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Joint' not available")
-            return False
-        
-        req = SetBool.Request()
-        req.data = False
-        response:SetBool.Response = self.dispenser_joint_srv.call(req)
-        return response.success
+        if self.is_gazebo_running():
+            if not self.dispenser_joint_gaz_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_dummy/set_1K_Dispenser_Joint' not available")
+                return False
+            
+            req = SetBool.Request()
+            req.data = False
+            response:SetBool.Response = self.dispenser_joint_gaz_srv.call(req)
+            return response.success
+        else:
+            if not self.extend_dispenser_real_srv.wait_for_service(timeout_sec=1.0):
+                self.logger.error("Service '/pm_pneumatic_controller/1K_Dispenser_Joint/MoveForward' not available")
+                return False
+            
+            req = pm_msg_srv.EmptyWithSuccess.Request()
+            response:pm_msg_srv.EmptyWithSuccess.Response = self.extend_dispenser_real_srv.call(req)
+            return response.success
     
     def dispense_callback(self, request: pm_msg_srv.DispenseForTime.Request, response:pm_msg_srv.DispenseForTime.Response):
         
@@ -277,6 +331,41 @@ class PrimitiveSkillsNode(Node):
 
         return response
 
+    def dispense_at_points_callback(self, request: pm_msg_srv.DisppenseAtPoints.Request, response:pm_msg_srv.DisppenseAtPoints.Response):
+        
+        dispenser_prepared = False
+        
+        for frame in request.frame_names:
+            move_to_frame_request = pm_moveit_srv.MoveToFrame.Request()
+            
+            move_to_frame_request.target_frame = frame
+            move_to_frame_request.execute_movement = True
+            
+            if not dispenser_prepared:
+                prepare_success = self.prepare_dispenser(move_to_frame_request)
+                dispenser_prepared = True
+                if not prepare_success:
+                    self.logger.error("Preparing dispenser failed!")
+                    response.success = False
+                    return response
+                
+            success = self.dispense_at_frame(move_to_frame_request)
+            
+            if not success:
+                response.success = False
+                return response
+        
+        retract_success = self.retract_dispenser()
+        close_success = self.close_protection()
+        
+        if not retract_success or not close_success:
+            response.success = False
+            self.logger.error("Retracting dispenser or closing protection failed!")
+            return response
+        
+        response.success = True
+        return response
+    
     def dispense_test_point_callback(self, request: pm_msg_srv.EmptyWithSuccess.Request, response:pm_msg_srv.EmptyWithSuccess.Response):
         num = 5
         
@@ -309,7 +398,7 @@ class PrimitiveSkillsNode(Node):
             move_to_frame_request.execute_movement = True
             
             if not dispenser_prepared:
-                prepare_success = self.prepare_dispenser()
+                prepare_success = self.prepare_dispenser(move_to_frame_request)
                 dispenser_prepared = True
                 if not prepare_success:
                     self.logger.error("Preparing dispenser failed!")
@@ -359,7 +448,7 @@ class PrimitiveSkillsNode(Node):
     
     def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)->bool:
         
-        move_to_frame_request.translation.z += float(0.001)
+        move_to_frame_request.translation.z += float(self.DEFAULT_DISPENSE_HEIGHT)
         move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
 
         success = self.move_dispenser_to_frame(move_to_frame_request)
@@ -392,6 +481,21 @@ class PrimitiveSkillsNode(Node):
         self.adhesive_test_point_grid_2.reset_current_point()
         response.success = True
         return response
+    
+    def is_gazebo_running(self):
+        """Check if the Gazebo node is active."""
+        node_names = self.get_node_names()
+        if 'gazebo' in node_names:
+            return True
+        return False
+    
+    
+    def is_unity_running(self)->bool:
+        """Check if the Unity node is active."""
+        node_names = self.get_node_names()
+        if 'ROS2UnityCam1Publisher' in node_names:
+            return True
+        return False
     
 def main(args=None):
     rclpy.init(args=args)

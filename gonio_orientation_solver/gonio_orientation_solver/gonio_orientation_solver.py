@@ -13,6 +13,7 @@ from sensor_msgs.msg import JointState
 from typing import Union
 from scipy.spatial.transform import Rotation as R
 from pm_moveit_interfaces.srv import GetGonioSolution
+from scipy.optimize import least_squares
 
 def rotation_matrix_to_quaternion(Rot_mat)-> sp.Matrix:
     r = R.from_matrix(Rot_mat)
@@ -130,148 +131,292 @@ class GonioOrientationSolver(Node):
         self.gonio_left_solution_srv = self.create_service(GetGonioSolution, self.get_name()+'/get_gonio_left_solution', self.calculate_gonio_left, callback_group=self.callback_group)
         self.logger.info("GonioOrientationSolver Node started!")
     
-    def calculate_gonio_right(self, request:GetGonioSolution.Request, response: GetGonioSolution.Response):
+    # def calculate_gonio_right(self, request:GetGonioSolution.Request, response: GetGonioSolution.Response):
+    #     q1, q2, q3 = sp.symbols('q1 q2 q3')
+
+    #     transform_gonio_right = get_transform_for_frame_in_world('Gonio_Right_Stage_1_Bottom', self.tf_buffer, self.get_logger())
+
+    #     gonio_right_endeffector = get_transform_for_frame(request.gonio_endeffector, 
+    #                                                 'Gonio_Right_Chuck_Origin' ,
+    #                                                 self.tf_buffer, 
+    #                                                 self.get_logger())
+        
+    #     gonio_right_endeffector_matrix = get_rotation_matrix_from_tf(gonio_right_endeffector)
+    #     transform_gonio_right_matrix = get_rotation_matrix_from_tf(transform_gonio_right)
+        
+    #     joint_transformation = get_euler_rotation_matrix(0, -self.gonio_right_q2, -self.gonio_right_q3)
+    #     joint_transform_sym = get_euler_rotation_matrix(0, -q2, -q3)
+
+    #     final_gonio_rotations_matrix = transform_gonio_right_matrix * joint_transformation * gonio_right_endeffector_matrix
+    #     final_from scipy.optimize import least_squares
+    #     #final_gonio_rotations_matrix_quad = rotation_matrix_to_quaternion(final_gonio_rotations_matrix)
+    #     # log final rotaion
+    #     #self.get_logger().info(f"Final Rotation Matrix Gonio: {str(final_gonio_rotations_matrix_quad)}")
+
+    #     transform_rotation_stage_world = get_transform_for_frame_in_world('Z_Axis', self.tf_buffer, self.get_logger())
+    #     transform_rotation_stage_world_matrix = get_rotation_matrix_from_tf(transform_rotation_stage_world)
+
+    #     transform_gripper_endeffector = get_transform_for_frame(request.gripper_endeffector, 
+    #                                                 't_axis_toolchanger' ,
+    #                                                 self.tf_buffer, 
+    #                                                 self.get_logger())
+        
+    #     transform_gripper_endeffector_matrix = get_rotation_matrix_from_tf(transform_gripper_endeffector)
+
+    #     joint_transformation_gripper = get_euler_rotation_matrix(self.t_axis_q, 0, 0)
+    #     joint_transform_gripper = get_euler_rotation_matrix(q1, 0, 0)
+        
+    #     final_gripper_rotation_matrix = transform_rotation_stage_world_matrix * joint_transformation_gripper * transform_gripper_endeffector_matrix
+    #     final_gripper_equation = transform_rotation_stage_world_matrix * joint_transform_gripper * transform_gripper_endeffector_matrix
+
+    #     #final_gripper_rotation_matrix_quad = rotation_matrix_to_quaternion(final_gripper_rotation_matrix)
+
+    #     equations = []
+    #     for i in range(3):
+    #         for j in range(3):
+    #             eq = final_gonio_equation[i, j] - final_gripper_equation[i, j]
+    #             equations.append(eq)
+
+    #     initial_guess = (0, 0, 0)
+    #     # Solve the equations for the unknowns q1, q2, q3
+    #     solution = sp.nsolve(equations, (q1, q2, q3), initial_guess)
+        
+    #     if solution:
+    #         response.joint_values = [float(solution[0]), float(solution[1]), float(solution[2])]
+    #         response.joint_names = ['T_Axis_Joint','Gonio_Right_Stage_1_Joint', 'Gonio_Right_Stage_2_Joint']
+    #         response.success = True
+    #     # Print the solution
+    #         self.logger.info(f"Solution T_Axis_Joint: {(solution[0])}")
+    #         self.logger.info(f"Solution Gonio_Right_Stage_1_Joint: {(solution[1])}")
+    #         self.logger.info(f"Solution Gonio_Right_Stage_2_Joint: {(solution[2])}")
+
+    #     else:
+    #         self.logger.error(f"No solution found!")
+    #         response.success = False
+
+    #     final_gonio_equation = final_gonio_equation.subs({q1: float(solution[0]), q2: float(solution[1]), q3: float(solution[2])})
+    #     self.logger.error(f"Final Rotation Matrix Gonio: {str(final_gonio_equation)}")
+    #     final_gonio_quat = rotation_matrix_to_quaternion(final_gonio_equation)  
+    #     self.logger.error(f"Final Rotation Matrix Gonio: {str(final_gonio_quat)}")
+
+    #     return response
+    
+    def calculate_gonio_right(self, request: GetGonioSolution.Request, response: GetGonioSolution.Response):
         q1, q2, q3 = sp.symbols('q1 q2 q3')
 
+        # Get transformations
         transform_gonio_right = get_transform_for_frame_in_world('Gonio_Right_Stage_1_Bottom', self.tf_buffer, self.get_logger())
+        gonio_right_endeffector = get_transform_for_frame(request.gonio_endeffector, 'Gonio_Right_Chuck_Origin', self.tf_buffer, self.get_logger())
 
-        gonio_right_endeffector = get_transform_for_frame(request.gonio_endeffector, 
-                                                    'Gonio_Right_Chuck_Origin' ,
-                                                    self.tf_buffer, 
-                                                    self.get_logger())
-        
         gonio_right_endeffector_matrix = get_rotation_matrix_from_tf(gonio_right_endeffector)
         transform_gonio_right_matrix = get_rotation_matrix_from_tf(transform_gonio_right)
-        
-        joint_transformation = get_euler_rotation_matrix(0, -self.gonio_right_q2, -self.gonio_right_q3)
+
+        # Joint transformations (Euler angles)
         joint_transform_sym = get_euler_rotation_matrix(0, -q2, -q3)
 
-        final_gonio_rotations_matrix = transform_gonio_right_matrix * joint_transformation * gonio_right_endeffector_matrix
         final_gonio_equation = transform_gonio_right_matrix * joint_transform_sym * gonio_right_endeffector_matrix
 
-        #final_gonio_rotations_matrix_quad = rotation_matrix_to_quaternion(final_gonio_rotations_matrix)
-        # log final rotaion
-        #self.get_logger().info(f"Final Rotation Matrix Gonio: {str(final_gonio_rotations_matrix_quad)}")
-
+        # Rotation Stage in World
         transform_rotation_stage_world = get_transform_for_frame_in_world('Z_Axis', self.tf_buffer, self.get_logger())
         transform_rotation_stage_world_matrix = get_rotation_matrix_from_tf(transform_rotation_stage_world)
 
-        transform_gripper_endeffector = get_transform_for_frame(request.gripper_endeffector, 
-                                                    't_axis_toolchanger' ,
-                                                    self.tf_buffer, 
-                                                    self.get_logger())
-        
+        transform_gripper_endeffector = get_transform_for_frame(request.gripper_endeffector, 't_axis_toolchanger', self.tf_buffer, self.get_logger())
         transform_gripper_endeffector_matrix = get_rotation_matrix_from_tf(transform_gripper_endeffector)
 
-        joint_transformation_gripper = get_euler_rotation_matrix(self.t_axis_q, 0, 0)
+        # Gripper joint transformation
         joint_transform_gripper = get_euler_rotation_matrix(q1, 0, 0)
-        
-        final_gripper_rotation_matrix = transform_rotation_stage_world_matrix * joint_transformation_gripper * transform_gripper_endeffector_matrix
+
         final_gripper_equation = transform_rotation_stage_world_matrix * joint_transform_gripper * transform_gripper_endeffector_matrix
 
-        #final_gripper_rotation_matrix_quad = rotation_matrix_to_quaternion(final_gripper_rotation_matrix)
+        # Function to evaluate the difference between gonio and gripper equations
+        def equations(vars):
+            q1_val, q2_val, q3_val = vars
 
-        equations = []
-        for i in range(3):
-            for j in range(3):
-                eq = final_gonio_equation[i, j] - final_gripper_equation[i, j]
-                equations.append(eq)
+            # Evaluate matrices numerically
+            eq_gonio = final_gonio_equation.subs({q1: q1_val, q2: q2_val, q3: q3_val}).evalf()
+            eq_gripper = final_gripper_equation.subs({q1: q1_val, q2: q2_val, q3: q3_val}).evalf()
 
-        initial_guess = (0, 0, 0)
-        # Solve the equations for the unknowns q1, q2, q3
-        solution = sp.nsolve(equations, (q1, q2, q3), initial_guess)
-        
-        if solution:
-            response.joint_values = [float(solution[0]), float(solution[1]), float(solution[2])]
-            response.joint_names = ['T_Axis_Joint','Gonio_Right_Stage_1_Joint', 'Gonio_Right_Stage_2_Joint']
+            # Compute the difference (should be zero when solved correctly)
+            eq_numeric = np.array(eq_gonio - eq_gripper).astype(np.float64)
+
+            # Debugging logs
+            self.get_logger().info(f"Equation Matrix Evaluated: {eq_numeric}")
+
+            return eq_numeric.flatten()
+
+        # Initial guess as a NumPy array
+        initial_guess = np.array([0.0, 0.0, 0.0], dtype=np.float64)
+
+        # Solve using least squares (Levenberg-Marquardt method)
+        result = least_squares(equations, initial_guess, method='lm')
+
+        if result.success:
+            q1_sol, q2_sol, q3_sol = result.x
+            response.joint_values = [float(q1_sol), float(q2_sol), float(q3_sol)]
+            response.joint_names = ['T_Axis_Joint', 'Gonio_Right_Stage_1_Joint', 'Gonio_Right_Stage_2_Joint']
             response.success = True
-        # Print the solution
-            self.logger.info(f"Solution T_Axis_Joint: {(solution[0])}")
-            self.logger.info(f"Solution Gonio_Right_Stage_1_Joint: {(solution[1])}")
-            self.logger.info(f"Solution Gonio_Right_Stage_2_Joint: {(solution[2])}")
 
+            self.get_logger().info(f"Solution T_Axis_Joint: {q1_sol}")
+            self.get_logger().info(f"Solution Gonio_Right_Stage_1_Joint: {q2_sol}")
+            self.get_logger().info(f"Solution Gonio_Right_Stage_2_Joint: {q3_sol}")
         else:
-            self.logger.error(f"No solution found!")
+            self.get_logger().error("No solution found!")
             response.success = False
+            return response
 
-        final_gonio_equation = final_gonio_equation.subs({q1: float(solution[0]), q2: float(solution[1]), q3: float(solution[2])})
-        self.logger.error(f"Final Rotation Matrix Gonio: {str(final_gonio_equation)}")
+        # Substituting solutions to verify rotation matrix
+        final_gonio_equation = final_gonio_equation.subs({q1: q1_sol, q2: q2_sol, q3: q3_sol}).evalf()
+        self.get_logger().info(f"Final Rotation Matrix Gonio: {str(final_gonio_equation)}")
+
+        # Convert to quaternion
         final_gonio_quat = rotation_matrix_to_quaternion(final_gonio_equation)  
-        self.logger.error(f"Final Rotation Matrix Gonio: {str(final_gonio_quat)}")
+        self.get_logger().info(f"Final Rotation Quaternion Gonio: {str(final_gonio_quat)}")
 
         return response
 
 
-
-    def calculate_gonio_left(self, request:GetGonioSolution.Request, response: GetGonioSolution.Response):
+    def calculate_gonio_left(self, request: GetGonioSolution.Request, response: GetGonioSolution.Response):
         q1, q2, q3 = sp.symbols('q1 q2 q3')
 
+        # Get transformations
         transform_gonio_left = get_transform_for_frame_in_world('Gonio_Left_Stage_1_Bottom', self.tf_buffer, self.get_logger())
+        gonio_left_endeffector = get_transform_for_frame(request.gonio_endeffector, 'Gonio_Left_Chuck_Origin', self.tf_buffer, self.get_logger())
 
-        gonio_left_endeffector = get_transform_for_frame(request.gonio_endeffector, 
-                                                    'Gonio_Left_Chuck_Origin' ,
-                                                    self.tf_buffer, 
-                                                    self.get_logger())
-        
         gonio_left_endeffector_matrix = get_rotation_matrix_from_tf(gonio_left_endeffector)
         transform_gonio_left_matrix = get_rotation_matrix_from_tf(transform_gonio_left)
-        
-        #joint_transformation = get_euler_rotation_matrix(0, -self.gonio_left_q2, -self.gonio_left_q3)
-        #joint_transform_sym = get_euler_rotation_matrix(0, q2, -q3)
 
-        joint_transformation = get_euler_rotation_matrix(0, -self.gonio_left_q3, -self.gonio_left_q2)
-        joint_transform_sym = get_euler_rotation_matrix(0,  -q3, q2)
-        
-        final_gonio_rotations_matrix = transform_gonio_left_matrix * joint_transformation * gonio_left_endeffector_matrix
+        # Joint transformations (Euler angles)
+        joint_transform_sym = get_euler_rotation_matrix(0, -q3, q2)
+
         final_gonio_equation = transform_gonio_left_matrix * joint_transform_sym * gonio_left_endeffector_matrix
 
-        final_gonio_rotations_matrix_quad = rotation_matrix_to_quaternion(final_gonio_rotations_matrix)
-        # log final rotaion
-        #self.get_logger().info(f"Final Rotation Matrix Gonio: {str(final_gonio_rotations_matrix_quad)}")
-
+        # Rotation Stage in World
         transform_rotation_stage_world = get_transform_for_frame_in_world('Z_Axis', self.tf_buffer, self.get_logger())
         transform_rotation_stage_world_matrix = get_rotation_matrix_from_tf(transform_rotation_stage_world)
 
-        transform_gripper_endeffector = get_transform_for_frame(request.gripper_endeffector, 
-                                                    't_axis_toolchanger' ,
-                                                    self.tf_buffer, 
-                                                    self.get_logger())
-        
+        transform_gripper_endeffector = get_transform_for_frame(request.gripper_endeffector, 't_axis_toolchanger', self.tf_buffer, self.get_logger())
         transform_gripper_endeffector_matrix = get_rotation_matrix_from_tf(transform_gripper_endeffector)
 
-        joint_transformation_gripper = get_euler_rotation_matrix(self.t_axis_q, 0, 0)
+        # Gripper joint transformation
         joint_transform_gripper = get_euler_rotation_matrix(q1, 0, 0)
-        
-        final_gripper_rotation_matrix = transform_rotation_stage_world_matrix * joint_transformation_gripper * transform_gripper_endeffector_matrix
+
         final_gripper_equation = transform_rotation_stage_world_matrix * joint_transform_gripper * transform_gripper_endeffector_matrix
 
-        final_gripper_rotation_matrix_quad = rotation_matrix_to_quaternion(final_gripper_rotation_matrix)
+        # Function to evaluate the difference between gonio and gripper equations
+        def equations(vars):
+            q1_val, q2_val, q3_val = vars
 
-        equations = []
-        for i in range(3):
-            for j in range(3):
-                eq = final_gonio_equation[i, j] - final_gripper_equation[i, j]
-                equations.append(eq)
+            # Evaluate matrices numerically
+            eq_gonio = final_gonio_equation.subs({q1: q1_val, q2: q2_val, q3: q3_val}).evalf()
+            eq_gripper = final_gripper_equation.subs({q1: q1_val, q2: q2_val, q3: q3_val}).evalf()
 
-        initial_guess = (0, 0, 0)
-        # Solve the equations for the unknowns q1, q2, q3
-        solution = sp.nsolve(equations, (q1, q2, q3), initial_guess)
-        
-        if solution:
-            response.joint_values = [float(solution[0]), float(solution[1]), float(solution[2])]
+            # Compute the difference (should be zero when solved correctly)
+            eq_numeric = np.array(eq_gonio - eq_gripper).astype(np.float64)
+
+            # Debugging logs
+            self.get_logger().info(f"Equation Matrix Evaluated: {eq_numeric}")
+
+            return eq_numeric.flatten()
+
+        # Initial guess as a NumPy array
+        initial_guess = np.array([0.0, 0.0, 0.0], dtype=np.float64)
+
+        # Solve using least squares (Levenberg-Marquardt method)
+        result = least_squares(equations, initial_guess, method='lm')
+
+        if result.success:
+            q1_sol, q2_sol, q3_sol = result.x
+            response.joint_values = [float(q1_sol), float(q2_sol), float(q3_sol)]
             response.joint_names = ['T_Axis_Joint', 'Gonio_Left_Stage_1_Joint', 'Gonio_Left_Stage_2_Joint']
-
             response.success = True
-        # Print the solution
-            self.logger.info(f"Solution T_Axis_Joint: {(solution[0])}")
-            self.logger.info(f"Solution Gonio_Left_Stage_1_Joint: {(solution[1])}")
-            self.logger.info(f"Solution Gonio_Left_Stage_2_Joint: {(solution[2])}")
 
+            self.get_logger().info(f"Solution T_Axis_Joint: {q1_sol}")
+            self.get_logger().info(f"Solution Gonio_Left_Stage_1_Joint: {q2_sol}")
+            self.get_logger().info(f"Solution Gonio_Left_Stage_2_Joint: {q3_sol}")
         else:
-            self.logger.error(f"No solution found!")
+            self.get_logger().error("No solution found!")
             response.success = False
+            return response
+
+        # Substituting solutions to verify rotation matrix
+        final_gonio_equation = final_gonio_equation.subs({q1: q1_sol, q2: q2_sol, q3: q3_sol}).evalf()
+        self.get_logger().info(f"Final Rotation Matrix Gonio: {str(final_gonio_equation)}")
+
+        # Convert to quaternion
+        final_gonio_quat = rotation_matrix_to_quaternion(final_gonio_equation)  
+        self.get_logger().info(f"Final Rotation Quaternion Gonio: {str(final_gonio_quat)}")
 
         return response
+
+    # def calculate_gonio_left(self, request:GetGonioSolution.Request, response: GetGonioSolution.Response):
+    #     q1, q2, q3 = sp.symbols('q1 q2 q3')
+
+    #     transform_gonio_left = get_transform_for_frame_in_world('Gonio_Left_Stage_1_Bottom', self.tf_buffer, self.get_logger())
+
+    #     gonio_left_endeffector = get_transform_for_frame(request.gonio_endeffector, 
+    #                                                 'Gonio_Left_Chuck_Origin' ,
+    #                                                 self.tf_buffer, 
+    #                                                 self.get_logger())
+        
+    #     gonio_left_endeffector_matrix = get_rotation_matrix_from_tf(gonio_left_endeffector)
+    #     transform_gonio_left_matrix = get_rotation_matrix_from_tf(transform_gonio_left)
+        
+    #     #joint_transformation = get_euler_rotation_matrix(0, -self.gonio_left_q2, -self.gonio_left_q3)
+    #     #joint_transform_sym = get_euler_rotation_matrix(0, q2, -q3)
+
+    #     joint_transformation = get_euler_rotation_matrix(0, -self.gonio_left_q3, -self.gonio_left_q2)
+    #     joint_transform_sym = get_euler_rotation_matrix(0,  -q3, q2)
+        
+    #     final_gonio_rotations_matrix = transform_gonio_left_matrix * joint_transformation * gonio_left_endeffector_matrix
+    #     final_gonio_equation = transform_gonio_left_matrix * joint_transform_sym * gonio_left_endeffector_matrix
+
+    #     final_gonio_rotations_matrix_quad = rotation_matrix_to_quaternion(final_gonio_rotations_matrix)
+    #     # log final rotaion
+    #     #self.get_logger().info(f"Final Rotation Matrix Gonio: {str(final_gonio_rotations_matrix_quad)}")
+
+    #     transform_rotation_stage_world = get_transform_for_frame_in_world('Z_Axis', self.tf_buffer, self.get_logger())
+    #     transform_rotation_stage_world_matrix = get_rotation_matrix_from_tf(transform_rotation_stage_world)
+
+    #     transform_gripper_endeffector = get_transform_for_frame(request.gripper_endeffector, 
+    #                                                 't_axis_toolchanger' ,
+    #                                                 self.tf_buffer, 
+    #                                                 self.get_logger())
+        
+    #     transform_gripper_endeffector_matrix = get_rotation_matrix_from_tf(transform_gripper_endeffector)
+
+    #     joint_transformation_gripper = get_euler_rotation_matrix(self.t_axis_q, 0, 0)
+    #     joint_transform_gripper = get_euler_rotation_matrix(q1, 0, 0)
+        
+    #     final_gripper_rotation_matrix = transform_rotation_stage_world_matrix * joint_transformation_gripper * transform_gripper_endeffector_matrix
+    #     final_gripper_equation = transform_rotation_stage_world_matrix * joint_transform_gripper * transform_gripper_endeffector_matrix
+
+    #     final_gripper_rotation_matrix_quad = rotation_matrix_to_quaternion(final_gripper_rotation_matrix)
+
+    #     equations = []
+    #     for i in range(3):
+    #         for j in range(3):
+    #             eq = final_gonio_equation[i, j] - final_gripper_equation[i, j]
+    #             equations.append(eq)
+
+    #     initial_guess = (0, 0, 0)
+    #     # Solve the equations for the unknowns q1, q2, q3
+    #     solution = sp.nsolve(equations, (q1, q2, q3), initial_guess)
+        
+    #     if solution:
+    #         response.joint_values = [float(solution[0]), float(solution[1]), float(solution[2])]
+    #         response.joint_names = ['T_Axis_Joint', 'Gonio_Left_Stage_1_Joint', 'Gonio_Left_Stage_2_Joint']
+
+    #         response.success = True
+    #     # Print the solution
+    #         self.logger.info(f"Solution T_Axis_Joint: {(solution[0])}")
+    #         self.logger.info(f"Solution Gonio_Left_Stage_1_Joint: {(solution[1])}")
+    #         self.logger.info(f"Solution Gonio_Left_Stage_2_Joint: {(solution[2])}")
+
+    #     else:
+    #         self.logger.error(f"No solution found!")
+    #         response.success = False
+
+    #     return response
     
 
 

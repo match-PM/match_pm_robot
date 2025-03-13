@@ -354,6 +354,17 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
+    adhesive_displayer = Node(
+        package="pm_adhesive_displayer",
+        executable="pm_adhesive_displayer",
+        name="pm_adhesive_displayer",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+    
     delayed_rviz = TimerAction(period=15.0, actions=[rviz_node])
     delayed_move_group = TimerAction(period=15.0, actions=[run_move_group_node])
     delayed_pm_moveit_server = TimerAction(period=15.0, actions=[pm_moveit_server])
@@ -384,7 +395,10 @@ def generate_launch_description():
     ld.add_action(pm_nozzle_controller_spawner)
     # ld.add_action(pm_uv_controller)
     ld.add_action(pm_sensor_controller)
-
+    
+    ld.add_action(primitive_skills_node)
+    ld.add_action(adhesive_displayer)
+    
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
     return ld

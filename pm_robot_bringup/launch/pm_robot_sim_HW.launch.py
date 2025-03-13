@@ -306,6 +306,17 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
+    adhesive_displayer = Node(
+        package="pm_adhesive_displayer",
+        executable="pm_adhesive_displayer",
+        name="pm_adhesive_displayer",
+        # output="log",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+    
     spawn_smaract_hexapod_controller = Node(
         package='controller_manager',
         executable='spawner',
@@ -357,6 +368,8 @@ def generate_launch_description():
         ld.add_action(launch_smarpod_controller)
         ld.add_action(launch_smarpod_translator)
         pass
+    ld.add_action(primitive_skills_node)
+    ld.add_action(adhesive_displayer)
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
     #ld.add_action(forward_command_action_server)

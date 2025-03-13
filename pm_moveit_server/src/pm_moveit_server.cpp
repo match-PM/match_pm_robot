@@ -52,7 +52,7 @@ Eigen::Affine3d poseMsgToAffine(const geometry_msgs::msg::Pose &pose_msg)
 geometry_msgs::msg::Pose round_pose(geometry_msgs::msg::Pose pose_to_round)
 {
   geometry_msgs::msg::Pose rounded_pose;
-  int decimal_precision = 5;
+  int decimal_precision = 4;
   
   const double multiplier = std::pow(10, decimal_precision);
 
@@ -154,7 +154,7 @@ void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
   // For example, print the names and positions of the joints
   for (size_t i = 0; i < msg->name.size(); ++i)
   {
-    std::cout << "Joint Name: " << msg->name[i] << ", Position: " << msg->position[i] << std::endl;
+    //std::cout << "Joint Name: " << msg->name[i] << ", Position: " << msg->position[i] << std::endl;
     // RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Joint Name: %s, Value: %f",msg->name[i].c_str(), msg->position[i]);
   }
   global_joint_state = msg;
@@ -586,10 +586,21 @@ void publish_target_joint_trajectory_smarpod(std::string planning_group, std::ve
 void wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vector<double> target_joint_values, float lateral_tolerance, float angular_tolerance)
 {
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for goal to be reached...");
-  while (check_goal_reached(joint_names, target_joint_values, lateral_tolerance, angular_tolerance) == false)
+  int max_wait_time_counter = 50;
+  int wait_time_counter = 0;
+  while (check_goal_reached(joint_names, target_joint_values, lateral_tolerance, angular_tolerance) == false && wait_time_counter < max_wait_time_counter)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    wait_time_counter++;
   }
+  if (wait_time_counter >= max_wait_time_counter)
+  {
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "WARNING: Goal not reached in time! Assuming goal reached!");
+  }
+  // else
+  // {
+  //   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Goal reached!");
+  // }
 }
 
 void log_target_pose_delta(std::string endeffector, geometry_msgs::msg::Pose target_pose)

@@ -117,7 +117,7 @@ class AdhesiveDisplay(Node):
     def timer_callback(self):
         self.publisher_.publish(self.adhesive_points)
         self.publish_adhesive_marker()
-
+    
     def publish_adhesive_marker(self):
         self.delete_all_markers()
         marker_array = MarkerArray()
@@ -126,11 +126,11 @@ class AdhesiveDisplay(Node):
             adhesive_point:VizAdhesivePoint
             marker = self.marker_from_adhesive_point(adhesive_point, index)
             marker_array.markers.append(marker)
-            self.logger.warn(f"Publishing marker for {adhesive_point.parent_frame}")
-            self.logger.warn(f"Transform marker for {str(adhesive_point.point_pose)}")
+            #self.logger.warn(f"Publishing marker for {adhesive_point.parent_frame}")
+            #self.logger.warn(f"Transform marker for {str(adhesive_point.point_pose)}")
             #self.logger.warn(f"Publishing marker for {tolerance_handle.frame_name}")
 
-        self.logger.info(f"Published {len(marker_array.markers)} markers.")
+        #self.logger.info(f"Published {len(marker_array.markers)} markers.")
         self.marker_publisher.publish(marker_array)
 
     def delete_all_markers(self):
@@ -146,7 +146,7 @@ class AdhesiveDisplay(Node):
             marker_array.markers.append(marker)
         
         self.marker_publisher.publish(marker_array)
-        self.get_logger().info("Published DELETE action to remove all markers.")
+        #self.get_logger().info("Published DELETE action to remove all markers.")
 
     def marker_from_adhesive_point(self, adhesive_point:VizAdhesivePoint, id:int):
 

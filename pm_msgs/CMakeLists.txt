@@ -29,6 +29,7 @@ rosidl_generate_interfaces(
   "msg/VizAdhesivePoint.msg"
   "msg/VizAdhesivePoints.msg"
 
+  "srv/DisppenseAtPoints.srv"
   "srv/EmptyWithSuccess.srv"
   "srv/UVSetOnOff.srv"
   "srv/UVGetOnOff.srv"
