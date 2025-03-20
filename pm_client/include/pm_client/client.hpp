@@ -186,6 +186,11 @@ class Client
 
         UA_Variant_delete(variant);
     }
+
+    void call_method(
+        UA_NodeId object_id, UA_NodeId method_id, std::size_t input_size, UA_Variant *inputs,
+        std::size_t *output_size, UA_Variant **outputs
+    );
 };
 
 } // namespace PMClient

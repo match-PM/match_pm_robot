@@ -12,6 +12,7 @@
 #include "pm_client/nozzle.hpp"
 #include "pm_client/pneumatic_cylinder.hpp"
 #include "pm_client/reference_cube.hpp"
+#include "pm_client/skills.hpp"
 
 namespace PMClient
 {
@@ -107,6 +108,8 @@ class Robot
     std::unique_ptr<HoenleUV> hoenle_uv;
 
     std::unique_ptr<ReferenceCube> reference_cube;
+
+    std::unique_ptr<Skills> skills;
 
     /**
      * Check if all axis references are properly set.

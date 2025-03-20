@@ -353,6 +353,36 @@ void Client::init()
         });
     };
 
+    auto browse_skills = [&](UA_NodeId skills_node) -> std::unique_ptr<Skills> {
+        return browse(skills_node, [&](auto response) {
+            auto skills = std::make_unique<Skills>(this, skills_node);
+
+            for (size_t i = 0; i < response.resultsSize; ++i)
+            {
+                for (size_t j = 0; j < response.results[i].referencesSize; ++j)
+                {
+                    UA_ReferenceDescription *ref = &(response.results[i].references[j]);
+
+                    std::string_view browse_name(
+                        reinterpret_cast<char *>(ref->browseName.name.data),
+                        ref->browseName.name.length
+                    );
+
+                    auto get_node_id_from_ref = [&](auto bname, auto *dest) {
+                        if (browse_name == bname)
+                        {
+                            UA_NodeId_copy(&ref->nodeId.nodeId, dest);
+                        }
+                    };
+
+                    get_node_id_from_ref("Dispense", &skills->dispense_method);
+                }
+            }
+
+            return skills;
+        });
+    };
+
     browse(UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER), [&](auto response) {
         for (size_t i = 0; i < response.resultsSize; ++i)
         {
@@ -480,6 +510,10 @@ void Client::init()
                 {
                     m_robot->reference_cube = browse_reference_cube(ref->nodeId.nodeId);
                 }
+                else if (browse_name == "Skills")
+                {
+                    m_robot->skills = browse_skills(ref->nodeId.nodeId);
+                }
             }
         }
 
@@ -489,6 +523,20 @@ void Client::init()
     if (!m_robot->is_ok())
     {
         throw std::runtime_error{"Robot descriptor is not complete. Server is missing nodes."};
+    }
+}
+
+void Client::call_method(
+    UA_NodeId object_id, UA_NodeId method_id, std::size_t input_size, UA_Variant *inputs,
+    std::size_t *output_size, UA_Variant **outputs
+)
+{
+    UA_StatusCode status =
+        UA_Client_call(m_client, object_id, method_id, input_size, inputs, output_size, outputs);
+
+    if (status != UA_STATUSCODE_GOOD)
+    {
+        throw std::runtime_error{UA_StatusCode_name(status)};
     }
 }
 
