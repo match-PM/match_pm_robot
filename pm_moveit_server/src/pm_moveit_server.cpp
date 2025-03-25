@@ -404,29 +404,47 @@ geometry_msgs::msg::Pose add_translation_rotation_to_pose(geometry_msgs::msg::Po
   return pose;
 }
 
-geometry_msgs::msg::Pose get_pose_endeffector_override(std::string initial_endeffector_frame, std::string endeffector_override_frame, geometry_msgs::msg::Pose initial_endeffector_pose)
+geometry_msgs::msg::Pose get_pose_endeffector_override(std::string initial_endeffector_frame, 
+                                                      std::string endeffector_override_frame, 
+                                                      geometry_msgs::msg::Pose target_pose)
 {
   bool success_frame;
   geometry_msgs::msg::Pose pose_rel;
   geometry_msgs::msg::TransformStamped rel_transform;
   std::tie(success_frame, rel_transform) = get_pose_of_frame_in_frame(endeffector_override_frame, initial_endeffector_frame);
+  //std::tie(success_frame, rel_transform) = get_pose_of_frame_in_frame(initial_endeffector_frame, endeffector_override_frame);
+
+  // log rel transform
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Rel Transform: ");
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "X: %f", rel_transform.transform.translation.x);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Y: %f", rel_transform.transform.translation.y);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Z: %f", rel_transform.transform.translation.z);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_X: %f", rel_transform.transform.rotation.x);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_Y: %f", rel_transform.transform.rotation.y);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_Z: %f", rel_transform.transform.rotation.z);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_W: %f", rel_transform.transform.rotation.w);
+
 
   if (!success_frame)
   {
-    return initial_endeffector_pose;
+    return target_pose;
   }
 
   tf2::Transform transform_1;
-  transform_1.setOrigin(tf2::Vector3(initial_endeffector_pose.position.x,
-                                     initial_endeffector_pose.position.y,
-                                     initial_endeffector_pose.position.z));
-  transform_1.setRotation(tf2::Quaternion(initial_endeffector_pose.orientation.x,
-                                          initial_endeffector_pose.orientation.y,
-                                          initial_endeffector_pose.orientation.z,
-                                          initial_endeffector_pose.orientation.w));
+  transform_1.setOrigin(tf2::Vector3(target_pose.position.x,
+                                      target_pose.position.y,
+                                      target_pose.position.z));
+
+  transform_1.setRotation(tf2::Quaternion(target_pose.orientation.x,
+                                          target_pose.orientation.y,
+                                          target_pose.orientation.z,
+                                          target_pose.orientation.w));
 
   tf2::Transform transform_2;
-  transform_2.setOrigin(tf2::Vector3(rel_transform.transform.translation.x, rel_transform.transform.translation.y, rel_transform.transform.translation.z));
+  transform_2.setOrigin(tf2::Vector3(rel_transform.transform.translation.x, 
+                                      rel_transform.transform.translation.y, 
+                                      rel_transform.transform.translation.z));
+
   transform_2.setRotation(tf2::Quaternion(rel_transform.transform.rotation.x,
                                           rel_transform.transform.rotation.y,
                                           rel_transform.transform.rotation.z,
@@ -434,8 +452,19 @@ geometry_msgs::msg::Pose get_pose_endeffector_override(std::string initial_endef
 
   geometry_msgs::msg::Pose pose;
   tf2::Transform transform_res;
-
-  transform_res.mult(transform_1, transform_2);
+  
+  // I dont know why this does not work with the 1K_dispencer_TCP
+  // this is now the workaround, I just can not figure out what the issue is, but it seems to work like this, although i dont know why...
+  if (endeffector_override_frame == "1K_Dispenser_TCP")
+  {
+    transform_res.mult(transform_2, transform_1);
+  }
+  else
+  {
+    transform_res.mult(transform_1, transform_2);
+  }
+  //transform_res.mult(transform_1, transform_2);
+  //transform_res.mult(transform_2, transform_1);
   auto vector = transform_res.getOrigin();
   pose.position.x = vector.x();
   pose.position.y = vector.y();
@@ -741,6 +770,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   //  Get the target_pose
   auto [extract_frame_success, target_pose] = get_pose_of_frame(target_frame);
 
+  auto origin_pose = target_pose;
   //lo
   // This should normaly not happen, because the searched frame is the endeffector, which must exist
   if (!extract_frame_success)
@@ -750,11 +780,23 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
     return std::make_tuple(false, joint_names, target_joint_values);
   }
 
+  log_pose("Target frame pose: ", target_pose);
+
   if (endeffector_frame_override != default_endeffector_string)
   {
-    RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Overriding Endeffector Frame to: %s", endeffector_frame_override.c_str());
+    RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Overriding Endeffector '%s' Frame to: '%s'", endeffector.c_str(), endeffector_frame_override.c_str());
     target_pose = get_pose_endeffector_override(endeffector, endeffector_frame_override, target_pose);
   }
+
+  log_pose("Before translation", target_pose);
+
+  auto diff_pose = geometry_msgs::msg::Pose();
+  
+  diff_pose.position.x = origin_pose.position.x - target_pose.position.x;
+  diff_pose.position.y = origin_pose.position.y - target_pose.position.y;
+  diff_pose.position.z = origin_pose.position.z - target_pose.position.z;
+
+  log_pose("Diff Pose: ", diff_pose);
 
   // !!!!!!!! Here the rotation is rounded to account for small deviations in the pose !!!!
   // This should later be deleted!!!
