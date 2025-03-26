@@ -292,6 +292,8 @@ std::tuple<bool, geometry_msgs::msg::Pose> get_pose_of_frame(std::string frame_n
 
 bool check_frame_is_in_chain(std::string target_frame, std::string parent_frame)
 {
+  // Check if the target frame is in the chain of the parent frame 
+
   try
   {
     std::string yaml_string = tf_buffer_->allFramesAsYAML();
@@ -769,6 +771,17 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   // bool extract_frame_success;
   //  Get the target_pose
   auto [extract_frame_success, target_pose] = get_pose_of_frame(target_frame);
+
+  if (((planning_group == "PM_Robot_Tool_TCP") or (planning_group == "PM_Robot_Cam1_TCP")) and (endeffector_frame_override != default_endeffector_string))
+  {
+
+    bool valid_endeffector = check_frame_is_in_chain(endeffector_frame_override, "Z_Axis");
+    if (!valid_endeffector)
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "For MoveGroup 'PM_Robot_Tool_TCP' endeffector_override %s frame not in chain of Z_Axis!", endeffector_frame_override.c_str());
+      return std::make_tuple(false, joint_names, target_joint_values);
+    }
+  }
 
   auto origin_pose = target_pose;
   //lo
