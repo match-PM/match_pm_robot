@@ -1,0 +1,114 @@
+{
+  "document_units": "mm",
+  "frames": [
+    {
+      "name": "Cal_Tool_Vision_Frame_1",
+      "parent_frame": "PM_Robot_Tool_TCP",
+      "transformation": {
+        "translation": {
+          "X": -15.0,
+          "Y": 10.0,
+          "Z": 0.0
+        },
+        "rotation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0,
+          "W": 1.0
+        }
+        },
+        "constraints": {
+      }
+    },
+    {
+      "name": "Cal_Tool_Vision_Frame_2",
+      "parent_frame": "PM_Robot_Tool_TCP",
+      "transformation": {
+        "translation": {
+          "X": 15.0,
+          "Y": 10.0,
+          "Z": 0.0
+        },
+        "rotation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0,
+          "W": 1.0
+        }
+        },
+        "constraints": {
+      }
+    },
+    {
+      "name": "Cal_Tool_Vision_Frame_3",
+      "parent_frame": "PM_Robot_Tool_TCP",
+      "transformation": {
+        "translation": {
+          "X": 15.0,
+          "Y": -10.0,
+          "Z": 0.0
+        },
+        "rotation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0,
+          "W": 1.0
+        }
+        },
+        "constraints": {
+      }
+    },
+    {
+      "name": "Cal_Tool_Vision_Frame_4",
+      "parent_frame": "PM_Robot_Tool_TCP",
+      "transformation": {
+        "translation": {
+          "X": -15.0,
+          "Y": -10.0,
+          "Z": 0.0
+        },
+        "rotation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0,
+          "W": 1.0
+        }
+        },
+        "constraints": {
+      }
+    },
+    {
+      "name": "Cal_Tool_Centre_Frame",
+      "parent_frame": "PM_Robot_Tool_TCP",
+      "transformation": {
+        "translation": {
+          "X": -30.0,
+          "Y": -30.0,
+          "Z": 0.0
+        },
+        "rotation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0,
+          "W": 1.0
+        }
+        },
+        "constraints": {
+          "centroid": {
+              "refFrameNames": [
+                "Cal_Tool_Vision_Frame_1",
+                "Cal_Tool_Vision_Frame_2",
+                "Cal_Tool_Vision_Frame_3",
+                "Cal_Tool_Vision_Frame_4"
+              ],
+              "dim": "xyz",
+              "offsetValues": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+      }
+    }
+  ]
+}

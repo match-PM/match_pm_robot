@@ -27,6 +27,7 @@ Tool_Schunk_SPT_Tool_old:
     color: "white"
     visual_filename: "SPT_Toolholder_old/Tips/Tool_Tip_R_A1000_I500.STL"
     collision_filename: "SPT_Toolholder_old/Tips/Tool_Tip_R_A1000_I500.STL"
+    calibration_file_name : "CF_Tip_R_A1000_I500.json"
 
 Tool_SPT_Toolholder:
   tool_TCP_x_offset: "0.0"
@@ -69,6 +70,7 @@ Tool_SPT_Toolholder:
     color: "white"
     visual_filename: "SPT_Toolholder/Tips/Tool_Tip_R_A1000_I500.STL"
     collision_filename: "SPT_Toolholder/Tips/Tool_Tip_R_A1000_I500.STL"
+    calibration_file_name : "CF_Tip_R_A1000_I500_2.json"
 
 Siemens_Vacuum_Array:
   tool_TCP_x_offset: "0.0"
@@ -99,6 +101,7 @@ Siemens_Vacuum_Array:
     color: "white"
     visual_filename: "Siemens_Vacuum_Array/Tool_Tip_Vacuum_Array.STL"
     collision_filename: "Siemens_Vacuum_Array/Tool_Tip_Vacuum_Array.STL"
+    calibration_file_name : "CF_Tip_Siemens_Vacuum_Array.json"
 
 Schunk_Lens_Gripper:
   tool_TCP_x_offset: "0.0"
@@ -129,6 +132,7 @@ Schunk_Lens_Gripper:
     color: "white"
     visual_filename: "Lens_Gripper/Tips/Tip_Lens_12_7.STL"
     collision_filename: "Lens_Gripper/Tips/Tip_Lens_12_7.STL"
+    calibration_file_name : "CF_Tip_Lens_12_7.json"
 
 Schunk_Lens_Gripper_long:
   tool_TCP_x_offset: "0.0"
@@ -159,3 +163,4 @@ Schunk_Lens_Gripper_long:
     color: "white"
     visual_filename: "Lens_Gripper_long/Tips/Tip_Lens_12_7_long.STL"
     collision_filename: "Lens_Gripper_long/Tips/Tip_Lens_12_7_long.STL"
+    calibration_file_name : "CF_Tip_Lens_12_7_long.json"
