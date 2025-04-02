@@ -25,6 +25,7 @@
 #include "pm_moveit_interfaces/srv/move_to_pose.hpp"
 #include "pm_moveit_interfaces/srv/move_to_frame.hpp"
 #include "pm_moveit_interfaces/srv/align_gonio.hpp"
+#include "pm_msgs/srv/empty_with_success.hpp"
 #include <yaml-cpp/yaml.h>
 
 #include "sensor_msgs/msg/joint_state.hpp"
@@ -32,6 +33,7 @@
 #include "trajectory_msgs/msg/joint_trajectory.hpp"
 #include <iomanip>
 #include <geometry_msgs/msg/pose.hpp>
+#include <chrono>
 
 Eigen::Affine3d poseMsgToAffine(const geometry_msgs::msg::Pose &pose_msg)
 {
@@ -123,6 +125,18 @@ std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> smarpo
 
 std::string default_endeffector_string;
 std::string global_return_massage;
+std::chrono::high_resolution_clock::time_point init_time;
+std::chrono::high_resolution_clock::time_point end_time;
+std::chrono::high_resolution_clock::time_point start_ik_solution_time;
+std::chrono::high_resolution_clock::time_point end_ik_solution_time;
+std::chrono::high_resolution_clock::time_point start_plan_time;
+std::chrono::high_resolution_clock::time_point end_plan_time;
+std::chrono::high_resolution_clock::time_point start_execute_time;
+std::chrono::high_resolution_clock::time_point end_execute_time;
+std::chrono::high_resolution_clock::time_point start_wait_for_movement_end;
+std::chrono::high_resolution_clock::time_point end_wait_for_movement_end;
+std::chrono::high_resolution_clock::time_point start_init_request;
+std::chrono::high_resolution_clock::time_point end_init_request;
 
 void log_pose(std::string pose_text, geometry_msgs::msg::Pose pose)
 {
@@ -134,6 +148,35 @@ void log_pose(std::string pose_text, geometry_msgs::msg::Pose pose)
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Orientation X %f", pose.orientation.x);
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Orientation Y %f", pose.orientation.y);
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Orientation Z %f", pose.orientation.z);
+}
+
+void log_time_measures()
+{
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Time Measures:");
+  //RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Init Time: %f", init_time.count());
+  std::chrono::duration<double> init_request_time = end_init_request - start_init_request;
+  std::chrono::duration<double> ik_solution_time = end_ik_solution_time - start_ik_solution_time;
+  std::chrono::duration<double> plan_time = end_plan_time - start_plan_time;
+  std::chrono::duration<double> execute_time = end_execute_time - start_execute_time;
+  std::chrono::duration<double> wait_time = end_wait_for_movement_end - start_wait_for_movement_end;
+  std::chrono::duration<double> total_time = end_time - init_time;
+
+  double total_seconds = total_time.count();
+
+  double init_request_pct = (init_request_time.count() / total_seconds) * 100.0;
+  double ik_solution_pct = (ik_solution_time.count() / total_seconds) * 100.0;
+  double plan_pct = (plan_time.count() / total_seconds) * 100.0;
+  double execute_pct = (execute_time.count() / total_seconds) * 100.0;
+  double wait_pct = (wait_time.count() / total_seconds) * 100.0;
+  double pct_missing = 100.0 - (init_request_pct + ik_solution_pct + plan_pct + execute_pct + wait_pct);
+
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Init Request Time: %.6f s (%.2f%%)", init_request_time.count(), init_request_pct);
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "IK Solution Time: %.6f s (%.2f%%)", ik_solution_time.count(), ik_solution_pct);
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Plan Time: %.6f s (%.2f%%)", plan_time.count(), plan_pct);
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Execute Time: %.6f s (%.2f%%)", execute_time.count(), execute_pct);
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Wait for Movement Time: %.6f s (%.2f%%)", wait_time.count(), wait_pct);
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Total Time: %.6f s (100.00%%)", total_seconds);
+  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Missing Time Percentage: %.2f%%", pct_missing);
 }
 
 bool execute_plan(const std::shared_ptr<pm_moveit_interfaces::srv::ExecutePlan::Request> request,
@@ -203,6 +246,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
                                                                               std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group, 
                                                                               geometry_msgs::msg::Pose target_pose)
 {
+  start_ik_solution_time = std::chrono::high_resolution_clock::now();
+
   std::vector<double> target_joint_values;
   std::vector<double> min_joint_values;
   std::vector<double> max_joint_values;
@@ -263,6 +308,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
   {
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Did not find IK solution");
   }
+  end_ik_solution_time = std::chrono::high_resolution_clock::now();
   return std::make_tuple(success_found_ik, joint_names, target_joint_values);
 }
 
@@ -493,6 +539,9 @@ std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_in
                     std::vector<double> target_joint_values,
                     bool execute_movement)
 {
+
+  start_plan_time = std::chrono::high_resolution_clock::now();
+
   bool success_calculate_plan = false;
   move_group->setPlanningTime(20);
   move_group->setStartStateToCurrentState();
@@ -508,6 +557,7 @@ std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_in
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Planing failed!");
     return std::make_tuple(false, "Planing failed!");
   }
+  end_plan_time = std::chrono::high_resolution_clock::now();
 
   // laser_grp_visual_tools->deleteAllMarkers();
   // auto jmg = move_group->getRobotModel()->getJointModelGroup(planning_group);
@@ -516,17 +566,21 @@ std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_in
   // laser_grp_visual_tools->prompt("next step");
   // laser_grp_visual_tools->trigger();
 
+  start_execute_time = std::chrono::high_resolution_clock::now();
   // Execute the plan
   if (success_calculate_plan && execute_movement)
   {
     move_group->execute(*plan);
+    end_execute_time = std::chrono::high_resolution_clock::now();
     return std::make_tuple(true, "Planing successfull!");
   }
   else
   {
     RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Plan calculated successfull, but not execution was not demanded!");
+    end_execute_time = std::chrono::high_resolution_clock::now();
     return std::make_tuple(true, "Plan calculated successfull, but the plan was not executed because 'execute_movement' was not set to true!");
   }
+  
 }
 
 std::tuple<bool, std::string> set_move_group_orientation(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
@@ -681,6 +735,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
                                                                                     geometry_msgs::msg::Quaternion rotation,
                                                                                     bool execute_movement)
 {
+  init_time = std::chrono::high_resolution_clock::now();
 
   std::string endeffector = move_group->getEndEffectorLink();
   geometry_msgs::msg::Quaternion target_rotation;
@@ -762,6 +817,10 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
                                                                                     geometry_msgs::msg::Quaternion rotation,
                                                                                     bool execute_movement)
 {
+  init_time = std::chrono::high_resolution_clock::now();
+
+  // START Init Request
+  start_init_request = std::chrono::high_resolution_clock::now();
 
   std::string endeffector = move_group->getEndEffectorLink();
   geometry_msgs::msg::Quaternion target_rotation;
@@ -823,8 +882,16 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   target_pose = add_translation_rotation_to_pose(target_pose, translation, rotation);
   log_pose("Calculated target endeffector pose: ", target_pose);
 
+  end_init_request = std::chrono::high_resolution_clock::now();
+
+  // END Init Request
+
+  // START Plan IK
   std::tie(success_ik, joint_names, target_joint_values) = calculate_IK(planning_group, move_group, target_pose);
 
+  // END Plan IK
+
+  // START Plan&Execute
   if (!success_ik)
   {
     return {false, joint_names, target_joint_values};
@@ -836,11 +903,15 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
     return {move_success, joint_names, target_joint_values};
   }
 
+  // END Plan&Execute
+
+  // START Wait For Movement
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
-
+  
+  start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
   log_target_pose_delta(endeffector, target_pose);
@@ -857,12 +928,17 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
     publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
     wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
-
-
-  log_target_pose_delta(endeffector, target_pose);
+  end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
+  //END Wait for Movement
+  
+  // This takes 250 ms because it waits...
+  //log_target_pose_delta(endeffector, target_pose);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
 
+  end_time = std::chrono::high_resolution_clock::now();
+
+  log_time_measures();
   return std::make_tuple(move_success, joint_names, target_joint_values);
 }
 
@@ -874,6 +950,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
                                                                                    std::string endeffector_frame_override,
                                                                                    bool execute_movement)
 {
+  init_time = std::chrono::high_resolution_clock::now();
+
   std::string endeffector = move_group->getEndEffectorLink();
   geometry_msgs::msg::Quaternion target_rotation;
   std::vector<double> target_joint_values;
@@ -939,6 +1017,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
                                                                             geometry_msgs::msg::Vector3 rotation_offset_deg,
                                                                             bool execute_movement)
 {
+  init_time = std::chrono::high_resolution_clock::now();
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Aligning Request Received Gonio...");
 
@@ -1369,12 +1448,10 @@ void move_confocal_head_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv
   return;
 }
 
-
 void align_gonio_right(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Request> request,
                         std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Response> response)
 {
 
-  
   auto [success, joint_names, joint_values] = align_gonio("PM_Robot_Gonio_Right",
                                                           gonio_right_move_group,
                                                           request->endeffector_frame_override,
@@ -1390,12 +1467,10 @@ void align_gonio_right(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGon
   return;
 }
 
-
-
 void align_gonio_left(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Request> request,
                         std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Response> response)
 {
-
+  
   auto [success, joint_names, joint_values] = align_gonio("PM_Robot_Gonio_Left",
                                                           gonio_left_move_group,
                                                           request->endeffector_frame_override,
@@ -1408,6 +1483,24 @@ void align_gonio_left(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGoni
   // std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   // response->joint_values = joint_values_float;
   response->success = success;
+  return;
+}
+
+void reset_gonio_left(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Request> request,
+                        std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Response> response)
+{
+  std::vector<double> target_joint_values = {0.0, 0.0};                                                      
+  auto [move_success, move_msg] = set_move_group(gonio_left_move_group, target_joint_values, true);
+  response->success = move_success;
+  return;
+}
+
+void reset_gonio_right(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Request> request,
+                        std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Response> response)
+{
+  std::vector<double> target_joint_values = {0.0, 0.0};                                                      
+  auto [move_success, move_msg] = set_move_group(gonio_right_move_group, target_joint_values, true);
+  response->success = move_success;
   return;
 }
 
@@ -1495,7 +1588,8 @@ int main(int argc, char **argv)
   auto move_tool_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_tool_to_pose", std::bind(&move_tool_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_laser_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_laser_to_pose", std::bind(&move_laser_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto move_confocal_head_to_pose_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::MoveToPose>("pm_moveit_server/move_confocal_head_to_pose", std::bind(&move_confocal_head_to_pose, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
-
+  auto reset_gonio_left_srv = pm_moveit_server_node->create_service<pm_msgs::srv::EmptyWithSuccess>("pm_moveit_server/reset_gonio_left", std::bind(&reset_gonio_left, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
+  auto reset_gonio_right_srv = pm_moveit_server_node->create_service<pm_msgs::srv::EmptyWithSuccess>("pm_moveit_server/reset_gonio_right", std::bind(&reset_gonio_right, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   
   std::string bringup_package_share_directory = ament_index_cpp::get_package_share_directory("pm_robot_bringup");
   std::string file_path = bringup_package_share_directory + "/config/pm_robot_bringup_config.yaml";
