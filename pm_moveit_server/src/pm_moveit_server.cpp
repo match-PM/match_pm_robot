@@ -138,6 +138,8 @@ std::chrono::high_resolution_clock::time_point end_wait_for_movement_end;
 std::chrono::high_resolution_clock::time_point start_init_request;
 std::chrono::high_resolution_clock::time_point end_init_request;
 
+bool use_trajectory_planning;
+
 void log_pose(std::string pose_text, geometry_msgs::msg::Pose pose)
 {
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), pose_text.c_str());
@@ -626,7 +628,9 @@ std::tuple<bool, std::string> set_move_group_orientation(std::shared_ptr<moveit:
   }
 }
 
-void publish_target_joint_trajectory_xyzt(std::string planning_group, std::vector<double> target_joint_values)
+void publish_target_joint_trajectory_xyzt(std::string planning_group, 
+                                          std::vector<double> target_joint_values,
+                                          float time_from_start)
 {
   auto trajectory_msg = std::make_shared<trajectory_msgs::msg::JointTrajectory>();
   trajectory_msg->joint_names = {"X_Axis_Joint", "Y_Axis_Joint", "Z_Axis_Joint"}; // Specify joint names
@@ -635,7 +639,7 @@ void publish_target_joint_trajectory_xyzt(std::string planning_group, std::vecto
   point.positions = {target_joint_values[0], target_joint_values[1], target_joint_values[2]}; // Specify joint positions
   point.velocities = {0.0, 0.0, 0.0};                                                         // Specify joint velocities
   point.accelerations = {0.0, 0.0, 0.0};                                                      // Specify joint accelerations
-  point.time_from_start.sec = 0.5;                                                            // Specify duration
+  point.time_from_start.sec = time_from_start;                                                            // Specify duration
   trajectory_msg->points.push_back(point);
   xyz_trajectory_publisher->publish(*trajectory_msg);
 
@@ -648,13 +652,15 @@ void publish_target_joint_trajectory_xyzt(std::string planning_group, std::vecto
     t_point.positions = {target_joint_values[3]}; // Specify joint positions
     t_point.velocities = {0.0};                   // Specify joint velocities
     t_point.accelerations = {0.0};                // Specify joint accelerations
-    t_point.time_from_start.sec = 0.5;            // Specify duration
+    t_point.time_from_start.sec = time_from_start;            // Specify duration
     t_trajectory_msg->points.push_back(t_point);
     t_trajectory_publisher->publish(*t_trajectory_msg);
   }
 }
 
-void publish_target_joint_trajectory_smarpod(std::string planning_group, std::vector<double> target_joint_values)
+void publish_target_joint_trajectory_smarpod(std::string planning_group, 
+                                            std::vector<double> target_joint_values,
+                                            float time_from_start)
 {
   auto trajectory_msg = std::make_shared<trajectory_msgs::msg::JointTrajectory>();
   trajectory_msg->joint_names = {"SP_X_Joint", "SP_Y_Joint", "SP_Z_Joint", "SP_A_Joint", "SP_B_Joint", "SP_C_Joint"}; // Specify joint names
@@ -663,7 +669,7 @@ void publish_target_joint_trajectory_smarpod(std::string planning_group, std::ve
   point.positions = {target_joint_values[0], target_joint_values[1], target_joint_values[2], target_joint_values[3],target_joint_values[4],target_joint_values[5]}; // Specify joint positions
   point.velocities = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};                                                         // Specify joint velocities
   point.accelerations = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};                                                      // Specify joint accelerations
-  point.time_from_start.sec = 0.5;                                                            // Specify duration
+  point.time_from_start.sec = time_from_start;                                                            // Specify duration
   trajectory_msg->points.push_back(point);
   smarpod_trajectory_publisher->publish(*trajectory_msg);
 }
@@ -737,6 +743,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
 {
   init_time = std::chrono::high_resolution_clock::now();
 
+  // START Init Request
+  start_init_request = std::chrono::high_resolution_clock::now();
+
   std::string endeffector = move_group->getEndEffectorLink();
   geometry_msgs::msg::Quaternion target_rotation;
   std::vector<double> target_joint_values;
@@ -764,25 +773,55 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
 
   target_pose = add_translation_rotation_to_pose(target_pose, translation, rotation);
   log_pose("Calculated Endeffector Pose: ", target_pose);
+  end_init_request = std::chrono::high_resolution_clock::now();
 
   std::tie(success_ik, joint_names, target_joint_values) = calculate_IK(planning_group, move_group, target_pose);
 
+  // START Plan&Execute
   if (!success_ik)
   {
     msg = "IK solution not found!";
     return {false, joint_names, target_joint_values, msg};
   }
-  auto [move_success, move_msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
-  if (!move_success || !execute_movement)
+  bool move_success = false;
+
+  if (use_trajectory_planning)  
   {
-    return {move_success, joint_names, target_joint_values, move_msg};
+    auto [move_suc, msg] = set_move_group(move_group, target_joint_values, execute_movement);
+
+    if (!move_suc || !execute_movement)
+    {
+      return {move_suc, joint_names, target_joint_values, msg};
+    }
+    move_success = true;
   }
+  else
+  {
+    start_plan_time = std::chrono::high_resolution_clock::now();
+    end_plan_time = std::chrono::high_resolution_clock::now();
+    start_execute_time = std::chrono::high_resolution_clock::now();
+    if (planning_group == "smarpod_endeffector")
+    {
+      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values,0.0);
+    }
+    else
+    {
+      publish_target_joint_trajectory_xyzt(planning_group, target_joint_values,0.0);
+    }
+    end_execute_time = std::chrono::high_resolution_clock::now();
+    move_success = true;
+  }
+
+  // END Plan&Execute
 
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.01;
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
+
+  start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
+
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
@@ -792,20 +831,25 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   // this may not be necessary anymore
   if (planning_group == "smarpod_endeffector")
   {
-    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values);
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1);
     wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   
   else
   {
-    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
+    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values, 0.1);
     wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
+  end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
 
   log_target_pose_delta(endeffector, target_pose);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
   msg = "Movement successfull!";
+  end_time = std::chrono::high_resolution_clock::now();
+
+  log_time_measures();
+
   return std::make_tuple(move_success, joint_names, target_joint_values, msg);
 }
 
@@ -891,16 +935,41 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
 
   // END Plan IK
 
+  
   // START Plan&Execute
   if (!success_ik)
   {
     return {false, joint_names, target_joint_values};
   }
-  auto [move_success, msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
-  if (!move_success || !execute_movement)
+  bool move_success = false;
+  std::string res_msg;
+
+  if (use_trajectory_planning)  
   {
-    return {move_success, joint_names, target_joint_values};
+    auto [move_suc, msg] = set_move_group(move_group, target_joint_values, execute_movement);
+
+    if (!move_suc || !execute_movement)
+    {
+      return {move_suc, joint_names, target_joint_values};
+    }
+    move_success = true;
+  }
+  else
+  {
+    start_plan_time = std::chrono::high_resolution_clock::now();
+    end_plan_time = std::chrono::high_resolution_clock::now();
+    start_execute_time = std::chrono::high_resolution_clock::now();
+    if (planning_group == "smarpod_endeffector")
+    {
+      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values,0.0);
+    }
+    else
+    {
+      publish_target_joint_trajectory_xyzt(planning_group, target_joint_values,0.0);
+    }
+    end_execute_time = std::chrono::high_resolution_clock::now();
+    move_success = true;
   }
 
   // END Plan&Execute
@@ -919,13 +988,12 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   // this may not be necessary anymore
   if (planning_group == "smarpod_endeffector")
   {
-    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values);
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values,0.0);
     wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
-
   else
   {
-    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
+    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values,0.0);
     wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
@@ -992,13 +1060,13 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
   // this may not be necessary anymore
   if (planning_group == "smarpod_endeffector")
   {
-    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values);
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values,0.1);
     wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   
   else
   {
-    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
+    publish_target_joint_trajectory_xyzt(planning_group, target_joint_values,0.1);
     wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
 
@@ -1018,6 +1086,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
                                                                             bool execute_movement)
 {
   init_time = std::chrono::high_resolution_clock::now();
+  // START Init Request
+  start_init_request = std::chrono::high_resolution_clock::now();
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Aligning Request Received Gonio...");
 
@@ -1077,11 +1147,13 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
     return {false, joint_names, target_joint_values};
   }
 
+  end_init_request = std::chrono::high_resolution_clock::now();
 
 
   request->gripper_endeffector = target_frame;
   request->gonio_endeffector = target_endeffector_frame;
 
+  
 
   if (planning_group == "PM_Robot_Gonio_Right")
   {
@@ -1515,6 +1587,7 @@ int main(int argc, char **argv)
       "pm_moveit_server",
       rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true));
 
+  use_trajectory_planning = true;
   auto callback_group_re = pm_moveit_server_node->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
   rclcpp::SubscriptionOptions node_options_1;
   node_options_1.callback_group = callback_group_re;
