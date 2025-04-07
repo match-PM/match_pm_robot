@@ -349,7 +349,7 @@ class PrimitiveSkillsNode(Node):
                     response.success = False
                     return response
                 
-            success = self.dispense_at_frame(move_to_frame_request)
+            success = self.dispense_at_frame(move_to_frame_request, frame)
             
             if not success:
                 response.success = False
@@ -405,7 +405,7 @@ class PrimitiveSkillsNode(Node):
                     response.success = False
                     return response
                 
-            success = self.dispense_at_frame(move_to_frame_request)
+            success = self.dispense_at_frame(move_to_frame_request, "Test_Point_" + str(current_station.get_current_point()+1))
             response.success = success
             
             if success:
@@ -446,7 +446,7 @@ class PrimitiveSkillsNode(Node):
         
         return success_extend_dispenser
     
-    def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)->bool:
+    def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request, point_name: str)->bool:
         
         move_to_frame_request.translation.z += float(self.DEFAULT_DISPENSE_HEIGHT)
         move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
@@ -468,6 +468,7 @@ class PrimitiveSkillsNode(Node):
         
         create_adhesive_viz_point_request.point.hight = 1.0 # in mm
         create_adhesive_viz_point_request.point.diameter = 1.0 # in mm
+        create_adhesive_viz_point_request.point.name = point_name
         success_create_viz_point = self.create_adhesive_viz_point(create_adhesive_viz_point_request)
 
         move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE

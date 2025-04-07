@@ -1,6 +1,7 @@
 Schunk_MPG_10_plus:
   xacro_file: "MPG_10_plus.xacro"
   Jaw_3mm_Lens:
+    calibration_file_name : "CF_Jaw_3mm_Lens.json"
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
       inertia_rpy: "0 0 0"

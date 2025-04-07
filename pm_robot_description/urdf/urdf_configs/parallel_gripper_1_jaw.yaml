@@ -1,6 +1,7 @@
 SmarAct_Piezo_Gripper:
   xacro_file: "SmarAct_Piezo_Gripper.xacro"
   Default_Jaw:
+    calibration_file_name : "CF_Default_Jaw.json"
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
       inertia_rpy: "0 0 0"
@@ -13,6 +14,7 @@ SmarAct_Piezo_Gripper:
       inertia_izz: "4.05699592387869E-05" #20
       visual_filename: "Gripper_Jaw_1_3MM_Lens_for_MPG_10.STL"
       collision_filename: "Gripper_Jaw_1_3MM_Lens_for_MPG_10.STL"
+      
 
     Jaw_2:
       inertia_xyz: "-0.00224080580616211 -0.00152543365786503 1.2528765306995E-13"
