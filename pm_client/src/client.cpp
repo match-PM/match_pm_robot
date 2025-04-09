@@ -376,6 +376,7 @@ void Client::init()
                     };
 
                     get_node_id_from_ref("Dispense", &skills->dispense_method);
+                    get_node_id_from_ref("ForceSensingMove", &skills->force_sensing_move_method);
                 }
             }
 

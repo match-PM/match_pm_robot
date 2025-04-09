@@ -167,7 +167,7 @@ class Robot
             }
         }
         return camera1->is_ok() && camera2->is_ok() && laser->is_ok() && force_sensor->is_ok() &&
-               hoenle_uv->is_ok() && reference_cube->is_ok();
+               hoenle_uv->is_ok() && reference_cube->is_ok() && skills->is_ok();
     }
 
     [[nodiscard]] AerotechAxis &get_axis(AxisId id)

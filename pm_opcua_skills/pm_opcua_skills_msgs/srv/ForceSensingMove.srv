@@ -1,0 +1,12 @@
+int32 start_x
+int32 start_y
+int32 start_z
+int32 target_x
+int32 target_y
+int32 target_z
+float32 max_fx
+float32 max_fy
+float32 max_fz
+uint32 step_size
+---
+bool success

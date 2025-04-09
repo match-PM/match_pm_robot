@@ -42,6 +42,12 @@ struct type_to_ua<unsigned int>
 };
 
 template<>
+struct type_to_ua<float>
+{
+    static const std::size_t value = UA_TYPES_FLOAT;
+};
+
+template<>
 struct type_to_ua<double>
 {
     static const std::size_t value = UA_TYPES_DOUBLE;
