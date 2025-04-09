@@ -14,7 +14,9 @@ namespace PMClient
 
 Client::Client() : m_client{UA_Client_new()}, m_robot{std::make_unique<Robot>()}
 {
-    UA_ClientConfig_setDefault(UA_Client_getConfig(m_client));
+    UA_ClientConfig *config = UA_Client_getConfig(m_client);
+    UA_ClientConfig_setDefault(config);
+    config->timeout = 60'000; // ms
 }
 
 Client::~Client()
