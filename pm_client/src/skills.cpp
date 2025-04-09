@@ -11,7 +11,7 @@ bool Skills::is_ok() const
            !UA_NodeId_isNull(&this->force_sensing_move_method);
 }
 
-bool Skills::dispense(unsigned int time, int z_height, bool z_move) const
+bool Skills::dispense(unsigned int time, unsigned int z_height, bool z_move) const
 {
     std::array<UA_Variant, 3> inputs =
         {make_variant(time), make_variant(z_height), make_variant(z_move)};
@@ -40,15 +40,16 @@ bool Skills::dispense(unsigned int time, int z_height, bool z_move) const
     return success;
 }
 
-bool Skills::force_sensing_move(
-    int start_x, int start_y, int start_z, int target_x, int target_y, int target_z, float max_fx,
-    float max_fy, float max_fz, unsigned int step_size
+ForceSensingMoveResult Skills::force_sensing_move(
+    int start_x, int start_y, int start_z, int start_t, int target_x, int target_y, int target_z,
+    float max_fx, float max_fy, float max_fz, unsigned int step_size
 ) const
 {
-    std::array<UA_Variant, 10> inputs = {
+    std::array<UA_Variant, 11> inputs = {
         make_variant(start_x),
         make_variant(start_y),
         make_variant(start_z),
+        make_variant(start_t),
         make_variant(target_x),
         make_variant(target_y),
         make_variant(target_z),
@@ -70,7 +71,10 @@ bool Skills::force_sensing_move(
         &outputs
     );
 
-    const UA_Boolean success = *static_cast<UA_Boolean *>(outputs[0].data);
+    const UA_String *error = static_cast<UA_String *>(outputs[0].data);
+    const std::string error_str(reinterpret_cast<char *>(error->data), error->length);
+
+    const bool threshold_exceeded = *static_cast<UA_Boolean *>(outputs[1].data);
 
     UA_Array_delete(outputs, output_size, &UA_TYPES[UA_TYPES_VARIANT]);
 
@@ -79,7 +83,7 @@ bool Skills::force_sensing_move(
         UA_Variant_clear(&input);
     }
 
-    return success;
+    return ForceSensingMoveResult{error_str.empty(), error_str, threshold_exceeded};
 }
 
 } // namespace PMClient

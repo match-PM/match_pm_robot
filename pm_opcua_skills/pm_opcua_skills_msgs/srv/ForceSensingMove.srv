@@ -1,6 +1,7 @@
 int32 start_x
 int32 start_y
 int32 start_z
+int32 start_t
 int32 target_x
 int32 target_y
 int32 target_z
@@ -10,3 +11,5 @@ float32 max_fz
 uint32 step_size
 ---
 bool success
+string error
+bool threshold_exceeded

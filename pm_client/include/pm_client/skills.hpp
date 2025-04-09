@@ -1,11 +1,20 @@
 #pragma once
 
+#include <string>
+
 #include "open62541/open62541.h"
 
 namespace PMClient
 {
 
 class Client;
+
+struct ForceSensingMoveResult
+{
+    bool success;
+    std::string error;
+    bool threshold_exceeded;
+};
 
 class Skills
 {
@@ -23,11 +32,11 @@ class Skills
 
     [[nodiscard]] bool is_ok() const;
 
-    [[nodiscard]] bool dispense(unsigned int time, int z_height, bool z_move) const;
+    [[nodiscard]] bool dispense(unsigned int time, unsigned int z_height, bool z_move) const;
 
-    [[nodiscard]] bool force_sensing_move(
-        int start_x, int start_y, int start_z, int target_x, int target_y, int target_z,
-        float max_fx, float max_fy, float max_fz, unsigned int step_size
+    [[nodiscard]] ForceSensingMoveResult force_sensing_move(
+        int start_x, int start_y, int start_z, int start_t, int target_x, int target_y,
+        int target_z, float max_fx, float max_fy, float max_fz, unsigned int step_size
     ) const;
 };
 

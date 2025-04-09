@@ -43,10 +43,11 @@ class Controller : public rclcpp::Node
                 const ForceSensingMove::Request::SharedPtr request,
                 ForceSensingMove::Response::SharedPtr response
             ) {
-                const auto success = m_client.get_robot().skills->force_sensing_move(
+                const auto res = m_client.get_robot().skills->force_sensing_move(
                     request->start_x,
                     request->start_y,
                     request->start_z,
+                    request->start_t,
                     request->target_x,
                     request->target_y,
                     request->target_z,
@@ -55,7 +56,9 @@ class Controller : public rclcpp::Node
                     request->max_fz,
                     request->step_size
                 );
-                response->success = success;
+                response->success = res.success;
+                response->error = res.error;
+                response->threshold_exceeded = res.threshold_exceeded;
             }
         );
 
