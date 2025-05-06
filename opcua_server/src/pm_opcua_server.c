@@ -2803,6 +2803,8 @@ static UA_StatusCode function_pm_opcua_server_67_begin(UA_Server *server, UA_UIn
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 1.66666666667e-05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
@@ -3552,6 +3554,8 @@ static UA_StatusCode function_pm_opcua_server_83_begin(UA_Server *server, UA_UIn
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 1.66666666667e-05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
@@ -4301,6 +4305,8 @@ static UA_StatusCode function_pm_opcua_server_99_begin(UA_Server *server, UA_UIn
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 0.000563936275201;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
@@ -5050,6 +5056,8 @@ static UA_StatusCode function_pm_opcua_server_115_begin(UA_Server *server, UA_UI
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 0.000804634695848;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
@@ -5799,6 +5807,8 @@ static UA_StatusCode function_pm_opcua_server_131_begin(UA_Server *server, UA_UI
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 7.60006755616e-05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
@@ -6548,6 +6558,8 @@ static UA_StatusCode function_pm_opcua_server_147_begin(UA_Server *server, UA_UI
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 0.05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
@@ -7297,6 +7309,8 @@ static UA_StatusCode function_pm_opcua_server_163_begin(UA_Server *server, UA_UI
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 0.05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
@@ -8046,6 +8060,8 @@ static UA_StatusCode function_pm_opcua_server_179_begin(UA_Server *server, UA_UI
 {
     UA_StatusCode retVal = UA_STATUSCODE_GOOD;
     UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Double init_val = 0.05;
+    UA_Variant_setScalar(&attr.value, &init_val, &UA_TYPES[UA_TYPES_DOUBLE]);
     attr.minimumSamplingInterval = 0.000000;
     attr.userAccessLevel = 3;
     attr.accessLevel = 3;
