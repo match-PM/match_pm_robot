@@ -9598,11 +9598,11 @@ static UA_StatusCode function_pm_opcua_server_212_begin(UA_Server *server, UA_UI
     attr.valueRank = 1;
     attr.arrayDimensionsSize = 1;
     UA_UInt32 arrayDimensions[1];
-    arrayDimensions[0] = 4;
+    arrayDimensions[0] = 7;
     attr.arrayDimensions = &arrayDimensions[0];
     attr.dataType = UA_NODEID_NUMERIC(ns[0], 11LU);
-    UA_Double init_val[4] = {0.0, 0.0, 0.0, 0.0};
-    UA_Variant_setArray(&attr.value, init_val, 4, &UA_TYPES[UA_TYPES_DOUBLE]);
+    UA_Double init_val[7] = {0, 0, 0, 0, 0, 0, 0};
+    UA_Variant_setArray(&attr.value, init_val, 7, &UA_TYPES[UA_TYPES_DOUBLE]);
 
     attr.displayName = UA_LOCALIZEDTEXT("", "Measurements");
 
