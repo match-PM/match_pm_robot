@@ -33,6 +33,23 @@ chuck_gonio_left_Siemens_Sensor:
   visual_filename: "Chuck_Siemens_Sensor.STL"
   collision_filename: "Chuck_Siemens_Sensor.STL"
 
+chuck_gonio_left_Siemens_Carrier_SIN:
+  spawn_1_offset_from_gonio_x: "0.102200000"
+  spawn_1_offset_from_gonio_y: "-0.010700000"
+  spawn_1_offset_from_gonio_z: "0.105500000"
+  xyz: "0.00930287068817187 0.00707331634668878 0.0446054201819608"
+  rpy: "0 0 0"
+  mass: "0.193859196068301"
+  inertia_ixx: "6.69651317033426E-05"
+  inertia_ixy: "1.79270788880429E-07"  
+  inertia_ixz: "-9.94006464209221E-07"
+  inertia_iyy: "0.000515179692722766"
+  inertia_iyz: "-1.11700651338439E-06" 
+  inertia_izz: "0.00047114586366426"
+  color: "white"
+  visual_filename: "Chuck_Siemens_Carrier_SIN.STL"
+  collision_filename: "Chuck_Siemens_Carrier_SIN.STL"
+
 chuck_gonio_left_IPEG_Demonstrator:
   spawn_1_offset_from_gonio_x: "0.0100"
   spawn_1_offset_from_gonio_y: "0.0150"

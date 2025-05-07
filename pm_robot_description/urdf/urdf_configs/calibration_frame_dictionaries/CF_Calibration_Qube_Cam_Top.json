@@ -1,0 +1,24 @@
+{
+    "document_units": "mm",
+    "frames": [
+      {
+        "name": "Calibration_Qube_Vision_CALIBRATION",
+        "parent_frame": "Calibration_Qube",
+        "transformation": {
+          "translation": {
+            "X": -2.5,
+            "Y": -2.5,
+            "Z": 0.0
+          },
+          "rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "W": 1.0
+          }
+          },
+          "constraints": {
+        }
+      }
+    ]
+  }

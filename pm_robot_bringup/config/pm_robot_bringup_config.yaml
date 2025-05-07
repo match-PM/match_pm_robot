@@ -12,6 +12,7 @@ pm_robot_1K_dispenser_tip:
 pm_robot_gonio_left:
   availabe_chucks:
   - chuck_gonio_left_Siemens_Carrier
+  - chuck_gonio_left_Siemens_Carrier_SIN
   - chuck_gonio_left_Siemens_Sensor
   - chuck_gonio_left_IPEG_Demonstrator
   use_chuck: chuck_gonio_left_Siemens_Sensor
@@ -32,6 +33,10 @@ pm_robot_tools:
     - availabe_jaws:
       - Default_Jaw
       tool_name: SmarAct_Piezo_Gripper
+    - availabe_jaws:
+      - Default_Jaw
+      - Flat_Jaw
+      tool_name: SmarAct_Piezo_Gripper_flat
     use_jaw_type: Default_Jaw
     use_paralell_gripper: false
     use_tool: SmarAct_Piezo_Gripper
@@ -56,6 +61,9 @@ pm_robot_tools:
     - availabe_tips:
       - Tip_Siemens_Vacuum_Array
       tool_name: Siemens_Vacuum_Array
+    - availabe_tips:
+      - Tip_Siemens_Vacuum_Array
+      tool_name: Siemens_Vacuum_Array_short
     - availabe_tips:
       - Tip_Lens_12_7
       tool_name: Schunk_Lens_Gripper

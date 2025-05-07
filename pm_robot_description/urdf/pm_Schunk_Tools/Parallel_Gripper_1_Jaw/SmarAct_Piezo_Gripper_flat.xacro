@@ -34,14 +34,16 @@
     <!-- <xacro:property name="current_vacuum_tool" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_tool']}"/>
     <xacro:property name="current_vacuum_tool_tip" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_tip']}"/> -->
 
-
+    <xacro:property name="current_tool" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_tool']}"/>
+    <xacro:property name="current_jaw_attachement" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_jaw_type']}"/>
+    
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
     <!--%%%%%%%%%%%%% Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
     <link
     name="Tool_Parallel_Gripper_Body">
     <inertial>
       <origin
-        xyz="-0.00355668393665556 -0.000432533962047624 -0.011659024185547"
+        xyz="0.000310146269457783 0.0111566792086014 -0.0108754044082004"
         rpy="0 0 0" />
       <mass
         value="0.0122161706567272" />
@@ -58,7 +60,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Base.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Tool_Parallel_Gripper_Base_flat.STL" />
       </geometry>
       <material name="grey"/>
     </visual>
@@ -67,7 +69,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Base.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Tool_Parallel_Gripper_Base_flat.STL" />
       </geometry>
     </collision>
   </link>
@@ -108,7 +110,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw_flat.STL" />
         </geometry>
         <material name="grey"/>
       </visual>
@@ -117,7 +119,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw_flat.STL" />
         </geometry>
       </collision>
     </link>
@@ -131,7 +133,7 @@
       name="Tool_Parallel_Gripper_Jaw_Joint"
       type="prismatic">
       <origin
-        xyz="0.00134999999999982 -0.00399999999999992 -0.0248"
+        xyz="-0.00549999981186566 0.00150000018813442 -0.0318"
         rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Body" />
@@ -156,7 +158,7 @@
       name="Tool_Parallel_Gripper_Jaw_1_Point_Joint"
       type="fixed">
       <origin
-        xyz="0 0.0014 -0.0075"
+        xyz="-0.00549999981186566 0.00150000018813442 -0.0318"
         rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Body" />
@@ -176,7 +178,7 @@
       name="Tool_Parallel_Gripper_Jaw_2_Point_Joint"
       type="fixed">
       <origin
-      xyz="-0.0014 0 -0.0075"
+      xyz="0.011060767270484 0 0"
       rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Jaw" />
@@ -191,67 +193,48 @@
   
 
   <!--%%%%%%%%%%%%% Jaw Definitions %%%%%%%%%%%%%-->
-    <!-- <xacro:property name="mpg_10_plus_jaw_define_file" value="$(find pm_robot_description)/urdf/pm_Schunk_Tools/MPG_10_plus_jaws.yaml" />
-    <xacro:property name="jaw_dict" value="${xacro.load_yaml(mpg_10_plus_jaw_define_file)}"/> -->
+    <xacro:property name="parallel_gripper_1_jaw_file" value="$(find pm_robot_description)/urdf/urdf_configs/parallel_gripper_1_jaw.yaml" />
+    <xacro:property name="parallel_gripper_configs" value="${xacro.load_yaml(parallel_gripper_1_jaw_file)}"/>
     
     <!--%%%%%%%%%%%%% Default Jaw Definitions %%%%%%%%%%%%%-->
-    <!-- <xacro:property name="Gripper_jaw_1_xyz" value="${jaw_dict['lens_jaw_3_mm_1']['xyz']}"/>
-    <xacro:property name="Gripper_jaw_1_rpy" value="${jaw_dict['lens_jaw_3_mm_1']['rpy']}"/>
-    <xacro:property name="Gripper_jaw_1_mass" value="${jaw_dict['lens_jaw_3_mm_1']['mass']}"/>
-    <xacro:property name="Gripper_jaw_1_inertia_ixx" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_ixx']}"/>
-    <xacro:property name="Gripper_jaw_1_inertia_ixy" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_ixy']}"/>
-    <xacro:property name="Gripper_jaw_1_inertia_ixz" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_ixz']}"/>
-    <xacro:property name="Gripper_jaw_1_inertia_iyy" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_iyy']}"/>
-    <xacro:property name="Gripper_jaw_1_inertia_iyz" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_iyz']}"/>
-    <xacro:property name="Gripper_jaw_1_inertia_izz" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_izz']}"/>
-    <xacro:property name="Gripper_jaw_1_visual_filename" value="${jaw_dict['lens_jaw_3_mm_1']['visual_filename']}"/>
-    <xacro:property name="Gripper_jaw_1_collision_filename" value="${jaw_dict['lens_jaw_3_mm_1']['collision_filename']}"/>
-
-    <xacro:property name="Gripper_jaw_2_xyz" value="${jaw_dict['lens_jaw_3_mm_2']['xyz']}"/>
-    <xacro:property name="Gripper_jaw_2_rpy" value="${jaw_dict['lens_jaw_3_mm_2']['rpy']}"/>
-    <xacro:property name="Gripper_jaw_2_mass" value="${jaw_dict['lens_jaw_3_mm_2']['mass']}"/>
-    <xacro:property name="Gripper_jaw_2_inertia_ixx" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_ixx']}"/>
-    <xacro:property name="Gripper_jaw_2_inertia_ixy" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_ixy']}"/>
-    <xacro:property name="Gripper_jaw_2_inertia_ixz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_ixz']}"/>
-    <xacro:property name="Gripper_jaw_2_inertia_iyy" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_iyy']}"/>
-    <xacro:property name="Gripper_jaw_2_inertia_iyz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_iyz']}"/>
-    <xacro:property name="Gripper_jaw_2_inertia_izz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_izz']}"/>
-    <xacro:property name="Gripper_jaw_2_visual_filename" value="${jaw_dict['lens_jaw_3_mm_2']['visual_filename']}"/>
-    <xacro:property name="Gripper_jaw_2_collision_filename" value="${jaw_dict['lens_jaw_3_mm_2']['collision_filename']}"/> -->
-
-    <!--%%%%%%%%%%%%% 3MM Lens Jaw 1 Definitions %%%%%%%%%%%%%-->
-    <!-- <xacro:if value="${use_three_mm_lens}">
-      <xacro:property name="Gripper_jaw_1_xyz" value="${jaw_dict['lens_jaw_3_mm_1']['xyz']}"/>
-      <xacro:property name="Gripper_jaw_1_rpy" value="${jaw_dict['lens_jaw_3_mm_1']['rpy']}"/>
-      <xacro:property name="Gripper_jaw_1_mass" value="${jaw_dict['lens_jaw_3_mm_1']['mass']}"/>
-      <xacro:property name="Gripper_jaw_1_inertia_ixx" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_ixx']}"/>
-      <xacro:property name="Gripper_jaw_1_inertia_ixy" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_ixy']}"/>
-      <xacro:property name="Gripper_jaw_1_inertia_ixz" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_ixz']}"/>
-      <xacro:property name="Gripper_jaw_1_inertia_iyy" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_iyy']}"/>
-      <xacro:property name="Gripper_jaw_1_inertia_iyz" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_iyz']}"/>
-      <xacro:property name="Gripper_jaw_1_inertia_izz" value="${jaw_dict['lens_jaw_3_mm_1']['inertia_izz']}"/>
-      <xacro:property name="Gripper_jaw_1_visual_filename" value="${jaw_dict['lens_jaw_3_mm_1']['visual_filename']}"/>
-      <xacro:property name="Gripper_jaw_1_collision_filename" value="${jaw_dict['lens_jaw_3_mm_1']['collision_filename']}"/>
 
 
-      <xacro:property name="Gripper_jaw_2_xyz" value="${jaw_dict['lens_jaw_3_mm_2']['xyz']}"/>
-      <xacro:property name="Gripper_jaw_2_rpy" value="${jaw_dict['lens_jaw_3_mm_2']['rpy']}"/>
-      <xacro:property name="Gripper_jaw_2_mass" value="${jaw_dict['lens_jaw_3_mm_2']['mass']}"/>
-      <xacro:property name="Gripper_jaw_2_inertia_ixx" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_ixx']}"/>
-      <xacro:property name="Gripper_jaw_2_inertia_ixy" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_ixy']}"/>
-      <xacro:property name="Gripper_jaw_2_inertia_ixz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_ixz']}"/>
-      <xacro:property name="Gripper_jaw_2_inertia_iyy" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_iyy']}"/>
-      <xacro:property name="Gripper_jaw_2_inertia_iyz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_iyz']}"/>
-      <xacro:property name="Gripper_jaw_2_inertia_izz" value="${jaw_dict['lens_jaw_3_mm_2']['inertia_izz']}"/>
-      <xacro:property name="Gripper_jaw_2_visual_filename" value="${jaw_dict['lens_jaw_3_mm_2']['visual_filename']}"/>
-      <xacro:property name="Gripper_jaw_2_collision_filename" value="${jaw_dict['lens_jaw_3_mm_2']['collision_filename']}"/>
-    </xacro:if> -->
+    <xacro:property name="Gripper_jaw_1_dict" value="${parallel_gripper_configs[current_tool][current_jaw_attachement]}"/>
 
+
+    <xacro:property name="Gripper_jaw_1_xyz" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_xyz']}"/>
+    <xacro:property name="Gripper_jaw_1_rpy" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_rpy']}"/>
+    <xacro:property name="Gripper_jaw_1_mass" value="${Gripper_jaw_1_dict['Jaw_1']['mass']}"/>
+    <xacro:property name="Gripper_jaw_1_inertia_ixx" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_ixx']}"/>
+    <xacro:property name="Gripper_jaw_1_inertia_ixy" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_ixy']}"/>
+    <xacro:property name="Gripper_jaw_1_inertia_ixz" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_ixz']}"/>
+    <xacro:property name="Gripper_jaw_1_inertia_iyy" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_iyy']}"/>
+    <xacro:property name="Gripper_jaw_1_inertia_iyz" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_iyz']}"/>
+    <xacro:property name="Gripper_jaw_1_inertia_izz" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_izz']}"/>
+    <xacro:property name="Gripper_jaw_1_visual_filename" value="${Gripper_jaw_1_dict['Jaw_1']['visual_filename']}"/>
+    <xacro:property name="Gripper_jaw_1_collision_filename" value="${Gripper_jaw_1_dict['Jaw_1']['collision_filename']}"/>
+
+    <xacro:property name="Gripper_jaw_2_xyz" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_xyz']}"/>
+    <xacro:property name="Gripper_jaw_2_rpy" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_rpy']}"/>
+    <xacro:property name="Gripper_jaw_2_mass" value="${Gripper_jaw_1_dict['Jaw_2']['mass']}"/>
+    <xacro:property name="Gripper_jaw_2_inertia_ixx" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_ixx']}"/>
+    <xacro:property name="Gripper_jaw_2_inertia_ixy" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_ixy']}"/>
+    <xacro:property name="Gripper_jaw_2_inertia_ixz" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_ixz']}"/>
+    <xacro:property name="Gripper_jaw_2_inertia_iyy" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_iyy']}"/>
+    <xacro:property name="Gripper_jaw_2_inertia_iyz" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_iyz']}"/>
+    <xacro:property name="Gripper_jaw_2_inertia_izz" value="${Gripper_jaw_1_dict['Jaw_2']['inertia_izz']}"/>
+    <xacro:property name="Gripper_jaw_2_visual_filename" value="${Gripper_jaw_1_dict['Jaw_2']['visual_filename']}"/>
+    <xacro:property name="Gripper_jaw_2_collision_filename" value="${Gripper_jaw_1_dict['Jaw_2']['collision_filename']}"/>
+
+
+    <xacro:property name="tool_tcp_offset_x" value="${Gripper_jaw_1_dict['tool_TCP_x_offset']}"/>
+    <xacro:property name="tool_tcp_offset_y" value="${Gripper_jaw_1_dict['tool_TCP_y_offset']}"/>
+    <xacro:property name="tool_tcp_offset_z" value="${Gripper_jaw_1_dict['tool_TCP_z_offset']}"/>
 
     <!--%%%%%%%%%%%%% The parameters here are interchangeable %%%%%%%%%%%%%-->
     <!--%%%%%%%%%%%%% Jaw 1 Definitions %%%%%%%%%%%%%-->
-    <!-- <link
-      name="Tool_Gripper_MPG_10_Jaw_1_changeable">
+    <link
+      name="Tool_Parallel_Gripper_Jaw_1_attachment">
       <inertial>
         <origin
           xyz="${Gripper_jaw_1_xyz}"
@@ -271,7 +254,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Jaws/${Gripper_jaw_1_visual_filename}" />      
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/${Gripper_jaw_1_visual_filename}" />      
         </geometry>
         <material
           name="">
@@ -284,30 +267,29 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Jaws/${Gripper_jaw_1_visual_filename}" />     
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/${Gripper_jaw_1_visual_filename}" />      
         </geometry>
       </collision>
     </link>
 
-    <gazebo reference="Tool_Gripper_Jaw_1">
+    <gazebo reference="Tool_Parallel_Gripper_Jaw_1_attachment">
       <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <joint
-      name="Tool_Gripper_MPG_10_Jaw_1_changeable_Joint"
+      name="Tool_Parallel_Gripper_Jaw_1_attachment_Joint"
       type="fixed">
       <origin
-        xyz="0.002 0 0 "
+        xyz="0.0 0 0 "
         rpy="0 0 0" />
       <parent
-        link="Tool_Gripper_MPG_10_Jaw_1_Point" />
+        link="Tool_Parallel_Gripper_Jaw_1_Point" />
       <child
-        link="Tool_Gripper_MPG_10_Jaw_1_changeable" />
+        link="Tool_Parallel_Gripper_Jaw_1_attachment" />
     </joint>
 
-
     <link
-      name="Tool_Gripper_MPG_10_Jaw_2_changeable">
+      name="Tool_Parallel_Gripper_Jaw_2_attachment">
       <inertial>
         <origin
           xyz="${Gripper_jaw_2_xyz}"
@@ -327,7 +309,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Jaws/${Gripper_jaw_2_visual_filename}" />      
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/${Gripper_jaw_2_visual_filename}" />      
         </geometry>
         <material
           name="">
@@ -340,26 +322,28 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/MPG_10_plus/Jaws/${Gripper_jaw_2_visual_filename}" />     
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/${Gripper_jaw_2_visual_filename}" />      
         </geometry>
       </collision>
     </link>
 
-    <gazebo reference="Tool_Gripper_MPG_10_Jaw_2_changeable">
+    <gazebo reference="Tool_Parallel_Gripper_Jaw_2_attachment">
       <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <joint
-      name="Tool_Gripper_MPG_10_Jaw_2_changeable_Joint"
+      name="Tool_Parallel_Gripper_Jaw_2_attachment_Joint"
       type="fixed">
       <origin
-        xyz="0.002 0  0 "
-        rpy="1.5708 0 0" />
+        xyz="0.0 0 0 "
+        rpy="0 0 0" />
       <parent
-        link="Tool_Gripper_MPG_10_Jaw_2_Point" />
+        link="Tool_Parallel_Gripper_Jaw_2_Point" />
       <child
-        link="Tool_Gripper_MPG_10_Jaw_2_changeable" />
-    </joint> -->
+        link="Tool_Parallel_Gripper_Jaw_2_attachment" />
+    </joint>
+
+
   <link name="PM_Robot_Tool_TCP">
   </link>
 
@@ -372,9 +356,9 @@
 
   <joint name="PM_Robot_Tool_TCP_Joint" type="fixed">
     <origin xyz="
-      ${0  + PM_Robot_Tool_TCP_Joint_Cal_x * 0.000001} 
-      ${0  + PM_Robot_Tool_TCP_Joint_Cal_y * 0.000001} 
-      ${0 - 0.04542 + PM_Robot_Tool_TCP_Joint_Cal_z * 0.000001}" rpy="
+      ${0 + tool_tcp_offset_x  + PM_Robot_Tool_TCP_Joint_Cal_x * 0.000001} 
+      ${0 + tool_tcp_offset_y  + PM_Robot_Tool_TCP_Joint_Cal_y * 0.000001} 
+      ${0 + tool_tcp_offset_z - 0.04542 + PM_Robot_Tool_TCP_Joint_Cal_z * 0.000001}" rpy="
       ${0 + PM_Robot_Tool_TCP_Joint_Cal_rx * 3.14159265359/180} 
       ${0 + PM_Robot_Tool_TCP_Joint_Cal_ry * 3.14159265359/180} 
       ${0 + PM_Robot_Tool_TCP_Joint_Cal_rz * 3.14159265359/180}" />
