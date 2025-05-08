@@ -37,7 +37,14 @@
     <xacro:property name="current_tool" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_tool']}"/>
     <xacro:property name="current_jaw_attachement" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_jaw_type']}"/>
     
+    <xacro:property name="parallel_gripper_1_jaw_file" value="$(find pm_robot_description)/urdf/urdf_configs/parallel_gripper_1_jaw.yaml" />
+    <xacro:property name="parallel_gripper_configs" value="${xacro.load_yaml(parallel_gripper_1_jaw_file)}"/>
+    <xacro:property name="Gripper_jaw_1_dict" value="${parallel_gripper_configs[current_tool][current_jaw_attachement]}"/>
+
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
+
+    <xacro:property name="joint_offset_value" value="${Gripper_jaw_1_dict['joint_offset_value']}"/>
+
     <!--%%%%%%%%%%%%% Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
     <link
     name="Tool_Parallel_Gripper_Body">
@@ -112,7 +119,7 @@
         <geometry>
           <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw_flat.STL" />
         </geometry>
-        <material name="grey"/>
+        <material name="white"/>
       </visual>
       <collision>
         <origin
@@ -133,14 +140,14 @@
       name="Tool_Parallel_Gripper_Jaw_Joint"
       type="prismatic">
       <origin
-        xyz="-0.00549999981186566 0.00150000018813442 -0.0318"
+        xyz="${0.00551408822663166+joint_offset_value*0.001} 0.00150000018813439 -0.0318"
         rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Body" />
       <child
         link="Tool_Parallel_Gripper_Jaw" />
       <axis
-        xyz="0 1 0" />
+        xyz="1 0 0" />
       <limit
         lower="0"
         upper="0.001"
@@ -178,7 +185,7 @@
       name="Tool_Parallel_Gripper_Jaw_2_Point_Joint"
       type="fixed">
       <origin
-      xyz="0.011060767270484 0 0"
+      xyz="0.0 0 0"
       rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Jaw" />
@@ -193,13 +200,6 @@
   
 
   <!--%%%%%%%%%%%%% Jaw Definitions %%%%%%%%%%%%%-->
-    <xacro:property name="parallel_gripper_1_jaw_file" value="$(find pm_robot_description)/urdf/urdf_configs/parallel_gripper_1_jaw.yaml" />
-    <xacro:property name="parallel_gripper_configs" value="${xacro.load_yaml(parallel_gripper_1_jaw_file)}"/>
-    
-    <!--%%%%%%%%%%%%% Default Jaw Definitions %%%%%%%%%%%%%-->
-
-
-    <xacro:property name="Gripper_jaw_1_dict" value="${parallel_gripper_configs[current_tool][current_jaw_attachement]}"/>
 
 
     <xacro:property name="Gripper_jaw_1_xyz" value="${Gripper_jaw_1_dict['Jaw_1']['inertia_xyz']}"/>
@@ -280,7 +280,7 @@
       name="Tool_Parallel_Gripper_Jaw_1_attachment_Joint"
       type="fixed">
       <origin
-        xyz="0.0 0 0 "
+        xyz="0.0 0.0 0 "
         rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Jaw_1_Point" />

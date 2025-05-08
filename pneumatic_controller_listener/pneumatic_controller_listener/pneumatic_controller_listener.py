@@ -10,6 +10,7 @@ from rcl_interfaces.msg import ParameterValue, Parameter, ParameterType
 import xml.etree.ElementTree as ET 
 from collections import defaultdict
 from example_interfaces.srv import SetBool
+import random
 
 def etree_to_dict(t):
     d = {t.tag: {} if t.attrib else None}
@@ -39,6 +40,9 @@ class PneumaticControllerListener(Node):
         self.controller_yaml = f"{self.robot_description_path}/config/pm_robot_control_real_HW.yaml"
         self.test_publisher = self.create_publisher(Float64MultiArray,"/pm_pneumatic_forward_controller/commands",10)
 
+        # just for testing
+        #self.dummy_jaw_publisher = self.create_publisher(Float64MultiArray,"/pm_parallel_gripper_jaw_controller/commands",10)
+
         self.logger = self.get_logger()
         self.pneumatic_controller_names = []
         self.forward_controller_names = []
@@ -54,6 +58,10 @@ class PneumaticControllerListener(Node):
         self.init_robot_description()
         self.extract_limits()     
         self.init_services()  
+
+        # create timer for testing
+        #self.timer = self.create_timer(2.0, self.timer_callback)
+
         # create a service
         #self.srv_flap = self.create_service(SetBool, '/pm_pneumatic_dummy/set_dispenser_flap', self.set_flap)
         #self.srv_dispenser = self.create_service(SetBool, '/pm_pneumatic_dummy/set_dispenser', self.set_dispenser)
@@ -75,6 +83,13 @@ class PneumaticControllerListener(Node):
         
         return response  
     
+    def timer_callback(self):
+        random_value = random.uniform(0, 0.001)
+        cmd = Float64MultiArray()
+        cmd.data = [random_value]
+        self.dummy_jaw_publisher.publish(cmd)
+        self.logger.warn(f"Publishing dummy value: {random_value}")
+
     def init_robot_description(self):
         cli = self.create_client(GetParameters, '/robot_state_publisher/get_parameters')
         while not cli.wait_for_service(timeout_sec=10.0):

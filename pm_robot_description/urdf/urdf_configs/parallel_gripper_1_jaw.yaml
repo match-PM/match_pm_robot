@@ -2,39 +2,10 @@ SmarAct_Piezo_Gripper:
   xacro_file: "SmarAct_Piezo_Gripper.xacro"
   Default_Jaw:
     calibration_file_name : "CF_Default_Jaw.json"
-    Jaw_1:
-      inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
-      inertia_rpy: "0 0 0"
-      mass: "0.000118476289547731"
-      inertia_ixx: "5.50616566102928E-05" #10
-      inertia_ixy: "1.15823081964001E-05" #21
-      inertia_ixz: "1.51586534634799E-05" #10
-      inertia_iyy: "6.62228324828861E-05" #10
-      inertia_iyz: "2.68654227697881E-05" #20
-      inertia_izz: "4.05699592387869E-05" #20
-      visual_filename: "SmarAct_Gripper_Jaw.STL"
-      collision_filename: "SmarAct_Gripper_Jaw.STL"
-      
-    Jaw_2:
-      inertia_xyz: "-0.00224080580616211 -0.00152543365786503 1.2528765306995E-13"
-      inertia_rpy: "0 0 0"
-      mass: "0.000117826998616915"
-      inertia_ixx: "5.504084274466E-05"     #10
-      inertia_ixy: "1.50894936754082E-05"    #10
-      inertia_ixz: "-1.43349001887448E-05"  #21
-      inertia_iyy: "4.00144751949544E-05"   #10
-      inertia_iyz: "-2.68169098626193E-05"  #20
-      inertia_izz: "6.58370363267184E-05"   #10
-      visual_filename: "SmarAct_Gripper_Jaw.STL"
-      collision_filename: "SmarAct_Gripper_Jaw.STL"
-
-SmarAct_Piezo_Gripper_flat:
-  xacro_file: "SmarAct_Piezo_Gripper_flat.xacro"
-  Default_Jaw:
-    calibration_file_name : "CF_Default_Jaw.json"
     tool_TCP_x_offset: "0.0"
     tool_TCP_y_offset: "0.0"
     tool_TCP_z_offset: "0.0"
+    joint_offset_value: "0.0"  # in mm
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
       inertia_rpy: "0 0 0"
@@ -45,8 +16,8 @@ SmarAct_Piezo_Gripper_flat:
       inertia_iyy: "6.62228324828861E-05" #10
       inertia_iyz: "2.68654227697881E-05" #20
       inertia_izz: "4.05699592387869E-05" #20
-      visual_filename: "Jaw_Flat_Config_ROS_Jaw1.STL" # TODO: change to default
-      collision_filename: "Jaw_Flat_Config_ROS_Jaw1.STL" # TODO: change to default
+      visual_filename: "Default_Jaw_1.STL" # TODO: change to default
+      collision_filename: "Default_Jaw_1.STL" # TODO: change to default
     
     Jaw_2:
       inertia_xyz: "-0.00224080580616211 -0.00152543365786503 1.2528765306995E-13"
@@ -58,14 +29,49 @@ SmarAct_Piezo_Gripper_flat:
       inertia_iyy: "4.00144751949544E-05"   #10
       inertia_iyz: "-2.68169098626193E-05"  #20
       inertia_izz: "6.58370363267184E-05"   #10
-      visual_filename: "Jaw_Flat_Config_ROS_Jaw2.STL" # TODO: change to default
-      collision_filename: "Jaw_Flat_Config_ROS_Jaw2.STL" # TODO: change to default
+      visual_filename: "Default_Jaw_2.STL" # TODO: change to default
+      collision_filename: "Default_Jaw_2.STL" # TODO: change to default
+
+SmarAct_Piezo_Gripper_flat:
+  xacro_file: "SmarAct_Piezo_Gripper_flat.xacro"
+  Default_Jaw:
+    calibration_file_name : "CF_Default_Jaw.json"
+    tool_TCP_x_offset: "0.0"
+    tool_TCP_y_offset: "0.0"
+    tool_TCP_z_offset: "0.0"
+    joint_offset_value: "-6.0"  # in mm
+    Jaw_1:
+      inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
+      inertia_rpy: "0 0 0"
+      mass: "0.000118476289547731"
+      inertia_ixx: "5.50616566102928E-05" #10
+      inertia_ixy: "1.15823081964001E-05" #21
+      inertia_ixz: "1.51586534634799E-05" #10
+      inertia_iyy: "6.62228324828861E-05" #10
+      inertia_iyz: "2.68654227697881E-05" #20
+      inertia_izz: "4.05699592387869E-05" #20
+      visual_filename: "Default_Jaw_1.STL" # TODO: change to default
+      collision_filename: "Default_Jaw_1.STL" # TODO: change to default
+    
+    Jaw_2:
+      inertia_xyz: "-0.00224080580616211 -0.00152543365786503 1.2528765306995E-13"
+      inertia_rpy: "0 0 0"
+      mass: "0.000117826998616915"
+      inertia_ixx: "5.504084274466E-05"     #10
+      inertia_ixy: "1.50894936754082E-05"    #10
+      inertia_ixz: "-1.43349001887448E-05"  #21
+      inertia_iyy: "4.00144751949544E-05"   #10
+      inertia_iyz: "-2.68169098626193E-05"  #20
+      inertia_izz: "6.58370363267184E-05"   #10
+      visual_filename: "Default_Jaw_2.STL" # TODO: change to default
+      collision_filename: "Default_Jaw_2.STL" # TODO: change to default
 
   Flat_Jaw:
     calibration_file_name : "CF_Flat_Jaw.json"
     tool_TCP_x_offset: "0.0"
     tool_TCP_y_offset: "0.0"
-    tool_TCP_z_offset: "-0.05"
+    tool_TCP_z_offset: "-0.0378"
+    joint_offset_value: "0.0"  # in mm
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
       inertia_rpy: "0 0 0"

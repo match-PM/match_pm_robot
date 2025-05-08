@@ -29,6 +29,13 @@ controller_manager:
 
     pm_pneumatic_forward_controller:
       type: position_controllers/JointGroupPositionController
+
+    pm_parallel_gripper_jaw_controller:
+      type: position_controllers/JointGroupPositionController
+    
+    pm_parallel_gripper_2_jaws_controller:
+      type: position_controllers/JointGroupPositionController
+
 # pm_robot_IO_Axis_controller:
 #   ros__parameters:
 #     joints:
@@ -44,6 +51,29 @@ controller_manager:
 #       # - UV_Module_Right_Joint
 
 #     interface_name: position
+
+pm_parallel_gripper_2_jaws_controller:
+  ros__parameters:
+    joints:
+      - Tool_Parallel_Gripper_Jaw_Joint_1
+      - Tool_Parallel_Gripper_Jaw_Joint_2
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+
+pm_parallel_gripper_jaw_controller:
+  ros__parameters:
+    joints:
+      - Tool_Parallel_Gripper_Jaw_Joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
 
 pm_lights_controller:
   ros__parameters: {}

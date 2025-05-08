@@ -83,7 +83,7 @@
     name="Smarpod_Station_Joint"
     type="fixed">
     <origin
-      xyz="0.750000000000003 0.315 0"
+      xyz="0.6 0.31 0"
       rpy="0 0 0" />
     <parent
       link="pm_robot_base_link" />
@@ -92,52 +92,16 @@
     <axis
       xyz="0 0 0" />
   </joint>
+
   <link
     name="Smarpod_Station_Base">
-    <!-- <inertial>
-      <origin
-        xyz="0.00218806954398554 0.016740010574494 -0.0260350780485463"
-        rpy="0 0 0" />
-      <mass
-        value="0.782282249809798" />
-      <inertia
-        ixx="0.00477442216909529"
-        ixy="-5.89281059976034E-08"
-        ixz="2.37578030999863E-10"
-        iyy="0.00354235482448058"
-        iyz="2.44320538923888E-08"
-        izz="0.00631238764877303" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://BAUGRUPPE_PM_ROBOT_Export_22052024_2/meshes/Smarpod_Station_Base.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://BAUGRUPPE_PM_ROBOT_Export_22052024_2/meshes/Smarpod_Station_Base.STL" />
-      </geometry>
-    </collision> -->
   </link>
   
   <joint
     name="Smarpod_Station_Base_Joint"
     type="fixed">
     <origin
-      xyz="0.09 0.0899999999999999 0.2136999999992"
+      xyz="0.2 0.15 0.2253999999992"
       rpy="0 0 0" />
     <parent
       link="Smarpod_Station" />
