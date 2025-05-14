@@ -253,12 +253,29 @@
       <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
+<!-- Property names should not start with a number -->
+    <xacro:property name="T_Axis_Joint_Cal_x" value="${calibration_dict['T_Axis_Joint']['x_offset']}"/>
+    <xacro:property name="T_Axis_Joint_Cal_y" value="${calibration_dict['T_Axis_Joint']['y_offset']}"/>
+    <xacro:property name="T_Axis_Joint_Cal_z" value="${calibration_dict['T_Axis_Joint']['z_offset']}"/>
+    <xacro:property name="T_Axis_Joint_Cal_rx" value="${calibration_dict['T_Axis_Joint']['rx_offset']}"/>
+    <xacro:property name="T_Axis_Joint_Cal_ry" value="${calibration_dict['T_Axis_Joint']['ry_offset']}"/>
+    <xacro:property name="T_Axis_Joint_Cal_rz" value="${calibration_dict['T_Axis_Joint']['rz_offset']}"/>
+
     <joint name="T_Axis_Joint" type="revolute">
-      <origin xyz="0.0600000000000017 -0.0580000000000003 -0.427500000000004" rpy="0 0 0" />
+      <origin 
+      xyz="
+        ${0.0600000000000017 + T_Axis_Joint_Cal_x * 0.000001} 
+        ${-0.0580000000000003 + T_Axis_Joint_Cal_y * 0.000001} 
+        ${-0.427500000000004 + T_Axis_Joint_Cal_z * 0.000001}" 
+        rpy="
+        ${0 + T_Axis_Joint_Cal_rx * 3.14159265359/180} 
+        ${0 + T_Axis_Joint_Cal_ry * 3.14159265359/180} 
+        ${0 + T_Axis_Joint_Cal_rz * 3.14159265359/180}" />
+
       <parent link="Z_Axis" />
       <child link="Gripper_Rot_Plate" />
       <axis xyz="0 0 1" />
-      <limit lower="-2.0" upper="2.0" effort="100" velocity="5" />
+      <limit lower="-2.0" upper="2.0" effort="100" velocity="15" />
     </joint>
 
     <link name="t_axis_toolchanger">

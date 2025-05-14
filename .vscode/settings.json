@@ -98,6 +98,21 @@
         "locale": "cpp",
         "print": "cpp",
         "*.ipp": "cpp",
-        "core": "cpp"
+        "core": "cpp",
+        "csetjmp": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "barrier": "cpp",
+        "coroutine": "cpp",
+        "cuchar": "cpp",
+        "netfwd": "cpp",
+        "source_location": "cpp",
+        "rope": "cpp",
+        "slist": "cpp",
+        "latch": "cpp",
+        "ranges": "cpp",
+        "scoped_allocator": "cpp",
+        "syncstream": "cpp",
+        "valarray": "cpp"
     }
 }

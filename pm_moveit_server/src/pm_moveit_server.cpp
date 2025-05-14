@@ -210,7 +210,14 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
   float delta_value;
   for (size_t i = 0; i < target_joints.size(); i++)
   {
-    if (target_joints[i] == "T_Axis_Joint" || target_joints[i] =="SP_A_Joint" || target_joints[i] =="SP_B_Joint" || target_joints[i] =="SP_C_Joint")
+    if (target_joints[i] == "T_Axis_Joint" || 
+      target_joints[i] =="SP_A_Joint" || 
+      target_joints[i] =="SP_B_Joint" || 
+      target_joints[i] =="SP_C_Joint" ||
+      target_joints[i] =="Gonio_Right_Stage_1_Joint" ||
+      target_joints[i] =="Gonio_Right_Stage_2_Joint" ||
+      target_joints[i] =="Gonio_Left_Stage_1_Joint" ||
+      target_joints[i] =="Gonio_Left_Stage_2_Joint" )
     {
       // This means rotation
       delta_value = delta_rot;
@@ -220,7 +227,7 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
       // This means translation
       delta_value = delta_trans;
     }
-
+    
     // find joint in joint state
     auto it = std::find(global_joint_state->name.begin(), global_joint_state->name.end(), target_joints[i]);
     if (it == global_joint_state->name.end())
@@ -454,6 +461,19 @@ geometry_msgs::msg::Pose add_translation_rotation_to_pose(geometry_msgs::msg::Po
   return pose;
 }
 
+void log_transform_stamped(std::string transform_text, geometry_msgs::msg::TransformStamped transform)
+{
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), transform_text.c_str());
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Transform from %s to %s", transform.header.frame_id.c_str(), transform.child_frame_id.c_str());
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Position X %.9f", transform.transform.translation.x);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Position Y %.9f", transform.transform.translation.y);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Position Z %.9f", transform.transform.translation.z);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Orientation W %f", transform.transform.rotation.w);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Orientation X %f", transform.transform.rotation.x);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Orientation Y %f", transform.transform.rotation.y);
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Orientation Z %f", transform.transform.rotation.z);
+}
+
 geometry_msgs::msg::Pose get_pose_endeffector_override(std::string initial_endeffector_frame, 
                                                       std::string endeffector_override_frame, 
                                                       geometry_msgs::msg::Pose target_pose)
@@ -461,18 +481,43 @@ geometry_msgs::msg::Pose get_pose_endeffector_override(std::string initial_endef
   bool success_frame;
   geometry_msgs::msg::Pose pose_rel;
   geometry_msgs::msg::TransformStamped rel_transform;
+  geometry_msgs::msg::TransformStamped rel_transform2;
   std::tie(success_frame, rel_transform) = get_pose_of_frame_in_frame(endeffector_override_frame, initial_endeffector_frame);
   //std::tie(success_frame, rel_transform) = get_pose_of_frame_in_frame(initial_endeffector_frame, endeffector_override_frame);
+  std::tie(success_frame, rel_transform2) = get_pose_of_frame_in_frame(initial_endeffector_frame, endeffector_override_frame);
+  
+  // // geometry_msgs::msg::TransformStamped world_endeffector_override;
+  // // geometry_msgs::msg::TransformStamped world_initial_endeffector;
+  // geometry_msgs::msg::TransformStamped transformmm_3;
+  // geometry_msgs::msg::TransformStamped transformmm_4;
+  
+  //std::tie(success_frame, world_endeffector_override) = get_pose_of_frame_in_frame(endeffector_override_frame, "world");
+  // std::tie(success_frame, world_endeffector_override) = get_pose_of_frame_in_frame( "world", endeffector_override_frame);
 
-  // log rel transform
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Rel Transform: ");
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "X: %f", rel_transform.transform.translation.x);
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Y: %f", rel_transform.transform.translation.y);
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Z: %f", rel_transform.transform.translation.z);
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_X: %f", rel_transform.transform.rotation.x);
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_Y: %f", rel_transform.transform.rotation.y);
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_Z: %f", rel_transform.transform.rotation.z);
-  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_W: %f", rel_transform.transform.rotation.w);
+  // std::tie(success_frame, world_initial_endeffector) = get_pose_of_frame_in_frame( "world", initial_endeffector_frame);
+
+  // std::tie(success_frame, transformmm_3) = get_pose_of_frame_in_frame( endeffector_override_frame, initial_endeffector_frame);
+
+  // std::tie(success_frame, transformmm_4) = get_pose_of_frame_in_frame(initial_endeffector_frame, endeffector_override_frame);
+
+  // log_transform_stamped("This is important!!!!", rel_transform);
+
+  // log_transform_stamped("Transform 1", world_endeffector_override);
+  // log_transform_stamped("Transform 2", world_initial_endeffector);
+  // log_transform_stamped("Transform 3", transformmm_3);
+  // log_transform_stamped("Transform 4", transformmm_4);
+
+  //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+  
+  // // log rel transform
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Rel Transform between %s and %s", initial_endeffector_frame.c_str(), endeffector_override_frame.c_str());
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "X: %f", rel_transform2.transform.translation.x);
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Y: %f", rel_transform2.transform.translation.y);
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Z: %f", rel_transform2.transform.translation.z);
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_X: %f", rel_transform2.transform.rotation.x);
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_Y: %f", rel_transform2.transform.rotation.y);
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_Z: %f", rel_transform2.transform.rotation.z);
+  // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Q_W: %f", rel_transform2.transform.rotation.w);
 
 
   if (!success_frame)
@@ -480,25 +525,25 @@ geometry_msgs::msg::Pose get_pose_endeffector_override(std::string initial_endef
     return target_pose;
   }
 
-  tf2::Transform transform_1;
-  transform_1.setOrigin(tf2::Vector3(target_pose.position.x,
+  tf2::Transform target_pose_transform;
+  target_pose_transform.setOrigin(tf2::Vector3(target_pose.position.x,
                                       target_pose.position.y,
                                       target_pose.position.z));
 
-  transform_1.setRotation(tf2::Quaternion(target_pose.orientation.x,
+  target_pose_transform.setRotation(tf2::Quaternion(target_pose.orientation.x,
                                           target_pose.orientation.y,
                                           target_pose.orientation.z,
                                           target_pose.orientation.w));
-
+            
   tf2::Transform transform_2;
-  transform_2.setOrigin(tf2::Vector3(rel_transform.transform.translation.x, 
-                                      rel_transform.transform.translation.y, 
-                                      rel_transform.transform.translation.z));
+  tf2::fromMsg(rel_transform.transform, transform_2);
 
-  transform_2.setRotation(tf2::Quaternion(rel_transform.transform.rotation.x,
-                                          rel_transform.transform.rotation.y,
-                                          rel_transform.transform.rotation.z,
-                                          rel_transform.transform.rotation.w));
+  // tf2::Transform transform_3;
+  // tf2::fromMsg(world_endeffector_override.transform, transform_3);
+
+  // tf2::Transform transform_4;
+  // tf2::fromMsg(rel_transform2.transform, transform_4);
+
 
   geometry_msgs::msg::Pose pose;
   tf2::Transform transform_res;
@@ -507,23 +552,31 @@ geometry_msgs::msg::Pose get_pose_endeffector_override(std::string initial_endef
   // this is now the workaround, I just can not figure out what the issue is, but it seems to work like this, although i dont know why...
   if (endeffector_override_frame == "1K_Dispenser_TCP")
   {
-    transform_res.mult(transform_2, transform_1);
+    transform_res.mult(transform_2, target_pose_transform);
+  }
+  else if(initial_endeffector_frame == "Cam1_Toolhead_TCP")
+  {
+    //RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "USING DIFFERENT RULE");
+    transform_res.setOrigin(tf2::Vector3(target_pose.position.x - rel_transform2.transform.translation.x,
+                                         target_pose.position.y - rel_transform2.transform.translation.y,
+                                         target_pose.position.z - rel_transform2.transform.translation.z));
   }
   else
   {
-    transform_res.mult(transform_1, transform_2);
+    transform_res.mult(target_pose_transform, transform_2);
   }
   //transform_res.mult(transform_1, transform_2);
   //transform_res.mult(transform_2, transform_1);
-  auto vector = transform_res.getOrigin();
-  pose.position.x = vector.x();
-  pose.position.y = vector.y();
-  pose.position.z = vector.z();
-  auto quat = transform_res.getRotation();
-  pose.orientation.x = quat.x();
-  pose.orientation.y = quat.y();
-  pose.orientation.z = quat.z();
-  pose.orientation.w = quat.w();
+  // auto vector = transform_res.getOrigin();
+  // pose.position.x = vector.x();
+  // pose.position.y = vector.y();
+  // pose.position.z = vector.z();
+  // auto quat = transform_res.getRotation();
+  // pose.orientation.x = quat.x();
+  // pose.orientation.y = quat.y();
+  // pose.orientation.z = quat.z();
+  // pose.orientation.w = quat.w();
+  tf2::toMsg(transform_res, pose);
   // tf2::fromMsg(transform_res, pose);
   return pose;
 }
@@ -679,6 +732,7 @@ void wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vect
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for goal to be reached...");
   int max_wait_time_counter = 50;
   int wait_time_counter = 0;
+
   while (check_goal_reached(joint_names, target_joint_values, lateral_tolerance, angular_tolerance) == false && wait_time_counter < max_wait_time_counter)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -1153,8 +1207,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
   request->gripper_endeffector = target_frame;
   request->gonio_endeffector = target_endeffector_frame;
 
-  
-
+  start_plan_time = std::chrono::high_resolution_clock::now();
   if (planning_group == "PM_Robot_Gonio_Right")
   {
     auto future = get_gonio_right_solution_client->async_send_request(request);  
@@ -1176,21 +1229,25 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
   {
     RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint %s: %f", response->joint_names[i].c_str(), response->joint_values[i]);
   }
+  end_plan_time = std::chrono::high_resolution_clock::now();
 
   //bool move_success = false;
   target_joint_values.push_back(response->joint_values[1]);
   target_joint_values.push_back(response->joint_values[2]);
+  start_execute_time = std::chrono::high_resolution_clock::now();
   auto [move_success, move_msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
   if (!move_success || !execute_movement)
   {
     return {move_success, joint_names, target_joint_values};
   }
+  end_execute_time = std::chrono::high_resolution_clock::now();
 
-  // float lateral_tolerance_coarse = 1e-2;
-  // float angular_tolerance_coarse = 0.01;
-  // float lateral_tolerance_fine = 1e-6;
-  // float angular_tolerance_fine = 0.0001;
+  start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
+  float lateral_tolerance_coarse = 1e-2;
+  float angular_tolerance_coarse = 0.01;
+  float lateral_tolerance_fine = 1e-6;
+  float angular_tolerance_fine = 0.0001;
 
   // wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
@@ -1198,8 +1255,11 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
 
   // // this may not be necessary anymore
   // publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
-  // wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   // log_target_pose_delta(endeffector, target_pose);
+  end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
+  end_time = std::chrono::high_resolution_clock::now();
+  log_time_measures();
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
 
@@ -1616,10 +1676,39 @@ int main(int argc, char **argv)
   get_gonio_left_solution_client = pm_moveit_server_node->create_client<pm_moveit_interfaces::srv::GetGonioSolution>("/gonio_orientation_solver/get_gonio_left_solution");
 
   plan = std::make_shared<moveit::planning_interface::MoveGroupInterface::Plan>();
-  // auto psm = std::make_shared<planning_scene_monitor::PlanningSceneMonitor>("robot_description");
-  // psm->startSceneMonitor("/move_group/monitored_planning_scene");
-  // auto test =  moveit_visual_tools::MoveItVisualTools(pm_moveit_server_node, "world", rviz_visual_tools::RVIZ_MARKER_TOPIC, laser_move_group->getRobotModel());
-  // auto test =  moveit_visual_tools::MoveItVisualTools(pm_moveit_server_node, "world", "moveit_cpp_tutorial", laser_move_group->getRobotModel());
+  
+  // auto psm = std::make_shared<planning_scene_monitor::PlanningSceneMonitor>(
+  //   pm_moveit_server_node,
+  //   "robot_description");
+  
+  // // psm->startSceneMonitor("/move_group/monitored_planning_scene");
+  // // auto test =  moveit_visual_tools::MoveItVisualTools(pm_moveit_server_node, "world", rviz_visual_tools::RVIZ_MARKER_TOPIC, laser_move_group->getRobotModel());
+  // // auto test =  moveit_visual_tools::MoveItVisualTools(pm_moveit_server_node, "world", "moveit_cpp_tutorial", laser_move_group->getRobotModel());
+  // psm->requestPlanningSceneState();
+
+  // planning_scene_monitor::LockedPlanningSceneRO scene(psm);
+  // const auto& acm = scene->getAllowedCollisionMatrix();
+
+  // scene->getAllowedCollisionMatrixNonConst().setEntry("Calibration_Qube", "PM_Robot_Vacuum_Tool", true);
+  
+  // std::vector<std::string> entry_names;
+  // acm.getAllEntryNames(entry_names);
+
+  // for (const auto& link1 : entry_names)
+  // {
+  //   for (const auto& link2 : entry_names)
+  //   {
+  //     if (link1 >= link2) continue;  // Avoid duplicate pairs and self-pairs
+
+  //     //bool allowed = false;
+  //     //acm.getEntry(link1, link2, allowed);
+
+
+  //     RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Collision allowed between: %s and %s", link1.c_str(), link2.c_str());
+  //       //std::cout << "Collision allowed between: " << link1 << " and " << link2 << std::endl;
+  //   }
+  // }
+
 
   laser_grp_visual_tools = std::make_shared<moveit_visual_tools::MoveItVisualTools>(pm_moveit_server_node, "world", rviz_visual_tools::RVIZ_MARKER_TOPIC, laser_move_group->getRobotModel());
   laser_grp_visual_tools->deleteAllMarkers();
@@ -1671,7 +1760,7 @@ int main(int argc, char **argv)
   bool with_smarpod_station = config["pm_smparpod_station"]["with_smarpod_station"].as<bool>();
 
   // print with_smarpod_station
-  RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "With Smarpod Station: %s", with_smarpod_station ? "true" : "false");
+  //RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "With Smarpod Station: %s", with_smarpod_station ? "true" : "false");
 
   rclcpp::Service<pm_moveit_interfaces::srv::MoveToPose>::SharedPtr move_smarpod_to_pose_srv;
   rclcpp::Service<pm_moveit_interfaces::srv::MoveRelative>::SharedPtr move_smarpod_relative_srv;
