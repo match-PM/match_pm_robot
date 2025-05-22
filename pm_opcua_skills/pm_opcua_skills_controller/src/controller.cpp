@@ -19,7 +19,10 @@ class Controller : public rclcpp::Node
   public:
     Controller() : Node("pm_opcua_skills_controller")
     {
-        m_client.connect("opc.tcp://PC1M0484-1:4840");
+        std::string opcua_server_address = this->declare_parameter<std::string>("opcua_server_address", "opc.tcp://PC1M0484-1:4840");
+        m_client.connect(opcua_server_address);
+
+        // m_client.connect("opc.tcp://localhost:4840");
         m_client.init();
 
         m_dispense_service = create_service<Dispense>(
