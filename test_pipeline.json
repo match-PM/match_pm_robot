@@ -1,0 +1,24 @@
+{
+    "actions": [
+        {
+            "action_type": "MoveAction",
+            "parameters": {
+                "name": "MoveAction",
+                "goal_x": 1.0,
+                "goal_y": 2.0,
+                "goal_z": 2.0,
+                "heigth": 2.0,
+                "speed": -2.0
+            }
+        },
+        {
+            "action_type": "DipAction",
+            "parameters": {
+                "name": "DipAction",
+                "dip_depth": 0.1,
+                "dip_speed": 6.0
+            }
+        }
+    ],
+    "save_timestamp": "2025-06-17T19:14:12.829525"
+}
