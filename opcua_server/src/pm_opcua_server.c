@@ -9843,7 +9843,7 @@ static UA_StatusCode function_pm_opcua_server_216_finish(UA_Server *server, UA_U
 #endif /* UA_ENABLE_METHODCALLS */
 }
 
-/* OutputArguments - ns=0;i=50436 */
+// /* OutputArguments - ns=0;i=50436 */
 
 static UA_StatusCode function_pm_opcua_server_217_begin(UA_Server *server, UA_UInt16 *ns)
 {
@@ -9888,7 +9888,7 @@ static UA_StatusCode function_pm_opcua_server_217_finish(UA_Server *server, UA_U
 #endif /* UA_ENABLE_METHODCALLS */
 }
 
-/* InputArguments - ns=0;i=50435 */
+// /* InputArguments - ns=0;i=50435 */
 
 static UA_StatusCode function_pm_opcua_server_218_begin(UA_Server *server, UA_UInt16 *ns)
 {
@@ -9933,7 +9933,7 @@ static UA_StatusCode function_pm_opcua_server_218_finish(UA_Server *server, UA_U
 #endif /* UA_ENABLE_METHODCALLS */
 }
 
-/* Dispense - ns=1;i=50431 */
+// /* Dispense - ns=1;i=50431 */
 
 static UA_StatusCode function_pm_opcua_server_219_begin(UA_Server *server, UA_UInt16 *ns)
 {
@@ -9989,7 +9989,7 @@ static UA_StatusCode function_pm_opcua_server_219_finish(UA_Server *server, UA_U
 #endif /* UA_ENABLE_METHODCALLS */
 }
 
-/* InputArguments - ns=0;i=51022 */
+// /* InputArguments - ns=0;i=51022 */
 
 static UA_StatusCode function_pm_opcua_server_220_begin(UA_Server *server, UA_UInt16 *ns)
 {
@@ -10034,7 +10034,7 @@ static UA_StatusCode function_pm_opcua_server_220_finish(UA_Server *server, UA_U
 #endif /* UA_ENABLE_METHODCALLS */
 }
 
-/* OutputArguments - ns=0;i=50433 */
+// /* OutputArguments - ns=0;i=50433 */
 
 static UA_StatusCode function_pm_opcua_server_221_begin(UA_Server *server, UA_UInt16 *ns)
 {

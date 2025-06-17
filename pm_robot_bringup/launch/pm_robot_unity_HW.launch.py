@@ -272,14 +272,11 @@ def generate_launch_description():
         emulate_tty=True
     )
 
-    pm_opcua_skills_controller = Node(
-        package='pm_opcua_skills_controller', 
-        executable='controller',  
-        name='pm_opcua_skills_controller',  
-        output='screen',
-        parameters=[{
-            'opcua_server_address': "opc.tcp://localhost:4840"
-        }]
+    pm_opcua_skills_unity = Node(
+        package='pm_opcua_skills_unity', 
+        executable='opcua_skills_unity',  
+        name='pm_opcua_skills_unity',  
+        output='screen'
         
     )
 
@@ -423,7 +420,7 @@ def generate_launch_description():
     ld.add_action(pm_nozzle_controller_spawner)
     ld.add_action(pm_uv_controller)
     ld.add_action(pm_sensor_controller)
-    ld.add_action(pm_opcua_skills_controller)
+    ld.add_action(pm_opcua_skills_unity)
     
     ld.add_action(primitive_skills_node)  
     ld.add_action(adhesive_displayer)

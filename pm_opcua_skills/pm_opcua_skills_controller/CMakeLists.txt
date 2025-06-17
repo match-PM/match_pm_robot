@@ -8,15 +8,32 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(pm_opcua_skills_msgs REQUIRED)
 find_package(pm_client REQUIRED)
+find_package(control_msgs REQUIRED)
+find_package(trajectory_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(pm_opcua_skills_msgs REQUIRED)
+find_package(pm_robot_interfaces REQUIRED)
+find_package(example_interfaces REQUIRED)
+find_package(pm_msgs REQUIRED)
+
+include_directories(${CMAKE_INSTALL_PREFIX}/include)
+
+
 
 add_executable(
   controller
   src/controller.cpp
 )
 
-ament_target_dependencies(controller rclcpp pm_opcua_skills_msgs pm_client)
+ament_target_dependencies(
+  controller
+  rclcpp
+  pm_opcua_skills_msgs
+  pm_client
+)
 
 install(TARGETS
   controller

@@ -12,6 +12,9 @@
   <depend>rclcpp</depend>
   <depend>pm_opcua_skills_msgs</depend>
   <depend>pm_client</depend>
+  <depend>pm_robot_interfaces</depend>
+  <depend>example_interfaces</depend>
+  <depend>pm_msgs</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

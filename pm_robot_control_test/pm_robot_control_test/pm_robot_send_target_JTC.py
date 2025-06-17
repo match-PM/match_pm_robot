@@ -43,23 +43,23 @@ class SendTargetsToJTC(Node):
 
         # Create the goals
         self.goal_1 = ForwardCommand.Goal()
-        self.goal_1.targets = [-0.05, -0.03, 0.02]
+        self.goal_1.targets = [0.0, 0.0, -0.001]
 
         self.goal_2 = ForwardCommand.Goal()
-        self.goal_2.targets = [-0.05, -0.03, -0.03]
+        self.goal_2.targets = [0.0, 0.0, -0.0012]
 
         self.goal_3 = ForwardCommand.Goal()
-        self.goal_3.targets = [-0.55, -0.03, -0.03]
+        self.goal_3.targets = [0.0, 0.0, -0.0013]
 
         self.goal_4 = ForwardCommand.Goal()
-        self.goal_4.targets = [-0.55, -0.03, 0.01]
+        self.goal_4.targets = [0.0, 0.0, -0.0014]
 
         self.goals = []
         # self.goals.append(self.goal_2)
-        # self.goals.append(self.goal_1)
+        self.goals.append(self.goal_1)
         self.goals.append(self.goal_2)
         self.goals.append(self.goal_3)
-        # self.goals.append(self.goal_4)
+        self.goals.append(self.goal_4)
         # self.goals.append(self.goal_3)
 
         self.i = 0
