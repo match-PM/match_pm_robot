@@ -1,0 +1,56 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/pmlab/Documents/ros2-for-unity/install/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_component/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pylon_ros2_camera_interfaces/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_vision_interfaces/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_uv_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_uepsilon_confocal_msgs/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_skills_interfaces/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_sensor_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_robot_interfaces/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_pneumatic_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_opcua_skills_msgs/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_nozzle_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_lights_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_msgs/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_moveit_interfaces/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_hardware_interface/include/**",
+        "/home/pmlab/pm_ros2_ws/install/pm_client/include/**",
+        "/home/pmlab/pm_ros2_ws/install/open62541/include/**",
+        "/home/pmlab/pm_ros2_ws/install/image_transport/include/**",
+        "/home/pmlab/pm_ros2_ws/install/camera_info_manager/include/**",
+        "/home/pmlab/pm_ros2_ws/install/camera_calibration_parsers/include/**",
+        "/home/pmlab/pm_ros2_ws/install/assembly_manager_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/open62541/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_client/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_hardware_interface/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_lights_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_nozzle_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_pneumatic_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/camera_calibration_parsers/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/camera_info_manager/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/image_common/image_transport/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_submodules/pylon-ros-camera/pylon_ros2_camera_component/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_sensor_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_uv_controller/include/**",
+        "/home/pmlab/pm_ros2_ws/src/pm_smaract_gripper_new/include/**",
+        "include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

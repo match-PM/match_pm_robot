@@ -60,6 +60,9 @@ rosidl_generate_interfaces(
   "srv/GripperSetAccel.srv"
   "srv/GripperGetVel.srv"
   "srv/GripperGetAccel.srv"
+  "srv/GripperGetForces.srv"
+  "srv/GripperForceSensingMove.srv"
+  "srv/GripperGetPosition.srv"
   DEPENDENCIES geometry_msgs
 )
 

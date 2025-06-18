@@ -1,0 +1,7 @@
+float32 target
+float32 max_fx
+float32 step_size
+---
+bool completed
+bool success
+string error
