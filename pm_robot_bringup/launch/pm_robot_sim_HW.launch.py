@@ -364,7 +364,7 @@ def generate_launch_description():
     if launch_moveit:
         ld.add_action(rviz_node)
         ld.add_action(run_move_group_node)
-        #ld.add_action(pm_moveit_server)
+        ld.add_action(pm_moveit_server)
         ld.add_action(gonio_orientation_solver_node)
     ld.add_action(launch_XYZT_controllers)
     ld.add_action(forward_launch)
