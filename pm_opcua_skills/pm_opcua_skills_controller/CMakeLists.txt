@@ -31,6 +31,9 @@ add_executable(
 ament_target_dependencies(
   controller
   rclcpp
+  rclcpp_action
+  control_msgs
+  trajectory_msgs
   pm_opcua_skills_msgs
   pm_client
 )
