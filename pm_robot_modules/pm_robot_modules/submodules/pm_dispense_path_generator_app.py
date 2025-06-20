@@ -117,7 +117,7 @@ class DispenserBuilderWidget(QWidget):
 
         # Add combobox for vision pipline building
         self.checkbox_list = ReorderableCheckBoxListWidget()
-        self.checkbox_list.itemClicked.connect(self.create_function_parameters_layout)
+        self.checkbox_list.itemClicked.connect(self.action_in_list_clicked)
         #self.checkbox_list.itemChanged.connect(self.set_function_states)
         self.checkbox_list.CustDragSig.connect(self.on_drop)
         self.checkbox_list.itemChanged.connect(self.parameter_change_callback)
@@ -162,9 +162,10 @@ class DispenserBuilderWidget(QWidget):
         
         # if not os.path.exists(os.path.dirname(self.dispenser_action_list.file_path)):
         #     os.makedirs(os.path.dirname(self.dispenser_action_list.file_path))
-        
+            
         # Save the sequence to the file
         success = self.dispenser_action_list.save_to_file()
+        self.dispenser_action_list.save_g_code_to_file(start_joint_values=Point())
         # if success:
         #     self.text_output.append(f"Saved process to: {self.dispenser_action_list.file_path}")
         # else:
@@ -277,6 +278,16 @@ class DispenserBuilderWidget(QWidget):
             self.create_function_parameters_layout()
             #self.text_output.append(f"Added function: {function_name}")
 
+    def action_in_list_clicked(self):
+        """
+        Callback function for when an action in the list is clicked.
+        This will update the function parameters layout based on the selected action.
+        """
+        self.create_function_parameters_layout()
+        self.set_visualization_image()
+
+
+
     def set_dispenser_ui_from_action_list(self):
         """
         Set the UI elements based on the current vision pipeline.
@@ -317,6 +328,7 @@ class DispenserBuilderWidget(QWidget):
         current_row = self.checkbox_list.currentRow()
         if current_row >= 0:
             action = self.dispenser_action_list.actions[current_row]
+            self.dispenser_action_list.enable_action_selection(current_row)
             action:BaseAction
             action_parameters = action.get_dict()
 
@@ -385,6 +397,8 @@ class DictEditor(QWidget):
         layout = QVBoxLayout()
 
         for key, value in self.data.items():
+            if key == '_is_selected':
+                continue
             row_layout = QHBoxLayout()
             label = QLabel(str(key))
             row_layout.addWidget(label)
