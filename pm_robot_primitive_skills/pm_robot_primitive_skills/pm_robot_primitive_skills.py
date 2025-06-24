@@ -52,7 +52,7 @@ class PrimitiveSkillsNode(Node):
         self.dispense_test_point_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/dispense_test_point', self.dispense_test_point_callback)
         self.reset_test_station_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/reset_test_station', self.reset_test_station_callback)
         self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DisppenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
-        self.force_sensing_move_srv = self.create_service(pm_msg_srv.ForceSensingMove, self.get_name()+'/ForceSensingMove', self.force_sensing_move_callback, callback_group=self.callback_group_mu_ex)
+        self.force_sensing_move_srv = self.create_service(pm_msg_srv.GripperForceSensingMove, self.get_name()+'/ForceSensingMove', self.force_sensing_move_callback, callback_group=self.callback_group_mu_ex)
         self.logger.info("Primitive skills node started!")
         
         # create clients
@@ -93,7 +93,7 @@ class PrimitiveSkillsNode(Node):
         self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
         
     
-    def force_sensing_move_callback(self, request:pm_msg_srv.ForceSensingMove.Request, response:pm_msg_srv.ForceSensingMove.Response):
+    def force_sensing_move_callback(self, request:pm_msg_srv.GripperForceSensingMove.Request, response:pm_msg_srv.GripperForceSensingMove.Response):
 
         self.get_logger().info('Received ForceSensingMove request.')
 

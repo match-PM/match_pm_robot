@@ -36,7 +36,7 @@ Cam1_Toolhead_TCP_Joint:
 Camera_Station_TCP_Joint:
   x_offset: 0
   y_offset: 0
-  z_offset: 0
+  z_offset: -6000 # this has been identified experimentally, by looking at the bottom cam image
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0
@@ -68,7 +68,7 @@ PM_Robot_Tool_TCP_Joint:
 PM_Robot_XYZ_Calibration:
   x_offset: 0
   y_offset: 0
-  z_offset: 5000
+  z_offset: 4800 # this has been identified experimentally, by looking at the laser measurement on the gonio part spawning point
 
 Confocal_Sensor_Top_TCP_Joint:
   x_offset: 0

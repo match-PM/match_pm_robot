@@ -25,7 +25,7 @@ pm_robot_gonio_right:
   - chuck_gonio_right_double_lens_holder_12_7
   - chuck_gonio_right_ipeg_active_alignment_station
   - chuck_gonio_right_siemens_SIN
-  use_chuck: chuck_gonio_right_Siemens_UFC
+  use_chuck: chuck_gonio_right_siemens_SIN
   with_Gonio_Right: true
   unity_parent: Gonio_Right_Chuck_Origin
 pm_robot_tools:
