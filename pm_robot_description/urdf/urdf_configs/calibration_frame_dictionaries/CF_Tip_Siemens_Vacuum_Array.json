@@ -1,8 +1,9 @@
 {
   "document_units": "mm",
+  "unique_identifier": "CAL_Siemens_Vacuum_Array_",
   "frames": [
     {
-      "name": "Cal_Tool_Vision_Frame_1",
+      "name": "Vision_Frame_1",
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
@@ -21,7 +22,7 @@
       }
     },
     {
-      "name": "Cal_Tool_Vision_Frame_2",
+      "name": "Vision_Frame_2",
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
@@ -40,7 +41,7 @@
       }
     },
     {
-      "name": "Cal_Tool_Vision_Frame_3",
+      "name": "Vision_Frame_3",
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
@@ -59,7 +60,7 @@
       }
     },
     {
-      "name": "Cal_Tool_Vision_Frame_4",
+      "name": "Vision_Frame_4",
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {

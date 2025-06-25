@@ -1,8 +1,9 @@
 {
   "document_units": "mm",
+  "unique_identifier": "CAL_Calibration_Qube_Cam_Top_",
   "frames": [
     {
-      "name": "CALIBRATION_Calibration_Qube_Initial",
+      "name": "Vision_Initial",
       "parent_frame": "Calibration_Qube",
       "transformation": {
         "translation": {
@@ -21,7 +22,7 @@
       }
     },
     {
-      "name": "CALIBRATION_Calibration_Qube",
+      "name": "Vision_Dynamic",
       "parent_frame": "Calibration_Qube",
       "transformation": {
         "translation": {
