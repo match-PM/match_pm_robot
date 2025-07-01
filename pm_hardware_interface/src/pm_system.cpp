@@ -211,6 +211,7 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
         "UV_Slider_X_Back_Joint",
         "UV_Slider_X_Front_Joint",
     };
+
     for (auto &dummy : dummies)
     {
         state_interfaces.emplace_back(
@@ -275,7 +276,8 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
 
     hoenle_uv.add_state_interfaces(state_interfaces);
 
-    state_interfaces.emplace_back(StateInterface("ReferenceCube", "Pushed", &reference_cube_pushed)
+    state_interfaces.emplace_back(
+        StateInterface("ReferenceCube", "Pushed", &reference_cube_pushed)
     );
 
     return state_interfaces;

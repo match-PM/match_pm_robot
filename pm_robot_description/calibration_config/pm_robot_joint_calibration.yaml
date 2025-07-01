@@ -1,5 +1,6 @@
 # x_offset, y_offset, z_offset in um
 # rx_offset, ry_offset, rz_offset in degree
+# DO NOT MODIFY THIS FILE IF YOU DONT KNOW WHAT YOU ARE DOING. Some values where identified manually
 
 Laser_Toolhead_TCP_Joint:  
   x_offset: 0
@@ -28,7 +29,7 @@ Laser_Toolhead_TCP_Joint:
 Cam1_Toolhead_TCP_Joint:
   x_offset: 0
   y_offset: 0
-  z_offset: 0
+  z_offset: -2602.694000000
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0
@@ -52,7 +53,7 @@ Station_Laser_Bottom_TCP_Joint:
 Calibration_Qube_Joint:
   x_offset: 0
   y_offset: 0
-  z_offset: 0
+  z_offset: -1267
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0
