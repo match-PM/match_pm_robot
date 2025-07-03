@@ -79,14 +79,6 @@ Confocal_Sensor_Top_TCP_Joint:
   ry_offset: 0
   rz_offset: 0
 
-Confocal_Sensor_Top_TCP_2_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
 Confocal_Sensor_Bottom_TCP_Joint:
   x_offset: 0
   y_offset: 0

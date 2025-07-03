@@ -113,6 +113,7 @@
         "ranges": "cpp",
         "scoped_allocator": "cpp",
         "syncstream": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "*.txx": "cpp"
     }
 }

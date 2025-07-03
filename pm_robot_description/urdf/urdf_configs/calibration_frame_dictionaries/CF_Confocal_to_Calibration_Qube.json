@@ -1,0 +1,42 @@
+{
+  "document_units": "mm",
+  "unique_identifier": "CAL_",
+  "frames": [
+    {
+      "name": "Confocal_TCP_to_Calibration_Qube",
+      "parent_frame": "TCP_Confocal_Sensor_Top_2",
+      "transformation": {
+        "translation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "rotation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0,
+          "W": 1.0
+        }
+      },
+      "constraints": {}
+    },
+    {
+      "name": "Confocal_TCP_to_Calibration_Qube",
+      "parent_frame": "TCP_Confocal_Sensor_Top",
+      "transformation": {
+        "translation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "rotation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0,
+          "W": 1.0
+        }
+      },
+      "constraints": {}
+    }
+  ]
+}
