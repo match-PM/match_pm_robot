@@ -114,6 +114,7 @@
         "scoped_allocator": "cpp",
         "syncstream": "cpp",
         "valarray": "cpp",
-        "*.txx": "cpp"
+        "*.txx": "cpp",
+        "__threading_support": "cpp"
     }
 }

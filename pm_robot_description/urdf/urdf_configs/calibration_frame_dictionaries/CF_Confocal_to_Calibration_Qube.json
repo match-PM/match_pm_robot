@@ -3,7 +3,7 @@
   "unique_identifier": "CAL_",
   "frames": [
     {
-      "name": "Confocal_TCP_to_Calibration_Qube",
+      "name": "Confocal_TCP_2_to_Calibration_Qube",
       "parent_frame": "TCP_Confocal_Sensor_Top_2",
       "transformation": {
         "translation": {
