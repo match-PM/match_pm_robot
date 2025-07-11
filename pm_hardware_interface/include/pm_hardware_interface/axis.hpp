@@ -85,7 +85,7 @@ struct AxisState
             case AxisId::T:
                 name = "T_Axis_Joint";
                 break;
-            case AxisId::Q:
+            case AxisId::R:
                 name = "Gonio_Right_Stage_1_Joint";
                 RCLCPP_ERROR(
                     rclcpp::get_logger("PMSystem"),
@@ -93,7 +93,7 @@ struct AxisState
                     unitToString(my_unit).c_str()
                 );
                 break;
-            case AxisId::R:
+            case AxisId::Q:
                 name = "Gonio_Right_Stage_2_Joint";
                 break;
             case AxisId::U:
@@ -150,22 +150,29 @@ struct AxisState
             this->target_position = increments_to_rad(pm_axis, pm_axis.get_target());
             this->acceleration = increments_to_rad(pm_axis, pm_axis.get_acceleration());
         }
+
+        if (this->id == AxisId::Q || this->id == AxisId::R)
+            this->current_position = -this->current_position;
     }
 
     void write(PMClient::Robot &robot)
     {
+        auto target = this->target_position;
+        if (this->id == AxisId::Q || this->id == AxisId::R)
+            target = -target;
+
         try
         {
             auto &pm_axis = robot.get_axis(this->id);
             if (unit == Unit::Meters)
             {
-                pm_axis.move(meters_to_increments(pm_axis, this->target_position));
+                pm_axis.move(meters_to_increments(pm_axis, target));
                 pm_axis.set_speed(meters_to_increments(pm_axis, this->velocity));
                 // pm_axis.set_acceleration(meters_to_increments(pm_axis, this->acceleration));
             }
             else if (unit == Unit::Degrees)
             {
-                pm_axis.move(rad_to_increments(pm_axis, this->target_position));
+                pm_axis.move(rad_to_increments(pm_axis, target));
                 pm_axis.set_speed(rad_to_increments(pm_axis, this->velocity));
                 // pm_axis.set_acceleration(rad_to_increments(pm_axis, this->acceleration));
             }
@@ -175,7 +182,7 @@ struct AxisState
             RCLCPP_ERROR(
                 rclcpp::get_logger("PMSystem"),
                 "Failed to write position: %f m, or velocity %f m/s\n",
-                this->target_position,
+                target,
                 this->velocity
             );
         }
