@@ -89,6 +89,8 @@ class PMSystem : public hardware_interface::SystemInterface
 
     double reference_cube_pushed{};
 
+    double m_dummy_state{};
+
   public:
     PMSystem();
 
