@@ -329,6 +329,16 @@ def generate_launch_description():
         )
     )
 
+    confocal_sensors_launch = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        PathJoinSubstitution([
+            FindPackageShare('pm_uepsilon_confocal_node'),
+            'launch',
+            'launch_confocal.launch.py'
+        ])
+    )
+)
+
     pm_moveit_server = Node(
         package="pm_moveit_server",
         executable="pm_moveit_server",
@@ -410,6 +420,7 @@ def generate_launch_description():
     ld.add_action(pm_opcua_skills_controller)
     ld.add_action(primitive_skills_node)
     ld.add_action(adhesive_displayer)
+    ld.add_action(confocal_sensors_launch)
     
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)

@@ -50,9 +50,9 @@ PMSensorController::on_configure(const rclcpp_lifecycle::State &previous_state)
         ) {
             (void)request;
             std::copy_n(
-                std::begin(response->data),
+                std::begin(m_force_sensor_measurement),
                 m_force_sensor_measurement.size(),
-                std::begin(m_force_sensor_measurement)
+                std::begin(response->data)
             );
         }
     );

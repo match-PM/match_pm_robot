@@ -892,13 +892,13 @@
       <link 
         name="TCP_Confocal_Sensor_Top_2">
       </link>
-
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_x" value="${calibration_dict['Confocal_Sensor_Top_TCP_2_Joint']['x_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_y" value="${calibration_dict['Confocal_Sensor_Top_TCP_2_Joint']['y_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_z" value="${calibration_dict['Confocal_Sensor_Top_TCP_2_Joint']['z_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_rx" value="${calibration_dict['Confocal_Sensor_Top_TCP_2_Joint']['rx_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_ry" value="${calibration_dict['Confocal_Sensor_Top_TCP_2_Joint']['ry_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_rz" value="${calibration_dict['Confocal_Sensor_Top_TCP_2_Joint']['rz_offset']}"/>
+      
+      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_x" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['x_offset']}"/>
+      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_y" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['y_offset']}"/>
+      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_z" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['z_offset']}"/>
+      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_rx" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['rx_offset']}"/>
+      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_ry" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['ry_offset']}"/>
+      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_rz" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['rz_offset']}"/>
 
       <joint name="TCP_Confocal_Sensor_Top_2_Joint" type="fixed">
         <origin xyz="

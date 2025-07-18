@@ -72,7 +72,7 @@ pm_robot_tools:
       - Tip_Lens_12_7_long
       tool_name: Schunk_Lens_Gripper_long
     use_tip: Tip_Siemens_Vacuum_Array
-    use_tool: Siemens_Vacuum_Array
+    use_tool: Siemens_Vacuum_Array_short
     use_vacuum_tool: true
     unity_parent: RobotAxisT
 pm_smparpod_station:
