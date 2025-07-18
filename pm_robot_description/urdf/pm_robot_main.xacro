@@ -112,7 +112,7 @@
 
   <!-- Smarpod Station -->
   <xacro:if value="${current_pm_robot_bringup_config['pm_smparpod_station']['with_smarpod_station']}">
-    <xacro:pm_smarpod_station launch_mode="$(arg launch_mode)"/>
+    <xacro:pm_smarpod_station launch_mode="$(arg launch_mode)" />
   </xacro:if>
 
   <xacro:include filename="$(find pm_robot_description)/urdf/sensors.urdf" />

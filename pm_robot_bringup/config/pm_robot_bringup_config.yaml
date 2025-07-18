@@ -78,9 +78,9 @@ pm_robot_tools:
 pm_smparpod_station:
   with_smarpod_station: false   
   availabe_chucks:
-  - test1
-  - test2
-  use_chuck: test1
+  - empty
+  - chuck_diodenplacement
+  use_chuck: empty
 adhesive_test_point_station:
   - num_x_points: 8
     num_y_points: 8

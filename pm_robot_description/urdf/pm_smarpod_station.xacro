@@ -8,7 +8,6 @@
 
     <xacro:include filename="$(find smaract_hexapod_description)/urdf/smaract_hexapod_macro.xacro" />
 
-    <xacro:smaract_hexapod launch_mode="$(arg launch_mode)" base_link="Smarpod_Station_Base"/>
   
     <!-- Loading of the Robot Joint calibrations -->
     <xacro:if value="${launch_mode == 'sim_HW'}">
@@ -36,6 +35,9 @@
 
     <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
+
+    <xacro:smaract_hexapod launch_mode="$(arg launch_mode)" base_link="Smarpod_Station_Base" chuck="${current_pm_robot_bringup_config['pm_smparpod_station']['use_chuck']}"/>
+
 
     <!-- Smarpod Station -->
 

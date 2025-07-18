@@ -1242,7 +1242,6 @@
             <disable_collisions link1="SmarPod_Origin" link2="Smarpod_C_Stage_2" reason="Never" />
             <disable_collisions link1="SmarPod_Origin" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="SmarPod_Origin" link2="Smarpod_Top_Plate" reason="Never" />
-  
             <disable_collisions link1="Smarpod_A_Stage_1" link2="Smarpod_A_Stage_2" reason="adjacent" />
             <disable_collisions link1="Smarpod_A_Stage_1" link2="Smarpod_A_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_1" link2="Smarpod_B_Stage_1" reason="Never" />
@@ -1252,7 +1251,6 @@
             <disable_collisions link1="Smarpod_A_Stage_1" link2="Smarpod_C_Stage_2" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_1" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_1" link2="Smarpod_Top_Plate" reason="Never" />
-
             <disable_collisions link1="Smarpod_A_Stage_2" link2="Smarpod_A_Stage_3" reason="adjacent" />
             <disable_collisions link1="Smarpod_A_Stage_2" link2="Smarpod_B_Stage_1" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_2" link2="Smarpod_B_Stage_2" reason="Never" />
@@ -1261,7 +1259,6 @@
             <disable_collisions link1="Smarpod_A_Stage_2" link2="Smarpod_C_Stage_2" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_2" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_2" link2="Smarpod_Top_Plate" reason="Never" />
-
             <disable_collisions link1="Smarpod_A_Stage_3" link2="Smarpod_B_Stage_1" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_3" link2="Smarpod_B_Stage_2" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_3" link2="Smarpod_B_Stage_3" reason="Never" />
@@ -1269,32 +1266,26 @@
             <disable_collisions link1="Smarpod_A_Stage_3" link2="Smarpod_C_Stage_2" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_3" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_A_Stage_3" link2="Smarpod_Top_Plate" reason="adjacent" />
-
             <disable_collisions link1="Smarpod_B_Stage_1" link2="Smarpod_B_Stage_2" reason="adjacent" />
             <disable_collisions link1="Smarpod_B_Stage_1" link2="Smarpod_B_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_1" link2="Smarpod_C_Stage_1" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_1" link2="Smarpod_C_Stage_2" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_1" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_1" link2="Smarpod_Top_Plate" reason="Never" />
-
             <disable_collisions link1="Smarpod_B_Stage_2" link2="Smarpod_B_Stage_3" reason="adjacent" />
             <disable_collisions link1="Smarpod_B_Stage_2" link2="Smarpod_C_Stage_1" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_2" link2="Smarpod_C_Stage_2" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_2" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_2" link2="Smarpod_Top_Plate" reason="Never" />
-
             <disable_collisions link1="Smarpod_B_Stage_3" link2="Smarpod_C_Stage_1" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_3" link2="Smarpod_C_Stage_2" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_3" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_B_Stage_3" link2="Smarpod_Top_Plate" reason="adjacent" />
-
             <disable_collisions link1="Smarpod_C_Stage_1" link2="Smarpod_C_Stage_2" reason="adjacent" />
             <disable_collisions link1="Smarpod_C_Stage_1" link2="Smarpod_C_Stage_3" reason="Never" />
             <disable_collisions link1="Smarpod_C_Stage_1" link2="Smarpod_Top_Plate" reason="Never" />
-
             <disable_collisions link1="Smarpod_C_Stage_2" link2="Smarpod_C_Stage_3" reason="adjacent" />
             <disable_collisions link1="Smarpod_C_Stage_2" link2="Smarpod_Top_Plate" reason="Never" />
-
             <disable_collisions link1="Smarpod_C_Stage_3" link2="Smarpod_Top_Plate" reason="adjacent" />
 
         <disable_collisions link1="SmarPod_Origin" link2="left_match_logo_font" reason="Never"/>
@@ -1671,7 +1662,41 @@
         <disable_collisions link1="Smarpod_Top_Plate" link2="pm_robot_base_link" reason="Never"/>
         <disable_collisions link1="Smarpod_Top_Plate" link2="Smarpod_Station" reason="Never"/>
 
-        <disable_collisions link1="Smarpod_Station" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="left_match_logo_font" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="left_match_logo_background" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Station_Laser_Bottom_TCP" reason="Never"/>
+        <disable_collisions link1="1K_Dispenser_Protection" link2="smarpod_chuck" reason="Never"/>
+        <disable_collisions link1="2K_Dispenser_Cartridge" link2="smarpod_chuck" reason="Never"/>
+        <disable_collisions link1="Calibration_Qube" link2="smarpod_chuck" reason="Never"/>
+        <disable_collisions link1="Cam1_Toolhead_TCP" link2="smarpod_chuck" reason="Never"/>
+        <disable_collisions link1="Camera_Calibration_Platelet" link2="smarpod_chuck" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Base_Right" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Left_Base" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Left_Chuck" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Left_Stage_2_Bottom" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Right_Chuck" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Right_Stage_1_Bottom" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Gripper_Rot_Plate" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Test_Station" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="UV_LED_Back" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="UV_LED_Front" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="UV_Slider_X_Back" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="UV_Slider_X_Front" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="X_Axis" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Y_Axis" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Z_Axis" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="axis_base" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="housing" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="housing_hl" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="housing_hr" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="housing_vl" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="housing_vr" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="pm_robot_base_link" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Smarpod_Station" reason="Never"/>
+        <disable_collisions link1="smarpod_chuck" link2="Smarpod_Top_Plate" reason="Never"/>
+
         <disable_collisions link1="Smarpod_Station" link2="left_match_logo_background" reason="Never"/>
         <disable_collisions link1="Smarpod_Station" link2="Station_Laser_Bottom_TCP" reason="Never"/>
         <disable_collisions link1="1K_Dispenser_Protection" link2="Smarpod_Station" reason="Never"/>
