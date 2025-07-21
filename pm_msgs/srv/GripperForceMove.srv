@@ -1,6 +1,6 @@
-float64 target
-float64 max_fx
-float64 step_size
+float64[3] target_joints_xyz # in m
+float64[3] max_f_xyz # in N
+float64 step_size #in um
 ---
 bool completed
 bool success

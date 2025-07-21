@@ -212,7 +212,7 @@ class GonioOrientationSolver(Node):
         transform_gonio_right_matrix = get_rotation_matrix_from_tf(transform_gonio_right)
 
         # Joint transformations (Euler angles)
-        joint_transform_sym = get_euler_rotation_matrix(0, -q2, -q3)
+        joint_transform_sym = get_euler_rotation_matrix(0, q2, -q3)
 
         final_gonio_equation = transform_gonio_right_matrix * joint_transform_sym * gonio_right_endeffector_matrix
 

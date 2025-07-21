@@ -5,3 +5,5 @@ float64 step_size
 bool completed
 bool success
 string error
+
+# This is for the smaract gripper
