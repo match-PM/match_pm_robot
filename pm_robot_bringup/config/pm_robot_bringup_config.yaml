@@ -16,7 +16,7 @@ pm_robot_gonio_left:
   - chuck_gonio_left_Siemens_Sensor
   - Chuck_Siemens_Carrier_P39
   - chuck_gonio_left_IPEG_Demonstrator
-  use_chuck: chuck_gonio_left_Siemens_Sensor
+  use_chuck: Chuck_Siemens_Carrier_P39
   with_Gonio_Left: true
   unity_parent: Gonio_Left_Chuck_Origin
 pm_robot_gonio_right:
