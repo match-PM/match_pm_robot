@@ -121,6 +121,8 @@ sensor_msgs::msg::JointState::SharedPtr global_joint_state;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> xyz_trajectory_publisher;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> t_trajectory_publisher;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> smarpod_trajectory_publisher;
+std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> gonio_right_trajectory_publisher;
+std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> gonio_left_trajectory_publisher;
 
 std::string default_endeffector_string;
 std::string global_return_massage;
@@ -701,6 +703,38 @@ void publish_target_joint_trajectory_xyzt(std::string planning_group,
   }
 }
 
+void publish_target_joint_trajectory_gonio_left(std::vector<double> target_joint_values,
+                                                float time_from_start)
+{
+  auto trajectory_msg = std::make_shared<trajectory_msgs::msg::JointTrajectory>();
+  trajectory_msg->joint_names = {"Gonio_Left_Stage_1_Joint", "Gonio_Left_Stage_2_Joint"}; // Specify joint names
+
+  trajectory_msgs::msg::JointTrajectoryPoint point;
+  point.positions = {target_joint_values[0], target_joint_values[1]}; // Specify joint positions
+  point.velocities = {0.0, 0.0};                                      // Specify joint velocities
+  point.accelerations = {0.0, 0.0};                                   // Specify joint accelerations
+  point.time_from_start.sec = time_from_start;                        // Specify duration
+  trajectory_msg->points.push_back(point);
+  gonio_left_trajectory_publisher->publish(*trajectory_msg);
+  return;
+}
+
+void publish_target_joint_trajectory_gonio_right(std::vector<double> target_joint_values,
+                                                 float time_from_start)
+{
+  auto trajectory_msg = std::make_shared<trajectory_msgs::msg::JointTrajectory>();
+  trajectory_msg->joint_names = {"Gonio_Right_Stage_1_Joint", "Gonio_Right_Stage_2_Joint"}; // Specify joint names
+
+  trajectory_msgs::msg::JointTrajectoryPoint point;
+  point.positions = {target_joint_values[0], target_joint_values[1]}; // Specify joint positions
+  point.velocities = {0.0, 0.0};                                      // Specify joint velocities
+  point.accelerations = {0.0, 0.0};                                   // Specify joint accelerations
+  point.time_from_start.sec = time_from_start;                        // Specify duration
+  trajectory_msg->points.push_back(point);
+  gonio_right_trajectory_publisher->publish(*trajectory_msg);
+  return;
+}
+
 void publish_target_joint_trajectory_smarpod(std::string planning_group,
                                              std::vector<double> target_joint_values,
                                              float time_from_start)
@@ -1229,12 +1263,24 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.0001;
 
-  // wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
+  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
   // log_target_pose_delta(endeffector, target_pose);
 
   // // this may not be necessary anymore
-  // publish_target_joint_trajectory_xyzt(planning_group, target_joint_values);
+
+  if (planning_group == "PM_Robot_Gonio_Right")
+  {
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Using Gonio Right");
+
+    publish_target_joint_trajectory_gonio_right(target_joint_values, 1.0);
+  }
+  else if (planning_group == "PM_Robot_Gonio_Left")
+  {
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Using Gonio Left");
+    publish_target_joint_trajectory_gonio_left(target_joint_values, 1.0);
+  }
+
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   // log_target_pose_delta(endeffector, target_pose);
   end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
@@ -1599,6 +1645,19 @@ void reset_gonio_left(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Requ
   std::vector<double> target_joint_values = {0.0, 0.0};
   auto [move_success, move_msg] = set_move_group(gonio_left_move_group, target_joint_values, true);
   response->success = move_success;
+  std::vector<std::string> joint_names = {"Gonio_Left_Stage_1_Joint", "Gonio_Left_Stage_2_Joint"};
+
+  float lateral_tolerance_rougth = 1e-3;
+  float angular_tolerance_rougth = 0.1;
+  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_rougth, angular_tolerance_rougth);
+
+  publish_target_joint_trajectory_gonio_left({0.0, 0.0}, 1);
+
+  float lateral_tolerance_fine = 1e-6;
+  float angular_tolerance_fine = 0.0001;
+  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+
+  response->success = true;
   return;
 }
 
@@ -1607,7 +1666,19 @@ void reset_gonio_right(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Req
 {
   std::vector<double> target_joint_values = {0.0, 0.0};
   auto [move_success, move_msg] = set_move_group(gonio_right_move_group, target_joint_values, true);
-  response->success = move_success;
+  std::vector<std::string> joint_names = {"Gonio_Right_Stage_1_Joint", "Gonio_Right_Stage_2_Joint"};
+
+  float lateral_tolerance_rougth = 1e-3;
+  float angular_tolerance_rougth = 0.1;
+  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_rougth, angular_tolerance_rougth);
+
+  publish_target_joint_trajectory_gonio_right({0.0, 0.0}, 1);
+
+  float lateral_tolerance_fine = 1e-6;
+  float angular_tolerance_fine = 0.0001;
+  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+
+  response->success = true;
   return;
 }
 
@@ -1753,6 +1824,8 @@ int main(int argc, char **argv)
   xyz_trajectory_publisher = pm_moveit_server_node->create_publisher<trajectory_msgs::msg::JointTrajectory>("/pm_robot_xyz_axis_controller/joint_trajectory", 10);
   t_trajectory_publisher = pm_moveit_server_node->create_publisher<trajectory_msgs::msg::JointTrajectory>("/pm_robot_t_axis_controller/joint_trajectory", 10);
   auto joint_state_subscriber = pm_moveit_server_node->create_subscription<sensor_msgs::msg::JointState>("/joint_states", 10, jointStateCallback, node_options_1);
+  gonio_right_trajectory_publisher = pm_moveit_server_node->create_publisher<trajectory_msgs::msg::JointTrajectory>("/pm_robot_gonio_right_controller/joint_trajectory", 10);
+  gonio_left_trajectory_publisher = pm_moveit_server_node->create_publisher<trajectory_msgs::msg::JointTrajectory>("/pm_robot_gonio_left_controller/joint_trajectory", 10);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Ready for operation...");
   executor.spin();
