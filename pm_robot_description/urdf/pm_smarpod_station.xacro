@@ -103,7 +103,7 @@
     name="Smarpod_Station_Base_Joint"
     type="fixed">
     <origin
-      xyz="0.2 0.15 0.2253999999992"
+      xyz="0.1465 0.15 0.2253999999992"
       rpy="0 0 0" />
     <parent
       link="Smarpod_Station" />
