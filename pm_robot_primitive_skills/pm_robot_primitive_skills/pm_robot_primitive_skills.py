@@ -492,18 +492,11 @@ class PrimitiveSkillsNode(Node):
 
         # Call service asynchronously
         future = self.client_get_confocal_bottom_measurement.call(request_cl)
-        # rclpy.spin_until_future_complete(self, future)
 
-        # if future.result() is None:
-        #     self._logger.error("Service call failed or timeout occurred.")
-        #     response.success = False
-        #     return response
+        response_cl:GetValue.Response = future
 
-        # result = future.result()
-        result:GetValue.Response = future
-        # Fill in the response passed into the callback
-        response.success = result.success
-        response.data = (result.data - 3.0) * 1e3  # convert to micrometers
+        response.success = response_cl.success
+        response.data = -1*(response_cl.data - 3.0) * 1e3  # convert to micrometers
 
         return response
 

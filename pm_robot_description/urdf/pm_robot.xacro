@@ -525,7 +525,7 @@
       <parent link="Z_Axis" />
       <child link="2K_Dispenser_Cartridge" />
       <axis xyz="0 0 1" />
-      <limit lower="-0.04" upper="0.00" effort="100" velocity="0.1" />
+      <limit lower="-0.05" upper="0.00" effort="100" velocity="0.1" />
     </joint>
 
     <link name="2K_Dispenser_TCP">
@@ -821,8 +821,8 @@
       <joint name="TCP_Confocal_Sensor_Bottom_Joint" type="fixed">
         <origin xyz="
             ${0.138 + Confocal_Sensor_Bottom_TCP_Joint_Cal_x*0.000001} 
-            ${0.07484+ Confocal_Sensor_Bottom_TCP_Joint_Cal_y*0.000001} 
-            ${0.30851 + Confocal_Sensor_Bottom_TCP_Joint_Cal_z*0.000001}" 
+            ${0.07964+ Confocal_Sensor_Bottom_TCP_Joint_Cal_y*0.000001} 
+            ${0.307 + Confocal_Sensor_Bottom_TCP_Joint_Cal_z*0.000001}" 
             rpy="
             ${0 + Confocal_Sensor_Bottom_TCP_Joint_Cal_rx*3.14159265359/180} 
             ${0 + Confocal_Sensor_Bottom_TCP_Joint_Cal_ry*3.14159265359/180} 
@@ -879,7 +879,7 @@
         <origin xyz="
             ${0.176999957149375 + Confocal_Sensor_Top_TCP_Joint_Cal_x*0.000001} 
             ${-0.0580000000000008+ Confocal_Sensor_Top_TCP_Joint_Cal_y*0.000001} 
-            ${-0.502500000000003 + Confocal_Sensor_Top_TCP_Joint_Cal_z*0.000001}" 
+            ${-0.500500000000003 + Confocal_Sensor_Top_TCP_Joint_Cal_z*0.000001}" 
             rpy="
             ${0 + Confocal_Sensor_Top_TCP_Joint_Cal_rx*3.14159265359/180} 
             ${0 + Confocal_Sensor_Top_TCP_Joint_Cal_ry*3.14159265359/180} 
@@ -948,11 +948,11 @@
       </collision>
     </link>
     <joint name="Camera_Calibration_Platelet_Joint" type="prismatic">
-      <origin xyz="0.08 -0.0805 0.293" rpy="0 0 0" />
+      <origin xyz="0.08 -0.0805 0.2922" rpy="0 0 0" />
       <parent link="Camera_Station" />
       <child link="Camera_Calibration_Platelet" />
       <axis xyz="0 -1 0" />
-      <limit lower="-0.04" upper="0.0" effort="100" velocity="0.5" />
+      <limit lower="-0.048" upper="0.0" effort="100" velocity="0.5" />
     </joint>
 
       <link 
@@ -960,7 +960,7 @@
       </link>
       
       <joint name="Laser_Height_Calibration_Frame_Joint" type="fixed">
-        <origin xyz="0.057308970 0.115944000 0.017870000" rpy="0 0 0" />
+        <origin xyz="0.058 0.115944000 0.020870000" rpy="0 0 0" />
         <parent link="Camera_Calibration_Platelet" />
         <child link="Laser_Height_Calibration_Frame" />
         <axis xyz="0 0 0" />
@@ -971,7 +971,7 @@
       </link>
       
       <joint name="Calibration_Platelet_Calibration_Frame_Joint" type="fixed">
-        <origin xyz="0.0 0.10405 0.012" rpy="0 0 0" />
+        <origin xyz="0.0 0.1195 0.0135 " rpy="0 0 0" />
         <parent link="Camera_Calibration_Platelet" />
         <child link="Calibration_Platelet_Calibration_Frame" />
         <axis xyz="0 0 0" />

@@ -105,8 +105,12 @@ def generate_launch_description():
     rviz_base = os.path.join(
         get_package_share_directory("pm_robot_moveit_config"), "config"
     )
+    rviz_base_2 = os.path.join(
+        get_package_share_directory("pm_robot_description"), "rviz"
+    )
 
-    rviz_full_config = os.path.join(rviz_base, "moveit.rviz")
+    #rviz_full_config = os.path.join(rviz_base, "moveit.rviz")
+    rviz_full_config = os.path.join(rviz_base, "config_pm_real.rviz")
 
     rviz_node = Node(
         package="rviz2",
@@ -420,7 +424,7 @@ def generate_launch_description():
     ld.add_action(pm_opcua_skills_controller)
     ld.add_action(primitive_skills_node)
     ld.add_action(adhesive_displayer)
-    # ld.add_action(confocal_sensors_launch)
+    ld.add_action(confocal_sensors_launch)
     
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)
