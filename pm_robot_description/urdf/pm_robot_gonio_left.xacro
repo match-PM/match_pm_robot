@@ -62,8 +62,22 @@
       </collision>
     </link>
 
+    <xacro:property name="gonio_base_Cal_x" value="${calibration_dict['Gonio_Left_Base_Joint']['x_offset']}"/>
+    <xacro:property name="gonio_base_Cal_y" value="${calibration_dict['Gonio_Left_Base_Joint']['y_offset']}"/>
+    <xacro:property name="gonio_base_Cal_z" value="${calibration_dict['Gonio_Left_Base_Joint']['z_offset']}"/>
+    <xacro:property name="gonio_base_Cal_rx" value="${calibration_dict['Gonio_Left_Base_Joint']['rx_offset']}"/>
+    <xacro:property name="gonio_base_Cal_ry" value="${calibration_dict['Gonio_Left_Base_Joint']['ry_offset']}"/>
+    <xacro:property name="gonio_base_Cal_rz" value="${calibration_dict['Gonio_Left_Base_Joint']['rz_offset']}"/>
+
     <joint name="Gonio_Left_Base_Joint" type="fixed">
-      <origin xyz="0.14249999999998 0.295499999999939 0" rpy="0 0 0" />
+      <origin xyz="
+        ${0.14249999999998 + gonio_base_Cal_x * 0.000001} 
+        ${0.295499999999939 + gonio_base_Cal_y * 0.000001} 
+        ${0 + gonio_base_Cal_z * 0.000001}" 
+        rpy="
+        ${0 + gonio_base_Cal_rx * 3.14159265359/180} 
+        ${0 + gonio_base_Cal_ry * 3.14159265359/180} 
+        ${0 + gonio_base_Cal_rz * 3.14159265359/180}" />
       <parent link="pm_robot_base_link" />
       <child link="Gonio_Left_Base" />
       <axis xyz="0 0 0" />
@@ -186,6 +200,13 @@
     <xacro:property name="gonio_chuck_visual_filename" value="${gonio_left_configs_dict[current_gonio_left_chuck]['visual_filename']}"/>
     <xacro:property name="gonio_chuck_collision_filename" value="${gonio_left_configs_dict[current_gonio_left_chuck]['collision_filename']}"/>
 
+    <xacro:property name="Gonio_Left_Chuck_Cal_x" value="${calibration_dict['Gonio_Left_Chuck_Joint']['x_offset']}"/>
+    <xacro:property name="Gonio_Left_Chuck_Cal_y" value="${calibration_dict['Gonio_Left_Chuck_Joint']['y_offset']}"/>
+    <xacro:property name="Gonio_Left_Chuck_Cal_z" value="${calibration_dict['Gonio_Left_Chuck_Joint']['z_offset']}"/>
+    <xacro:property name="Gonio_Left_Chuck_Cal_rx" value="${calibration_dict['Gonio_Left_Chuck_Joint']['rx_offset']}"/>
+    <xacro:property name="Gonio_Left_Chuck_Cal_ry" value="${calibration_dict['Gonio_Left_Chuck_Joint']['ry_offset']}"/>
+    <xacro:property name="Gonio_Left_Chuck_Cal_rz" value="${calibration_dict['Gonio_Left_Chuck_Joint']['rz_offset']}"/>
+
     <link name="Gonio_Left_Chuck">
       <inertial>
         <origin xyz="${gonio_chuck_xyz}" rpy="${gonio_chuck_rpy}"/>
@@ -209,7 +230,14 @@
     </link>
 
     <joint name="Gonio_Left_Chuck_Joint" type="fixed">
-      <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="
+        ${0.0 + Gonio_Left_Chuck_Cal_x * 0.000001} 
+        ${0.0 + Gonio_Left_Chuck_Cal_y * 0.000001} 
+        ${0.0 + Gonio_Left_Chuck_Cal_z * 0.000001}" 
+        rpy="
+        ${0 + Gonio_Left_Chuck_Cal_rx * 3.14159265359/180} 
+        ${0 + Gonio_Left_Chuck_Cal_ry * 3.14159265359/180} 
+        ${0 + Gonio_Left_Chuck_Cal_rz * 3.14159265359/180}" />
       <parent link="Gonio_Left_Chuck_Origin" />
       <child link="Gonio_Left_Chuck" />
       <axis xyz="0 0 0" />

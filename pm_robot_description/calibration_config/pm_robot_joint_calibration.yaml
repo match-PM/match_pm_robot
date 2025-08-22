@@ -94,3 +94,38 @@ T_Axis_Joint:
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0
+
+Gonio_Left_Base_Joint:
+  x_offset: 0
+  y_offset: -1000
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+Gonio_Right_Base_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+Gonio_Left_Chuck_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+Gonio_Right_Chuck_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+
+

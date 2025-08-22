@@ -93,10 +93,10 @@
       "constraints": {
         "centroid": {
           "refFrameNames": [
-            "CAL_Laser_1",
-            "CAL_Laser_2",
-            "CAL_Laser_3",
-            "CAL_Laser_4"
+            "Laser_1",
+            "Laser_2",
+            "Laser_3",
+            "Laser_4"
           ],
           "dim": "xyz",
           "offsetValues": [

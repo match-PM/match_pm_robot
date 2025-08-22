@@ -85,12 +85,25 @@
       </geometry>
     </collision>
   </link>
+
+  <xacro:property name="gonio_base_Cal_x" value="${calibration_dict['Gonio_Right_Base_Joint']['x_offset']}"/>
+  <xacro:property name="gonio_base_Cal_y" value="${calibration_dict['Gonio_Right_Base_Joint']['y_offset']}"/>
+  <xacro:property name="gonio_base_Cal_z" value="${calibration_dict['Gonio_Right_Base_Joint']['z_offset']}"/>
+  <xacro:property name="gonio_base_Cal_rx" value="${calibration_dict['Gonio_Right_Base_Joint']['rx_offset']}"/>
+  <xacro:property name="gonio_base_Cal_ry" value="${calibration_dict['Gonio_Right_Base_Joint']['ry_offset']}"/>
+  <xacro:property name="gonio_base_Cal_rz" value="${calibration_dict['Gonio_Right_Base_Joint']['rz_offset']}"/>
+
   <joint
     name="Gonio_Base_Right_Joint"
     type="fixed">
-    <origin
-      xyz="${0.750000000000003+gonio_offset_smarpod_x} ${0.31+gonio_offset_smarpod_y} 0"
-      rpy="0 0 0" />
+    <origin xyz="
+        ${0.750000000000003 + gonio_base_Cal_x * 0.000001 + gonio_offset_smarpod_x} 
+        ${0.31 + gonio_base_Cal_y * 0.000001 + gonio_offset_smarpod_y} 
+        ${0 + gonio_base_Cal_z * 0.000001}" 
+        rpy="
+        ${0 + gonio_base_Cal_rx * 3.14159265359/180} 
+        ${0 + gonio_base_Cal_ry * 3.14159265359/180} 
+        ${0 + gonio_base_Cal_rz * 3.14159265359/180}" />
     <parent
       link="pm_robot_base_link" />
     <child
@@ -312,95 +325,110 @@
   <xacro:property name="gonio_chuck_visual_filename" value="${gonio_right_configs_dict[current_gonio_right_chuck]['visual_filename']}"/>
   <xacro:property name="gonio_chuck_collision_filename" value="${gonio_right_configs_dict[current_gonio_right_chuck]['collision_filename']}"/>
 
-<link
-  name="Gonio_Right_Chuck">
-  <inertial>
-    <origin
-      xyz="${gonio_chuck_xyz}"
-      rpy="${gonio_chuck_rpy}"/>
-    <mass
-      value="${gonio_chuck_mass}"/>
-    <inertia
-      ixx="${gonio_chuck_inertia_ixx}"
-      ixy="${gonio_chuck_inertia_ixy}"
-      ixz="${gonio_chuck_inertia_ixz}"
-      iyy="${gonio_chuck_inertia_iyy}"
-      iyz="${gonio_chuck_inertia_iyz}"
-      izz="${gonio_chuck_inertia_izz}" />
-  </inertial>
-  <visual>
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
-    <geometry>
-      <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chucks/${gonio_chuck_visual_filename}" />      
-    </geometry>
-    <material
-      name="${gonio_chuck_color}">
-    </material>
-  </visual>
-  <collision>
-    <origin
-      xyz="0 0 0"
-      rpy="0 0 0" />
-    <geometry>
-      <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chucks/${gonio_chuck_collision_filename}" />         
-    </geometry>
-  </collision>
-</link>
+  <xacro:property name="Gonio_Right_Chuck_Cal_x" value="${calibration_dict['Gonio_Right_Chuck_Joint']['x_offset']}"/>
+  <xacro:property name="Gonio_Right_Chuck_Cal_y" value="${calibration_dict['Gonio_Right_Chuck_Joint']['y_offset']}"/>
+  <xacro:property name="Gonio_Right_Chuck_Cal_z" value="${calibration_dict['Gonio_Right_Chuck_Joint']['z_offset']}"/>
+  <xacro:property name="Gonio_Right_Chuck_Cal_rx" value="${calibration_dict['Gonio_Right_Chuck_Joint']['rx_offset']}"/>
+  <xacro:property name="Gonio_Right_Chuck_Cal_ry" value="${calibration_dict['Gonio_Right_Chuck_Joint']['ry_offset']}"/>
+  <xacro:property name="Gonio_Right_Chuck_Cal_rz" value="${calibration_dict['Gonio_Right_Chuck_Joint']['rz_offset']}"/>
 
-<joint
-  name="Gonio_Right_Chuck_Joint"
-  type="fixed">
-  <origin
-    xyz="0 0 0"
-    rpy="0 0 0" />
-  <parent
-    link="Gonio_Right_Chuck_Origin" />
-  <child
-    link="Gonio_Right_Chuck" />
-  <axis
-    xyz="0 0 0" />
-</joint>
-  
-  <!--%%%%%%%%%%%%% Gonio Right Part 1 Origin -->
+
   <link
-    name="Gonio_Right_Part_1_Origin">
+    name="Gonio_Right_Chuck">
+    <inertial>
+      <origin
+        xyz="${gonio_chuck_xyz}"
+        rpy="${gonio_chuck_rpy}"/>
+      <mass
+        value="${gonio_chuck_mass}"/>
+      <inertia
+        ixx="${gonio_chuck_inertia_ixx}"
+        ixy="${gonio_chuck_inertia_ixy}"
+        ixz="${gonio_chuck_inertia_ixz}"
+        iyy="${gonio_chuck_inertia_iyy}"
+        iyz="${gonio_chuck_inertia_iyz}"
+        izz="${gonio_chuck_inertia_izz}" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chucks/${gonio_chuck_visual_filename}" />      
+      </geometry>
+      <material
+        name="${gonio_chuck_color}">
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Right_Chucks/${gonio_chuck_collision_filename}" />         
+      </geometry>
+    </collision>
   </link>
 
+
+
   <joint
-    name="Gonio_Right_Part_1_Origin_Joint"
+    name="Gonio_Right_Chuck_Joint"
     type="fixed">
-    <origin
-      xyz="${gonio_chuck_tcp_offset_x_1} ${gonio_chuck_tcp_offset_y_1} ${gonio_chuck_tcp_offset_z_1}"
-      rpy="0 0 0" />
+    <origin xyz="
+      ${0.0 + Gonio_Right_Chuck_Cal_x * 0.000001} 
+      ${0.0 + Gonio_Right_Chuck_Cal_y * 0.000001} 
+      ${0.0 + Gonio_Right_Chuck_Cal_z * 0.000001}" 
+      rpy="
+      ${0 + Gonio_Right_Chuck_Cal_rx * 3.14159265359/180} 
+      ${0 + Gonio_Right_Chuck_Cal_ry * 3.14159265359/180} 
+      ${0 + Gonio_Right_Chuck_Cal_rz * 3.14159265359/180}" />
     <parent
       link="Gonio_Right_Chuck_Origin" />
     <child
-      link="Gonio_Right_Part_1_Origin" />
+      link="Gonio_Right_Chuck" />
     <axis
       xyz="0 0 0" />
   </joint>
+    
+    <!--%%%%%%%%%%%%% Gonio Right Part 1 Origin -->
+    <link
+      name="Gonio_Right_Part_1_Origin">
+    </link>
 
-  <!--%%%%%%%%%%%%% Gonio Right Part 2 Origin -->
-  <link
-    name="Gonio_Right_Part_2_Origin">
-  </link>
+    <joint
+      name="Gonio_Right_Part_1_Origin_Joint"
+      type="fixed">
+      <origin
+        xyz="${gonio_chuck_tcp_offset_x_1} ${gonio_chuck_tcp_offset_y_1} ${gonio_chuck_tcp_offset_z_1}"
+        rpy="0 0 0" />
+      <parent
+        link="Gonio_Right_Chuck_Origin" />
+      <child
+        link="Gonio_Right_Part_1_Origin" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
 
-  <joint
-    name="Gonio_Right_Part_2_Origin_Joint"
-    type="fixed">
-    <origin
-      xyz="${gonio_chuck_tcp_offset_x_2} ${gonio_chuck_tcp_offset_y_2} ${gonio_chuck_tcp_offset_z_2}"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Right_Chuck_Origin" />
-    <child
-      link="Gonio_Right_Part_2_Origin" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
+    <!--%%%%%%%%%%%%% Gonio Right Part 2 Origin -->
+    <link
+      name="Gonio_Right_Part_2_Origin">
+    </link>
 
-</xacro:macro>
+    <joint
+      name="Gonio_Right_Part_2_Origin_Joint"
+      type="fixed">
+      <origin
+        xyz="${gonio_chuck_tcp_offset_x_2} ${gonio_chuck_tcp_offset_y_2} ${gonio_chuck_tcp_offset_z_2}"
+        rpy="0 0 0" />
+      <parent
+        link="Gonio_Right_Chuck_Origin" />
+      <child
+        link="Gonio_Right_Part_2_Origin" />
+      <axis
+        xyz="0 0 0" />
+    </joint>
+
+  </xacro:macro>
 
 </robot>
