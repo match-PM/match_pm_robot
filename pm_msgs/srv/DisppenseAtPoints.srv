@@ -1,3 +1,4 @@
 string[] frame_names
+float64[] frame_dispense_times_ms
 ---
 bool success

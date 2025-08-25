@@ -252,6 +252,89 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
   return true;
 }
 
+// std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std::string planning_group,
+//                                                                              std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+//                                                                              geometry_msgs::msg::Pose target_pose)
+// {
+//   start_ik_solution_time = std::chrono::high_resolution_clock::now();
+
+//   std::vector<double> target_joint_values;
+//   std::vector<double> min_joint_values;
+//   std::vector<double> max_joint_values;
+//   std::string endeffector = move_group->getEndEffectorLink();
+//   const moveit::core::JointModelGroup *joint_model_group = move_group->getCurrentState(1.0)->getJointModelGroup(planning_group);
+//   const std::vector<std::string> &joint_names = joint_model_group->getVariableNames();
+//   const moveit::core::RobotModelPtr &kinematic_model = PM_Robot_Model_Loader->getModel();
+//   moveit::core::RobotStatePtr robot_state(new moveit::core::RobotState(kinematic_model));
+
+//   // Get bounds of joints
+//   moveit::core::JointBoundsVector joint_bounds = joint_model_group->getActiveJointModelsBounds();
+
+//   for (size_t i = 0; i < joint_bounds.size(); i++)
+//   {
+//     min_joint_values.push_back(joint_bounds[i][0][0].min_position_);
+//     max_joint_values.push_back(joint_bounds[i][0][0].max_position_);
+//     RCLCPP_DEBUG(rclcpp::get_logger("pm_moveit"), " Lower: %.9f, Upper: %.9f", joint_bounds[i][0][0].min_position_, joint_bounds[i][0][0].max_position_);
+//   }
+
+//   // Optional: Try different seeding strategies here
+//   robot_state->setJointGroupPositions(joint_model_group, max_joint_values);
+//   double timeout = 0.5;
+
+//   bool success_found_ik = robot_state->setFromIK(joint_model_group, target_pose, timeout);
+
+//   // FK validation
+//   bool pose_is_accurate = false;
+
+//   if (success_found_ik)
+//   {
+//     robot_state->updateLinkTransforms();
+
+//     const Eigen::Isometry3d fk_pose = robot_state->getGlobalLinkTransform(endeffector);
+
+//     // Convert target_pose to Eigen
+//     Eigen::Isometry3d target_pose_eigen;
+//     tf2::fromMsg(target_pose, target_pose_eigen);
+
+//     // Calculate error
+//     double position_error = (fk_pose.translation() - target_pose_eigen.translation()).norm();
+
+//     Eigen::Quaterniond fk_q(fk_pose.rotation());
+//     Eigen::Quaterniond target_q(target_pose_eigen.rotation());
+//     double orientation_error = fk_q.angularDistance(target_q);
+
+//     RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "FK validation - position error: %.9f, orientation error: %.9f rad", position_error, orientation_error);
+
+//     // Define acceptable error thresholds
+//     const double max_position_error = 1e-4;    // 0.1 mm
+//     const double max_orientation_error = 1e-3; // ~0.057 rad (~3.3 deg)
+
+//     pose_is_accurate = (position_error <= max_position_error) && (orientation_error <= max_orientation_error);
+
+//     if (!pose_is_accurate)
+//     {
+//       RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "IK solution does not match target pose within tolerance.");
+//       success_found_ik = false;
+//     }
+//     else
+//     {
+//       RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "IK solution is within tolerance.");
+//       robot_state->copyJointGroupPositions(joint_model_group, target_joint_values);
+//       for (std::size_t i = 0; i < joint_names.size(); ++i)
+//       {
+//         RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Target Joint Values for %s: %.9f", joint_names[i].c_str(), target_joint_values[i]);
+//       }
+//     }
+//   }
+//   else
+//   {
+//     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Did not find IK solution.");
+//   }
+
+//   end_ik_solution_time = std::chrono::high_resolution_clock::now();
+//   return std::make_tuple(success_found_ik, joint_names, target_joint_values);
+// }
+
 std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std::string planning_group,
                                                                              std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
                                                                              geometry_msgs::msg::Pose target_pose)
@@ -267,56 +350,71 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
   const moveit::core::RobotModelPtr &kinematic_model = PM_Robot_Model_Loader->getModel();
   moveit::core::RobotStatePtr robot_state(new moveit::core::RobotState(kinematic_model));
 
-  // There is an issue when setting the target pose to a pose that is in range of 10 um.
-  // For a reason i dont know, the IK solution returns the current joint values
-  // To account for that the robot state is set to the max joint value before setting fromIK
-  // Please note that this is a workaround and a better solution should be found for this issue
-
   // Get bounds of joints
   moveit::core::JointBoundsVector joint_bounds = joint_model_group->getActiveJointModelsBounds();
 
-  // get joint limits
   for (size_t i = 0; i < joint_bounds.size(); i++)
   {
     min_joint_values.push_back(joint_bounds[i][0][0].min_position_);
     max_joint_values.push_back(joint_bounds[i][0][0].max_position_);
-
     RCLCPP_DEBUG(rclcpp::get_logger("pm_moveit"), " Lower: %.9f, Upper: %.9f", joint_bounds[i][0][0].min_position_, joint_bounds[i][0][0].max_position_);
-    // RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), " Lower: %.9f, Upper: %.9f", joint_bounds[i][0][0].min_position_, joint_bounds[i][0][0].max_position_);
   }
 
+  // Optional: Try different seeding strategies here
   robot_state->setJointGroupPositions(joint_model_group, max_joint_values);
   double timeout = 0.5;
+
   bool success_found_ik = robot_state->setFromIK(joint_model_group, target_pose, timeout);
 
-  // Eigen::Isometry3d pose_eigen;
-  // tf2::convert(target_pose, pose_eigen);
-  // std::vector<double> consitency_limits;
-  // consitency_limits = {0.0000001, 0.0000001, 0.0000001};
-  // bool success_found_ik = robot_state->setFromIK(joint_model_group, pose_eigen, endeffector, consitency_limits, timeout);
+  // FK validation
+  bool pose_is_accurate = false;
 
   if (success_found_ik)
   {
-    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "IK solution found!");
     robot_state->updateLinkTransforms();
-    const Eigen::Isometry3d end_effector_state = robot_state->getGlobalLinkTransform(endeffector);
-    tf2::Transform tf2Transform;
-    tf2::convert(end_effector_state, tf2Transform);
-    // tf2::Vector3 endeffector_pose_planed = tf2Transform.getOrigin();
-    //  This is the same as the calculated Endeffector Pose
-    // RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Planned Endeffector Pose X %f", endeffector_pose_planed.getX());
-    // RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Planned Endeffector Pose Y %f", endeffector_pose_planed.getY());
-    // RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Planned Endeffector Pose Z %f", endeffector_pose_planed.getZ());
-    robot_state->copyJointGroupPositions(joint_model_group, target_joint_values);
-    for (std::size_t i = 0; i < joint_names.size(); ++i)
+
+    const Eigen::Isometry3d fk_pose = robot_state->getGlobalLinkTransform(endeffector);
+
+    // Convert target_pose to Eigen
+    Eigen::Isometry3d target_pose_eigen;
+    tf2::fromMsg(target_pose, target_pose_eigen);
+
+    // Calculate error
+    double position_error = (fk_pose.translation() - target_pose_eigen.translation()).norm();
+
+    Eigen::Quaterniond fk_q(fk_pose.rotation());
+    Eigen::Quaterniond target_q(target_pose_eigen.rotation());
+    double orientation_error = fk_q.angularDistance(target_q);
+
+    RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "FK validation - position error: %.9f, orientation error: %.9f rad", position_error, orientation_error);
+
+    // Define acceptable error thresholds
+    const double max_position_error = 1e-6;    // 0.1 mm
+    const double max_orientation_error = 1e-3; // ~0.057 rad (~3.3 deg)
+
+    // pose_is_accurate = (position_error <= max_position_error) && (orientation_error <= max_orientation_error);
+    pose_is_accurate = (position_error <= max_position_error);
+
+    if (!pose_is_accurate)
     {
-      RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Target Joint Values for %s: %.9f", joint_names[i].c_str(), target_joint_values[i]);
+      RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "IK solution does not match target pose within tolerance.");
+      success_found_ik = false;
+    }
+    else
+    {
+      RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "IK solution is within tolerance.");
+      robot_state->copyJointGroupPositions(joint_model_group, target_joint_values);
+      for (std::size_t i = 0; i < joint_names.size(); ++i)
+      {
+        RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Target Joint Values for %s: %.9f", joint_names[i].c_str(), target_joint_values[i]);
+      }
     }
   }
   else
   {
-    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Did not find IK solution");
+    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Did not find IK solution.");
   }
+
   end_ik_solution_time = std::chrono::high_resolution_clock::now();
   return std::make_tuple(success_found_ik, joint_names, target_joint_values);
 }
@@ -972,7 +1070,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
     return std::make_tuple(false, joint_names, target_joint_values);
   }
 
-  log_pose("Target frame pose: ", target_pose);
+  // log_pose("Target frame pose: ", target_pose);
 
   if (endeffector_frame_override != default_endeffector_string)
   {
@@ -980,7 +1078,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
     target_pose = get_pose_endeffector_override(endeffector, endeffector_frame_override, target_pose);
   }
 
-  log_pose("Before translation", target_pose);
+  // log_pose("Before translation", target_pose);
 
   auto diff_pose = geometry_msgs::msg::Pose();
 
@@ -988,7 +1086,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   diff_pose.position.y = origin_pose.position.y - target_pose.position.y;
   diff_pose.position.z = origin_pose.position.z - target_pose.position.z;
 
-  log_pose("Diff Pose: ", diff_pose);
+  // log_pose("Diff Pose: ", diff_pose);
 
   // !!!!!!!! Here the rotation is rounded to account for small deviations in the pose !!!!
   // This should later be deleted!!!

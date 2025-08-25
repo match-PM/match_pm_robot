@@ -286,8 +286,9 @@ def generate_launch_description():
         name='pm_opcua_skills_controller',  
         output='screen',
         parameters=[{
-            'opcua_server_address': "opc.tcp://localhost:4840"
-        }]
+            'opcua_server_address': "opc.tcp://PC1M0484-1:4840"
+        }],
+        emulate_tty=True
         
     )
 

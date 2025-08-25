@@ -79,8 +79,8 @@
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
-          "X": -15.0,
-          "Y": 8.5,
+          "X": -11.0,
+          "Y": 6.5,
           "Z": 0.0
         },
         "rotation": {
@@ -97,8 +97,8 @@
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
-          "X": 15.0,
-          "Y": 8.5,
+          "X": 11.0,
+          "Y": 6.5,
           "Z": 0.0
         },
         "rotation": {
@@ -115,8 +115,8 @@
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
-          "X": 15.0,
-          "Y": -8.5,
+          "X": 11.0,
+          "Y": -6.5,
           "Z": 0.0
         },
         "rotation": {
@@ -133,8 +133,8 @@
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
-          "X": -15.0,
-          "Y": -8.5,
+          "X": -11.0,
+          "Y": -6.5,
           "Z": 0.0
         },
         "rotation": {
@@ -176,6 +176,16 @@
             0.0,
             0.0
           ]
+        },
+        "inPlane": {
+          "refFrameNames": [
+            "Laser_Frame_1",
+            "Laser_Frame_2",
+            "Laser_Frame_3",
+            "Laser_Frame_4"
+          ],
+          "planeOffset": 0.0,
+          "normalAxis": "z"
         }
       }
     },

@@ -271,7 +271,6 @@
     <disable_collisions link1="Calibration_Qube" link2="Gonio_Right_Stage_1_Top" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="Gonio_Right_Stage_2_Bottom" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="Gripper_Rot_Plate" reason="Never"/>
-    <disable_collisions link1="Calibration_Qube" link2="Laser_Toolhead_TCP" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="Test_Station" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="UV_LED_Back" reason="Never"/>
     <disable_collisions link1="Calibration_Qube" link2="UV_LED_Front" reason="Never"/>

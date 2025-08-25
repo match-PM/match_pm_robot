@@ -16,6 +16,7 @@ from pm_skills.py_modules.PmRobotUtils import PmRobotUtils
 from math import sqrt
 from pm_uepsilon_confocal_msgs.srv import GetValue
 
+from pm_opcua_skills_msgs.srv import Dispense
 # import empty_with_success from pm_msgs
 from pm_msgs.srv import EmptyWithSuccess
 
@@ -48,7 +49,7 @@ class PrimitiveSkillsNode(Node):
         
         self.srv = self.create_service(pm_msg_srv.DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
     
-        self.dispense_test_point_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/dispense_test_point', self.dispense_test_point_callback)
+        self.dispense_test_point_srv = self.create_service(pm_msg_srv.DispenseTestPoints, self.get_name()+'/dispense_test_point', self.dispense_test_point_callback)
         self.reset_test_station_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/reset_test_station', self.reset_test_station_callback)
         self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DisppenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
         
@@ -64,7 +65,8 @@ class PrimitiveSkillsNode(Node):
 
         self.retract_dispenser_real_srv = self.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/N1K_Dispenser_Joint/MoveBackward',callback_group = self.callback_group_re)
         self.extend_dispenser_real_srv = self.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/N1K_Dispenser_Joint/MoveForward',callback_group = self.callback_group_re)
-                
+        self.dispense_skill_srv = self.create_client(Dispense, '/pm_opcua_skills_controller/Dispense',callback_group = self.callback_group_re)
+
         self.create_adhesive_viz_point_srv = self.create_client(pm_msg_srv.CreateVizAdhesivePoint, '/pm_adhesive_displayer/add_point',callback_group = self.callback_group_re)
 
         self.client_dips_1k_on = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
@@ -351,8 +353,14 @@ class PrimitiveSkillsNode(Node):
     def dispense_at_points_callback(self, request: pm_msg_srv.DisppenseAtPoints.Request, response:pm_msg_srv.DisppenseAtPoints.Response):
         
         dispenser_prepared = False
+
+        if len(request.frame_names) != len(request.frame_dispense_times):
+            self.logger.error(f"Frames list and dispense time list must have the same length!")
+            response.success = False
+            return response
+
         
-        for frame in request.frame_names:
+        for index, frame in enumerate(request.frame_names):
             move_to_frame_request = pm_moveit_srv.MoveToFrame.Request()
             
             move_to_frame_request.target_frame = frame
@@ -361,12 +369,15 @@ class PrimitiveSkillsNode(Node):
             if not dispenser_prepared:
                 prepare_success = self.prepare_dispenser(move_to_frame_request)
                 dispenser_prepared = True
+
                 if not prepare_success:
                     self.logger.error("Preparing dispenser failed!")
                     response.success = False
                     return response
                 
-            success = self.dispense_at_frame(move_to_frame_request, frame)
+            success = self.dispense_at_frame(move_to_frame_request, 
+                                             frame,
+                                             time=request.frame_dispense_times_ms[index])
             
             if not success:
                 response.success = False
@@ -383,8 +394,8 @@ class PrimitiveSkillsNode(Node):
         response.success = True
         return response
     
-    def dispense_test_point_callback(self, request: pm_msg_srv.EmptyWithSuccess.Request, response:pm_msg_srv.EmptyWithSuccess.Response):
-        num = 5
+    def dispense_test_point_callback(self, request: pm_msg_srv.DispenseTestPoints.Request, response:pm_msg_srv.DispenseTestPoints.Response):
+        num = request.num_of_points
         
         dispenser_prepared = False
         
@@ -422,7 +433,9 @@ class PrimitiveSkillsNode(Node):
                     response.success = False
                     return response
                 
-            success = self.dispense_at_frame(move_to_frame_request, "Test_Point_" + str(current_station.get_current_point()+1))
+            success = self.dispense_at_frame(move_to_frame_request, 
+                                             point_name="Test_Point_" + str(current_station.get_current_point()+1),
+                                             time=request.time_ms)
             response.success = success
             
             if success:
@@ -440,7 +453,10 @@ class PrimitiveSkillsNode(Node):
         return response
     
     def prepare_dispenser(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)->bool:
-        
+        # move the dispenser to the frame
+        # open the flap
+        # extend the dispenser
+
         move_to_frame_request_copy = copy.deepcopy(move_to_frame_request)
         
         move_to_frame_request_copy.translation.z += self.DISPENSER_TRAVEL_DISTANCE
@@ -463,6 +479,19 @@ class PrimitiveSkillsNode(Node):
         
         return success_extend_dispenser
     
+    def dispense(self, time:float):
+
+        if not (self.dispense_skill_srv.wait_for_service):
+            self._logger.error(f"Service '{self.dispense_skill_srv.srv_name}' is not available!")
+            return False
+        
+        request = Dispense.Request()
+        request.time = int(time)
+
+        response:Dispense.Response = self.dispense_skill_srv.call(request)
+
+        return response.success
+
     def get_confocal_top_measurement(self, request: GetValue.Request, response: GetValue.Response):
 
         request_cl = GetValue.Request()
@@ -500,11 +529,17 @@ class PrimitiveSkillsNode(Node):
 
         return response
 
-    def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request, point_name: str)->bool:
+    def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request, 
+                          point_name: str,
+                          time:float = 0.5
+                          )->bool:
         
+        # check flap open not needed
+        # check dispenser extended not needed
         move_to_frame_request.translation.z += float(self.DEFAULT_DISPENSE_HEIGHT)
         move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
 
+        # move to top position
         success = self.move_dispenser_to_frame(move_to_frame_request)
         
         if not success:
@@ -512,11 +547,19 @@ class PrimitiveSkillsNode(Node):
         
         move_to_frame_request.translation.z -= self.DISPENSER_OFFSET_VALUE
         
+        # move to dispenser position
         success = self.move_dispenser_to_frame(move_to_frame_request)
         
         if not success:
             return False
         
+        # dispense
+
+        dispense_success = self.dispense(time=time)
+
+        if not dispense_success:
+            return False
+
         create_adhesive_viz_point_request = pm_msg_srv.CreateVizAdhesivePoint.Request()
         create_adhesive_viz_point_request.point.parent_frame = move_to_frame_request.target_frame
         

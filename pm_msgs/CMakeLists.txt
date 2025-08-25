@@ -65,6 +65,7 @@ rosidl_generate_interfaces(
   "srv/GripperGetAccel.srv"
   "srv/GripperGetForces.srv"
   "srv/GripperGetPosition.srv"
+  "srv/DispenseTestPoints.srv"
   DEPENDENCIES geometry_msgs
 )
 

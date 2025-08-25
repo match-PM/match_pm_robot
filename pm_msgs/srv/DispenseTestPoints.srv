@@ -1,0 +1,4 @@
+int32 num_of_points
+float64 time_ms
+---
+bool success
