@@ -212,7 +212,9 @@ class GonioOrientationSolver(Node):
         transform_gonio_right_matrix = get_rotation_matrix_from_tf(transform_gonio_right)
 
         # Joint transformations (Euler angles)
-        joint_transform_sym = get_euler_rotation_matrix(0, q2, -q3)
+        #joint_transform_sym = get_euler_rotation_matrix(0, q2, -q3)
+        joint_transform_sym = get_euler_rotation_matrix(0, -q2, q3)     # changed 26.08.25
+        #joint_transform_sym = get_euler_rotation_matrix(0, -q3, q2)
 
         final_gonio_equation = transform_gonio_right_matrix * joint_transform_sym * gonio_right_endeffector_matrix
 
@@ -254,6 +256,10 @@ class GonioOrientationSolver(Node):
             q1_sol, q2_sol, q3_sol = result.x
             response.joint_values = [float(q1_sol), float(q2_sol), float(q3_sol)]
             response.joint_names = ['T_Axis_Joint', 'Gonio_Right_Stage_1_Joint', 'Gonio_Right_Stage_2_Joint']
+            #response.joint_names = ['T_Axis_Joint', 'Gonio_Right_Stage_2_Joint', 'Gonio_Right_Stage_1_Joint']
+
+            response.success = True
+
             response.success = True
 
             self.get_logger().info(f"Solution T_Axis_Joint: {q1_sol}")

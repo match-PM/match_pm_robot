@@ -51,18 +51,58 @@ Eigen::Affine3d poseMsgToAffine(const geometry_msgs::msg::Pose &pose_msg)
   return affine;
 }
 
+// geometry_msgs::msg::Pose round_pose(geometry_msgs::msg::Pose pose_to_round)
+// {
+//   geometry_msgs::msg::Pose rounded_pose;
+//   int decimal_precision = 3;
+
+//   const double multiplier = std::pow(10, decimal_precision);
+
+//   rounded_pose.orientation.x = std::round(pose_to_round.orientation.x * multiplier) / multiplier;
+//   rounded_pose.orientation.y = std::round(pose_to_round.orientation.y * multiplier) / multiplier;
+//   rounded_pose.orientation.z = std::round(pose_to_round.orientation.z * multiplier) / multiplier;
+//   rounded_pose.orientation.w = std::round(pose_to_round.orientation.w * multiplier) / multiplier;
+//   rounded_pose.position = pose_to_round.position;
+//   return rounded_pose;
+// }
+
 geometry_msgs::msg::Pose round_pose(geometry_msgs::msg::Pose pose_to_round)
 {
   geometry_msgs::msg::Pose rounded_pose;
-  int decimal_precision = 3;
-
+  int decimal_precision = 2;
   const double multiplier = std::pow(10, decimal_precision);
 
-  rounded_pose.orientation.x = std::round(pose_to_round.orientation.x * multiplier) / multiplier;
-  rounded_pose.orientation.y = std::round(pose_to_round.orientation.y * multiplier) / multiplier;
-  rounded_pose.orientation.z = std::round(pose_to_round.orientation.z * multiplier) / multiplier;
-  rounded_pose.orientation.w = std::round(pose_to_round.orientation.w * multiplier) / multiplier;
+  // Convert quaternion to Euler angles
+  tf2::Quaternion q(
+      pose_to_round.orientation.x,
+      pose_to_round.orientation.y,
+      pose_to_round.orientation.z,
+      pose_to_round.orientation.w);
+
+  double roll, pitch, yaw;
+  tf2::Matrix3x3(q).getRPY(roll, pitch, yaw);
+
+  // Round Euler angles
+  roll = std::round(roll * multiplier) / multiplier;
+  pitch = std::round(pitch * multiplier) / multiplier;
+  yaw = std::round(yaw * multiplier) / multiplier;
+
+  // Convert back to quaternion
+  tf2::Quaternion rounded_q;
+  rounded_q.setRPY(roll, pitch, yaw);
+  rounded_q.normalize(); // Always normalize after conversion
+
+  // Set orientation
+  rounded_pose.orientation.x = rounded_q.x();
+  rounded_pose.orientation.y = rounded_q.y();
+  rounded_pose.orientation.z = rounded_q.z();
+  rounded_pose.orientation.w = rounded_q.w();
+
+  // Copy position without changes
   rounded_pose.position = pose_to_round.position;
+
+  RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "BE AWARE! Rotations are rounded to account for small deviations in the pose!! This might cause errors in the orientation.");
+
   return rounded_pose;
 }
 
@@ -206,6 +246,30 @@ void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
   global_joint_state = msg;
 }
 
+std::tuple<bool, geometry_msgs::msg::Pose> get_pose_of_frame(std::string frame_name)
+{
+  bool get_pose_success = true;
+  geometry_msgs::msg::Pose pose;
+  std::string fromFrameRel = frame_name;
+  std::string toFrameRel = "world";
+  try
+  {
+    geometry_msgs::msg::TransformStamped frame_transform;
+    frame_transform = tf_buffer_->lookupTransform(toFrameRel, fromFrameRel, tf2::TimePointZero);
+
+    pose.position.x = frame_transform.transform.translation.x;
+    pose.position.y = frame_transform.transform.translation.y;
+    pose.position.z = frame_transform.transform.translation.z;
+    pose.orientation = frame_transform.transform.rotation;
+  }
+  catch (const tf2::TransformException &ex)
+  {
+    RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Could not transform %s to %s: %s", toFrameRel.c_str(), fromFrameRel.c_str(), ex.what());
+    get_pose_success = false;
+  }
+  return std::make_tuple(get_pose_success, pose);
+}
+
 bool check_goal_reached(std::vector<std::string> target_joints, std::vector<double> target_joint_values, float delta_trans, float delta_rot)
 {
   float delta_value;
@@ -250,6 +314,74 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     }
   }
   return true;
+}
+
+geometry_msgs::msg::Pose adjust_target_orientation(geometry_msgs::msg::Pose target_pose,
+                                                   geometry_msgs::msg::Pose endeffector_pose)
+{
+  geometry_msgs::msg::Pose adjusted_target_pose;
+
+  // Round the orientation values
+  adjusted_target_pose.position = target_pose.position;
+  adjusted_target_pose.orientation = target_pose.orientation;
+
+  int decimal_precision = 2;
+  const double multiplier = std::pow(10, decimal_precision);
+
+  // Convert quaternion to Euler angles
+  tf2::Quaternion endeffector_rot_q(
+      endeffector_pose.orientation.x,
+      endeffector_pose.orientation.y,
+      endeffector_pose.orientation.z,
+      endeffector_pose.orientation.w);
+
+  // Convert quaternion to Euler angles
+  tf2::Quaternion target_rot_q(
+      target_pose.orientation.x,
+      target_pose.orientation.y,
+      target_pose.orientation.z,
+      target_pose.orientation.w);
+
+  double roll_target, pitch_target, yaw_target; // this is in radians
+  tf2::Matrix3x3(target_rot_q).getRPY(roll_target, pitch_target, yaw_target);
+
+  double roll_endeff, pitch_endeff, yaw_endeff; // this is in radians
+  tf2::Matrix3x3(endeffector_rot_q).getRPY(roll_endeff, pitch_endeff, yaw_endeff);
+
+  const double rad2deg = 180.0 / M_PI;
+
+  // RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Target Orientation - Roll: %.9f, Pitch: %.9f, Yaw: %.9f (deg)", roll_target * rad2deg, pitch_target * rad2deg, yaw_target * rad2deg);
+  // RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Endeffector Orientation - Roll: %.9f, Pitch: %.9f, Yaw: %.9f (deg)", roll_endeff * rad2deg, pitch_endeff * rad2deg, yaw_endeff * rad2deg);
+
+  double diff_roll = (roll_target - roll_endeff) * rad2deg;    // this is in degrees
+  double diff_pitch = (pitch_target - pitch_endeff) * rad2deg; // this is in degrees
+  double diff_yaw = (yaw_target - yaw_endeff) * rad2deg;       // this is in degrees
+
+  // Log differences
+  // RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Orientation differences (deg) - Roll: %.9f, Pitch: %.9f, Yaw: %.9f", diff_roll, diff_pitch, diff_yaw);
+
+  double angle_threshold = 0.01;
+  if (std::abs(diff_roll) > angle_threshold || std::abs(diff_pitch) > angle_threshold)
+  {
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Endeffector and target orientation have differences. IK planning will likely fail! - Roll: %.9f, Pitch: %.9f, Yaw: %.9f (deg)",
+                diff_roll, diff_pitch, diff_yaw);
+    return target_pose;
+  }
+  else
+  {
+    // the target orientation is adjusted to match the endeffector orientation but only for rx and ry, as rz can be rotated by the movegroup
+    double new_target_pose_roll = roll_endeff;
+    double new_target_pose_pitch = pitch_endeff;
+    double new_target_pose_yaw = yaw_target;
+
+    tf2::Quaternion q;
+    q.setRPY(new_target_pose_roll, new_target_pose_pitch, new_target_pose_yaw);
+    adjusted_target_pose.orientation = tf2::toMsg(q);
+
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "The target orientation has been adjusted to match the endeffector orientation in rx and ry. Amount Roll: %.9f, Pitch: %.9f, Yaw: %.9f (deg)",
+                diff_roll, diff_pitch, diff_yaw);
+    return adjusted_target_pose;
+  }
 }
 
 // std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std::string planning_group,
@@ -361,8 +493,20 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
   }
 
   // Optional: Try different seeding strategies here
+  // This is needed as for small movements the solution is inaccurate if the initial guess is too close from the solution
   robot_state->setJointGroupPositions(joint_model_group, max_joint_values);
   double timeout = 0.5;
+
+  // get the pose of the endeffector
+  bool get_pose_success;
+  geometry_msgs::msg::Pose endeffector_pose;
+  std::tie(get_pose_success, endeffector_pose) = get_pose_of_frame(endeffector);
+
+  if (planning_group == "PM_Robot_Tool_TCP")
+  {
+    // Adjust the target orientation based on the endeffector's current orientation
+    target_pose = adjust_target_orientation(target_pose, endeffector_pose);
+  }
 
   bool success_found_ik = robot_state->setFromIK(joint_model_group, target_pose, timeout);
 
@@ -417,30 +561,6 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
 
   end_ik_solution_time = std::chrono::high_resolution_clock::now();
   return std::make_tuple(success_found_ik, joint_names, target_joint_values);
-}
-
-std::tuple<bool, geometry_msgs::msg::Pose> get_pose_of_frame(std::string frame_name)
-{
-  bool get_pose_success = true;
-  geometry_msgs::msg::Pose pose;
-  std::string fromFrameRel = frame_name;
-  std::string toFrameRel = "world";
-  try
-  {
-    geometry_msgs::msg::TransformStamped frame_transform;
-    frame_transform = tf_buffer_->lookupTransform(toFrameRel, fromFrameRel, tf2::TimePointZero);
-
-    pose.position.x = frame_transform.transform.translation.x;
-    pose.position.y = frame_transform.transform.translation.y;
-    pose.position.z = frame_transform.transform.translation.z;
-    pose.orientation = frame_transform.transform.rotation;
-  }
-  catch (const tf2::TransformException &ex)
-  {
-    RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Could not transform %s to %s: %s", toFrameRel.c_str(), fromFrameRel.c_str(), ex.what());
-    get_pose_success = false;
-  }
-  return std::make_tuple(get_pose_success, pose);
 }
 
 bool check_frame_is_in_chain(std::string target_frame, std::string parent_frame)
@@ -945,7 +1065,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   }
 
   // Check if rotation is valid and set to default if not
-  rotation = check_rotation(rotation);
+  // rotation =check_rotation (rotation);
 
   target_pose = add_translation_rotation_to_pose(target_pose, translation, rotation);
   log_pose("Calculated Endeffector Pose: ", target_pose);
@@ -1090,12 +1210,10 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
 
   // !!!!!!!! Here the rotation is rounded to account for small deviations in the pose !!!!
   // This should later be deleted!!!
-  target_pose = round_pose(target_pose);
-
-  RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "BE AWARE! Rotations are rounded to account for small deviations in the pose!! This might cause errors in the orientation.");
+  // target_pose = round_pose(target_pose);
 
   // Check if rotation is valid and set to default if not
-  rotation = check_rotation(rotation);
+  // rotation = check_rotation(rotation);
 
   target_pose = add_translation_rotation_to_pose(target_pose, translation, rotation);
   log_pose("Calculated target endeffector pose: ", target_pose);
@@ -1344,8 +1462,10 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
   end_plan_time = std::chrono::high_resolution_clock::now();
 
   // bool move_success = false;
-  target_joint_values.push_back(response->joint_values[1]);
+  // target_joint_values.push_back(response->joint_values[1]);
+  // target_joint_values.push_back(response->joint_values[2]);
   target_joint_values.push_back(response->joint_values[2]);
+  target_joint_values.push_back(response->joint_values[1]);
   start_execute_time = std::chrono::high_resolution_clock::now();
   auto [move_success, move_msg] = set_move_group(move_group, target_joint_values, execute_movement);
 
