@@ -284,23 +284,8 @@
 
   <!--%%%%%%%%%%%%% Gonio Right Chuck Definitions-->
 
-  <link
-    name="Gonio_Right_Chuck_Origin">
-  </link>
 
-  <joint
-    name="Gonio_Right_Chuck_Origin_Joint"
-    type="fixed">
-    <origin
-      xyz="0 0 -0.05"
-      rpy="0 0 0" />
-    <parent
-      link="Gonio_Right_Stage_2_Bottom" />
-    <child
-      link="Gonio_Right_Chuck_Origin" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
+
 
   <!--%%%%%%%%%%%%% This is for the Chuck  -->
   <xacro:property name="gonio_chuck_tcp_offset_x_1" value="${gonio_right_configs_dict[current_gonio_right_chuck]['spawn_1_offset_from_gonio_x']}"/>
@@ -331,6 +316,30 @@
   <xacro:property name="Gonio_Right_Chuck_Cal_rx" value="${calibration_dict['Gonio_Right_Chuck_Joint']['rx_offset']}"/>
   <xacro:property name="Gonio_Right_Chuck_Cal_ry" value="${calibration_dict['Gonio_Right_Chuck_Joint']['ry_offset']}"/>
   <xacro:property name="Gonio_Right_Chuck_Cal_rz" value="${calibration_dict['Gonio_Right_Chuck_Joint']['rz_offset']}"/>
+
+
+  <link
+    name="Gonio_Right_Chuck_Origin">
+  </link>
+
+  <joint
+    name="Gonio_Right_Chuck_Origin_Joint"
+    type="fixed">
+      <origin xyz="
+      ${0.0 + Gonio_Right_Chuck_Cal_x * 0.000001} 
+      ${0.0 + Gonio_Right_Chuck_Cal_y * 0.000001} 
+      ${-0.05 + Gonio_Right_Chuck_Cal_z * 0.000001}" 
+      rpy="
+      ${0 + Gonio_Right_Chuck_Cal_rx * 3.14159265359/180} 
+      ${0 + Gonio_Right_Chuck_Cal_ry * 3.14159265359/180} 
+      ${0 + Gonio_Right_Chuck_Cal_rz * 3.14159265359/180}" />
+    <parent
+      link="Gonio_Right_Stage_2_Bottom" />
+    <child
+      link="Gonio_Right_Chuck_Origin" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
 
 
   <link
@@ -371,18 +380,17 @@
   </link>
 
 
-
   <joint
     name="Gonio_Right_Chuck_Joint"
     type="fixed">
     <origin xyz="
-      ${0.0 + Gonio_Right_Chuck_Cal_x * 0.000001} 
-      ${0.0 + Gonio_Right_Chuck_Cal_y * 0.000001} 
-      ${0.0 + Gonio_Right_Chuck_Cal_z * 0.000001}" 
+      ${0.0 } 
+      ${0.0 } 
+      ${0.0 }"
       rpy="
-      ${0 + Gonio_Right_Chuck_Cal_rx * 3.14159265359/180} 
-      ${0 + Gonio_Right_Chuck_Cal_ry * 3.14159265359/180} 
-      ${0 + Gonio_Right_Chuck_Cal_rz * 3.14159265359/180}" />
+      ${0} 
+      ${0} 
+      ${0}" />
     <parent
       link="Gonio_Right_Chuck_Origin" />
     <child

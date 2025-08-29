@@ -408,7 +408,7 @@
       <parent link="Z_Axis" />
       <child link="1K_Dispenser" />
       <axis xyz="0 0 -1" />
-      <limit lower="0" upper="0.04" effort="100" velocity="0.05" />
+      <limit lower="0" upper="0.035" effort="100" velocity="0.05" />
     </joint>
 
     <link name="1K_Dispenser_TCP">
@@ -878,7 +878,7 @@
       <joint name="TCP_Confocal_Sensor_Top_Joint" type="fixed">
         <origin xyz="
             ${0.176999957149375 + Confocal_Sensor_Top_TCP_Joint_Cal_x*0.000001} 
-            ${-0.0580000000000008+ Confocal_Sensor_Top_TCP_Joint_Cal_y*0.000001} 
+            ${-0.0580000000000008 + Confocal_Sensor_Top_TCP_Joint_Cal_y*0.000001} 
             ${-0.500500000000003 + Confocal_Sensor_Top_TCP_Joint_Cal_z*0.000001}" 
             rpy="
             ${0 + Confocal_Sensor_Top_TCP_Joint_Cal_rx*3.14159265359/180} 
@@ -1027,6 +1027,20 @@
       <axis xyz="0 0 1" />
       <limit lower="-0.008" upper="0" effort="0" velocity="0.005" />
     </joint>
+
+    <xacro:property name="Calibration_Cube_Bottom_Joint_Cal_z" value="${calibration_dict['Calibration_Cube_Bottom_Joint']['z_offset']}"/>
+
+    <link 
+      name="Calibration_Cube_Bottom">
+    </link>
+    
+    <joint name="Calibration_Cube_Bottom_Joint" type="fixed">
+      <origin xyz="0.0 0.0 ${-0.004 + Calibration_Cube_Bottom_Joint_Cal_z*0.000001}" rpy="0 0 0" />
+      <parent link="Calibration_Qube" />
+      <child link="Calibration_Cube_Bottom" />
+      <axis xyz="0 0 0" />
+    </joint>
+
 
   </xacro:macro>
 

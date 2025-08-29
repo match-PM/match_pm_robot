@@ -54,7 +54,7 @@ Calibration_Qube_Joint:
   x_offset: 0
   y_offset: 0
 #  z_offset: -1267
-  z_offset: -5000
+  z_offset: -11000
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0
@@ -124,10 +124,17 @@ Gonio_Left_Chuck_Joint:
 Gonio_Right_Chuck_Joint:
   x_offset: 0
   y_offset: 0
-  z_offset: 1000
+  z_offset: 1500
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0
 
+Calibration_Cube_Bottom_Joint:
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
 
 

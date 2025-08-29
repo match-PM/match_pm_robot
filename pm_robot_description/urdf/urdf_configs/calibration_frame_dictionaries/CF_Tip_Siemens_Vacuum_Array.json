@@ -3,12 +3,12 @@
   "unique_identifier": "CAL_Siemens_Vacuum_Array_",
   "frames": [
     {
-      "name": "Vision_Frame_1",
+      "name": "Vision_Frame",
       "parent_frame": "PM_Robot_Tool_TCP",
       "transformation": {
         "translation": {
-          "X": -13.0,
-          "Y": 7.5,
+          "X": 0.0,
+          "Y": 0.0,
           "Z": 0.0
         },
         "rotation": {
@@ -18,61 +18,18 @@
           "W": 1.0
         }
       },
-      "constraints": {}
-    },
-    {
-      "name": "Vision_Frame_2",
-      "parent_frame": "PM_Robot_Tool_TCP",
-      "transformation": {
-        "translation": {
-          "X": 13.0,
-          "Y": 7.5,
-          "Z": 0.0
-        },
-        "rotation": {
-          "X": 0.0,
-          "Y": 0.0,
-          "Z": 0.0,
-          "W": 1.0
+      "constraints": {
+        "inPlane": {
+          "refFrameNames": [
+            "Laser_Frame_1",
+            "Laser_Frame_2",
+            "Laser_Frame_3",
+            "Laser_Frame_4"
+          ],
+          "planeOffset": 0.0,
+          "normalAxis": "z"
         }
-      },
-      "constraints": {}
-    },
-    {
-      "name": "Vision_Frame_3",
-      "parent_frame": "PM_Robot_Tool_TCP",
-      "transformation": {
-        "translation": {
-          "X": 13.0,
-          "Y": -7.5,
-          "Z": 0.0
-        },
-        "rotation": {
-          "X": 0.0,
-          "Y": 0.0,
-          "Z": 0.0,
-          "W": 1.0
-        }
-      },
-      "constraints": {}
-    },
-    {
-      "name": "Vision_Frame_4",
-      "parent_frame": "PM_Robot_Tool_TCP",
-      "transformation": {
-        "translation": {
-          "X": -13.0,
-          "Y": -7.5,
-          "Z": 0.0
-        },
-        "rotation": {
-          "X": 0.0,
-          "Y": 0.0,
-          "Z": 0.0,
-          "W": 1.0
-        }
-      },
-      "constraints": {}
+      }
     },
     {
       "name": "Laser_Frame_1",
@@ -165,10 +122,7 @@
       "constraints": {
         "centroid": {
           "refFrameNames": [
-            "Vision_Frame_1",
-            "Vision_Frame_2",
-            "Vision_Frame_3",
-            "Vision_Frame_4"
+            "Vision_Frame"
           ],
           "dim": "xyz",
           "offsetValues": [
@@ -176,16 +130,6 @@
             0.0,
             0.0
           ]
-        },
-        "inPlane": {
-          "refFrameNames": [
-            "Laser_Frame_1",
-            "Laser_Frame_2",
-            "Laser_Frame_3",
-            "Laser_Frame_4"
-          ],
-          "planeOffset": 0.0,
-          "normalAxis": "z"
         }
       }
     },

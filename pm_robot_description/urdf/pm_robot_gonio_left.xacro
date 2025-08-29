@@ -170,16 +170,6 @@
 
     <!--%%%%%%%%%%%%% Gonio Left Chuck Definitions-->
 
-    <link name="Gonio_Left_Chuck_Origin">
-    </link>
-
-    <joint name="Gonio_Left_Chuck_Origin_Joint" type="fixed">
-      <origin xyz="0 0 -0.015" rpy="0 0 0" />
-      <parent link="Gonio_Left_Stage_2_Bottom" />
-      <child link="Gonio_Left_Chuck_Origin" />
-      <axis xyz="0 0 0" />
-    </joint>
-
     <!--%%%%%%%%%%%%% Gonio Left Example Chuck Definitions-->
     <!--%%%%%%%%%%%%% This is for the Chuck  -->
     <xacro:property name="gonio_chuck_tcp_offset_x" value="${gonio_left_configs_dict[current_gonio_left_chuck]['spawn_1_offset_from_gonio_x']}"/>
@@ -207,6 +197,25 @@
     <xacro:property name="Gonio_Left_Chuck_Cal_ry" value="${calibration_dict['Gonio_Left_Chuck_Joint']['ry_offset']}"/>
     <xacro:property name="Gonio_Left_Chuck_Cal_rz" value="${calibration_dict['Gonio_Left_Chuck_Joint']['rz_offset']}"/>
 
+
+    <link name="Gonio_Left_Chuck_Origin">
+    </link>
+
+    <joint name="Gonio_Left_Chuck_Origin_Joint" type="fixed">
+      <origin xyz="
+        ${0.0 + Gonio_Left_Chuck_Cal_x * 0.000001} 
+        ${0.0 + Gonio_Left_Chuck_Cal_y * 0.000001} 
+        ${-0.015 + Gonio_Left_Chuck_Cal_z * 0.000001}" 
+        rpy="
+        ${0 + Gonio_Left_Chuck_Cal_rx * 3.14159265359/180} 
+        ${0 + Gonio_Left_Chuck_Cal_ry * 3.14159265359/180} 
+        ${0 + Gonio_Left_Chuck_Cal_rz * 3.14159265359/180}" />
+      <parent link="Gonio_Left_Stage_2_Bottom" />
+      <child link="Gonio_Left_Chuck_Origin" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+
     <link name="Gonio_Left_Chuck">
       <inertial>
         <origin xyz="${gonio_chuck_xyz}" rpy="${gonio_chuck_rpy}"/>
@@ -230,14 +239,7 @@
     </link>
 
     <joint name="Gonio_Left_Chuck_Joint" type="fixed">
-        <origin xyz="
-        ${0.0 + Gonio_Left_Chuck_Cal_x * 0.000001} 
-        ${0.0 + Gonio_Left_Chuck_Cal_y * 0.000001} 
-        ${0.0 + Gonio_Left_Chuck_Cal_z * 0.000001}" 
-        rpy="
-        ${0 + Gonio_Left_Chuck_Cal_rx * 3.14159265359/180} 
-        ${0 + Gonio_Left_Chuck_Cal_ry * 3.14159265359/180} 
-        ${0 + Gonio_Left_Chuck_Cal_rz * 3.14159265359/180}" />
+      <origin xyz="0 0 0.00" rpy="0 0 0" />
       <parent link="Gonio_Left_Chuck_Origin" />
       <child link="Gonio_Left_Chuck" />
       <axis xyz="0 0 0" />
