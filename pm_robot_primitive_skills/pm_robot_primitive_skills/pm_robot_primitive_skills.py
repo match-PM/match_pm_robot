@@ -26,7 +26,7 @@ import copy
 class PrimitiveSkillsNode(Node):
     DISPENSER_TRAVEL_DISTANCE = 0.04
     DISPENSER_OFFSET_VALUE = 0.01
-    DEFAULT_DISPENSE_HEIGHT = 0.00001
+    DEFAULT_DISPENSE_HEIGHT = 0.5 # mm
     
     def __init__(self):
         super().__init__('pm_robot_primitive_skills')
@@ -354,7 +354,7 @@ class PrimitiveSkillsNode(Node):
         
         dispenser_prepared = False
 
-        if len(request.frame_names) != len(request.frame_dispense_times):
+        if len(request.frame_names) != len(request.frame_dispense_times_ms):
             self.logger.error(f"Frames list and dispense time list must have the same length!")
             response.success = False
             return response
@@ -374,10 +374,11 @@ class PrimitiveSkillsNode(Node):
                     self.logger.error("Preparing dispenser failed!")
                     response.success = False
                     return response
-                
+            
             success = self.dispense_at_frame(move_to_frame_request, 
                                              frame,
-                                             time=request.frame_dispense_times_ms[index])
+                                             time=request.frame_dispense_times_ms[index],
+                                             dispense_z_offset_mm=request.dispense_z_offset_mm[index])
             
             if not success:
                 response.success = False
@@ -432,10 +433,11 @@ class PrimitiveSkillsNode(Node):
                     self.logger.error("Preparing dispenser failed!")
                     response.success = False
                     return response
-                
+            
             success = self.dispense_at_frame(move_to_frame_request, 
                                              point_name="Test_Point_" + str(current_station.get_current_point()+1),
-                                             time=request.time_ms)
+                                             time=request.time_ms,
+                                             dispense_z_offset_mm=request.dispense_z_offset_mm)
             response.success = success
             
             if success:
@@ -531,12 +533,13 @@ class PrimitiveSkillsNode(Node):
 
     def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request, 
                           point_name: str,
-                          time:float = 0.5
+                          time:float = 0.5,
+                          dispense_z_offset_mm: float = DEFAULT_DISPENSE_HEIGHT
                           )->bool:
         
         # check flap open not needed
         # check dispenser extended not needed
-        move_to_frame_request.translation.z += float(self.DEFAULT_DISPENSE_HEIGHT)
+        move_to_frame_request.translation.z += float(dispense_z_offset_mm*1e-3)
         move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
 
         # move to top position

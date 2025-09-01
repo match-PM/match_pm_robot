@@ -24,7 +24,9 @@ import yaml
 from yaml.loader import SafeLoader
 import sys
 from launch.substitutions import Command
+from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig
 
+pm_robot_config = PmRobotConfig(use_real_config=True)
 
 def generate_launch_description():
     bringup_config_path = os.path.join(get_package_share_directory("pm_robot_bringup"),"config/pm_robot_bringup_config.yaml",)
@@ -411,11 +413,17 @@ def generate_launch_description():
         ld.add_action(delayed_pm_moveit_server)
         ld.add_action(gonio_orientation_solver_node)
 
-    if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
-        ld.add_action(launch_gonio_left_controller)
-    if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
+    # if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
+    #     ld.add_action(launch_gonio_left_controller)
+    # if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
+    #     ld.add_action(launch_gonio_right_controller)
+    
+    if pm_robot_config.gonio_right.get_activate_status():
         ld.add_action(launch_gonio_right_controller)
 
+    if pm_robot_config.gonio_left.get_activate_status():
+        ld.add_action(launch_gonio_left_controller)  
+        
     #ld.add_action(primitive_skills_node)
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)

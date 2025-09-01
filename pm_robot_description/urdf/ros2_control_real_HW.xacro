@@ -4,6 +4,21 @@
 
         <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 
+        <xacro:if value="${launch_mode == 'real_HW'}">
+            <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
+            <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
+
+            <xacro:property name="local_calibration_file_path" value="${path_dict['pm_robot_calibration_file_path']}"/>
+            <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
+
+            <!-- REAL -->
+            <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+            <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/>
+
+        </xacro:if>
+
+        <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+
         <ros2_control name="PMSystem" type="system">
             <hardware>
                 <plugin>pm_hardware_interface/PMSystem</plugin>

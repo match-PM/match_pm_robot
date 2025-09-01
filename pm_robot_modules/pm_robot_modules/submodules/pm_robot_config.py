@@ -2,7 +2,7 @@ import sys
 import yaml
 from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
 import copy
-
+import os
 class ParallelGripperConfig():
     TOOL_GRIPPER_1_JAW_IDENT = 'pm_robot_tool_parallel_gripper_1_jaw'
     TOOL_GRIPPER_2_JAW_IDENT = 'pm_robot_tool_parallel_gripper_2_jaws'
@@ -316,48 +316,101 @@ class PmRobotConfig:
     This class is used to configure the robot.
     """
 
-    def __init__(self):
-
+    def __init__(self, use_real_config = False):
         try:
-            self.path = get_package_share_directory('pm_robot_bringup')
-        except PackageNotFoundError as e:
-            raise RuntimeError(f"Package 'pm_robot_bringup' not found. Please make sure it is installed.")
+            self.sim_bringup_config_path = os.path.join(get_package_share_directory("pm_robot_bringup"),"config/pm_robot_bringup_config.yaml",)
+            self.sim_joint_config_path = os.path.join(get_package_share_directory("pm_robot_description"),"calibration_config/pm_robot_joint_calibration.yaml",)
+            self.file_path_pm_robot_config = os.path.join(get_package_share_directory("pm_robot_description"),"calibration_config/pm_robot_path_real_HW.yaml",)
+
+        except PackageNotFoundError:
+            raise RuntimeError("Package 'pm_robot_bringup' not found. Please make sure it is installed.")
         
-        self._config_data = {}
-        self._file_path = f'{self.path}/config/pm_robot_bringup_config.yaml'
+        self._init_local_configs_real_HW()
+
+        if use_real_config:
+            self._active_path = self._real_bringup_config_path
+        else:
+            self._active_path = self.sim_bringup_config_path
+
+            
+
         self._load_config()
-        self.tool = PmRobotToolsConfig(self._config_data)
-        
-        self.gonio_left = GonioConfig(type_station=GonioConfig.GONIO_LEFT,
-                                      full_config_dict= self._config_data)
-        
-        self.gonio_right = GonioConfig(type_station=GonioConfig.GONIO_RIGHT,
-                                        full_config_dict= self._config_data)
-        
-        self.dispenser_1k = DispenserTipConfig(self._config_data['pm_robot_1K_dispenser_tip'])
-        
-        self.smarpod_station = GonioConfig(type_station=GonioConfig.SMARPOD_STATION,
-                                           full_config_dict= self._config_data)
-        
+        self._initialize_subcomponents()
+
     def _load_config(self):
-        with open(self._file_path, 'r') as file:
+        with open(self._active_path, 'r') as file:
             self._config_data = yaml.safe_load(file)
-        
+
+    def _initialize_subcomponents(self):
+        self.tool = PmRobotToolsConfig(self._config_data)
+
+        self.gonio_left = GonioConfig(
+            type_station=GonioConfig.GONIO_LEFT,
+            full_config_dict=self._config_data
+        )
+
+        self.gonio_right = GonioConfig(
+            type_station=GonioConfig.GONIO_RIGHT,
+            full_config_dict=self._config_data
+        )
+
+        self.dispenser_1k = DispenserTipConfig(
+            self._config_data['pm_robot_1K_dispenser_tip']
+        )
+
+        self.smarpod_station = GonioConfig(
+            type_station=GonioConfig.SMARPOD_STATION,
+            full_config_dict=self._config_data
+        )
+
     def get_config_data(self):
         return copy.deepcopy(self._config_data)
-    
+
     def save_config(self):
-        with open(self._file_path, 'w') as file:
+        with open(self._active_path, 'w') as file:
             yaml.dump(self._config_data, file, default_flow_style=False)
-            
+
     def reload_config(self):
+        """
+        Reload the YAML file and reinitialize the config-based subcomponents.
+        """
         self._load_config()
-        self.tool.reload_config()
-        self.gonio_left.reload_config()
-        self.gonio_right.reload_config()
-        self.dispenser_1k.reload_config()
-        self.smarpod_station.reload_config()
+        self._initialize_subcomponents()
+
+    def set_real_HW(self, use_real_config:bool):
+        self._active_path = self._real_bringup_config_path if use_real_config else self.sim_bringup_config_path
+        self.reload_config()
+
+    def get_joint_config_path(self, use_real_HW:bool):
+        if use_real_HW:
+            return self._real_joint_config_path
+        return self.sim_joint_config_path
+    
+    def _init_local_configs_real_HW(self):
         
+        try:
+            with open(self.file_path_pm_robot_config) as f:
+                pm_robot_config = yaml.safe_load(f)    
+            self._real_bringup_config_path = pm_robot_config['pm_robot_bringup_config_file_path']
+            self._real_joint_config_path = pm_robot_config['pm_robot_calibration_file_path']
+        except Exception as e:
+            print(f"Error reading {self.file_path_pm_robot_config}: {e}")
+            raise LookupError("TBD")
+
+        # if the file does not exist
+        if not os.path.exists(self._real_bringup_config_path):
+            # ensure folder exists
+            os.makedirs(os.path.dirname(self._real_bringup_config_path), exist_ok=True)
+            #copy the file from 'sim_bringup_config_path'
+            os.system(f"cp {self.sim_bringup_config_path} {self._real_bringup_config_path}")
+
+        if not os.path.exists(self._real_joint_config_path):
+            print(f"{self._real_joint_config_path} does not exist")
+            # Handle the error (e.g., use default values or exit)
+            os.makedirs(os.path.dirname(self._real_joint_config_path), exist_ok=True)
+            #copy the file from 'sim_joint_config_path'
+            os.system(f"cp {self.sim_joint_config_path} {self._real_joint_config_path}")
+
 
 
     

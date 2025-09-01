@@ -306,7 +306,12 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     float current_joint_value = global_joint_state->position[current_joint_index];
     float differrence = std::abs(current_joint_value - target_joint_values[i]);
 
-    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta: %.9f, Delta_Velue: %.9f", target_joints[i].c_str(), target_joint_values[i], current_joint_value, differrence, delta_value);
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta (um/rad): %.9f, Used Theshold (um/rad): %.9f",
+                target_joints[i].c_str(),
+                target_joint_values[i],
+                current_joint_value,
+                differrence * 1e6,
+                delta_value * 1e6);
 
     if (differrence > delta_value)
     {
@@ -982,7 +987,7 @@ void wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vect
   }
   if (wait_time_counter >= max_wait_time_counter)
   {
-    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "WARNING: Goal not reached in time! Assuming goal reached!");
+    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "ERROR: Goal not reached in time! Assuming goal reached!");
   }
   // else
   // {

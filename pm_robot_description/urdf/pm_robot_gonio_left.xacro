@@ -21,12 +21,12 @@
       <xacro:property name="local_robot_bringup_file_path" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
 
       <!-- REAL -->
-      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
-    <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/> -->
-
+      <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
+      <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/>
+      
       <!-- SIM -->
-      <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
-      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+      <!-- <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+      <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" /> -->
 
     </xacro:if>
 

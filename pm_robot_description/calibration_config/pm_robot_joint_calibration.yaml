@@ -29,7 +29,7 @@ Laser_Toolhead_TCP_Joint:
 Cam1_Toolhead_TCP_Joint:
   x_offset: 0
   y_offset: 0
-  z_offset: -2602.694000000
+  z_offset: -1974.540516092
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0
