@@ -411,7 +411,7 @@ def generate_launch_description():
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)
         ld.add_action(delayed_pm_moveit_server)
-        ld.add_action(gonio_orientation_solver_node)
+        #ld.add_action(gonio_orientation_solver_node)
 
     # if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
     #     ld.add_action(launch_gonio_left_controller)
@@ -428,7 +428,7 @@ def generate_launch_description():
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)
     ld.add_action(pm_nozzle_controller_spawner)
-    # ld.add_action(pm_uv_controller)
+    ld.add_action(pm_uv_controller)
     ld.add_action(pm_sensor_controller)
     ld.add_action(pm_opcua_skills_controller)
     ld.add_action(primitive_skills_node)

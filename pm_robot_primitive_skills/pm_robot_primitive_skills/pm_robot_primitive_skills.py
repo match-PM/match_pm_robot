@@ -52,7 +52,11 @@ class PrimitiveSkillsNode(Node):
         self.dispense_test_point_srv = self.create_service(pm_msg_srv.DispenseTestPoints, self.get_name()+'/dispense_test_point', self.dispense_test_point_callback)
         self.reset_test_station_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/reset_test_station', self.reset_test_station_callback)
         self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DisppenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
-        
+        self.move_uv_in_curing_position_service = self.create_service(SetBool, self.get_name()+"/move_uv_in_curing_position", self.move_uv_in_curing_position_service_callback,callback_group=self.callback_group_mu_ex)
+        self.uv_curing = self.create_service(pm_msg_srv.UVCuringSkill, self.get_name()+'/uv_curing', self.uv_curing_callback, callback_group=self.callback_group_mu_ex)
+        self.get_confocal_top_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_top_measurement', self.get_confocal_top_measurement)
+        self.get_confocal_bottom_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_bottom_measurement', self.get_confocal_bottom_measurement)
+
         self.logger.info("Primitive skills node started!")
         
         # create clients
@@ -77,26 +81,20 @@ class PrimitiveSkillsNode(Node):
         self.client_get_confocal_bottom_measurement = self.create_client(GetValue, '/uepsilon_two_channel_controller/IFC2422/ch2/distance/srv',callback_group=self.callback_group_re)
         self.client_get_confocal_top_measurement = self.create_client(GetValue, '/uepsilon_two_channel_controller/IFC2422/ch1/distance/srv',callback_group=self.callback_group_re)
 
-        if not sim_time:
-            # self.dispense_1K = self.create_service(DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
-            self.move_uv_in_curing_position_service = self.create_service(SetBool, self.get_name()+"/move_uv_in_curing_position", self.move_uv_in_curing_position_service_callback,callback_group=self.callback_group_mu_ex)
-            self.uv_curing = self.create_service(pm_msg_srv.UVCuringSkill, self.get_name()+'/uv_curing', self.uv_curing_callback, callback_group=self.callback_group_mu_ex)
+        # self.dispense_1K = self.create_service(DispenseForTime, self.get_name()+'/dispense_1K', self.dispense_callback)
+        
+        self.client_uv_front_forward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Front_Joint/MoveForward",callback_group = self.callback_group_re)
+        self.client_uv_front_backward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Front_Joint/MoveBackward",callback_group = self.callback_group_re)
+        self.client_uv_back_forward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveForward",callback_group = self.callback_group_re)
+        self.client_uv_back_backward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveBackward",callback_group = self.callback_group_re)
 
-            self.client_uv_front_forward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Front_Joint/MoveForward",callback_group = self.callback_group_re)
-            self.client_uv_front_backward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Front_Joint/MoveBackward",callback_group = self.callback_group_re)
-            self.client_uv_back_forward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveForward",callback_group = self.callback_group_re)
-            self.client_uv_back_backward= self.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveBackward",callback_group = self.callback_group_re)
+        self.client_dips_1k_on = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
+        self.client_dips_1k_off = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/TurnOff',callback_group = self.callback_group_re)
 
-            self.client_dips_1k_on = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
-            self.client_dips_1k_off = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/TurnOff',callback_group = self.callback_group_re)
-
-            self.client_uv_controller_on = self.create_client(pm_msg_srv.UVSetOnOff, '/pm_uv_controller/Hoenle_UV/SetOnOff',callback_group = self.callback_group_re)
-            self.client_uv_controller_time = self.create_client(pm_msg_srv.UVSetTime, '/pm_uv_controller/Hoenle_UV/SetTime',callback_group = self.callback_group_re)
-            self.client_uv_controller_intensity = self.create_client(pm_msg_srv.UVSetPower, '/pm_uv_controller/Hoenle_UV/SetPower',callback_group = self.callback_group_re)
-
-            self.get_confocal_top_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_top_measurement', self.get_confocal_top_measurement)
-            self.get_confocal_bottom_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_bottom_measurement', self.get_confocal_bottom_measurement)
-
+        self.client_uv_controller_on = self.create_client(pm_msg_srv.UVSetOnOff, '/pm_uv_controller/Hoenle_UV/SetOnOff',callback_group = self.callback_group_re)
+        self.client_uv_controller_time = self.create_client(pm_msg_srv.UVSetTime, '/pm_uv_controller/Hoenle_UV/SetTime',callback_group = self.callback_group_re)
+        self.client_uv_controller_intensity = self.create_client(pm_msg_srv.UVSetPower, '/pm_uv_controller/Hoenle_UV/SetPower',callback_group = self.callback_group_re)
+    
         self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
         
     
@@ -104,16 +102,16 @@ class PrimitiveSkillsNode(Node):
         self._current_force_sensor_data = msg
 
 
-    def uv_curing_callback(self, request: pm_msg_srv.UVCuringSkill.Request, response:pm_msg_srv.UVCuringSkill.Response):
+    def uv_curing_callback(self, request: pm_msg_srv.UVCuringSkill.Request, 
+                           response:pm_msg_srv.UVCuringSkill.Response):
+        
         self.logger.info("UV curing callback called!")
         try:
             intensity_request = pm_msg_srv.UVSetPower.Request()
             intensity_request.power = request.intensity_percent
 
             if not self.client_uv_controller_intensity.wait_for_service(timeout_sec=1.0):
-                self.logger.error("Service '/pm_uv_controller/Hoenle_UV/SetPower' not available")
-                response.success = False
-                return response
+                raise ValueError("Service '/pm_uv_controller/Hoenle_UV/SetPower' not available")
             
             self.client_uv_controller_intensity.call(intensity_request)
             self.logger.info(f"Set UV intensity to {request.intensity_percent}%")
@@ -122,21 +120,17 @@ class PrimitiveSkillsNode(Node):
             time_request.time = request.duration
 
             if not self.client_uv_controller_time.wait_for_service(timeout_sec=1.0):
-                self.logger.error("Service '/pm_uv_controller/Hoenle_UV/SetTime' not available")
-                response.success = False
-                return response
-            
+                raise ValueError("Service '/pm_uv_controller/Hoenle_UV/SetTime' not available")
+
             self.client_uv_controller_time.call(time_request)
             self.logger.info(f"Set UV time to {request.duration} seconds")
 
             on_request = pm_msg_srv.UVSetOnOff.Request()
-            on_request.turn_on = [True, True, True, True]
+            on_request.turn_on = request.set_activation
 
             if not self.client_uv_controller_on.wait_for_service(timeout_sec=1.0):
-                self.logger.error("Service '/pm_uv_controller/Hoenle_UV/SetOnOff' not available")
-                response.success = False
-                return response
-            
+                raise ValueError("Service '/pm_uv_controller/Hoenle_UV/SetOnOff' not available")
+
             self.client_uv_controller_on.call(on_request)
             self.logger.info("Turned on UV LEDs")
 
@@ -145,11 +139,11 @@ class PrimitiveSkillsNode(Node):
 
             response.success = True
             response.message = "UV curing successful!"
-
+        
         except Exception as e:
-            self.logger.error(f"Error in uv_curing_callback: {e}")
             response.success = False
-            response.message = "Error in uv_curing_callback"
+            response.message = f"Error in uv_curing_callback: {e}"
+            self.logger.error(f"{response.message}")
             return response
 
         return response
@@ -530,7 +524,7 @@ class PrimitiveSkillsNode(Node):
         response.data = -1*(response_cl.data - 3.0) * 1e3  # convert to micrometers
 
         return response
-
+    
     def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request, 
                           point_name: str,
                           time:float = 0.5,
@@ -557,7 +551,10 @@ class PrimitiveSkillsNode(Node):
             return False
         
         # dispense
-
+        if time <=0:
+            self.logger.error(f"Dispense time must be greater than 0 ('{time}')!")
+            return False
+        
         dispense_success = self.dispense(time=time)
 
         if not dispense_success:
@@ -566,7 +563,7 @@ class PrimitiveSkillsNode(Node):
         create_adhesive_viz_point_request = pm_msg_srv.CreateVizAdhesivePoint.Request()
         create_adhesive_viz_point_request.point.parent_frame = move_to_frame_request.target_frame
         
-        create_adhesive_viz_point_request.point.hight = 1.0 # in mm
+        create_adhesive_viz_point_request.point.hight = dispense_z_offset_mm # in mm
         create_adhesive_viz_point_request.point.diameter = 1.0 # in mm
         create_adhesive_viz_point_request.point.name = point_name
         success_create_viz_point = self.create_adhesive_viz_point(create_adhesive_viz_point_request)

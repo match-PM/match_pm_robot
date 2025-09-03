@@ -1444,13 +1444,31 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
   request->gonio_endeffector = target_endeffector_frame;
 
   start_plan_time = std::chrono::high_resolution_clock::now();
+  auto timeout = std::chrono::seconds(5);
+
   if (planning_group == "PM_Robot_Gonio_Right")
   {
+    if (!get_gonio_right_solution_client->wait_for_service(timeout))
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"),
+                   "Service client '%s' not available after waiting for 5 seconds.",
+                   get_gonio_right_solution_client->get_service_name());
+      return {false, joint_names, target_joint_values};
+    }
+
     auto future = get_gonio_right_solution_client->async_send_request(request);
     response = future.get();
   }
   else if (planning_group == "PM_Robot_Gonio_Left")
   {
+    if (!get_gonio_left_solution_client->wait_for_service(timeout))
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"),
+                   "Service client '%s' not available after waiting for 5 seconds.",
+                   get_gonio_left_solution_client->get_service_name());
+      return {false, joint_names, target_joint_values};
+    }
+
     auto future = get_gonio_left_solution_client->async_send_request(request);
     response = future.get();
   }
