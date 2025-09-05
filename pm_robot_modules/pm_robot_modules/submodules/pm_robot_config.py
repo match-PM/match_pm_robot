@@ -180,6 +180,8 @@ class GonioConfig():
     
 class VacuumGripperConfig():
     TOOL_VACUUM_IDENT = 'pm_robot_vacuum_tools'
+    TOOL_TIP_LINK_NAME = 'PM_Robot_Vacuum_Tool_Tip'
+    TOOL_LINK_NAME = 'PM_Robot_Vacuum_Tool'
 
     def __init__(self, config_value) -> None:
         self._config_value = config_value
