@@ -411,8 +411,8 @@ def generate_launch_description():
         ld.add_action(delayed_rviz)
         ld.add_action(delayed_move_group)
         ld.add_action(delayed_pm_moveit_server)
-        #ld.add_action(gonio_orientation_solver_node)
-
+        ld.add_action(gonio_orientation_solver_node)
+    
     # if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
     #     ld.add_action(launch_gonio_left_controller)
     # if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:

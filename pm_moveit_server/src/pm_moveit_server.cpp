@@ -272,7 +272,17 @@ std::tuple<bool, geometry_msgs::msg::Pose> get_pose_of_frame(std::string frame_n
 
 bool check_goal_reached(std::vector<std::string> target_joints, std::vector<double> target_joint_values, float delta_trans, float delta_rot)
 {
+  // log target joints and values
+  // RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Checking goal reached for %zu joints", target_joints.size());
+  // for (size_t i = 0; i < target_joints.size(); i++)
+  // {
+  //   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f",
+  //               target_joints[i].c_str(),
+  //               target_joint_values[i]);
+  // }
+
   float delta_value;
+  float multiplier = 1;
   for (size_t i = 0; i < target_joints.size(); i++)
   {
     if (target_joints[i] == "T_Axis_Joint" ||
@@ -285,13 +295,21 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
         target_joints[i] == "Gonio_Left_Stage_2_Joint")
     {
       // This means rotation
-      delta_value = delta_rot;
+      delta_value = delta_rot * M_PI / 180.0; // convert to radians
+      multiplier = 180.0 / M_PI; // convert to degrees
     }
     else
     {
       // This means translation
       delta_value = delta_trans;
+      multiplier = 1e6; // convert to micrometers
     }
+
+    // log joint and target value
+    // RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Delta (um/rad): %.9f",
+    //             target_joints[i].c_str(),
+    //             target_joint_values[i],
+    //             delta_value * 1e6);
 
     // find joint in joint state
     auto it = std::find(global_joint_state->name.begin(), global_joint_state->name.end(), target_joints[i]);
@@ -304,16 +322,16 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     }
     int current_joint_index = std::distance(global_joint_state->name.begin(), it);
     float current_joint_value = global_joint_state->position[current_joint_index];
-    float differrence = std::abs(current_joint_value - target_joint_values[i]);
+    float difference = std::abs(current_joint_value - target_joint_values[i]);
 
-    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta (um/rad): %.9f, Used Theshold (um/rad): %.9f",
+    RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta (um/deg): %.9f, Used Theshold (um/deg): %.9f",
                 target_joints[i].c_str(),
                 target_joint_values[i],
                 current_joint_value,
-                differrence * 1e6,
-                delta_value * 1e6);
+                difference * multiplier,
+                delta_value * multiplier);
 
-    if (differrence > delta_value)
+    if (difference > delta_value)
     {
       return false;
     }
@@ -977,6 +995,7 @@ void publish_target_joint_trajectory_smarpod(std::string planning_group,
 void wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vector<double> target_joint_values, float lateral_tolerance, float angular_tolerance)
 {
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for goal to be reached...");
+
   int max_wait_time_counter = 50;
   int wait_time_counter = 0;
 
@@ -1054,7 +1073,6 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   std::string msg;
 
   move_group->setStartStateToCurrentState();
-
   bool success_ik;
   // bool extract_frame_success;
   //  Get the target_pose
@@ -1117,9 +1135,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   // END Plan&Execute
 
   float lateral_tolerance_coarse = 1e-2;
-  float angular_tolerance_coarse = 0.01;
+  float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
-  float angular_tolerance_fine = 0.0001;
+  float angular_tolerance_fine = 0.001;
 
   start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
 
@@ -1272,9 +1290,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
 
   // START Wait For Movement
   float lateral_tolerance_coarse = 1e-2;
-  float angular_tolerance_coarse = 0.01;
+  float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
-  float angular_tolerance_fine = 0.0001;
+  float angular_tolerance_fine = 0.001;
 
   start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
@@ -1343,9 +1361,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
   }
 
   float lateral_tolerance_coarse = 1e-2;
-  float angular_tolerance_coarse = 0.01;
+  float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
-  float angular_tolerance_fine = 0.0001;
+  float angular_tolerance_fine = 0.001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
@@ -1394,6 +1412,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
   // Get the pose of the gonio
   bool gonio_pose_success = false;
   geometry_msgs::msg::Pose gonio_pose;
+
+  joint_names = move_group->getJointNames();
 
   auto request = std::make_shared<pm_moveit_interfaces::srv::GetGonioSolution::Request>();
   auto response = std::make_shared<pm_moveit_interfaces::srv::GetGonioSolution::Response>();
@@ -1500,9 +1520,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
 
   start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
   float lateral_tolerance_coarse = 1e-2;
-  float angular_tolerance_coarse = 0.01;
+  float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
-  float angular_tolerance_fine = 0.0001;
+  float angular_tolerance_fine = 0.001;
 
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
@@ -1895,7 +1915,7 @@ void reset_gonio_left(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Requ
   publish_target_joint_trajectory_gonio_left({0.0, 0.0}, 1);
 
   float lateral_tolerance_fine = 1e-6;
-  float angular_tolerance_fine = 0.0001;
+  float angular_tolerance_fine = 0.001;
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
 
   response->success = true;
@@ -1916,7 +1936,7 @@ void reset_gonio_right(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Req
   publish_target_joint_trajectory_gonio_right({0.0, 0.0}, 1);
 
   float lateral_tolerance_fine = 1e-6;
-  float angular_tolerance_fine = 0.0001;
+  float angular_tolerance_fine = 0.001;
   wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
 
   response->success = true;

@@ -325,9 +325,14 @@ class PmRobotConfig:
         except PackageNotFoundError:
             raise RuntimeError("Package 'pm_robot_bringup' not found. Please make sure it is installed.")
         
+        self._real_config_available = True
+
         self._init_local_configs_real_HW()
 
-        if use_real_config:
+
+        self._use_real_config = use_real_config
+
+        if self._use_real_config:
             self._active_path = self._real_bringup_config_path
         else:
             self._active_path = self.sim_bringup_config_path
@@ -378,8 +383,9 @@ class PmRobotConfig:
         self._initialize_subcomponents()
 
     def set_real_HW(self, use_real_config:bool):
-        self._active_path = self._real_bringup_config_path if use_real_config else self.sim_bringup_config_path
-        self.reload_config()
+        if self._real_config_available:
+            self._active_path = self._real_bringup_config_path if use_real_config else self.sim_bringup_config_path
+            self.reload_config()
 
     def get_joint_config_path(self, use_real_HW:bool):
         if use_real_HW:
@@ -397,19 +403,23 @@ class PmRobotConfig:
             print(f"Error reading {self.file_path_pm_robot_config}: {e}")
             raise LookupError("TBD")
 
-        # if the file does not exist
-        if not os.path.exists(self._real_bringup_config_path):
-            # ensure folder exists
-            os.makedirs(os.path.dirname(self._real_bringup_config_path), exist_ok=True)
-            #copy the file from 'sim_bringup_config_path'
-            os.system(f"cp {self.sim_bringup_config_path} {self._real_bringup_config_path}")
+        try:
+            # if the file does not exist
+            if not os.path.exists(self._real_bringup_config_path):
+                # ensure folder exists
+                os.makedirs(os.path.dirname(self._real_bringup_config_path), exist_ok=True)
+                #copy the file from 'sim_bringup_config_path'
+                os.system(f"cp {self.sim_bringup_config_path} {self._real_bringup_config_path}")
 
-        if not os.path.exists(self._real_joint_config_path):
-            print(f"{self._real_joint_config_path} does not exist")
-            # Handle the error (e.g., use default values or exit)
-            os.makedirs(os.path.dirname(self._real_joint_config_path), exist_ok=True)
-            #copy the file from 'sim_joint_config_path'
-            os.system(f"cp {self.sim_joint_config_path} {self._real_joint_config_path}")
+            if not os.path.exists(self._real_joint_config_path):
+                print(f"{self._real_joint_config_path} does not exist")
+                # Handle the error (e.g., use default values or exit)
+                os.makedirs(os.path.dirname(self._real_joint_config_path), exist_ok=True)
+                #copy the file from 'sim_joint_config_path'
+                os.system(f"cp {self.sim_joint_config_path} {self._real_joint_config_path}")
+        except Exception as e:
+            self._real_config_available = False
+            self.set_real_HW(False)
 
 
 
