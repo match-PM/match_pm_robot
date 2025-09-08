@@ -271,6 +271,16 @@ def generate_launch_description():
         ],
         )   
     
+    pm_uv_cart_launch = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "pm_uv_cart_manual_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+        )  
+    
     pm_parallel_gripper_jaw_controller_launch = Node(
         package='controller_manager',
         executable='spawner',
@@ -369,6 +379,8 @@ def generate_launch_description():
     ld.add_action(launch_XYZT_controllers)
     ld.add_action(forward_launch)
     ld.add_action(gazebo_pneumatic_controller)
+    ld.add_action(pm_uv_cart_launch)
+
     #ld.add_action(primitive_skills_node)
     if bringup_config['pm_robot_gonio_left']['with_Gonio_Left']:
         ld.add_action(launch_gonio_left_controller)

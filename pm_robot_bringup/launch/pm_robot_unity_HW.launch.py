@@ -250,6 +250,16 @@ def generate_launch_description():
         emulate_tty=True
     )
 
+    pm_uv_cart_launch = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "pm_uv_cart_manual_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+        )  
+
     pm_nozzle_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -412,8 +422,9 @@ def generate_launch_description():
     ld.add_action(pm_nozzle_controller_spawner)
     ld.add_action(pm_uv_controller)
     ld.add_action(pm_sensor_controller)
-    
-    ld.add_action(primitive_skills_node)  
+    ld.add_action(pm_uv_cart_launch)
+
+    ld.add_action(primitive_skills_node)
     ld.add_action(adhesive_displayer)
     
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):

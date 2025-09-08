@@ -24,6 +24,22 @@ controller_manager:
     pm_parallel_gripper_2_jaws_controller:
       type: position_controllers/JointGroupPositionController
 
+    pm_uv_cart_manual_controller:
+      type: position_controllers/JointGroupPositionController
+
+pm_uv_cart_manual_controller:
+  ros__parameters:
+    joints:
+     - UV_Slider_X_Front_Joint
+     - UV_Slider_X_Back_Joint
+     
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+
+
 pm_parallel_gripper_2_jaws_controller:
   ros__parameters:
     joints:

@@ -56,6 +56,7 @@ class PrimitiveSkillsNode(Node):
         self.uv_curing = self.create_service(pm_msg_srv.UVCuringSkill, self.get_name()+'/uv_curing', self.uv_curing_callback, callback_group=self.callback_group_mu_ex)
         self.get_confocal_top_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_top_measurement', self.get_confocal_top_measurement)
         self.get_confocal_bottom_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_bottom_measurement', self.get_confocal_bottom_measurement)
+        self.set_uv_cart_position_srv = self.create_service(pm_msg_srv.SetUvSliderXPositions, self.get_name()+'/set_uv_slider_manual_positions', self.set_uv_cart_positions, callback_group=self.callback_group_mu_ex)
 
         self.logger.info("Primitive skills node started!")
         
@@ -94,7 +95,8 @@ class PrimitiveSkillsNode(Node):
         self.client_uv_controller_on = self.create_client(pm_msg_srv.UVSetOnOff, '/pm_uv_controller/Hoenle_UV/SetOnOff',callback_group = self.callback_group_re)
         self.client_uv_controller_time = self.create_client(pm_msg_srv.UVSetTime, '/pm_uv_controller/Hoenle_UV/SetTime',callback_group = self.callback_group_re)
         self.client_uv_controller_intensity = self.create_client(pm_msg_srv.UVSetPower, '/pm_uv_controller/Hoenle_UV/SetPower',callback_group = self.callback_group_re)
-    
+        self.uv_cart_publisher = self.create_publisher(Float64MultiArray,"/pm_uv_cart_manual_controller/commands",10)
+
         self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
         
     
@@ -148,6 +150,18 @@ class PrimitiveSkillsNode(Node):
 
         return response
 
+
+    def set_uv_cart_positions(self, request:pm_msg_srv.SetUvSliderXPositions.Request, response:pm_msg_srv.SetUvSliderXPositions.Response):
+
+        cmd = Float64MultiArray()
+        cmd.data.append(request.uv_slider_front_position_mm*1e-3) # convert to m
+        cmd.data.append(request.uv_slider_back_position_mm*1e-3) # convert to m 
+        self.uv_cart_publisher.publish(cmd)
+
+        self.logger.warning(f"Setting 'UV Cart Front' to '{request.uv_slider_front_position_mm} mm'")
+        self.logger.warning(f"Setting 'UV Cart Back' to '{request.uv_slider_back_position_mm} mm'")
+        response.success = True
+        return response
 
     def move_dispenser_to_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)-> bool:
         call_async = False

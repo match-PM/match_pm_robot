@@ -104,6 +104,7 @@
                 </command_interface>
                 <state_interface name="position"/>
             </joint>
+            
 
             <!-- Hexapod -->
             <xacro:if value="${current_pm_robot_bringup_config['pm_smparpod_station']['with_smarpod_station']}">
