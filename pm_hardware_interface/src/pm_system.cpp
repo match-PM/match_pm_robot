@@ -208,8 +208,8 @@ std::vector<StateInterface> PMSystem::export_state_interfaces()
 
     std::vector<std::string> dummies{
         "Calibration_Qube_Joint",
-        "UV_Slider_X_Back_Joint",
-        "UV_Slider_X_Front_Joint",
+        //"UV_Slider_X_Back_Joint",
+        //"UV_Slider_X_Front_Joint",        // is now controlled via the moc hardware interface
     };
 
     for (auto &dummy : dummies)

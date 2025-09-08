@@ -96,7 +96,7 @@ class PrimitiveSkillsNode(Node):
         self.client_uv_controller_time = self.create_client(pm_msg_srv.UVSetTime, '/pm_uv_controller/Hoenle_UV/SetTime',callback_group = self.callback_group_re)
         self.client_uv_controller_intensity = self.create_client(pm_msg_srv.UVSetPower, '/pm_uv_controller/Hoenle_UV/SetPower',callback_group = self.callback_group_re)
         self.uv_cart_publisher = self.create_publisher(Float64MultiArray,"/pm_uv_cart_manual_controller/commands",10)
-
+        
         self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
         
     

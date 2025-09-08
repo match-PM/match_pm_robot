@@ -296,7 +296,7 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     {
       // This means rotation
       delta_value = delta_rot * M_PI / 180.0; // convert to radians
-      multiplier = 180.0 / M_PI; // convert to degrees
+      multiplier = 180.0 / M_PI;              // convert to degrees
     }
     else
     {
@@ -992,7 +992,7 @@ void publish_target_joint_trajectory_smarpod(std::string planning_group,
   smarpod_trajectory_publisher->publish(*trajectory_msg);
 }
 
-void wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vector<double> target_joint_values, float lateral_tolerance, float angular_tolerance)
+bool wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vector<double> target_joint_values, float lateral_tolerance, float angular_tolerance)
 {
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for goal to be reached...");
 
@@ -1007,7 +1007,9 @@ void wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vect
   if (wait_time_counter >= max_wait_time_counter)
   {
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "ERROR: Goal not reached in time! Assuming goal reached!");
+    return false;
   }
+  return true;
   // else
   // {
   //   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Goal reached!");
@@ -1140,8 +1142,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   float angular_tolerance_fine = 0.001;
 
   start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
+  bool wait_success;
 
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
   log_target_pose_delta(endeffector, target_pose);
 
@@ -1149,13 +1152,13 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   if (planning_group == "smarpod_endeffector")
   {
     publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1);
-    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+    wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
 
   else
   {
     publish_target_joint_trajectory_xyzt(planning_group, target_joint_values, 0.1);
-    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+    wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
 
@@ -1167,7 +1170,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
 
   log_time_measures();
 
-  return std::make_tuple(move_success, joint_names, target_joint_values, msg);
+  return std::make_tuple(wait_success, joint_names, target_joint_values, msg);
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_frame(std::string planning_group,
@@ -1293,9 +1296,10 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.001;
+  bool wait_success;
 
   start_wait_for_movement_end = std::chrono::high_resolution_clock::now();
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
   log_target_pose_delta(endeffector, target_pose);
 
@@ -1303,12 +1307,12 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   if (planning_group == "smarpod_endeffector")
   {
     publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0);
-    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+    wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   else
   {
     publish_target_joint_trajectory_xyzt(planning_group, target_joint_values, 0.0);
-    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+    wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
   // END Wait for Movement
@@ -1321,7 +1325,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   end_time = std::chrono::high_resolution_clock::now();
 
   log_time_measures();
-  return std::make_tuple(move_success, joint_names, target_joint_values);
+  return std::make_tuple(wait_success, joint_names, target_joint_values);
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_pose(std::string planning_group,
@@ -1364,8 +1368,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
   float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.001;
+  bool wait_success;
 
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
   log_target_pose_delta(endeffector, target_pose);
 
@@ -1373,20 +1378,20 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_po
   if (planning_group == "smarpod_endeffector")
   {
     publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1);
-    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+    wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
 
   else
   {
     publish_target_joint_trajectory_xyzt(planning_group, target_joint_values, 0.1);
-    wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+    wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
 
   log_target_pose_delta(endeffector, target_pose);
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
 
-  return std::make_tuple(move_success, joint_names, target_joint_values);
+  return std::make_tuple(wait_success, joint_names, target_joint_values);
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std::string planning_group,
@@ -1523,8 +1528,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
   float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.001;
+  bool wait_success;
 
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);
 
   // log_target_pose_delta(endeffector, target_pose);
 
@@ -1542,7 +1548,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
     publish_target_joint_trajectory_gonio_left(target_joint_values, 1.0);
   }
 
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   // log_target_pose_delta(endeffector, target_pose);
   end_wait_for_movement_end = std::chrono::high_resolution_clock::now();
   end_time = std::chrono::high_resolution_clock::now();
@@ -1550,7 +1556,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> align_gonio(std:
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for next command...");
 
-  return std::make_tuple(move_success, joint_names, target_joint_values);
+  return std::make_tuple(wait_success, joint_names, target_joint_values);
 }
 
 // RELATIVE MOVEMENT
@@ -1910,15 +1916,17 @@ void reset_gonio_left(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Requ
 
   float lateral_tolerance_rougth = 1e-3;
   float angular_tolerance_rougth = 0.1;
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_rougth, angular_tolerance_rougth);
+  bool wait_success;
+
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_rougth, angular_tolerance_rougth);
 
   publish_target_joint_trajectory_gonio_left({0.0, 0.0}, 1);
 
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.001;
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
 
-  response->success = true;
+  response->success = wait_success;
   return;
 }
 
@@ -1931,15 +1939,16 @@ void reset_gonio_right(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Req
 
   float lateral_tolerance_rougth = 1e-3;
   float angular_tolerance_rougth = 0.1;
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_rougth, angular_tolerance_rougth);
+  bool wait_success;
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_rougth, angular_tolerance_rougth);
 
   publish_target_joint_trajectory_gonio_right({0.0, 0.0}, 1);
 
   float lateral_tolerance_fine = 1e-6;
   float angular_tolerance_fine = 0.001;
-  wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
+  wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
 
-  response->success = true;
+  response->success = wait_success;
   return;
 }
 

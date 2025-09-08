@@ -11,13 +11,42 @@ bool Skills::is_ok() const
            !UA_NodeId_isNull(&this->force_sensing_move_method);
 }
 
+// bool Skills::dispense(unsigned int time, unsigned int z_height, bool z_move) const
+// {
+//     std::array<UA_Variant, 3> inputs =
+//         {make_variant(time), make_variant(z_height), make_variant(z_move)};
+
+//     std::size_t output_size;
+//     UA_Variant *outputs;
+
+//     m_client->call_method(
+//         m_folder,
+//         this->dispense_method,
+//         inputs.size(),
+//         inputs.data(),
+//         &output_size,
+//         &outputs
+//     );
+
+//     const UA_Boolean success = *static_cast<UA_Boolean *>(outputs[0].data);
+
+//     UA_Array_delete(outputs, output_size, &UA_TYPES[UA_TYPES_VARIANT]);
+
+//     for (auto &input : inputs)
+//     {
+//         UA_Variant_clear(&input);
+//     }
+
+//     return success;
+// }
+
 bool Skills::dispense(unsigned int time, unsigned int z_height, bool z_move) const
 {
     std::array<UA_Variant, 3> inputs =
         {make_variant(time), make_variant(z_height), make_variant(z_move)};
 
-    std::size_t output_size;
-    UA_Variant *outputs;
+    std::size_t output_size = 0;
+    UA_Variant *outputs = nullptr;
 
     m_client->call_method(
         m_folder,
@@ -28,7 +57,15 @@ bool Skills::dispense(unsigned int time, unsigned int z_height, bool z_move) con
         &outputs
     );
 
-    const UA_Boolean success = *static_cast<UA_Boolean *>(outputs[0].data);
+    bool success = false;
+
+    if (output_size > 0 && outputs != nullptr)
+    {
+        if (outputs[0].type == &UA_TYPES[UA_TYPES_BOOLEAN] && outputs[0].data != nullptr)
+        {
+            success = *static_cast<UA_Boolean *>(outputs[0].data) != 0;
+        }
+    }
 
     UA_Array_delete(outputs, output_size, &UA_TYPES[UA_TYPES_VARIANT]);
 
