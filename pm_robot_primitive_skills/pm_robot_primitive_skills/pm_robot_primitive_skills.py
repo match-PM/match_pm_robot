@@ -74,9 +74,7 @@ class PrimitiveSkillsNode(Node):
 
         self.create_adhesive_viz_point_srv = self.create_client(pm_msg_srv.CreateVizAdhesivePoint, '/pm_adhesive_displayer/add_point',callback_group = self.callback_group_re)
 
-        self.client_dips_1k_on = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
-        self.client_dips_1k_off = self.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/TurnOff',callback_group = self.callback_group_re)
-        
+                
         self.move_robot_tool_client = self.create_client(MoveToFrame, '/pm_moveit_server/move_1k_dispenser_to_frame',callback_group=self.callback_group_re)
 
         self.client_get_confocal_bottom_measurement = self.create_client(GetValue, '/uepsilon_two_channel_controller/IFC2422/ch2/distance/srv',callback_group=self.callback_group_re)
@@ -493,6 +491,10 @@ class PrimitiveSkillsNode(Node):
     
     def dispense(self, time:float):
 
+        if self.is_unity_running():
+            self.logger.warn("Unity is running, skipping dispense command!")
+            return True
+        
         if not (self.dispense_skill_srv.wait_for_service):
             self._logger.error(f"Service '{self.dispense_skill_srv.srv_name}' is not available!")
             return False
