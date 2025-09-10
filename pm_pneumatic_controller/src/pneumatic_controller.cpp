@@ -138,6 +138,7 @@ PMPneumaticController::on_configure(const rclcpp_lifecycle::State &previous_stat
                 PneumaticSetPosition::Response::SharedPtr response) {
                 (void)response;
                 m_commands[i] = request->command;
+                wait_until_in_position(i, request->command);
             }
         );
         m_set_position.emplace_back(set_service);
@@ -165,7 +166,14 @@ void PMPneumaticController::wait_until_in_position(int cylinder, int target_posi
 {
     while (m_positions[cylinder] != target_position)
     {
-        std::this_thread::sleep_for(50ms);
+        // RCLCPP_ERROR(
+        //     get_node()->get_logger(),
+        //     "Waiting for cylinder %s to reach position %d, current position is %d",
+        //     m_params.cylinders[cylinder].c_str(),
+        //     target_position,
+        //     m_positions[cylinder]
+        // );
+        std::this_thread::sleep_for(500ms);
     }
 }
 

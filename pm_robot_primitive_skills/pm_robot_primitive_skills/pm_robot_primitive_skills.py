@@ -134,10 +134,11 @@ class PrimitiveSkillsNode(Node):
                 raise ValueError("Service '/pm_uv_controller/Hoenle_UV/SetOnOff' not available")
 
             self.client_uv_controller_on.call(on_request)
+            
             self.logger.info("Turned on UV LEDs")
 
             # sleep for the duration of the UV curing, take the highest value of the duration array
-            time.sleep(max(request.duration))
+            time.sleep(max(request.duration)+2) # add 2 seconds for safety
 
             response.success = True
             response.message = "UV curing successful!"
@@ -393,6 +394,7 @@ class PrimitiveSkillsNode(Node):
                 return response
         
         retract_success = self.retract_dispenser()
+        time.sleep(0.5)
         close_success = self.close_protection()
         
         if not retract_success or not close_success:
