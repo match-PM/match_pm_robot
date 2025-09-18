@@ -211,7 +211,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
         #     process_urdf_file(urdf_file, chuck)
 
         # Write out the combined URDF (with a single <robot>), now with relative mesh paths
-        combined_urdf_path = os.path.join(output_dir, 'pm_robot_unity_smarpod.urdf')
+        combined_urdf_path = os.path.join(output_dir, 'pm_robot_unity_carrier_demo.urdf')
         ET.ElementTree(combined_robot_el).write(combined_urdf_path, encoding='utf-8', xml_declaration=True)
         print(f'pm_robot_unity.urdf file created at: {combined_urdf_path}')
 
