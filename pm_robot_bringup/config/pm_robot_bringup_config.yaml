@@ -18,7 +18,7 @@ pm_robot_gonio_left:
   - chuck_gonio_left_IPEG_Demonstrator
   - Chuck_Siemens_Carrier_P39_V2
   - Chuck_Carrier_Demo
-  use_chuck: Chuck_Carrier_Demo
+  use_chuck: Chuck_Siemens_Carrier_P39_V2
   with_Gonio_Left: true
   unity_parent: Gonio_Left_Chuck_Origin
 pm_robot_gonio_right:

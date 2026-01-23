@@ -18,22 +18,23 @@ using namespace control_msgs::action;
 class Controller : public rclcpp::Node
 {
     PMClient::Client m_client;
-
+    std::string opcua_server_address_;
     rclcpp::Service<Dispense>::SharedPtr m_dispense_service;
     // rclcpp::Service<ForceSensingMove>::SharedPtr m_force_sensing_move_service;
 
-    // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr xyz_joint_client;
+    // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr
+    // xyz_joint_client;
 
     // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr t_joint_client;
 
   public:
     Controller() : Node("pm_opcua_skills_controller")
     {
-        std::string opcua_server_address = this->declare_parameter<std::string>(
+        opcua_server_address_ = this->declare_parameter<std::string>(
             "opcua_server_address",
             "opc.tcp://PC1M0484-1:4840"
         );
-        m_client.connect(opcua_server_address);
+        m_client.connect(opcua_server_address_);
         m_client.init();
 
         m_dispense_service = create_service<Dispense>(
@@ -45,9 +46,14 @@ class Controller : public rclcpp::Node
                 const auto success = m_client.get_robot().skills->dispense(
                     request->time,
                     request->z_height,
-                    request->z_move
+                    request->z_move,
+                    opcua_server_address_
                 );
                 response->success = success;
+                if (!success)
+                {
+                    RCLCPP_ERROR(get_logger(), "Error calling dispense skill");
+                }
             }
         );
 
@@ -87,106 +93,107 @@ class Controller : public rclcpp::Node
         //         request->step_size
         //     );
 
-            // RCLCPP_INFO(get_logger(), "Goal send");
-            // if (!send_goal_xyz(target_x * 1e-6, target_y * 1e-6, target_z * 1e-6))
-            // {
-            //     response->success = false;
-            //     response->error = "Goal sending failed.";
-            // }
-            // if (!send_goal_t(start_t))
-            // {
-            //     response->success = false;
-            //     response->error = "Goal sending failed.";
-    //             }
+        // RCLCPP_INFO(get_logger(), "Goal send");
+        // if (!send_goal_xyz(target_x * 1e-6, target_y * 1e-6, target_z * 1e-6))
+        // {
+        //     response->success = false;
+        //     response->error = "Goal sending failed.";
+        // }
+        // if (!send_goal_t(start_t))
+        // {
+        //     response->success = false;
+        //     response->error = "Goal sending failed.";
+        //             }
 
-    //             response->success = res.success;
-    //             response->error = res.error;
-    //             response->threshold_exceeded = res.threshold_exceeded;
-    // }
-    //     );
+        //             response->success = res.success;
+        //             response->error = res.error;
+        //             response->threshold_exceeded = res.threshold_exceeded;
+        // }
+        //     );
 
-    //     Initialize the action client
-    //     xyz_joint_client =
-    //         rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
-    //             this,
-    //             "/pm_robot_xyz_axis_controller/follow_joint_trajectory"
-    //         );
+        //     Initialize the action client
+        //     xyz_joint_client =
+        //         rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
+        //             this,
+        //             "/pm_robot_xyz_axis_controller/follow_joint_trajectory"
+        //         );
 
-    //     // Initialize the action client
-    //     t_joint_client =
-    //     rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
-    //         this,
-    //         "/pm_robot_t_axis_controller/follow_joint_trajectory"
-    //     );
+        //     // Initialize the action client
+        //     t_joint_client =
+        //     rclcpp_action::create_client<control_msgs::action::FollowJointTrajectory>(
+        //         this,
+        //         "/pm_robot_t_axis_controller/follow_joint_trajectory"
+        //     );
 
         RCLCPP_INFO(get_logger(), "Controller running...");
-}
+    }
 
-// private : bool
-//           send_goal_xyz(double x_goal, double y_goal, double z_goal)
-// {
-//     // Wait for the action server to be available
-//     if (!xyz_joint_client->wait_for_action_server())
-//     {
-//         RCLCPP_ERROR(get_logger(), "Action server not available.");
-//         return false;
-//     }
+    // private : bool
+    //           send_goal_xyz(double x_goal, double y_goal, double z_goal)
+    // {
+    //     // Wait for the action server to be available
+    //     if (!xyz_joint_client->wait_for_action_server())
+    //     {
+    //         RCLCPP_ERROR(get_logger(), "Action server not available.");
+    //         return false;
+    //     }
 
-//     // Create a FollowJointTrajectory goal
-//     FollowJointTrajectory::Goal goal;
-//     goal.trajectory.joint_names = {"X_Axis_Joint", "Y_Axis_Joint", "Z_Axis_Joint"};
+    //     // Create a FollowJointTrajectory goal
+    //     FollowJointTrajectory::Goal goal;
+    //     goal.trajectory.joint_names = {"X_Axis_Joint", "Y_Axis_Joint", "Z_Axis_Joint"};
 
-//     // Create a trajectory point with the target joint positions
-//     trajectory_msgs::msg::JointTrajectoryPoint point;
-//     point.positions = {x_goal, y_goal, z_goal};
-//     point.time_from_start = rclcpp::Duration::from_seconds(1.0); // Set the time to reach the goal
+    //     // Create a trajectory point with the target joint positions
+    //     trajectory_msgs::msg::JointTrajectoryPoint point;
+    //     point.positions = {x_goal, y_goal, z_goal};
+    //     point.time_from_start = rclcpp::Duration::from_seconds(1.0); // Set the time to reach the
+    //     goal
 
-//     goal.trajectory.points.push_back(point);
+    //     goal.trajectory.points.push_back(point);
 
-//     // auto send_goal_options =
-//     // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
-//     // send_goal_options.goal_response_callback=std:bind(&)
+    //     // auto send_goal_options =
+    //     // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
+    //     // send_goal_options.goal_response_callback=std:bind(&)
 
-//     // Send the goal to the action server
-//     auto result_future = xyz_joint_client->async_send_goal(goal);
+    //     // Send the goal to the action server
+    //     auto result_future = xyz_joint_client->async_send_goal(goal);
 
-//     // Wait for result
-//     // auto status = result_future.wait_for(std::chrono::seconds(30)); does not work yet
-//     return true;
-// }
+    //     // Wait for result
+    //     // auto status = result_future.wait_for(std::chrono::seconds(30)); does not work yet
+    //     return true;
+    // }
 
-// bool send_goal_t(double t_goal)
-// {
-//     if (!t_joint_client->wait_for_action_server())
-//     {
-//         RCLCPP_ERROR(get_logger(), "Action server not available.");
-//         return false;
-//     }
+    // bool send_goal_t(double t_goal)
+    // {
+    //     if (!t_joint_client->wait_for_action_server())
+    //     {
+    //         RCLCPP_ERROR(get_logger(), "Action server not available.");
+    //         return false;
+    //     }
 
-//     // Create a FollowJointTrajectory goal
-//     FollowJointTrajectory::Goal goal;
-//     goal.trajectory.joint_names = {"T_Axis_Joint"};
+    //     // Create a FollowJointTrajectory goal
+    //     FollowJointTrajectory::Goal goal;
+    //     goal.trajectory.joint_names = {"T_Axis_Joint"};
 
-//     // Create a trajectory point with the target joint positions
-//     trajectory_msgs::msg::JointTrajectoryPoint point;
-//     point.positions = {t_goal};
-//     point.time_from_start = rclcpp::Duration::from_seconds(1.0); // Set the time to reach the goal
+    //     // Create a trajectory point with the target joint positions
+    //     trajectory_msgs::msg::JointTrajectoryPoint point;
+    //     point.positions = {t_goal};
+    //     point.time_from_start = rclcpp::Duration::from_seconds(1.0); // Set the time to reach the
+    //     goal
 
-//     goal.trajectory.points.push_back(point);
+    //     goal.trajectory.points.push_back(point);
 
-//     // auto send_goal_options =
-//     // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
-//     // send_goal_options.goal_response_callback=std:bind(&)
+    //     // auto send_goal_options =
+    //     // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SendGoalOptions();
+    //     // send_goal_options.goal_response_callback=std:bind(&)
 
-//     // Send the goal to the action server
-//     auto result_future = t_joint_client->async_send_goal(goal);
+    //     // Send the goal to the action server
+    //     auto result_future = t_joint_client->async_send_goal(goal);
 
-//     // Wait for result
-//     // auto status = result_future.wait_for(std::chrono::seconds(30)); does not work yet
-//     return true;
-// }
-}
-;
+    //     // Wait for result
+    //     // auto status = result_future.wait_for(std::chrono::seconds(30)); does not work yet
+    //     return true;
+    // }
+};
 
 int main(int argc, char **argv)
 {

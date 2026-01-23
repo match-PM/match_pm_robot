@@ -40,35 +40,119 @@ bool Skills::is_ok() const
 //     return success;
 // }
 
-bool Skills::dispense(unsigned int time, unsigned int z_height, bool z_move) const
+// LUIS version
+// bool Skills::dispense(unsigned int time, unsigned int z_height, bool z_move) const
+// {
+//     std::array<UA_Variant, 3> inputs =
+//         {make_variant(time), make_variant(z_height), make_variant(z_move)};
+
+//     std::size_t output_size = 0;
+//     UA_Variant *outputs = nullptr;
+
+//     m_client->call_method(
+//         m_folder,
+//         this->dispense_method,
+//         inputs.size(),
+//         inputs.data(),
+//         &output_size,
+//         &outputs
+//     );
+
+//     bool success = false;
+
+//     if (output_size > 0 && outputs != nullptr)
+//     {
+//         if (outputs[0].type == &UA_TYPES[UA_TYPES_BOOLEAN] && outputs[0].data != nullptr)
+//         {
+//             success = *static_cast<UA_Boolean *>(outputs[0].data) != 0;
+//         }
+//     }
+
+//     UA_Array_delete(outputs, output_size, &UA_TYPES[UA_TYPES_VARIANT]);
+
+//     for (auto &input : inputs)
+//     {
+//         UA_Variant_clear(&input);
+//     }
+
+//     return success;
+// }
+
+// chat saver method
+bool Skills::dispense(
+    unsigned int time, unsigned int z_height, bool z_move, std::string endpoint
+) const
 {
-    std::array<UA_Variant, 3> inputs =
-        {make_variant(time), make_variant(z_height), make_variant(z_move)};
+    // Defensive default
+    bool success = false;
+
+    // Prepare input variants
+    std::array<UA_Variant, 3> inputs;
+    for (auto &v : inputs)
+        UA_Variant_init(&v);
+
+    inputs[0] = make_variant(time);
+    inputs[1] = make_variant(z_height);
+    inputs[2] = make_variant(z_move);
 
     std::size_t output_size = 0;
     UA_Variant *outputs = nullptr;
 
-    m_client->call_method(
-        m_folder,
-        this->dispense_method,
-        inputs.size(),
-        inputs.data(),
-        &output_size,
-        &outputs
-    );
-
-    bool success = false;
-
-    if (output_size > 0 && outputs != nullptr)
+    try
     {
-        if (outputs[0].type == &UA_TYPES[UA_TYPES_BOOLEAN] && outputs[0].data != nullptr)
+        // Optional but highly recommended:
+        // check client state before calling
+        // if (!m_client || !m_client->is_connected())
+        // {
+        //     throw std::runtime_error("OPC UA client not connected");
+        // }
+
+        // UA_StatusCode status = m_client->call_method(
+        //     m_folder,
+        //     this->dispense_method,
+        //     inputs.size(),
+        //     inputs.data(),
+        //     &output_size,
+        //     &outputs
+        // );
+
+        m_client->call_method(
+            m_folder,
+            this->dispense_method,
+            inputs.size(),
+            inputs.data(),
+            &output_size,
+            &outputs,
+            endpoint
+        );
+
+        // if (status != UA_STATUSCODE_GOOD)
+        // {
+        //     throw std::runtime_error(
+        //         std::string("call_method failed: ") + UA_StatusCode_name(status)
+        //     );
+        // }
+
+        if (output_size > 0 && outputs != nullptr &&
+            outputs[0].type == &UA_TYPES[UA_TYPES_BOOLEAN] && outputs[0].data != nullptr)
         {
-            success = *static_cast<UA_Boolean *>(outputs[0].data) != 0;
+            success = (*static_cast<UA_Boolean *>(outputs[0].data)) != UA_FALSE;
         }
     }
+    catch (const std::exception &e)
+    {
+        // Log but do not crash the process
+        // std::cerr << "[dispense] OPC UA error: " << e.what() << std::endl;
+        success = false;
+    }
 
-    UA_Array_delete(outputs, output_size, &UA_TYPES[UA_TYPES_VARIANT]);
+    // Cleanup outputs safely
+    if (outputs != nullptr)
+    {
+        UA_Array_delete(outputs, output_size, &UA_TYPES[UA_TYPES_VARIANT]);
+    }
 
+    // Cleanup inputs
     for (auto &input : inputs)
     {
         UA_Variant_clear(&input);
@@ -79,7 +163,7 @@ bool Skills::dispense(unsigned int time, unsigned int z_height, bool z_move) con
 
 ForceSensingMoveResult Skills::force_sensing_move(
     int start_x, int start_y, int start_z, int start_t, int target_x, int target_y, int target_z,
-    float max_fx, float max_fy, float max_fz, unsigned int step_size
+    float max_fx, float max_fy, float max_fz, unsigned int step_size, std::string endpoint
 ) const
 {
     std::array<UA_Variant, 11> inputs = {
@@ -105,7 +189,8 @@ ForceSensingMoveResult Skills::force_sensing_move(
         inputs.size(),
         inputs.data(),
         &output_size,
-        &outputs
+        &outputs,
+        endpoint
     );
 
     const UA_String *error = static_cast<UA_String *>(outputs[0].data);

@@ -1,0 +1,3 @@
+int32 intensity_percent
+float64 duration
+bool set_activation

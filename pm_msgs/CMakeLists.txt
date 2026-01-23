@@ -28,9 +28,11 @@ rosidl_generate_interfaces(
   "msg/GripperForces.msg"
   "msg/VizAdhesivePoint.msg"
   "msg/VizAdhesivePoints.msg"
+  "msg/DispensePoint.msg"
+  "msg/UvCuringSpotProperty.msg"
 
   "srv/ForceSensingMove.srv"
-  "srv/DisppenseAtPoints.srv"
+  "srv/DispenseAtPoints.srv"
   "srv/EmptyWithSuccess.srv"
   "srv/UVSetOnOff.srv"
   "srv/UVGetOnOff.srv"

@@ -10,6 +10,7 @@ from pm_moveit_interfaces.srv import MoveToPose,  MoveToFrame, MoveRelative
 from pm_robot_primitive_skills.py_modules.adhesive_test_points import TestPointGrid
 import pm_moveit_interfaces.srv as pm_moveit_srv
 import pm_msgs.srv as pm_msg_srv
+import pm_msgs.msg as pm_msg_msg
 from example_interfaces.srv import SetBool
 from std_msgs.msg import Float64MultiArray
 from pm_skills.py_modules.PmRobotUtils import PmRobotUtils
@@ -51,7 +52,7 @@ class PrimitiveSkillsNode(Node):
     
         self.dispense_test_point_srv = self.create_service(pm_msg_srv.DispenseTestPoints, self.get_name()+'/dispense_test_point', self.dispense_test_point_callback)
         self.reset_test_station_srv = self.create_service(pm_msg_srv.EmptyWithSuccess, self.get_name()+'/reset_test_station', self.reset_test_station_callback)
-        self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DisppenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
+        self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DispenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
         self.move_uv_in_curing_position_service = self.create_service(SetBool, self.get_name()+"/move_uv_in_curing_position", self.move_uv_in_curing_position_service_callback,callback_group=self.callback_group_mu_ex)
         self.uv_curing = self.create_service(pm_msg_srv.UVCuringSkill, self.get_name()+'/uv_curing', self.uv_curing_callback, callback_group=self.callback_group_mu_ex)
         self.get_confocal_top_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_top_measurement', self.get_confocal_top_measurement)
@@ -108,25 +109,29 @@ class PrimitiveSkillsNode(Node):
         self.logger.info("UV curing callback called!")
         try:
             intensity_request = pm_msg_srv.UVSetPower.Request()
-            intensity_request.power = request.intensity_percent
+            time_request = pm_msg_srv.UVSetTime.Request()
+            on_request = pm_msg_srv.UVSetOnOff.Request()
+
+            for index, spot_property in enumerate(request.uv_curing_spot_properties):
+                spot_property: pm_msg_msg.UvCuringSpotProperty
+                self.logger.info(f"Setting UV spot {index+1}: Intensity {spot_property.intensity_percent}%, Duration {spot_property.duration}s, Activation {spot_property.set_activation}")
+                intensity_request.power[index] = spot_property.intensity_percent
+                time_request.time[index] = spot_property.duration
+                on_request.turn_on[index] = spot_property.set_activation
+
 
             if not self.client_uv_controller_intensity.wait_for_service(timeout_sec=1.0):
                 raise ValueError("Service '/pm_uv_controller/Hoenle_UV/SetPower' not available")
             
             self.client_uv_controller_intensity.call(intensity_request)
-            self.logger.info(f"Set UV intensity to {request.intensity_percent}%")
+            self.logger.info(f"Set UV intensity to {intensity_request.power} in %")
 
-            time_request = pm_msg_srv.UVSetTime.Request()
-            time_request.time = request.duration
 
             if not self.client_uv_controller_time.wait_for_service(timeout_sec=1.0):
                 raise ValueError("Service '/pm_uv_controller/Hoenle_UV/SetTime' not available")
 
             self.client_uv_controller_time.call(time_request)
-            self.logger.info(f"Set UV time to {request.duration} seconds")
-
-            on_request = pm_msg_srv.UVSetOnOff.Request()
-            on_request.turn_on = request.set_activation
+            self.logger.info(f"Set UV time to {time_request.time} seconds")
 
             if not self.client_uv_controller_on.wait_for_service(timeout_sec=1.0):
                 raise ValueError("Service '/pm_uv_controller/Hoenle_UV/SetOnOff' not available")
@@ -136,7 +141,7 @@ class PrimitiveSkillsNode(Node):
             self.logger.info("Turned on UV LEDs")
 
             # sleep for the duration of the UV curing, take the highest value of the duration array
-            time.sleep(max(request.duration)+2) # add 2 seconds for safety
+            time.sleep(max(time_request.time)+1) # add 1 seconds for safety
 
             response.success = True
             response.message = "UV curing successful!"
@@ -162,7 +167,8 @@ class PrimitiveSkillsNode(Node):
         response.success = True
         return response
 
-    def move_dispenser_to_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request)-> bool:
+    def move_dispenser_to_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request,
+                                z_offset_m = 0.0)-> bool:
         call_async = False
 
         if not self.move_robot_tool_client.wait_for_service(timeout_sec=1.0):
@@ -170,6 +176,8 @@ class PrimitiveSkillsNode(Node):
             return False
         
         req = move_to_frame_request
+
+        req.translation.z += z_offset_m
 
         if call_async:
             future = self.move_robot_tool_client.call_async(req)
@@ -357,21 +365,17 @@ class PrimitiveSkillsNode(Node):
 
         return response
 
-    def dispense_at_points_callback(self, request: pm_msg_srv.DisppenseAtPoints.Request, response:pm_msg_srv.DisppenseAtPoints.Response):
+    def dispense_at_points_callback(self, request: pm_msg_srv.DispenseAtPoints.Request, response:pm_msg_srv.DispenseAtPoints.Response):
         
         dispenser_prepared = False
 
-        if len(request.frame_names) != len(request.frame_dispense_times_ms):
-            self.logger.error(f"Frames list and dispense time list must have the same length!")
-            response.success = False
-            return response
-
-        
-        for index, frame in enumerate(request.frame_names):
+        for dispense_point in request.dispense_points:
+            dispense_point: pm_msg_msg.DispensePoint
             move_to_frame_request = pm_moveit_srv.MoveToFrame.Request()
             
-            move_to_frame_request.target_frame = frame
+            move_to_frame_request.target_frame = dispense_point.frame_name
             move_to_frame_request.execute_movement = True
+            
             
             if not dispenser_prepared:
                 prepare_success = self.prepare_dispenser(move_to_frame_request)
@@ -383,12 +387,13 @@ class PrimitiveSkillsNode(Node):
                     return response
             
             success = self.dispense_at_frame(move_to_frame_request, 
-                                             frame,
-                                             time=request.frame_dispense_times_ms[index],
-                                             dispense_z_offset_mm=request.dispense_z_offset_mm[index])
+                                             dispense_point.frame_name,
+                                             time=dispense_point.time_ms,
+                                             dispense_z_offset_mm=dispense_point.dispense_z_offset_mm)
             
             if not success:
                 response.success = False
+
                 return response
         
         retract_success = self.retract_dispenser()
@@ -553,7 +558,7 @@ class PrimitiveSkillsNode(Node):
         # check dispenser extended not needed
         move_to_frame_request.translation.z += float(dispense_z_offset_mm*1e-3)
         move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
-
+        
         # move to top position
         success = self.move_dispenser_to_frame(move_to_frame_request)
         

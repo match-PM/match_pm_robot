@@ -32,11 +32,13 @@ class Skills
 
     [[nodiscard]] bool is_ok() const;
 
-    [[nodiscard]] bool dispense(unsigned int time, unsigned int z_height, bool z_move) const;
+    [[nodiscard]] bool
+    dispense(unsigned int time, unsigned int z_height, bool z_move, std::string endpoint) const;
 
     [[nodiscard]] ForceSensingMoveResult force_sensing_move(
         int start_x, int start_y, int start_z, int start_t, int target_x, int target_y,
-        int target_z, float max_fx, float max_fy, float max_fz, unsigned int step_size
+        int target_z, float max_fx, float max_fy, float max_fz, unsigned int step_size,
+        std::string endpoint
     ) const;
 };
 

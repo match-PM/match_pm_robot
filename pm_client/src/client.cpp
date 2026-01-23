@@ -324,8 +324,8 @@ void Client::init()
         });
     };
 
-    auto browse_reference_cube = [&](UA_NodeId reference_cube_node
-                                 ) -> std::unique_ptr<ReferenceCube> {
+    auto browse_reference_cube =
+        [&](UA_NodeId reference_cube_node) -> std::unique_ptr<ReferenceCube> {
         return browse(reference_cube_node, [&](auto response) {
             auto reference_cube = std::make_unique<ReferenceCube>(this);
 
@@ -529,18 +529,87 @@ void Client::init()
     }
 }
 
+// Luis alte function!!!
+
+// void Client::call_method(
+//     UA_NodeId object_id, UA_NodeId method_id, std::size_t input_size, UA_Variant *inputs,
+//     std::size_t *output_size, UA_Variant **outputs
+// )
+// {
+//     UA_StatusCode status =
+//         UA_Client_call(m_client, object_id, method_id, input_size, inputs, output_size, outputs);
+
+//     if (status != UA_STATUSCODE_GOOD)
+//     {
+//         throw std::runtime_error{UA_StatusCode_name(status)};
+//     }
+// }
+
+// // ChatGPT revised function with retry mechanism
 void Client::call_method(
     UA_NodeId object_id, UA_NodeId method_id, std::size_t input_size, UA_Variant *inputs,
-    std::size_t *output_size, UA_Variant **outputs
+    std::size_t *output_size, UA_Variant **outputs, std::string endpoint
 )
 {
-    UA_StatusCode status =
-        UA_Client_call(m_client, object_id, method_id, input_size, inputs, output_size, outputs);
+    const int MAX_RETRIES = 3;       // number of retry attempts
+    const int RETRY_DELAY_MS = 1000; // delay between retries in milliseconds
 
-    if (status != UA_STATUSCODE_GOOD)
+    int attempt = 0;
+    UA_StatusCode status;
+
+    while (attempt < MAX_RETRIES)
     {
-        throw std::runtime_error{UA_StatusCode_name(status)};
+        status = UA_Client_call(
+            m_client,
+            object_id,
+            method_id,
+            input_size,
+            inputs,
+            output_size,
+            outputs
+        );
+        // m_config.opcua_endpoint
+        if (status == UA_STATUSCODE_GOOD)
+        {
+            // Call succeeded
+            return;
+        }
+
+        // Check if the error is connection/session related
+        if (status == UA_STATUSCODE_BADCONNECTIONCLOSED || status == UA_STATUSCODE_BADSESSIONCLOSED)
+        {
+            std::cerr << "Connection lost (attempt " << (attempt + 1) << "/" << MAX_RETRIES
+                      << "). Reconnecting...\n";
+
+            // Disconnect and try to reconnect
+            UA_Client_disconnect(m_client);
+
+            // You may want to store the server endpoint somewhere in your Client class
+            UA_StatusCode conn_status = UA_Client_connect(m_client, endpoint.c_str());
+            if (conn_status != UA_STATUSCODE_GOOD)
+            {
+                std::cerr << "Reconnect failed: " << UA_StatusCode_name(conn_status) << "\n";
+                // Increment attempt and retry after delay
+                attempt++;
+                UA_sleep_ms(RETRY_DELAY_MS);
+                continue;
+            }
+
+            // Successfully reconnected, retry the call
+            attempt++;
+            continue;
+        }
+        else
+        {
+            // Other errors, do not retry
+            throw std::runtime_error{UA_StatusCode_name(status)};
+        }
     }
+
+    // If we reach here, all retries failed
+    throw std::runtime_error{
+        "UA_Client_call failed after retries: " + std::string(UA_StatusCode_name(status))
+    };
 }
 
 } // namespace PMClient

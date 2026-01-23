@@ -1006,7 +1006,7 @@ bool wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vect
   }
   if (wait_time_counter >= max_wait_time_counter)
   {
-    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "ERROR: Goal not reached in time! Assuming goal reached!");
+    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "ERROR: Goal not reached in time!");
     return false;
   }
   return true;
