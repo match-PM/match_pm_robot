@@ -99,7 +99,7 @@ Chuck_Siemens_Carrier_P39_V2:
   inertia_izz: "8.47795368409762E-05"
   color: "white"
   visual_filename: "Chuck_Siemens_Carrier_P39_V2.STL"
-  collision_filename: "Chuck_Siemens_Carrier_P39_V2.STL"
+  collision_filename: "Chuck_Siemens_Carrier_P39_V2_coll.STL"
 
 Chuck_Carrier_Demo:
   spawn_1_offset_from_gonio_x: "0.102200000"

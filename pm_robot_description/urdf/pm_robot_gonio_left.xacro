@@ -57,7 +57,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/Gonio_Left_Base.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/Gonio_Left_Base_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -279,7 +279,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/UV_Cart_X_Front.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/UV_Cart_X_Front_Coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -341,7 +341,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/UV_Cart_X_Back.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/UV_Cart_X_Back_Coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -372,7 +372,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/UV_Cart_Back.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Left/UV_Cart_Back_Coll.STL" />
         </geometry>
       </collision>
     </link>

@@ -81,7 +81,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Base_Right.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Gonio_Right/Gonio_Base_Right_Coll.STL" />
       </geometry>
     </collision>
   </link>

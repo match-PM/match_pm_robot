@@ -832,14 +832,14 @@ std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_in
   start_plan_time = std::chrono::high_resolution_clock::now();
 
   bool success_calculate_plan = false;
-  move_group->setPlanningTime(20);
+  move_group->setPlanningTime(1);   // before 20
   move_group->setStartStateToCurrentState();
-
+  
   move_group->setGoalJointTolerance(1e-9);
 
   move_group->setJointValueTarget(target_joint_values);
-  move_group->setNumPlanningAttempts(100);
-  move_group->setReplanAttempts(10000);
+  move_group->setNumPlanningAttempts(10);   // before 100
+  move_group->setReplanAttempts(10);        // before 10000
   success_calculate_plan = (move_group->plan(*plan) == moveit::core::MoveItErrorCode::SUCCESS);
   if (!success_calculate_plan)
   {
@@ -879,14 +879,14 @@ std::tuple<bool, std::string> set_move_group_orientation(std::shared_ptr<moveit:
                                                          bool execute_movement)
 {
   bool success_calculate_plan = false;
-  move_group->setPlanningTime(10);
+  move_group->setPlanningTime(1);   // before 20
   move_group->setStartStateToCurrentState();
 
   move_group->setGoalJointTolerance(1e-9);
 
   move_group->setOrientationTarget(x, y, z, w);
-  move_group->setNumPlanningAttempts(100);
-  move_group->setReplanAttempts(10000);
+  move_group->setNumPlanningAttempts(10);   // before 100
+  move_group->setReplanAttempts(10);        // before 10000
   success_calculate_plan = (move_group->plan(*plan) == moveit::core::MoveItErrorCode::SUCCESS);
   if (!success_calculate_plan)
   {

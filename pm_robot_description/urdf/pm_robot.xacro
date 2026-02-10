@@ -112,7 +112,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/axis_base.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/axis_base_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -149,7 +149,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/X_Axis.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/X_Axis_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -179,7 +179,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Y_Axis.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Y_Axis_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -208,7 +208,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Z_Axis.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Z_Axis_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -243,7 +243,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Gripper_Rot_Plate_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -296,7 +296,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/t_axis_tool.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/t_axis_tool_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -359,7 +359,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Glue_Cartridge_Flap_Coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -393,7 +393,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/1K_Dispenser_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -510,7 +510,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/2K_Glue_Cartridge.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/2K_Glue_Cartridge_Coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -571,7 +571,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Cam1_Toolhead_TCP.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Cam1_Toolhead_TCP_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -695,7 +695,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Station.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Station_coll.STL" />
         </geometry>
       </collision>
     </link>
@@ -863,7 +863,7 @@
         <collision>
           <origin xyz="0 0 0" rpy="0 0 0" />
           <geometry>
-            <mesh filename="file://$(find pm_robot_description)/meshes/Confocal_Sensor_Top.STL" />
+            <mesh filename="file://$(find pm_robot_description)/meshes/Confocal_Sensor_Top_coll.STL" />
           </geometry>
         </collision>
       </link>
@@ -943,7 +943,7 @@
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Calibration_Platelet.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Camera_Calibration_Platelet_coll.STL" />
         </geometry>
       </collision>
     </link>
