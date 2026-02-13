@@ -8,3 +8,4 @@ bool success
 string[] joint_names
 float32[] joint_values
 string message
+geometry_msgs/Pose calculated_endeffector_pose

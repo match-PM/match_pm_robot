@@ -640,6 +640,7 @@ bool check_frame_is_in_chain(std::string target_frame, std::string parent_frame)
   {
     throw std::runtime_error("Error finding parent frame: " + std::string(ex.what()));
   }
+  return false;
 }
 
 std::tuple<bool, geometry_msgs::msg::TransformStamped> get_pose_of_frame_in_frame(std::string toFrame, std::string fromFrame)
@@ -1173,13 +1174,13 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   return std::make_tuple(wait_success, joint_names, target_joint_values, msg);
 }
 
-std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_frame(std::string planning_group,
-                                                                                    std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
-                                                                                    std::string endeffector_frame_override,
-                                                                                    std::string target_frame,
-                                                                                    geometry_msgs::msg::Vector3 translation,
-                                                                                    geometry_msgs::msg::Quaternion rotation,
-                                                                                    bool execute_movement)
+std::tuple<bool, std::vector<std::string>, std::vector<double>, geometry_msgs::msg::Pose> move_group_to_frame(std::string planning_group,
+                                                                                            std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+                                                                                            std::string endeffector_frame_override,
+                                                                                            std::string target_frame,
+                                                                                            geometry_msgs::msg::Vector3 translation,
+                                                                                            geometry_msgs::msg::Quaternion rotation,
+                                                                                            bool execute_movement)
 {
   init_time = std::chrono::high_resolution_clock::now();
 
@@ -1202,7 +1203,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
     if (!valid_endeffector)
     {
       RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "For MoveGroup 'PM_Robot_Tool_TCP' endeffector_override %s frame not in chain of Z_Axis!", endeffector_frame_override.c_str());
-      return std::make_tuple(false, joint_names, target_joint_values);
+      return std::make_tuple(false, joint_names, target_joint_values, target_pose);
     }
   }
 
@@ -1213,7 +1214,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   {
     // If frame is not found, return false
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Specified frame not found!");
-    return std::make_tuple(false, joint_names, target_joint_values);
+    return std::make_tuple(false, joint_names, target_joint_values, target_pose);
   }
 
   // log_pose("Target frame pose: ", target_pose);
@@ -1256,7 +1257,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   // START Plan&Execute
   if (!success_ik)
   {
-    return {false, joint_names, target_joint_values};
+    return {false, joint_names, target_joint_values, target_pose};
   }
 
   bool move_success = false;
@@ -1268,7 +1269,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
 
     if (!move_suc || !execute_movement)
     {
-      return {move_suc, joint_names, target_joint_values};
+      return {move_suc, joint_names, target_joint_values, target_pose};
     }
     move_success = true;
   }
@@ -1325,7 +1326,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_fr
   end_time = std::chrono::high_resolution_clock::now();
 
   log_time_measures();
-  return std::make_tuple(wait_success, joint_names, target_joint_values);
+  return std::make_tuple(wait_success, joint_names, target_joint_values, target_pose);
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>> move_group_to_pose(std::string planning_group,
@@ -1751,7 +1752,7 @@ void move_cam_one_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::Move
                            std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_to_frame("PM_Robot_Cam1_TCP",
+  auto [success, joint_names, joint_values, target_pose] = move_group_to_frame("PM_Robot_Cam1_TCP",
                                                                   Cam1_move_group,
                                                                   request->endeffector_frame_override,
                                                                   request->target_frame,
@@ -1761,6 +1762,7 @@ void move_cam_one_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::Move
 
   response->success = success;
   response->joint_names = joint_names;
+  response->calculated_endeffector_pose = target_pose;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
 
@@ -1771,7 +1773,7 @@ void move_smarpod_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::Move
                            std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_to_frame("smarpod_endeffector",
+  auto [success, joint_names, joint_values, target_pose] = move_group_to_frame("smarpod_endeffector",
                                                                   smarpod_move_group,
                                                                   request->endeffector_frame_override,
                                                                   request->target_frame,
@@ -1781,6 +1783,7 @@ void move_smarpod_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::Move
 
   response->success = success;
   response->joint_names = joint_names;
+  response->calculated_endeffector_pose = target_pose;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
 
@@ -1792,7 +1795,7 @@ void move_tool_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToF
 {
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Move Tool to Frame");
 
-  auto [success, joint_names, joint_values] = move_group_to_frame("PM_Robot_Tool_TCP",
+  auto [success, joint_names, joint_values, target_pose] = move_group_to_frame("PM_Robot_Tool_TCP",
                                                                   tool_move_group,
                                                                   request->endeffector_frame_override,
                                                                   request->target_frame,
@@ -1802,6 +1805,7 @@ void move_tool_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToF
 
   response->success = success;
   response->joint_names = joint_names;
+  response->calculated_endeffector_pose = target_pose;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
 
@@ -1812,7 +1816,7 @@ void move_laser_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveTo
                          std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_to_frame("PM_Robot_Laser_TCP",
+  auto [success, joint_names, joint_values, target_pose] = move_group_to_frame("PM_Robot_Laser_TCP",
                                                                   laser_move_group,
                                                                   request->endeffector_frame_override,
                                                                   request->target_frame,
@@ -1822,6 +1826,7 @@ void move_laser_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveTo
 
   response->success = success;
   response->joint_names = joint_names;
+  response->calculated_endeffector_pose = target_pose;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
 
@@ -1832,7 +1837,7 @@ void move_1k_dispenser_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv:
                                 std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_to_frame("PM_Robot_1K_Dispenser_TCP",
+  auto [success, joint_names, joint_values, target_pose] = move_group_to_frame("PM_Robot_1K_Dispenser_TCP",
                                                                   dispenser_1k_move_group,
                                                                   "1K_Dispenser_TCP",
                                                                   request->target_frame,
@@ -1842,6 +1847,7 @@ void move_1k_dispenser_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv:
 
   response->success = success;
   response->joint_names = joint_names;
+  response->calculated_endeffector_pose = target_pose;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
 
@@ -1852,7 +1858,7 @@ void move_confocal_head_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv
                                  std::shared_ptr<pm_moveit_interfaces::srv::MoveToFrame::Response> response)
 {
 
-  auto [success, joint_names, joint_values] = move_group_to_frame("PM_Robot_Confocal_Head_TCP",
+  auto [success, joint_names, joint_values, target_pose] = move_group_to_frame("PM_Robot_Confocal_Head_TCP",
                                                                   confocal_head_move_group,
                                                                   request->endeffector_frame_override,
                                                                   request->target_frame,
@@ -1864,6 +1870,7 @@ void move_confocal_head_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv
   response->joint_names = joint_names;
   std::vector<float> joint_values_float(joint_values.begin(), joint_values.end());
   response->joint_values = joint_values_float;
+  response->calculated_endeffector_pose = target_pose;
 
   return;
 }
@@ -1906,7 +1913,7 @@ void align_gonio_left(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGoni
   return;
 }
 
-void reset_gonio_left(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Request> request,
+void reset_gonio_left(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Request> /* request */,
                       std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Response> response)
 {
   std::vector<double> target_joint_values = {0.0, 0.0};
@@ -1930,7 +1937,7 @@ void reset_gonio_left(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Requ
   return;
 }
 
-void reset_gonio_right(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Request> request,
+void reset_gonio_right(const std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Request> /* request */,
                        std::shared_ptr<pm_msgs::srv::EmptyWithSuccess::Response> response)
 {
   std::vector<double> target_joint_values = {0.0, 0.0};
