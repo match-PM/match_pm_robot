@@ -1204,8 +1204,9 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, geometry_msgs::m
     bool valid_endeffector = check_frame_is_in_chain(endeffector_frame_override, "Z_Axis");
     if (!valid_endeffector)
     {
-      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "For MoveGroup 'PM_Robot_Tool_TCP' endeffector_override %s frame not in chain of Z_Axis!", endeffector_frame_override.c_str());
-      msg = "Endeffector override frame not in chain of Z_Axis!";
+      msg = "For MoveGroup '" + planning_group + "' endeffector_override '" + endeffector_frame_override + "' frame not in chain of Z_Axis!";
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "%s", msg.c_str());
+
       return std::make_tuple(false, joint_names, target_joint_values, target_pose, msg);
     }
   }
