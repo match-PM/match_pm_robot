@@ -68,6 +68,9 @@ pm_robot_tools:
       - Tip_Siemens_Vacuum_Array
       tool_name: Siemens_Vacuum_Array_short
     - availabe_tips:
+      - Tip_Siemens_Vacuum_Array
+      tool_name: Siemens_Vacuum_Array_angled
+    - availabe_tips:
       - Tip_Lens_12_7
       tool_name: Schunk_Lens_Gripper
     - availabe_tips:

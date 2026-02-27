@@ -5,6 +5,9 @@ SmarAct_Piezo_Gripper:
     tool_TCP_x_offset: "0.0"
     tool_TCP_y_offset: "0.0"
     tool_TCP_z_offset: "0.0"
+    tool_TCP_rx_offset: "0.0"
+    tool_TCP_ry_offset: "0.0"
+    tool_TCP_rz_offset: "0.0"
     joint_offset_value: "0.0"  # in mm
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
@@ -39,6 +42,9 @@ SmarAct_Piezo_Gripper_flat:
     tool_TCP_x_offset: "0.0"
     tool_TCP_y_offset: "0.0"
     tool_TCP_z_offset: "0.0"
+    tool_TCP_rx_offset: "0.0"
+    tool_TCP_ry_offset: "0.0"
+    tool_TCP_rz_offset: "0.0"
     joint_offset_value: "-6.0"  # in mm
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
@@ -71,6 +77,9 @@ SmarAct_Piezo_Gripper_flat:
     tool_TCP_x_offset: "0.0"
     tool_TCP_y_offset: "0.0"
     tool_TCP_z_offset: "-0.0378"
+    tool_TCP_rx_offset: "0.0"
+    tool_TCP_ry_offset: "0.0"
+    tool_TCP_rz_offset: "0.0"
     joint_offset_value: "0.0"  # in mm
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
