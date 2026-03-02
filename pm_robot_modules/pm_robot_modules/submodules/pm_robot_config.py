@@ -389,6 +389,9 @@ class PmRobotConfig:
             self._active_path = self._real_bringup_config_path if use_real_config else self.sim_bringup_config_path
             self.reload_config()
 
+    def get_active_bringup_config_path(self)->str:
+        return self._active_path
+    
     def get_joint_config_path(self, use_real_HW:bool):
         if use_real_HW:
             return self._real_joint_config_path
