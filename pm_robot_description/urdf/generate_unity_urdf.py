@@ -37,7 +37,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
     # Set use_keyence_bottom in yaml file to True
     original_config['measuring_systems']['use_keyence_bottom'] = True 
 
-    original_config['pm_smparpod_station']['with_smarpod_station'] = True
+    # original_config['pm_smparpod_station']['with_smarpod_station'] = True
 
     # Extract the sets of known tips for easy checking
     dispenser_tips = set(original_config['pm_robot_1K_dispenser_tip']['availabe_dispenser_tips'])
@@ -229,7 +229,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
 # Generate the combined URDF
 # modify the paths as needed
 generate_combined_urdf(
-    yaml_path='/home/match-mover/Documents/ros2_ws/install/pm_robot_bringup/share/pm_robot_bringup/config/pm_robot_bringup_config.yaml',
-    xacro_path='/home/match-mover/Documents/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf/pm_robot_main.xacro',
-    output_dir='/home/match-mover/Documents/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf'
+    yaml_path='/home/match-pm/ros2_ws/install/pm_robot_bringup/share/pm_robot_bringup/config/pm_robot_bringup_config.yaml',
+    xacro_path='/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf/pm_robot_main.xacro',
+    output_dir='/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf'
 )

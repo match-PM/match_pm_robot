@@ -33,7 +33,7 @@ def find_duplicate_links(urdf_content):
         return []
     
 
-path='/home/match-mover/Documents/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf/pm_robot_unity_carrier_demo.urdf'
+path='/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf/pm_robot_unity_carrier_demo.urdf'
 
 # Load the URDF content from the file
 with open(path, 'r') as file:
