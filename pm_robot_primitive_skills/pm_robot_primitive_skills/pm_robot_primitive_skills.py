@@ -55,8 +55,11 @@ class PrimitiveSkillsNode(Node):
         self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DispenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
         self.move_uv_in_curing_position_service = self.create_service(SetBool, self.get_name()+"/move_uv_in_curing_position", self.move_uv_in_curing_position_service_callback,callback_group=self.callback_group_mu_ex)
         self.uv_curing = self.create_service(pm_msg_srv.UVCuringSkill, self.get_name()+'/uv_curing', self.uv_curing_callback, callback_group=self.callback_group_mu_ex)
+        
+        
         self.get_confocal_top_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_top_measurement', self.get_confocal_top_measurement)
         self.get_confocal_bottom_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_bottom_measurement', self.get_confocal_bottom_measurement)
+        
         self.set_uv_cart_position_srv = self.create_service(pm_msg_srv.SetUvSliderXPositions, self.get_name()+'/set_uv_slider_manual_positions', self.set_uv_cart_positions, callback_group=self.callback_group_mu_ex)
 
         self.logger.info("Primitive skills node started!")
@@ -544,7 +547,10 @@ class PrimitiveSkillsNode(Node):
         response_cl:GetValue.Response = future
 
         response.success = response_cl.success
-        response.data = -1*(response_cl.data - 3.0) * 1e3  # convert to micrometers
+        if not self.is_unity_running():
+            response.data = -1*(response_cl.data - 3.0) * 1e3  # convert to micrometers
+        else:
+            response.data = response_cl.data
 
         return response
     

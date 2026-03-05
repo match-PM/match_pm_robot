@@ -106,9 +106,9 @@ Gonio_Left_Base_Joint:
   rz_offset: 0
 
 Gonio_Right_Base_Joint:
-  x_offset: 500
-  y_offset: 1000
-  z_offset: 1500
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
   rx_offset: 0
   ry_offset: 0
   rz_offset: 0

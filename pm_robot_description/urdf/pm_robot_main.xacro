@@ -22,7 +22,7 @@
   <xacro:arg name="with_Gonio_Right" default="true" />
   <xacro:arg name="with_smarpod_station" default="false" /> -->
   
-  <xacro:pm_robot launch_mode="$(arg launch_mode)"/>
+  <xacro:pm_robot launch_mode="$(arg launch_mode)" hardware="$(arg hardware)"/>
 
   <!-- START - Loading Config Files-->
 
@@ -53,7 +53,7 @@
 
   <!-- If Vacuum Tool is selected-->
     <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_vacuum_tool']}">
-      <xacro:Schunk_Vacuum_Tools launch_mode="$(arg launch_mode)"/>
+      <xacro:Schunk_Vacuum_Tools launch_mode="$(arg launch_mode)" hardware="$(arg hardware)"/>
     </xacro:if>
 
   <!-- If 2 Jaws Parallel Gripper is selected-->
@@ -66,7 +66,7 @@
       <!-- Import the respective xacro file -->
       <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/Parallel_Gripper_2_Jaws/${current_parallel_gripper_xacro}" />
       <!-- Create the included xacro -->
-      <xacro:Tool_Parallel_Gripper_2_Jaws launch_mode="$(arg launch_mode)"/>
+      <xacro:Tool_Parallel_Gripper_2_Jaws launch_mode="$(arg launch_mode)" hardware="$(arg hardware)"/>
     </xacro:if>
 
     <!-- If 1 Jaws Parallel Gripper is selected-->
@@ -79,7 +79,7 @@
       <!-- Import the respective xacro file -->
       <xacro:include filename="$(find pm_robot_description)/urdf/pm_Schunk_Tools/Parallel_Gripper_1_Jaw/${current_parallel_gripper_xacro}" />
       <!-- Create the included xacro -->
-      <xacro:Tool_Parallel_Gripper_1_Jaw launch_mode="$(arg launch_mode)"/>
+      <xacro:Tool_Parallel_Gripper_1_Jaw launch_mode="$(arg launch_mode)" hardware="$(arg hardware)"/>
     </xacro:if>
 
   <!-- END - Tool Defines-->
@@ -89,7 +89,7 @@
 
   <!-- Gonio Right Defines-->
   <xacro:if value="${current_pm_robot_bringup_config['pm_robot_gonio_right']['with_Gonio_Right']}">
-    <xacro:pm_robot_gonio_right launch_mode="$(arg launch_mode)"/>
+    <xacro:pm_robot_gonio_right launch_mode="$(arg launch_mode)" hardware="$(arg hardware)"/>
   </xacro:if>
 
   <!-- Gonio Right old version-->
@@ -99,7 +99,7 @@
 
   <!-- Gonio Right Defines-->
   <xacro:if value="${current_pm_robot_bringup_config['pm_robot_gonio_left']['with_Gonio_Left']}">
-    <xacro:pm_robot_gonio_left launch_mode="$(arg launch_mode)"/>
+    <xacro:pm_robot_gonio_left launch_mode="$(arg launch_mode)" hardware="$(arg hardware)"/>
   </xacro:if>
 
 
