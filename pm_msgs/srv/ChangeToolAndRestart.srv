@@ -1,0 +1,6 @@
+string tool_name            # Tool name to activate (must match a name in the robot config)
+string launch_slug          # Which launch to restart: "real_hw", "sim_hw", "unity_hw". Leave empty to auto-detect the running launch.
+float32 restart_delay       # Seconds to wait between stop and start (0 = use default of 10 s)
+---
+bool success
+string message

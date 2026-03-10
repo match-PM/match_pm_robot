@@ -276,7 +276,7 @@
       <parent link="Z_Axis" />
       <child link="Gripper_Rot_Plate" />
       <axis xyz="0 0 1" />
-      <limit lower="-2.0" upper="2.0" effort="100" velocity="15" />
+      <limit lower="${-150 * 3.14159265359/180}" upper="${200 * 3.14159265359/180}" effort="100" velocity="15" />
     </joint>
 
     <link name="t_axis_toolchanger">
