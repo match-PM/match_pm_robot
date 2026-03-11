@@ -264,19 +264,32 @@ class GonioOrientationSolver(Node):
 
                 return eq_numeric.flatten()
 
-            # Initial guess as a NumPy array
-            initial_guess = np.array([0.0, 0.0, 0.0], dtype=np.float64)
+            # Try multiple initial guesses to avoid local minima (e.g. when T-axis is near ±180°)
+            initial_guesses = [
+                [0.0,       0.0,   0.0],
+                [np.pi,     0.0,   0.0],
+                [-np.pi,    0.0,   0.0],
+                [0.0,       0.05,  0.0],
+                [0.0,      -0.05,  0.0],
+                [np.pi,     0.05,  0.0],
+                [np.pi,    -0.05,  0.0],
+            ]
 
-            # Solve using least squares (Levenberg-Marquardt method)
-            result = least_squares(equations, initial_guess, method='lm')
+            best_result = None
+            best_cost = np.inf
+            for guess in initial_guesses:
+                res = least_squares(equations, np.array(guess, dtype=np.float64), method='lm')
+                if res.success and res.cost < best_cost:
+                    best_cost = res.cost
+                    best_result = res
 
-            if result.success:
+            result = best_result
+
+            if result is not None and result.success:
                 q1_sol, q2_sol, q3_sol = result.x
+                self.get_logger().info(f"Best solution found with cost: {best_cost:.6e}")
                 response.joint_values = [float(q1_sol), float(q2_sol), float(q3_sol)]
                 response.joint_names = ['T_Axis_Joint', 'Gonio_Right_Stage_1_Joint', 'Gonio_Right_Stage_2_Joint']
-                #response.joint_names = ['T_Axis_Joint', 'Gonio_Right_Stage_2_Joint', 'Gonio_Right_Stage_1_Joint']
-
-                response.success = True
 
                 response.success = True
 
@@ -284,7 +297,7 @@ class GonioOrientationSolver(Node):
                 self.get_logger().info(f"Solution Gonio_Right_Stage_1_Joint: {q2_sol}")
                 self.get_logger().info(f"Solution Gonio_Right_Stage_2_Joint: {q3_sol}")
             else:
-                self.get_logger().error("No solution found!")
+                self.get_logger().error("No solution found across all initial guesses!")
                 response.success = False
                 return response
 
@@ -350,14 +363,30 @@ class GonioOrientationSolver(Node):
 
                 return eq_numeric.flatten()
 
-            # Initial guess as a NumPy array
-            initial_guess = np.array([0.0, 0.0, 0.0], dtype=np.float64)
+            # Try multiple initial guesses to avoid local minima (e.g. when T-axis is near ±180°)
+            initial_guesses = [
+                [0.0,       0.0,   0.0],
+                [np.pi,     0.0,   0.0],
+                [-np.pi,    0.0,   0.0],
+                [0.0,       0.05,  0.0],
+                [0.0,      -0.05,  0.0],
+                [np.pi,     0.05,  0.0],
+                [np.pi,    -0.05,  0.0],
+            ]
 
-            # Solve using least squares (Levenberg-Marquardt method)
-            result = least_squares(equations, initial_guess, method='lm')
+            best_result = None
+            best_cost = np.inf
+            for guess in initial_guesses:
+                res = least_squares(equations, np.array(guess, dtype=np.float64), method='lm')
+                if res.success and res.cost < best_cost:
+                    best_cost = res.cost
+                    best_result = res
 
-            if result.success:
+            result = best_result
+
+            if result is not None and result.success:
                 q1_sol, q2_sol, q3_sol = result.x
+                self.get_logger().info(f"Best solution found with cost: {best_cost:.6e}")
                 response.joint_values = [float(q1_sol), float(q2_sol), float(q3_sol)]
                 response.joint_names = ['T_Axis_Joint', 'Gonio_Left_Stage_1_Joint', 'Gonio_Left_Stage_2_Joint']
                 response.success = True
@@ -366,7 +395,7 @@ class GonioOrientationSolver(Node):
                 self.get_logger().info(f"Solution Gonio_Left_Stage_1_Joint: {q2_sol}")
                 self.get_logger().info(f"Solution Gonio_Left_Stage_2_Joint: {q3_sol}")
             else:
-                self.get_logger().error("No solution found!")
+                self.get_logger().error("No solution found across all initial guesses!")
                 response.success = False
                 return response
 
