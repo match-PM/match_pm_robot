@@ -527,7 +527,10 @@ class PrimitiveSkillsNode(Node):
 
         # convert and units to um 
         response.success = response_cl.success
-        response.data = -1*(response_cl.data-1.0)*1e3
+        if not self.is_unity_running():
+            response.data = -1*(response_cl.data-1.0)*1e3
+        else:
+            response.data = response_cl.data
 
         return response
 
