@@ -551,7 +551,7 @@ void Client::call_method(
     std::size_t *output_size, UA_Variant **outputs, std::string endpoint
 )
 {
-    const int MAX_RETRIES = 3;       // number of retry attempts
+    const int MAX_RETRIES = 6;       // number of retry attempts
     const int RETRY_DELAY_MS = 1000; // delay between retries in milliseconds
 
     int attempt = 0;
