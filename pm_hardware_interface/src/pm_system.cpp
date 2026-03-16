@@ -1,3 +1,4 @@
+#include <chrono>
 #include <fstream>
 #include <string>
 #include <tuple>
@@ -351,9 +352,12 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     (void)time;
     (void)period;
 
+    auto start = std::chrono::high_resolution_clock::now();
+    auto logger = rclcpp::get_logger("PMSystem");
+
     auto &robot = m_pm_client.get_robot();
 
-    // RCLCPP_INFO(rclcpp::get_logger("PMSystem"), "PMSystem::read called.");
+    // RCLCPP_INFO(logger, "PMSystem::read called at %.6f s.", time.seconds());
 
     for (auto &axis : m_axes)
     {
@@ -395,6 +399,10 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
     hoenle_uv.read(robot);
 
     reference_cube_pushed = static_cast<double>(robot.reference_cube->get_pushed());
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    RCLCPP_WARN(logger, "PMSystem::read() took %.2f ms total", duration_ms.count() * 1.0);
 
     return hardware_interface::return_type::OK;
 }

@@ -55,6 +55,10 @@ controller_manager:
 
 #     interface_name: position
 
+pm_robot_JSB:
+  ros__parameters:
+    state_publish_rate: 100   # match your controller_manager update rate
+    
 pm_parallel_gripper_2_jaws_controller:
   ros__parameters:
     joints:
