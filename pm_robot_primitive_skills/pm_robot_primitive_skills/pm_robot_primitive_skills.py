@@ -16,12 +16,9 @@ from std_msgs.msg import Float64MultiArray
 from pm_skills.py_modules.PmRobotUtils import PmRobotUtils
 from math import sqrt
 from pm_uepsilon_confocal_msgs.srv import GetValue
-
 from pm_opcua_skills_msgs.srv import Dispense
 # import empty_with_success from pm_msgs
 from pm_msgs.srv import EmptyWithSuccess
-
-#import copy
 import copy
 
 class PrimitiveSkillsNode(Node):
@@ -56,7 +53,6 @@ class PrimitiveSkillsNode(Node):
         self.move_uv_in_curing_position_service = self.create_service(SetBool, self.get_name()+"/move_uv_in_curing_position", self.move_uv_in_curing_position_service_callback,callback_group=self.callback_group_mu_ex)
         self.uv_curing = self.create_service(pm_msg_srv.UVCuringSkill, self.get_name()+'/uv_curing', self.uv_curing_callback, callback_group=self.callback_group_mu_ex)
         
-        
         self.get_confocal_top_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_top_measurement', self.get_confocal_top_measurement)
         self.get_confocal_bottom_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_bottom_measurement', self.get_confocal_bottom_measurement)
         
@@ -80,6 +76,8 @@ class PrimitiveSkillsNode(Node):
 
                 
         self.move_robot_tool_client = self.create_client(MoveToFrame, '/pm_moveit_server/move_1k_dispenser_to_frame',callback_group=self.callback_group_re)
+
+        self.move_cam_client = self.create_client(MoveToFrame, '/pm_moveit_server/move_cam1_to_frame',callback_group=self.callback_group_re)
 
         self.client_get_confocal_bottom_measurement = self.create_client(GetValue, '/uepsilon_two_channel_controller/IFC2422/ch2/distance/srv',callback_group=self.callback_group_re)
         self.client_get_confocal_top_measurement = self.create_client(GetValue, '/uepsilon_two_channel_controller/IFC2422/ch1/distance/srv',callback_group=self.callback_group_re)

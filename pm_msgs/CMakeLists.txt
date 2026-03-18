@@ -70,6 +70,7 @@ rosidl_generate_interfaces(
   "srv/SetUvSliderXPositions.srv"
   "srv/DispenseTestPoints.srv"
   "srv/ChangeToolAndRestart.srv"
+  "srv/DispenseAtPath.srv"
   DEPENDENCIES geometry_msgs
 )
 
