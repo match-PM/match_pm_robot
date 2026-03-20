@@ -402,7 +402,7 @@ PMSystem::read(const rclcpp::Time &time, const rclcpp::Duration &period)
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    RCLCPP_WARN(logger, "PMSystem::read() took %.2f ms total", duration_ms.count() * 1.0);
+    // RCLCPP_WARN(logger, "PMSystem::read() took %.2f ms total", duration_ms.count() * 1.0);
 
     return hardware_interface::return_type::OK;
 }
