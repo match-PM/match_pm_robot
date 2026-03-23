@@ -1473,7 +1473,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Target frame not valid!");
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Target frame: %s", target_frame.c_str());
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Target frame parent: Z_Axis");
-    msg = "Target frame not valid! Target frame has to be the frame the gonio is aligned to and has to be in chain of Z_Axis";
+    msg = "Target frame not valid! Target frame has to be the frame the component on the gonio is aligned to and has to be in chain of Z_Axis";
     return {false, joint_names, target_joint_values, msg};
   }
 
