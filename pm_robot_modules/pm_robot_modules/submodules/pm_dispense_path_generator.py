@@ -187,7 +187,7 @@ class DispenseAction(BaseAction):
         gcode = (
             f"{self.GCODE_ID} "
             f"X{gcode_point.x} Y{gcode_point.y} Z{gcode_point.z} "
-            f"F{abs(self.speed)}"
+            f"F{abs(self.speed)} "
             f"P{abs(self.dispenser_pressure)}"
         )
 
@@ -449,24 +449,52 @@ class DispenseSequenceGenerator:
                 raise TypeError("Action must be an instance of BaseAction or its subclasses.")
         return "\n".join(g_code)
 
-    def save_g_code_to_file(self, start_pose: Pose, start_joint_values:Point) -> bool:
+    def save_g_code_to_file(self, 
+                            start_pose: Pose, 
+                            start_joint_values:Point,
+                            file_path = None) -> bool:
         """
-        Save the generated G-code to a txt file.
-        This method generates the G-code and writes it to the specified file path.
-        """
-        g_code = self.generate_g_code(start_pose, 
-                                      start_joint_values)
+        Save the generated G-code to a .pmdispp.g file.
+        If no file_path is provided, uses self.file_path as the base name.
+        The G-code file will have the same base name as the sequence but with .pmdispp.g extension.
         
-        file_path_txt = self.file_path
-        # ensure pmdispp.g ending
-        if not file_path_txt.endswith('.pmdispp.g'):
-            if file_path_txt.endswith('.pmdispp'):
-                # strip
-                file_path_txt = file_path_txt[:-8]
-            file_path_txt += ".pmdispp.g"
-
-        with open(file_path_txt, 'w') as file:
+        Args:
+            start_pose: Starting pose for G-code generation
+            start_joint_values: Starting joint values
+            file_path: Optional file path for saving. If None, uses self.file_path
+            
+        Returns:
+            bool: True if save was successful
+            
+        Raises:
+            ValueError: If no file path is set and file_path parameter is None
+        """
+        # Determine which file path to use
+        if file_path is None:
+            if self.file_path is None:
+                raise ValueError("File path is not set. Please set the file path before saving G-code.")
+            base_path = self.file_path
+        else:
+            base_path = file_path
+        
+        # Generate G-code
+        g_code = self.generate_g_code(start_pose, start_joint_values)
+        
+        # Ensure .pmdispp.g ending
+        if not base_path.endswith('.pmdispp.g'):
+            if base_path.endswith('.pmdispp'):
+                # Already has .pmdispp, just add .g
+                gcode_file_path = base_path + '.g'
+            else:
+                # Add full .pmdispp.g extension
+                gcode_file_path = base_path + '.pmdispp.g'
+        else:
+            gcode_file_path = base_path
+        
+        # Write to file
+        with open(gcode_file_path, 'w') as file:
             file.write(g_code)
+        
         return True
     
     def generate_sequence(self):
