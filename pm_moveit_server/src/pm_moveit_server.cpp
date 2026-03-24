@@ -825,6 +825,59 @@ geometry_msgs::msg::Quaternion check_rotation(geometry_msgs::msg::Quaternion rot
   return rotation;
 }
 
+std::string check_collision_contacts(planning_scene::PlanningScene& ps, moveit::core::RobotState& state)
+{
+  collision_detection::CollisionRequest req;
+  req.contacts = true;
+  req.max_contacts = 10;
+  collision_detection::CollisionResult res;
+  ps.checkSelfCollision(req, res, state);
+
+  if (!res.collision)
+    return "";
+
+  std::string info;
+  for (const auto& contact : res.contacts)
+    info += " [" + contact.first.first + " <-> " + contact.first.second + "]";
+  return info;
+}
+
+std::string check_goal_collision_info(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+                                      const std::vector<double>& joint_values)
+{
+  auto robot_model = PM_Robot_Model_Loader->getModel();
+  auto ps = std::make_shared<planning_scene::PlanningScene>(robot_model);
+
+  const moveit::core::JointModelGroup* jmg = robot_model->getJointModelGroup(move_group->getName());
+  if (!jmg)
+    return "";
+
+  std::string result;
+
+  // Check start state (current robot state)
+  moveit::core::RobotStatePtr start_state = move_group->getCurrentState();
+  if (start_state)
+  {
+    std::string contacts = check_collision_contacts(*ps, *start_state);
+    if (!contacts.empty())
+      result += " Collisions between:" + contacts;
+  }
+
+  // Check goal state (target joint values, all other joints at current position)
+  if (start_state && joint_values.size() == jmg->getVariableCount())
+  {
+    moveit::core::RobotState goal_state(*start_state);
+    goal_state.setJointGroupPositions(jmg, joint_values);
+    goal_state.update();
+
+    std::string contacts = check_collision_contacts(*ps, goal_state);
+    if (!contacts.empty())
+      result += " Collisions between:" + contacts;
+  }
+
+  return result;
+}
+
 std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
                                              std::vector<double> target_joint_values,
                                              bool execute_movement)
@@ -844,8 +897,9 @@ std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_in
   success_calculate_plan = (move_group->plan(*plan) == moveit::core::MoveItErrorCode::SUCCESS);
   if (!success_calculate_plan)
   {
-    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Planing failed!");
-    return std::make_tuple(false, "Planing failed!");
+    std::string col_info = check_goal_collision_info(move_group, target_joint_values);
+    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Planing failed!%s", col_info.c_str());
+    return std::make_tuple(false, "Planing failed!" + col_info);
   }
   end_plan_time = std::chrono::high_resolution_clock::now();
 
