@@ -1462,7 +1462,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Endeffector frame not valid!");
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Endeffector frame: %s", target_endeffector_frame.c_str());
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Endeffector frame parent: %s", endeffector_frame_parent.c_str());
-    msg = "Endeffector frame not valid! Endeffector frame has to be in chain of Endeffector frame parent: " + endeffector_frame_parent;
+    msg = "Component_alignment_frame not valid! Frame has to be in chain of the gonio: " + endeffector_frame_parent;
     return {false, joint_names, target_joint_values, msg};
   }
 
@@ -1473,7 +1473,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Target frame not valid!");
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Target frame: %s", target_frame.c_str());
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Target frame parent: Z_Axis");
-    msg = "Target frame not valid! Target frame has to be the frame the component on the gonio is aligned to and has to be in chain of Z_Axis";
+    msg = "Target frame not valid! Target_alignment_frame has to be in chain of the gripper. Usually: PM_Robot_Tool_TCP";
     return {false, joint_names, target_joint_values, msg};
   }
 
