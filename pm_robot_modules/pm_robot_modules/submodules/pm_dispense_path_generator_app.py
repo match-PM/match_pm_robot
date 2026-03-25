@@ -31,6 +31,8 @@ from PyQt6.QtWidgets import (
     QFileDialog,
     QMenu,
     QScrollArea,
+    QDialog,
+    QMessageBox,
 )
 import json
 import datetime
@@ -184,6 +186,7 @@ class DispenserBuilderWidget(QWidget):
         center_panel.addWidget(center_header)
         
         self.visualization_widget = VisualizationWidget()
+        self.visualization_widget.set_dispenser_generator(self.dispenser_action_list)
         self.visualization_widget.setMinimumSize(400, 400)
         center_panel.addWidget(self.visualization_widget, 1)
         
@@ -669,6 +672,67 @@ class DispenserBuilderWidget(QWidget):
         return None
 
 
+class GCodeDisplayDialog(QDialog):
+    """Dialog to display G-code with copyable text."""
+    
+    def __init__(self, gcode_text: str, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("G-Code Display")
+        self.setGeometry(100, 100, 600, 400)
+        
+        # Create the main layout
+        layout = QVBoxLayout()
+        
+        # Title label
+        title_label = QLabel("Generated G-Code:")
+        title_label.setStyleSheet("font-weight: bold; margin-bottom: 10px;")
+        layout.addWidget(title_label)
+        
+        # Text edit for G-code display
+        self.gcode_text_edit = QTextEdit()
+        self.gcode_text_edit.setPlainText(gcode_text)
+        self.gcode_text_edit.setReadOnly(False)  # Allow selection and copying
+        self.gcode_text_edit.setStyleSheet("""
+            QTextEdit {
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                padding: 5px;
+                background-color: #ffffff;
+                font-family: 'Courier New', monospace;
+                font-size: 10pt;
+            }
+        """)
+        layout.addWidget(self.gcode_text_edit)
+        
+        # Button layout
+        button_layout = QHBoxLayout()
+        
+        # Copy button
+        copy_button = QPushButton("Copy to Clipboard")
+        copy_button.clicked.connect(self.copy_to_clipboard)
+        button_layout.addWidget(copy_button)
+        
+        button_layout.addStretch()
+        
+        # Close button
+        close_button = QPushButton("Close")
+        close_button.clicked.connect(self.accept)
+        button_layout.addWidget(close_button)
+        
+        layout.addLayout(button_layout)
+        
+        self.setLayout(layout)
+    
+    def copy_to_clipboard(self):
+        """Copy the G-code text to the clipboard."""
+        from PyQt6.QtWidgets import QApplication
+        clipboard = QApplication.clipboard()
+        clipboard.setText(self.gcode_text_edit.toPlainText())
+        
+        # Optional: Show a brief message to confirm copy
+        QMessageBox.information(self, "Success", "G-code copied to clipboard!")
+
+
 class MatplotlibCanvas(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
@@ -685,8 +749,11 @@ class VisualizationWidget(QWidget):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(8)
         self.canvas = None
+        self.dispenser_generator = None  # Reference to the sequence generator
         self._create_default_figure()
+        self._create_bottom_button()
 
     def _create_default_figure(self):
         """Create a default empty figure with 50x50mm grid"""
@@ -707,6 +774,64 @@ class VisualizationWidget(QWidget):
         
         self.set_figure(fig)
 
+    def _create_bottom_button(self):
+        """Create the 'Show G-Code' button beneath the figure."""
+        button_layout = QHBoxLayout()
+        button_layout.setSpacing(5)
+        button_layout.setContentsMargins(0, 0, 0, 0)
+        
+        button_layout.addStretch()
+        
+        self.show_gcode_button = QPushButton("Show G-Code")
+        self.show_gcode_button.setMaximumWidth(150)
+        self.show_gcode_button.clicked.connect(self.on_show_gcode_clicked)
+        self.show_gcode_button.setStyleSheet("""
+            QPushButton {
+                background-color: #2196F3;
+                color: white;
+                border: none;
+                border-radius: 3px;
+                padding: 6px 15px;
+                font-weight: 500;
+            }
+            QPushButton:hover {
+                background-color: #1976D2;
+            }
+            QPushButton:pressed {
+                background-color: #1565C0;
+            }
+        """)
+        
+        button_layout.addWidget(self.show_gcode_button)
+        button_layout.addStretch()
+        self.layout.addLayout(button_layout)
+
+    def on_show_gcode_clicked(self):
+        """Handle the Show G-Code button click."""
+        if self.dispenser_generator is None:
+            QMessageBox.warning(self, "Warning", "No sequence generator available.")
+            return
+        
+        try:
+            # Generate G-code
+            from geometry_msgs.msg import Pose
+            start_pose = Pose()
+            start_pose.orientation.w = 1.0  # Default identity quaternion
+            gcode = self.dispenser_generator.generate_g_code(start_pose, Point())
+            
+            # Show the dialog
+            if gcode.strip():
+                dialog = GCodeDisplayDialog(gcode, self)
+                dialog.exec()
+            else:
+                QMessageBox.information(self, "Info", "No G-code generated.\nAdd actions to the sequence first.")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to generate G-code:\n{str(e)}")
+
+    def set_dispenser_generator(self, generator):
+        """Set the reference to the dispenser sequence generator."""
+        self.dispenser_generator = generator
+
     def set_figure(self, fig: plt.Figure):
         if self.canvas:
             self.layout.removeWidget(self.canvas)
@@ -714,7 +839,7 @@ class VisualizationWidget(QWidget):
             self.canvas.deleteLater()
 
         self.canvas = FigureCanvas(fig)
-        self.layout.addWidget(self.canvas)
+        self.layout.insertWidget(0, self.canvas)
         self.canvas.draw()
 
 

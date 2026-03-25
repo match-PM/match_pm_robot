@@ -111,14 +111,9 @@ class DispenseAction(BaseAction):
         self.goal_x = 0.0
         self.goal_y = 0.0
         self.goal_z = 0.0
-        self.heigth = 0.0
         self.speed = 0.0
-        self.dispenser_pressure = 0.0
+        self.turn_off_length = 0.0
 
-    def test(self):
-        print("Test method called in DispenseAction")
-        return "Test successful"
-    
     def update_current_point(self, point:Point):
         if isinstance(point, Point):
             point.x += self.goal_x
@@ -165,6 +160,13 @@ class DispenseAction(BaseAction):
                 - new_point: geometry_msgs.msg.Point, transformed goal position
                 - gcode: str, G-code command
         """
+        if self.speed <= 0.0:
+            raise ValueError("Speed cannot be zero or negative for DispenseAction G-code generation.")
+        if self.goal_x == 0.0 and self.goal_y == 0.0 and self.goal_z == 0.0:
+            raise ValueError("Goal offsets cannot all be zero for DispenseAction G-code generation.")
+        if self.turn_off_length < 0.0:
+            raise ValueError("Turn off length cannot be negative for DispenseAction G-code generation.")
+       
         # Create goal vector from offsets
         goal_vector = np.array([self.goal_x, self.goal_y, self.goal_z])
 
@@ -174,6 +176,19 @@ class DispenseAction(BaseAction):
         r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
         #rotated_goal = r.apply(goal_vector)  # rotate the goal offsets
         rotated_goal = r.inv().apply(goal_vector)
+
+        # distance 
+        distance = np.linalg.norm(rotated_goal)
+        move_time = distance / self.speed if self.speed > 0 else 0.0
+
+        if distance < self.turn_off_length:
+            raise ValueError("Turn off length cannot be greater than the distance to move for DispenseAction G-code generation.")
+        
+        turn_off_time = move_time/(distance / self.turn_off_length)
+
+        x_speed = rotated_goal[0] / move_time if move_time > 0 else 0.0
+        y_speed = rotated_goal[1] / move_time if move_time > 0 else 0.0
+        z_speed = rotated_goal[2] / move_time if move_time > 0 else 0.0
 
         # Add rotated goal to start point
         new_point = Point()
@@ -187,9 +202,10 @@ class DispenseAction(BaseAction):
         gcode = (
             f"{self.GCODE_ID} "
             f"X{gcode_point.x} Y{gcode_point.y} Z{gcode_point.z} "
-            f"F{abs(self.speed)} "
-            f"P{abs(self.dispenser_pressure)}"
-        )
+            f"FX{x_speed} FY{y_speed} FZ{z_speed} "
+            f"MT{move_time*1000} "
+            f"TF{turn_off_time*1000}"
+            )
 
         return new_point, gcode
 
@@ -203,9 +219,7 @@ class MoveAction(BaseAction):
         self.goal_x = 0.0
         self.goal_y = 0.0
         self.goal_z = 0.0
-        self.heigth = 0.0
         self.speed = 0.0
-        self.test = 0.0
 
     def update_current_point(self, point:Point):
         if isinstance(point, Point):
@@ -247,6 +261,13 @@ class MoveAction(BaseAction):
                 - new_point: geometry_msgs.msg.Point, transformed goal position
                 - gcode: str, G-code command
         """
+
+        if self.speed <= 0.0:
+            raise ValueError("Speed cannot be zero or negative for MoveAction G-code generation.")
+        
+        if self.goal_x == 0.0 and self.goal_y == 0.0 and self.goal_z == 0.0:
+            raise ValueError("Goal offsets cannot all be zero for MoveAction G-code generation.")
+        
         # Create goal vector from offsets
         goal_vector = np.array([self.goal_x, self.goal_y, self.goal_z])
 
@@ -263,13 +284,21 @@ class MoveAction(BaseAction):
         new_point.y = start_point.y + goal_vector[1]
         new_point.z = start_point.z + goal_vector[2]
 
+        # distance 
+        distance = np.linalg.norm(goal_vector)
+        move_time = distance / self.speed if self.speed > 0 else 0.0
+
+        x_speed = goal_vector[0] / move_time if move_time > 0 else 0.0
+        y_speed = goal_vector[1] / move_time if move_time > 0 else 0.0
+        z_speed = goal_vector[2] / move_time if move_time > 0 else 0.0
+
         # Generate G-code
         gcode_point = (new_point)
 
         gcode = (
             f"{self.GCODE_ID} "
             f"X{gcode_point.x} Y{gcode_point.y} Z{gcode_point.z} "
-            f"F{abs(self.speed)}"
+            f"FX{x_speed} FY{y_speed} FZ{z_speed} "
         )
 
         return new_point, gcode
@@ -282,8 +311,9 @@ class DipAction(BaseAction):
     def __init__(self):
         super().__init__()
         self.dip_depth = 0.0
-        self.dip_speed = 0.0
-
+        self.dip_down_speed = 0.0
+        self.dip_up_speed = 0.0
+        self.dip_rest_time = 0.0
 
     def update_current_point(self, point:Point):
         pass
@@ -318,6 +348,12 @@ class DipAction(BaseAction):
                 - new_point: geometry_msgs.msg.Point, transformed dip position
                 - gcode: str, G-code command
         """
+        if self.dip_down_speed <= 0.0 or self.dip_up_speed <= 0.0:
+            raise ValueError("Dip speeds cannot be zero or negative for DipAction G-code generation.")
+        
+        if self.dip_depth <= 0.0:
+            raise ValueError("Dip depth must be positive for DipAction G-code generation.")
+        
         # Define dip vector along local -Z
         dip_vector = np.array([0.0, 0.0, -self.dip_depth])
 
@@ -328,6 +364,18 @@ class DipAction(BaseAction):
         #rotated_dip = r.apply(dip_vector)
         rotated_dip = r.inv().apply(dip_vector)
 
+        # distance 
+        dip_distance = np.linalg.norm(dip_vector)
+        move_time_down = dip_distance / self.dip_down_speed if self.dip_down_speed > 0 else 0.0
+        move_time_up = dip_distance / self.dip_up_speed if self.dip_up_speed > 0 else 0.0
+
+        x_up_speed = rotated_dip[0] / move_time_up if move_time_up > 0 else 0.0
+        y_up_speed = rotated_dip[1] / move_time_up if move_time_up > 0 else 0.0
+        z_up_speed = rotated_dip[2] / move_time_up if move_time_up > 0 else 0.0
+
+        x_down_speed = rotated_dip[0] / move_time_down if move_time_down > 0 else 0.0
+        y_down_speed = rotated_dip[1] / move_time_down if move_time_down > 0 else 0.0
+        z_down_speed = rotated_dip[2] / move_time_down if move_time_down > 0 else 0.0
 
         # Compute new point
         new_point = Point()
@@ -338,7 +386,84 @@ class DipAction(BaseAction):
         gcode_point = (new_point)
 
         # Generate G-code
-        gcode = f"{self.GCODE_ID} X{gcode_point.x} Y{gcode_point.y} Z{gcode_point.z} F{abs(self.dip_speed)}"
+        gcode = (f"{self.GCODE_ID} "
+            f"X{gcode_point.x} Y{gcode_point.y} Z{gcode_point.z} "
+            f"FXD{x_down_speed} FYD{y_down_speed} FZD{z_down_speed} "
+            f"FXU{x_up_speed} FYU{y_up_speed} FZU{z_up_speed} "
+            f"T{self.dip_rest_time}"
+            )
+
+        return start_point, gcode
+
+class WaitAction(BaseAction):
+    GCODE_ID = "G40"
+    LINE_WIDTH = [1 ,2]
+
+    def __init__(self):
+        super().__init__()
+        self.time = 0.0
+
+    def update_current_point(self, point:Point):
+        pass
+
+    def add_to_visualization(self, ax, current_point: Point):
+        # This method should implement the logic to add this action to a visualization
+        # For example, it could plot the action on a matplotlib figure
+        # draw circle at the current point with radius dip_depth
+        if self._is_selected:
+            linewidth = self.LINE_WIDTH[1]
+        else:
+            linewidth = self.LINE_WIDTH[0]
+        return current_point  # Return the current point as no movement is made in this action
+    
+    def get_g_code(self, start_point: Point, orientation: Quaternion) -> Tuple[Point, str]:
+
+        # Generate G-code
+        gcode = f"{self.GCODE_ID} T{self.time}"
+
+        return start_point, gcode
+
+class SetDispActivationAction(BaseAction):
+    GCODE_ID = "G50"
+    LINE_WIDTH = [1 ,2]
+
+    def __init__(self):
+        super().__init__()
+        self.activation = False
+
+    def update_current_point(self, point:Point):
+        pass
+
+    def add_to_visualization(self, ax, current_point: Point):
+        if self._is_selected:
+            linewidth = self.LINE_WIDTH[1]
+        else:
+            linewidth = self.LINE_WIDTH[0]
+
+        # draw a rectangle for active state, and a triangle for inactive state
+        if self.activation:
+            # Active: draw rectangle
+            rect = plt.Rectangle((current_point.x - 1, current_point.y - 1), 2, 2,
+                                 color='m', fill=True, label=self.name, linewidth=linewidth)
+            ax.add_artist(rect)
+        else:
+            # Inactive: draw triangle
+            triangle = plt.Polygon([[current_point.x, current_point.y + 1],
+                                    [current_point.x - 1, current_point.y - 1],
+                                    [current_point.x + 1, current_point.y - 1]],
+                                    color='c', fill=True, label=self.name, linewidth=linewidth)
+            ax.add_artist(triangle)
+
+        return current_point  # Return the current point as no movement is made in this action
+    
+    def get_g_code(self, start_point: Point, orientation: Quaternion) -> Tuple[Point, str]:
+
+        if self.activation:
+            activation_str = "1"
+        else:            
+            activation_str = "0"
+        # Generate G-code
+        gcode = f"{self.GCODE_ID} A{activation_str}"
 
         return start_point, gcode
 
@@ -348,7 +473,9 @@ class DispenseSequenceGenerator:
         self.available_actions = {
             'DispenseAction': DispenseAction,
             'MoveAction': MoveAction,
-            'DipAction': DipAction
+            'DipAction': DipAction,
+            'WaitAction': WaitAction,
+            'SetDispActivationAction': SetDispActivationAction
         }  # Dictionary to map action names to classes
         self.file_path = None
         self.current_point = Point()  # Current position of the robot
@@ -412,6 +539,10 @@ class DispenseSequenceGenerator:
                     action = MoveAction()
                 elif action_type == 'DipAction':
                     action = DipAction()
+                elif action_type == 'WaitAction':
+                    action = WaitAction()
+                elif action_type == 'SetDispActivationAction':
+                    action = SetDispActivationAction()
                 else:
                     raise ValueError(f"Unknown action type: {action_type}")
 
