@@ -102,7 +102,7 @@ class BaseAction:
         raise NotImplementedError("This method should be implemented in subclasses.")
 
 class DispenseAction(BaseAction):
-    GCODE_ID = "G10"
+    GCODE_ID = "G20"
     LINE_COLOR = 'r'
     LINE_WIDTH = [3, 4]  # Default line width for unselected and
 
@@ -210,7 +210,7 @@ class DispenseAction(BaseAction):
         return new_point, gcode
 
 class MoveAction(BaseAction):
-    GCODE_ID = "G20"
+    GCODE_ID = "G10"
     LINE_WIDTH = [1 ,2]
     LINE_COLOR = 'k'
 
