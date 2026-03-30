@@ -1,3 +1,4 @@
 DispensePoint[] dispense_points
 ---
 bool success
+string message
