@@ -399,7 +399,7 @@ def generate_launch_description():
     # Define Launch Description
     ld = LaunchDescription()
 
-    ld.add_action(opcua_server_node)
+    # ld.add_action(opcua_server_node)
     ld.add_action(robot_state_publisher_node)
     # ld.add_action(control_manager)
     ld.add_action(delayed_controller_manager)
