@@ -365,13 +365,23 @@ class PrimitiveSkillsUtils():
         # Call service asynchronously
         response:GetValue.Response = self.client_get_confocal_bottom_measurement.call(request_cl)
 
-        response.success = response.success
-        if not self.is_unity_running():
-            response.data = -1*(response.data - 3.0) * 1e3  # convert to micrometers
-        else:
-            response.data = response.data
+        #self.logger.error(f"DEBUG RESPONSE: init {response.data} um")
 
-        return response
+        result_class = GetValue.Response()
+        result_class.success = response.success
+        
+        unity_active = self.is_unity_running()
+
+        #self.logger.error(f"DEBUG UNITY ACTIVE: {unity_active}")
+
+        if not unity_active:
+            result_class.data = -1*(response.data - 3.0) * 1e3  # convert to micrometers
+        else:
+            result_class.data = response.data
+
+        #self.logger.error(f"DEBUG RESPONSE: {response.data} um")
+
+        return result_class
     
     def dispense_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request, 
                           point_name: str,
