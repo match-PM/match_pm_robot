@@ -39,6 +39,7 @@ pm_robot_tools:
     - availabe_jaws:
       - Default_Jaw
       - Flat_Jaw
+      - Sensing_Jaw
       tool_name: SmarAct_Piezo_Gripper_flat
     use_jaw_type: Default_Jaw
     use_paralell_gripper: false
