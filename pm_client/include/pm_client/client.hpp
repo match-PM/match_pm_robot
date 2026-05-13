@@ -6,6 +6,8 @@
 
 #include "open62541/open62541.h"
 
+#include "pm_client/debug.hpp"
+#include "pm_client/error_handling.hpp"
 #include "pm_client/robot.hpp"
 #include "pm_client/util.hpp"
 
@@ -74,6 +76,7 @@ class Client
 
     /**
      * Helper function to read scalar node values.
+     * Throws OpcuaException if the read fails or node has incorrect type.
      */
     template<typename T>
     T read_node_value(UA_NodeId node_id)
@@ -87,26 +90,42 @@ class Client
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            // throw std::runtime_error{UA_StatusCode_name(status)};
-            return {};
+            DebugLogger::log_status("Client", status, "read_node_value", "scalar read failed");
+            throw OpcuaException(
+                status,
+                "read_node_value(scalar)",
+                "Failed to read value from node"
+            );
         }
 
         if (!UA_Variant_hasScalarType(&value, &UA_TYPES[UA_TYPE]))
         {
-            throw std::runtime_error{
-                "Tried to read value from node but node did not have expected type."
-            };
+            UA_Variant_clear(&value);
+            DebugLogger::error(
+                "Client",
+                "Node type mismatch: expected scalar type, got array or wrong type"
+            );
+            throw NodeTypeException("scalar", "unexpected type");
+        }
+
+        if (value.data == nullptr)
+        {
+            UA_Variant_clear(&value);
+            DebugLogger::error("Client", "Node value data is null after successful read");
+            throw std::runtime_error("Node value data is null");
         }
 
         T data = *reinterpret_cast<T *>(value.data);
 
         UA_Variant_clear(&value);
+        DebugLogger::debug("Client", "Successfully read scalar node value");
 
         return data;
     }
 
     /**
      * Helper function to read array node values.
+     * Throws OpcuaException if the read fails or node has incorrect type/size.
      */
     template<typename T, std::size_t count>
     std::array<T, count> read_node_values(UA_NodeId node_id)
@@ -120,15 +139,40 @@ class Client
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            // throw std::runtime_error{UA_StatusCode_name(status)};
-            return {};
+            DebugLogger::log_status("Client", status, "read_node_values", "array read failed");
+            throw OpcuaException(
+                status,
+                "read_node_values(array)",
+                "Failed to read array from node"
+            );
         }
 
-        if (!UA_Variant_hasArrayType(&value, &UA_TYPES[UA_TYPE]) || value.arrayLength != count)
+        if (!UA_Variant_hasArrayType(&value, &UA_TYPES[UA_TYPE]))
         {
-            throw std::runtime_error{
-                "Tried to read value from node but node did not have expected type."
-            };
+            UA_Variant_clear(&value);
+            DebugLogger::error("Client", "Node type mismatch: expected array type");
+            throw NodeTypeException("array", "scalar or wrong type");
+        }
+
+        if (value.arrayLength != count)
+        {
+            UA_Variant_clear(&value);
+            DebugLogger::error(
+                "Client",
+                "Array size mismatch: expected " + std::to_string(count) + ", got " +
+                    std::to_string(value.arrayLength)
+            );
+            throw std::runtime_error(
+                "Array size mismatch: expected " + std::to_string(count) + ", got " +
+                std::to_string(value.arrayLength)
+            );
+        }
+
+        if (value.data == nullptr)
+        {
+            UA_Variant_clear(&value);
+            DebugLogger::error("Client", "Array data is null after successful read");
+            throw std::runtime_error("Array data is null");
         }
 
         T *data = reinterpret_cast<T *>(value.data);
@@ -139,12 +183,17 @@ class Client
         }
 
         UA_Variant_clear(&value);
+        DebugLogger::debug(
+            "Client",
+            "Successfully read array node values (size: " + std::to_string(count) + ")"
+        );
 
         return return_data;
     }
 
     /**
      * Helper function to write scalar node values.
+     * Throws OpcuaException if the write fails.
      */
     template<typename T>
     void write_node_value(UA_NodeId node_id, T value)
@@ -152,21 +201,34 @@ class Client
         constexpr std::size_t UA_TYPE = type_to_ua<T>::value;
 
         UA_Variant *variant = UA_Variant_new();
+        if (variant == nullptr)
+        {
+            DebugLogger::error("Client", "Failed to allocate memory for variant");
+            throw std::runtime_error("Failed to allocate memory for variant");
+        }
+
         UA_Variant_setScalarCopy(variant, &value, &UA_TYPES[UA_TYPE]);
 
         UA_StatusCode status = UA_Client_writeValueAttribute(m_client, node_id, variant);
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            // throw std::runtime_error{UA_StatusCode_name(status)};
-            return;
+            UA_Variant_delete(variant);
+            DebugLogger::log_status("Client", status, "write_node_value", "scalar write failed");
+            throw OpcuaException(
+                status,
+                "write_node_value(scalar)",
+                "Failed to write value to node"
+            );
         }
 
         UA_Variant_delete(variant);
+        DebugLogger::debug("Client", "Successfully wrote scalar node value");
     }
 
     /**
      * Helper function to write array node values.
+     * Throws OpcuaException if the write fails.
      */
     template<typename T, std::size_t count>
     void write_node_values(UA_NodeId node_id, std::array<T, count> values)
@@ -174,17 +236,32 @@ class Client
         constexpr std::size_t UA_TYPE = type_to_ua<T>::value;
 
         UA_Variant *variant = UA_Variant_new();
+        if (variant == nullptr)
+        {
+            DebugLogger::error("Client", "Failed to allocate memory for array variant");
+            throw std::runtime_error("Failed to allocate memory for array variant");
+        }
+
         UA_Variant_setArrayCopy(variant, values.data(), count, &UA_TYPES[UA_TYPE]);
 
         UA_StatusCode status = UA_Client_writeValueAttribute(m_client, node_id, variant);
 
         if (status != UA_STATUSCODE_GOOD)
         {
-            // throw std::runtime_error{UA_StatusCode_name(status)};
-            return;
+            UA_Variant_delete(variant);
+            DebugLogger::log_status("Client", status, "write_node_values", "array write failed");
+            throw OpcuaException(
+                status,
+                "write_node_values(array)",
+                "Failed to write array to node"
+            );
         }
 
         UA_Variant_delete(variant);
+        DebugLogger::debug(
+            "Client",
+            "Successfully wrote array node values (size: " + std::to_string(count) + ")"
+        );
     }
 
     void call_method(

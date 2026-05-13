@@ -825,7 +825,7 @@ geometry_msgs::msg::Quaternion check_rotation(geometry_msgs::msg::Quaternion rot
   return rotation;
 }
 
-std::string check_collision_contacts(planning_scene::PlanningScene& ps, moveit::core::RobotState& state)
+std::string check_collision_contacts(planning_scene::PlanningScene &ps, moveit::core::RobotState &state)
 {
   collision_detection::CollisionRequest req;
   req.contacts = true;
@@ -837,18 +837,18 @@ std::string check_collision_contacts(planning_scene::PlanningScene& ps, moveit::
     return "";
 
   std::string info;
-  for (const auto& contact : res.contacts)
+  for (const auto &contact : res.contacts)
     info += " [" + contact.first.first + " <-> " + contact.first.second + "]";
   return info;
 }
 
 std::string check_goal_collision_info(std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
-                                      const std::vector<double>& joint_values)
+                                      const std::vector<double> &joint_values)
 {
   auto robot_model = PM_Robot_Model_Loader->getModel();
   auto ps = std::make_shared<planning_scene::PlanningScene>(robot_model);
 
-  const moveit::core::JointModelGroup* jmg = robot_model->getJointModelGroup(move_group->getName());
+  const moveit::core::JointModelGroup *jmg = robot_model->getJointModelGroup(move_group->getName());
   if (!jmg)
     return "";
 
@@ -886,14 +886,14 @@ std::tuple<bool, std::string> set_move_group(std::shared_ptr<moveit::planning_in
   start_plan_time = std::chrono::high_resolution_clock::now();
 
   bool success_calculate_plan = false;
-  move_group->setPlanningTime(1);   // before 20
+  move_group->setPlanningTime(1); // before 20
   move_group->setStartStateToCurrentState();
-  
+
   move_group->setGoalJointTolerance(1e-9);
 
   move_group->setJointValueTarget(target_joint_values);
-  move_group->setNumPlanningAttempts(10);   // before 100
-  move_group->setReplanAttempts(10);        // before 10000
+  move_group->setNumPlanningAttempts(100); // before 100
+  move_group->setReplanAttempts(1000);     // before 10000
   success_calculate_plan = (move_group->plan(*plan) == moveit::core::MoveItErrorCode::SUCCESS);
   if (!success_calculate_plan)
   {
@@ -934,14 +934,14 @@ std::tuple<bool, std::string> set_move_group_orientation(std::shared_ptr<moveit:
                                                          bool execute_movement)
 {
   bool success_calculate_plan = false;
-  move_group->setPlanningTime(1);   // before 20
+  move_group->setPlanningTime(1); // before 20
   move_group->setStartStateToCurrentState();
 
   move_group->setGoalJointTolerance(1e-9);
 
   move_group->setOrientationTarget(x, y, z, w);
-  move_group->setNumPlanningAttempts(10);   // before 100
-  move_group->setReplanAttempts(10);        // before 10000
+  move_group->setNumPlanningAttempts(10); // before 100
+  move_group->setReplanAttempts(10);      // before 10000
   success_calculate_plan = (move_group->plan(*plan) == moveit::core::MoveItErrorCode::SUCCESS);
   if (!success_calculate_plan)
   {
@@ -1229,12 +1229,12 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>, geometry_msgs::msg::Pose, std::string> move_group_to_frame(std::string planning_group,
-                                                                                            std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
-                                                                                            std::string endeffector_frame_override,
-                                                                                            std::string target_frame,
-                                                                                            geometry_msgs::msg::Vector3 translation,
-                                                                                            geometry_msgs::msg::Quaternion rotation,
-                                                                                            bool execute_movement)
+                                                                                                                           std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+                                                                                                                           std::string endeffector_frame_override,
+                                                                                                                           std::string target_frame,
+                                                                                                                           geometry_msgs::msg::Vector3 translation,
+                                                                                                                           geometry_msgs::msg::Quaternion rotation,
+                                                                                                                           bool execute_movement)
 {
   init_time = std::chrono::high_resolution_clock::now();
 
@@ -1391,10 +1391,10 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, geometry_msgs::m
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> move_group_to_pose(std::string planning_group,
-                                                                                   std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
-                                                                                   geometry_msgs::msg::Pose target_pose,
-                                                                                   std::string endeffector_frame_override,
-                                                                                   bool execute_movement)
+                                                                                                std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+                                                                                                geometry_msgs::msg::Pose target_pose,
+                                                                                                std::string endeffector_frame_override,
+                                                                                                bool execute_movement)
 {
   init_time = std::chrono::high_resolution_clock::now();
 
@@ -1460,11 +1460,11 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
 }
 
 std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> align_gonio(std::string planning_group,
-                                                                            std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
-                                                                            std::string endeffector_frame_override,
-                                                                            std::string target_frame,
-                                                                            geometry_msgs::msg::Vector3 rotation_offset_deg,
-                                                                            bool execute_movement)
+                                                                                         std::shared_ptr<moveit::planning_interface::MoveGroupInterface> move_group,
+                                                                                         std::string endeffector_frame_override,
+                                                                                         std::string target_frame,
+                                                                                         geometry_msgs::msg::Vector3 rotation_offset_deg,
+                                                                                         bool execute_movement)
 {
   init_time = std::chrono::high_resolution_clock::now();
   // START Init Request
@@ -1732,10 +1732,10 @@ void move_cam_one_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveT
 {
 
   auto [success, joint_names, joint_values, msg] = move_group_to_pose("PM_Robot_Cam1_TCP",
-                                                                 Cam1_move_group,
-                                                                 request->move_to_pose,
-                                                                 request->endeffector_frame_override,
-                                                                 request->execute_movement);
+                                                                      Cam1_move_group,
+                                                                      request->move_to_pose,
+                                                                      request->endeffector_frame_override,
+                                                                      request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1751,10 +1751,10 @@ void move_smarpod_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveT
 {
 
   auto [success, joint_names, joint_values, msg] = move_group_to_pose("smarpod_endeffector",
-                                                                 smarpod_move_group,
-                                                                 request->move_to_pose,
-                                                                 request->endeffector_frame_override,
-                                                                 request->execute_movement);
+                                                                      smarpod_move_group,
+                                                                      request->move_to_pose,
+                                                                      request->endeffector_frame_override,
+                                                                      request->execute_movement);
   set_initial_state_move_groups();
   response->success = success;
   response->joint_names = joint_names;
@@ -1770,10 +1770,10 @@ void move_tool_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToPo
 {
 
   auto [success, joint_names, joint_values, msg] = move_group_to_pose("PM_Robot_Tool_TCP",
-                                                                 tool_move_group,
-                                                                 request->move_to_pose,
-                                                                 request->endeffector_frame_override,
-                                                                 request->execute_movement);
+                                                                      tool_move_group,
+                                                                      request->move_to_pose,
+                                                                      request->endeffector_frame_override,
+                                                                      request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1789,10 +1789,10 @@ void move_laser_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToP
 {
 
   auto [success, joint_names, joint_values, msg] = move_group_to_pose("PM_Robot_Laser_TCP",
-                                                                 laser_move_group,
-                                                                 request->move_to_pose,
-                                                                 request->endeffector_frame_override,
-                                                                 request->execute_movement);
+                                                                      laser_move_group,
+                                                                      request->move_to_pose,
+                                                                      request->endeffector_frame_override,
+                                                                      request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1808,10 +1808,10 @@ void move_confocal_head_to_pose(const std::shared_ptr<pm_moveit_interfaces::srv:
 {
 
   auto [success, joint_names, joint_values, msg] = move_group_to_pose("PM_Robot_Confocal_Head_TCP",
-                                                                 confocal_head_move_group,
-                                                                 request->move_to_pose,
-                                                                 request->endeffector_frame_override,
-                                                                 request->execute_movement);
+                                                                      confocal_head_move_group,
+                                                                      request->move_to_pose,
+                                                                      request->endeffector_frame_override,
+                                                                      request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1828,12 +1828,12 @@ void move_cam_one_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::Move
 {
 
   auto [success, joint_names, joint_values, target_pose, msg] = move_group_to_frame("PM_Robot_Cam1_TCP",
-                                                                  Cam1_move_group,
-                                                                  request->endeffector_frame_override,
-                                                                  request->target_frame,
-                                                                  request->translation,
-                                                                  request->rotation,
-                                                                  request->execute_movement);
+                                                                                    Cam1_move_group,
+                                                                                    request->endeffector_frame_override,
+                                                                                    request->target_frame,
+                                                                                    request->translation,
+                                                                                    request->rotation,
+                                                                                    request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1850,12 +1850,12 @@ void move_smarpod_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::Move
 {
 
   auto [success, joint_names, joint_values, target_pose, msg] = move_group_to_frame("smarpod_endeffector",
-                                                                  smarpod_move_group,
-                                                                  request->endeffector_frame_override,
-                                                                  request->target_frame,
-                                                                  request->translation,
-                                                                  request->rotation,
-                                                                  request->execute_movement);
+                                                                                    smarpod_move_group,
+                                                                                    request->endeffector_frame_override,
+                                                                                    request->target_frame,
+                                                                                    request->translation,
+                                                                                    request->rotation,
+                                                                                    request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1873,12 +1873,12 @@ void move_tool_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveToF
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Move Tool to Frame");
 
   auto [success, joint_names, joint_values, target_pose, msg] = move_group_to_frame("PM_Robot_Tool_TCP",
-                                                                  tool_move_group,
-                                                                  request->endeffector_frame_override,
-                                                                  request->target_frame,
-                                                                  request->translation,
-                                                                  request->rotation,
-                                                                  request->execute_movement);
+                                                                                    tool_move_group,
+                                                                                    request->endeffector_frame_override,
+                                                                                    request->target_frame,
+                                                                                    request->translation,
+                                                                                    request->rotation,
+                                                                                    request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1895,12 +1895,12 @@ void move_laser_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv::MoveTo
 {
 
   auto [success, joint_names, joint_values, target_pose, msg] = move_group_to_frame("PM_Robot_Laser_TCP",
-                                                                  laser_move_group,
-                                                                  request->endeffector_frame_override,
-                                                                  request->target_frame,
-                                                                  request->translation,
-                                                                  request->rotation,
-                                                                  request->execute_movement);
+                                                                                    laser_move_group,
+                                                                                    request->endeffector_frame_override,
+                                                                                    request->target_frame,
+                                                                                    request->translation,
+                                                                                    request->rotation,
+                                                                                    request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1917,12 +1917,12 @@ void move_1k_dispenser_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv:
 {
 
   auto [success, joint_names, joint_values, target_pose, msg] = move_group_to_frame("PM_Robot_1K_Dispenser_TCP",
-                                                                  dispenser_1k_move_group,
-                                                                  "1K_Dispenser_TCP",
-                                                                  request->target_frame,
-                                                                  request->translation,
-                                                                  request->rotation,
-                                                                  request->execute_movement);
+                                                                                    dispenser_1k_move_group,
+                                                                                    "1K_Dispenser_TCP",
+                                                                                    request->target_frame,
+                                                                                    request->translation,
+                                                                                    request->rotation,
+                                                                                    request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1939,12 +1939,12 @@ void move_confocal_head_to_frame(const std::shared_ptr<pm_moveit_interfaces::srv
 {
 
   auto [success, joint_names, joint_values, target_pose, msg] = move_group_to_frame("PM_Robot_Confocal_Head_TCP",
-                                                                  confocal_head_move_group,
-                                                                  request->endeffector_frame_override,
-                                                                  request->target_frame,
-                                                                  request->translation,
-                                                                  request->rotation,
-                                                                  request->execute_movement);
+                                                                                    confocal_head_move_group,
+                                                                                    request->endeffector_frame_override,
+                                                                                    request->target_frame,
+                                                                                    request->translation,
+                                                                                    request->rotation,
+                                                                                    request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1961,11 +1961,11 @@ void align_gonio_right(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGon
 {
 
   auto [success, joint_names, joint_values, msg] = align_gonio("PM_Robot_Gonio_Right",
-                                                          gonio_right_move_group,
-                                                          request->endeffector_frame_override,
-                                                          request->target_frame,
-                                                          request->rotation_offset_deg,
-                                                          request->execute_movement);
+                                                               gonio_right_move_group,
+                                                               request->endeffector_frame_override,
+                                                               request->target_frame,
+                                                               request->rotation_offset_deg,
+                                                               request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;
@@ -1980,11 +1980,11 @@ void align_gonio_left(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGoni
 {
 
   auto [success, joint_names, joint_values, msg] = align_gonio("PM_Robot_Gonio_Left",
-                                                          gonio_left_move_group,
-                                                          request->endeffector_frame_override,
-                                                          request->target_frame,
-                                                          request->rotation_offset_deg,
-                                                          request->execute_movement);
+                                                               gonio_left_move_group,
+                                                               request->endeffector_frame_override,
+                                                               request->target_frame,
+                                                               request->rotation_offset_deg,
+                                                               request->execute_movement);
 
   response->success = success;
   response->joint_names = joint_names;

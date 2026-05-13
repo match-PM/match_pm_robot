@@ -27,11 +27,19 @@ Client::~Client()
 
 void Client::connect(std::string endpoint)
 {
+    DebugLogger::info("Client", "Connecting to OPCUA server at: " + endpoint);
+
     auto status = UA_Client_connect(m_client, endpoint.c_str());
     if (status != UA_STATUSCODE_GOOD)
     {
-        throw std::runtime_error{UA_StatusCode_name(status)};
+        DebugLogger::critical(
+            "Client",
+            "Failed to connect: " + std::string(UA_StatusCode_name(status))
+        );
+        throw OpcuaException(status, "connect", "Failed to connect to OPCUA server at " + endpoint);
     }
+
+    DebugLogger::info("Client", "Successfully connected to OPCUA server");
 }
 
 void Client::disconnect()
