@@ -419,23 +419,25 @@
     </joint>
 
     <!--%%%%%%%%%%%%% Gonio Right Part 2 Origin -->
-    <link
-      name="Gonio_Right_Part_2_Origin">
-    </link>
+    <xacro:if value="${gonio_chuck_tcp_offset_x_2 != 0.0 or gonio_chuck_tcp_offset_y_2 != 0.0 or gonio_chuck_tcp_offset_z_2 != 0.0}">
+      <link
+        name="Gonio_Right_Part_2_Origin">
+      </link>
 
-    <joint
-      name="Gonio_Right_Part_2_Origin_Joint"
-      type="fixed">
-      <origin
-        xyz="${gonio_chuck_tcp_offset_x_2} ${gonio_chuck_tcp_offset_y_2} ${gonio_chuck_tcp_offset_z_2}"
-        rpy="0 0 0" />
-      <parent
-        link="Gonio_Right_Chuck_Origin" />
-      <child
-        link="Gonio_Right_Part_2_Origin" />
-      <axis
-        xyz="0 0 0" />
-    </joint>
+      <joint
+        name="Gonio_Right_Part_2_Origin_Joint"
+        type="fixed">
+        <origin
+          xyz="${gonio_chuck_tcp_offset_x_2} ${gonio_chuck_tcp_offset_y_2} ${gonio_chuck_tcp_offset_z_2}"
+          rpy="0 0 0" />
+        <parent
+          link="Gonio_Right_Chuck_Origin" />
+        <child
+          link="Gonio_Right_Part_2_Origin" />
+        <axis
+          xyz="0 0 0" />
+      </joint>
+    </xacro:if>
 
   </xacro:macro>
 
