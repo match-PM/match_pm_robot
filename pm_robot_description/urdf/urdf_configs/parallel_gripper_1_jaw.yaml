@@ -109,9 +109,9 @@ SmarAct_Piezo_Gripper_flat:
 
   Sensing_Jaw:
     calibration_file_name : "CF_Sensing_Jaw.json"
-    tool_TCP_x_offset: "0.0"
-    tool_TCP_y_offset: "0.0"
-    tool_TCP_z_offset: "-0.0378"
+    tool_TCP_x_offset: "-0.007"
+    tool_TCP_y_offset: "-0.005"
+    tool_TCP_z_offset: "-0.046"
     tool_TCP_rx_offset: "0.0"
     tool_TCP_ry_offset: "0.0"
     tool_TCP_rz_offset: "0.0"
@@ -126,8 +126,8 @@ SmarAct_Piezo_Gripper_flat:
       inertia_iyy: "6.62228324828861E-05" #10
       inertia_iyz: "2.68654227697881E-05" #20
       inertia_izz: "4.05699592387869E-05" #20
-      visual_filename: "Jaw_Flat_Config_big_stift_ros.STL"
-      collision_filename: "Jaw_Flat_Config_big_stift_ros.STL"
+      visual_filename: "Jaw_Flat_Config_big_stift_rund_ros.STL"
+      collision_filename: "Jaw_Flat_Config_big_stift_rund_ros.STL"
 
     Jaw_2:
       inertia_xyz: "-0.00224080580616211 -0.00152543365786503 1.2528765306995E-13"
