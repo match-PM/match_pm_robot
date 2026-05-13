@@ -139,5 +139,5 @@ SmarAct_Piezo_Gripper_flat:
       inertia_iyy: "4.00144751949544E-05"   #10
       inertia_iyz: "-2.68169098626193E-05"  #20
       inertia_izz: "6.58370363267184E-05"   #10
-      visual_filename: "Jaw_Flat_Config_big_r_ros.STL"
-      collision_filename: "Jaw_Flat_Config_big_r_ros.STL"
+      visual_filename: "Jaw_Flat_Config_ROS_Jaw2.STL"
+      collision_filename: "Jaw_Flat_Config_ROS_Jaw2.STL"
