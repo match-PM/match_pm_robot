@@ -136,6 +136,8 @@ pm_nozzle_controller:
       - Nest_Nozzle
       - Doseur_Nozzle
       - Glue_2K_Doseur
+      - Tool_Changer
+      - Tool_Changer_Air_Pressure
 
 pm_robot_t_axis_controller:
   ros__parameters:

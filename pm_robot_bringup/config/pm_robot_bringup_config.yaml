@@ -18,6 +18,7 @@ pm_robot_gonio_left:
   - chuck_gonio_left_IPEG_Demonstrator
   - Chuck_Siemens_Carrier_P39_V2
   - Chuck_Carrier_Demo
+  - Chuck_ASG_Dummy
   use_chuck: Chuck_Siemens_Carrier_P39_V2
   with_Gonio_Left: true
   unity_parent: Gonio_Left_Chuck_Origin
@@ -67,6 +68,7 @@ pm_robot_tools:
       tool_name: Siemens_Vacuum_Array
     - availabe_tips:
       - Tip_Siemens_Vacuum_Array
+      - Tip_Siemens_Sensor_Bottom
       tool_name: Siemens_Vacuum_Array_short
     - availabe_tips:
       - Tip_Siemens_Vacuum_Array

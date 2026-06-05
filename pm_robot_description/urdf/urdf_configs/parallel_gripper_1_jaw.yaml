@@ -115,7 +115,7 @@ SmarAct_Piezo_Gripper_flat:
     tool_TCP_rx_offset: "0.0"
     tool_TCP_ry_offset: "0.0"
     tool_TCP_rz_offset: "0.0"
-    joint_offset_value: "10.0"  # in mm
+    joint_offset_value: "15.0"  # in mm
     Jaw_1:
       inertia_xyz: "-0.00222703440519818 -1.24600850470724E-13 -0.0015303266892263"
       inertia_rpy: "0 0 0"

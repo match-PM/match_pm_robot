@@ -145,6 +145,20 @@ Siemens_Vacuum_Array_short:
     visual_filename: "Siemens_Vacuum_Array/Tool_Tip_Vacuum_Array.STL"
     collision_filename: "Siemens_Vacuum_Array/Tool_Tip_Vacuum_Array.STL"
     calibration_file_name : "CF_Tip_Siemens_Vacuum_Array.json"
+  Tip_Siemens_Sensor_Bottom:
+    inertia_xyz: "-1.29186788957441E-21 7.60244056032738E-20 0.00881061215391388"
+    inertia_rpy: "0 0 0"
+    mass: "0.00384481220269709"
+    inertia_ixx: "2.45892988803428E-05"    
+    inertia_ixy: "-2.98920423975232E-05"   
+    inertia_ixz: "-3.90727092319594E-05" 
+    inertia_iyy: "3.52128939197889E-05"  
+    inertia_iyz: "-1.17218991534775E-05" 
+    inertia_izz: "5.82868910775811E-05"   
+    color: "white"
+    visual_filename: "Siemens_Vacuum_Array/Tip_Siemens_Sensor_Bottom.STL"
+    collision_filename: "Siemens_Vacuum_Array/Tip_Siemens_Sensor_Bottom.STL"
+
 
 Schunk_Lens_Gripper:
   tool_TCP_x_offset: "0.0"
