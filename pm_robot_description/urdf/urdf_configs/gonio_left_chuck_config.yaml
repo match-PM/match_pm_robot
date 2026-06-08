@@ -102,9 +102,9 @@ Chuck_Siemens_Carrier_P39_V2:
   collision_filename: "Chuck_Siemens_Carrier_P39_V2_coll.STL"
 
 Chuck_ASG_Dummy:
-  spawn_1_offset_from_gonio_x: "0.00044"
-  spawn_1_offset_from_gonio_y: "0.00659"
-  spawn_1_offset_from_gonio_z: "0.069500000"
+  spawn_1_offset_from_gonio_x: "0.0164"
+  spawn_1_offset_from_gonio_y: "0.00859"
+  spawn_1_offset_from_gonio_z: "0.100000"
   xyz: "-3.32359125018167E-05 0.00272468115334823 0.0359237418777792"
   rpy: "0 0 0"
   mass: "0.112748686597636"
