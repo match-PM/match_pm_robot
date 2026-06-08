@@ -184,6 +184,14 @@ def generate_launch_description():
         ]
     )
 
+    smarpod_controller_path = PathJoinSubstitution(
+        [
+            FindPackageShare("smaract_hexapod_description"),
+            "config",
+            "smaract_hexapod_control_real.yaml",
+        ]
+    )
+
     robot_description_command = Command(
         ["ros2 param get --hide-type /robot_state_publisher robot_description"]
     )
@@ -207,6 +215,11 @@ def generate_launch_description():
 
     if pm_robot_config.tool._gripper_2_jaw.get_activate_status():
         controller_manager_params.append(robot_two_jaw_controller_path)
+
+
+    if pm_robot_config.smarpod_station.get_activate_status():
+        controller_manager_params.append(smarpod_controller_path)
+        
 
     control_manager = Node(
         package="controller_manager",
@@ -370,15 +383,29 @@ def generate_launch_description():
         )
     )
 
-    confocal_sensors_launch = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(
-        PathJoinSubstitution([
-            FindPackageShare('pm_uepsilon_confocal_node'),
-            'launch',
-            'launch_confocal.launch.py'
-        ])
+    launch_smarpod_station_controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare(pkg_name),
+                        "launch",
+                        "pm_robot_launch_smarpod_controller.launch.py",
+                    ]
+                )
+            ]
+        )
     )
-)
+
+    confocal_sensors_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution([
+                FindPackageShare('pm_uepsilon_confocal_node'),
+                'launch',
+                'launch_confocal.launch.py'
+            ])
+        )
+    )
 
     pm_moveit_server = Node(
         package="pm_moveit_server",
@@ -432,6 +459,7 @@ def generate_launch_description():
     delayed_move_group = TimerAction(period=time_delay, actions=[run_move_group_node])
     delayed_pm_moveit_server = TimerAction(period=time_delay, actions=[pm_moveit_server])
     delayed_pneumatic_controller_listener = TimerAction(period=time_delay, actions=[pneumatic_controller_listener_node])
+    delayed_smarpod_controller = TimerAction(period=12.0, actions=[launch_smarpod_station_controller])
 
     # Define Launch Description
     ld = LaunchDescription()
@@ -457,6 +485,9 @@ def generate_launch_description():
 
     if pm_robot_config.gonio_left.get_activate_status():
         ld.add_action(launch_gonio_left_controller)  
+
+    if pm_robot_config.smarpod_station.get_activate_status():
+        ld.add_action(delayed_smarpod_controller)
         
     #ld.add_action(primitive_skills_node)
     ld.add_action(pm_lights_controller_spawner)

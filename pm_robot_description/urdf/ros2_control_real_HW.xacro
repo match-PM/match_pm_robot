@@ -151,16 +151,95 @@
             </xacro:if>
 
             <!-- If parallel gripper with one jaw is selected -->
-            <!-- <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']}">
+            <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']}">
                 <joint name="Tool_Parallel_Gripper_Jaw_Joint">
                     <command_interface name="position">
                     </command_interface>
                     <state_interface name="position"/>
                 </joint>
+                
 
-            </xacro:if> -->
+            </xacro:if>
+
+
 
         </ros2_control>
+
+        <!-- SmarPod Hardware Interface -->
+        <xacro:if value="${current_pm_robot_bringup_config['pm_smparpod_station']['with_smarpod_station']}">
+            <ros2_control name="SmarPodSystem" type="system">
+                <hardware>
+                    <plugin>smaract_hexapod_hw_interface/SmarPodSystem</plugin>
+                    <param name="model_number">1011</param>
+                    <!-- Set the sensor mode. options: disabled, enabled, power_save -->
+                    <param name="sensor_mode">power_save</param>
+                    <!-- Set the maximum frequency of the sensor, this value should never exceed XXX -->
+                    <param name="maximum_frequency">17000</param>
+                </hardware>
+
+                <!-- SmarPod Joint Definitions -->
+                <joint name="SP_X_Joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+                <joint name="SP_Y_Joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+                <joint name="SP_Z_Joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+                <joint name="SP_A_Joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+                <joint name="SP_B_Joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+                <joint name="SP_C_Joint">
+                    <command_interface name="position"/>
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </joint>
+
+                <!-- SmarPod Stage Joints (State only) -->
+                <joint name="Smarpod_A_Stage_1_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_A_Stage_2_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_A_Stage_3_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_B_Stage_1_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_B_Stage_2_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_B_Stage_3_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_C_Stage_1_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_C_Stage_2_Joint">
+                    <state_interface name="position"/>
+                </joint>
+                <joint name="Smarpod_C_Stage_3_Joint">
+                    <state_interface name="position"/>
+                </joint>
+
+            </ros2_control>
+        </xacro:if>
 
     </xacro:macro>
 
