@@ -24,7 +24,7 @@ import yaml
 from yaml.loader import SafeLoader
 import sys
 from launch.substitutions import Command
-from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig
+from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig, ParallelGripperConfig
 
 pm_robot_config = PmRobotConfig(use_real_config=True)
 
@@ -168,6 +168,22 @@ def generate_launch_description():
         ]
     )
 
+    robot_two_jaw_controller_path = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_gripper_tj_real_HW.yaml",
+        ]
+    )
+
+    robot_single_jaw_controller_path = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_gripper_sj_real_HW.yaml",
+        ]
+    )
+
     robot_description_command = Command(
         ["ros2 param get --hide-type /robot_state_publisher robot_description"]
     )
@@ -179,15 +195,23 @@ def generate_launch_description():
     #     output="both",
     # )
 
+    controller_manager_params = [
+        {"robot_description": robot_description_raw},
+        robot_controllers_path,
+        robot_gonio_left_controllers_path,
+        robot_gonio_right_controllers_path
+    ]
+
+    if pm_robot_config.tool._gripper_1_jaw.get_activate_status():
+        controller_manager_params.append(robot_single_jaw_controller_path)
+
+    if pm_robot_config.tool._gripper_2_jaw.get_activate_status():
+        controller_manager_params.append(robot_two_jaw_controller_path)
+
     control_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[
-            {"robot_description": robot_description_command},
-            robot_controllers_path,
-            robot_gonio_left_controllers_path,
-            robot_gonio_right_controllers_path,
-        ],
+        parameters=controller_manager_params,
         output="both",
         emulate_tty=True
         # arguments=[                   # Set log level to debug
