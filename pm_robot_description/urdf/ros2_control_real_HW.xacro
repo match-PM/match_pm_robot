@@ -125,44 +125,6 @@
                 </joint>
             </xacro:if>  -->
 
-            <!-- Only if gripper with two jaws is selected -->
-            <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']}">
-
-                <joint name="Tool_Parallel_Gripper_Jaw_1_Joint">
-                    <command_interface name="position">
-                    </command_interface>
-                    <state_interface name="position"/>
-                </joint>
-
-                <joint name="Tool_Parallel_Gripper_Jaw_2_Joint">
-                    <command_interface name="position">
-                    </command_interface>
-                    <state_interface name="position"/>
-                </joint>
-                
-                <!-- <joint name="Tool_Parallel_Gripper_Jaw_2_Joint">
-                    <param name="mimic">Tool_Parallel_Gripper_Jaw_1_Joint</param>
-                    <param name="mulltiplier">1</param>
-                    <command_interface name="position">
-                    </command_interface>
-                    <state_interface name="position"/>
-                    <state_interface name="velocity"/>
-                </joint> -->
-            </xacro:if>
-
-            <!-- If parallel gripper with one jaw is selected -->
-            <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']}">
-                <joint name="Tool_Parallel_Gripper_Jaw_Joint">
-                    <command_interface name="position">
-                    </command_interface>
-                    <state_interface name="position"/>
-                </joint>
-                
-
-            </xacro:if>
-
-
-
         </ros2_control>
 
         <!-- SmarPod Hardware Interface -->
@@ -243,7 +205,45 @@
 
     </xacro:macro>
 
-<!-- 
+    <!-- Mock hardware for parallel gripper (separate from PMSystem) -->
+    <xacro:macro name="pm_robot_gripper_mock">
+        <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']}">
+            <ros2_control name="PMSystemGripper" type="system">
+                <hardware>
+                    <plugin>mock_components/GenericSystem</plugin>
+                </hardware>
+                <joint name="Tool_Parallel_Gripper_Jaw_Joint">
+                    <command_interface name="position">
+                    </command_interface>
+                    <state_interface name="position">
+                        <param name="initial_value">0.0</param>
+                    </state_interface>
+                </joint>
+            </ros2_control>
+        </xacro:if>
+
+        <xacro:if value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']}">
+            <ros2_control name="PMSystemGripper" type="system">
+                <hardware>
+                    <plugin>mock_components/GenericSystem</plugin>
+                </hardware>
+                <joint name="Tool_Parallel_Gripper_Jaw_1_Joint">
+                    <command_interface name="position">
+                    </command_interface>
+                    <state_interface name="position">
+                        <param name="initial_value">0.0</param>
+                    </state_interface>
+                </joint>
+                <joint name="Tool_Parallel_Gripper_Jaw_2_Joint">
+                    <command_interface name="position">
+                    </command_interface>
+                    <state_interface name="position">
+                        <param name="initial_value">0.0</param>
+                    </state_interface>
+                </joint>
+            </ros2_control>
+        </xacro:if>
+    </xacro:macro>
     <xacro:macro name="pm_robot_pneumatic_mock" >
         <ros2_control name="PMSystemPneumatic" type="system">
             <hardware>
@@ -295,7 +295,7 @@
 
             
         </ros2_control>
-    </xacro:macro> -->
+    </xacro:macro> 
 
     <xacro:macro name="pm_robot_pneumatic_mock_2" >
         <ros2_control name="PMSystemPneumatic_2" type="system">

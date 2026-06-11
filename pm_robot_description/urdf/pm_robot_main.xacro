@@ -126,6 +126,7 @@
   <xacro:if value="${launch_mode == 'real_HW'}">
     <xacro:pm_robot_ros2_control_hw_real name="Real_HW" initial_positions_file="$(arg initial_positions_file)" launch_mode="$(arg launch_mode)" hardware="$(arg hardware)"/>
     <xacro:pm_robot_pneumatic_mock_2 />
+    <xacro:pm_robot_gripper_mock />
 
   </xacro:if>
 

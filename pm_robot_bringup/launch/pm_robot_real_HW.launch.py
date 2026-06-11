@@ -210,11 +210,11 @@ def generate_launch_description():
         robot_gonio_right_controllers_path
     ]
 
-    if pm_robot_config.tool._gripper_1_jaw.get_activate_status():
-        controller_manager_params.append(robot_single_jaw_controller_path)
+    # if pm_robot_config.tool._gripper_1_jaw.get_activate_status():
+    #     controller_manager_params.append(robot_single_jaw_controller_path)
 
-    if pm_robot_config.tool._gripper_2_jaw.get_activate_status():
-        controller_manager_params.append(robot_two_jaw_controller_path)
+    # if pm_robot_config.tool._gripper_2_jaw.get_activate_status():
+    #     controller_manager_params.append(robot_two_jaw_controller_path)
 
 
     if pm_robot_config.smarpod_station.get_activate_status():
