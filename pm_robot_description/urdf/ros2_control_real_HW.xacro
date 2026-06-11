@@ -4,7 +4,14 @@
 
         <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 
-        <xacro:if value="${launch_mode == 'real_HW'}">
+
+        <!-- hardware=='unity' uses the local package config; hardware=='robot' (real hardware) uses the server paths. -->
+        <xacro:if value="${launch_mode == 'sim_HW' or hardware == 'unity'}">
+            <xacro:property name="pm_robot_joint_calibraion_file" value="$(find pm_robot_description)/calibration_config/pm_robot_joint_calibration.yaml" />
+            <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+        </xacro:if>
+
+        <xacro:if value="${(launch_mode == 'real_HW' and hardware != 'unity') or hardware == 'robot'}">
             <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
             <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
 
@@ -14,7 +21,6 @@
             <!-- REAL -->
             <xacro:property name="pm_robot_joint_calibraion_file" value="${local_calibration_file_path}" />
             <xacro:property name="pm_robot_bringup_config_file" value="${local_robot_bringup_file_path}"/>
-
         </xacro:if>
 
         <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>

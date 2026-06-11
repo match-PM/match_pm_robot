@@ -43,8 +43,8 @@ pm_robot_tools:
       - Sensing_Jaw
       tool_name: SmarAct_Piezo_Gripper_flat
     use_jaw_type: Flat_Jaw
-    use_paralell_gripper: true
-    use_tool: SmarAct_Piezo_Gripper
+    use_paralell_gripper: false
+    use_tool: SmarAct_Piezo_Gripper_flat
     unity_parent: RobotAxisT
   pm_robot_tool_parallel_gripper_2_jaws:
     available_tools:
@@ -81,7 +81,7 @@ pm_robot_tools:
       tool_name: Schunk_Lens_Gripper_long
     use_tip: Tip_Siemens_Vacuum_Array
     use_tool: Siemens_Vacuum_Array_short
-    use_vacuum_tool: false
+    use_vacuum_tool: true
     unity_parent: RobotAxisT
 pm_smparpod_station:
   with_smarpod_station: false   

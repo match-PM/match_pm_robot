@@ -1139,8 +1139,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   if (!extract_frame_success)
   {
     // If frame is not found, return false
-    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Specified frame not found!");
-    msg = "Specified frame not found!";
+    msg = "Specified frame not found! Make sure the component is spawned and the frame exists.";
+    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), msg.c_str());
     return std::make_tuple(false, joint_names, target_joint_values, msg);
   }
 
@@ -1271,8 +1271,8 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, geometry_msgs::m
   if (!extract_frame_success)
   {
     // If frame is not found, return false
-    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Specified frame not found!");
-    msg = "Specified frame not found!";
+    msg = "Specified frame not found! Make sure the component is spawned and the frame exists.";
+    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), msg.c_str());
     return std::make_tuple(false, joint_names, target_joint_values, target_pose, msg);
   }
 

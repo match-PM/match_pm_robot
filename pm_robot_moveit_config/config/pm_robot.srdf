@@ -7,8 +7,22 @@
 <robot name="pm_robot"
     xmlns:xacro="https://ros.org/wiki/xacro">
 
-     <!-- Loading of the Robot bringup config -->
-    <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+    <xacro:arg name="launch_mode" default="sim_HW" />
+    <xacro:arg name="hardware" default="unity" />
+    <xacro:property name="launch_mode" value="$(arg launch_mode)"/>
+    <xacro:property name="hardware" value="$(arg hardware)"/>
+
+    <!-- Loading of the Robot bringup config -->
+    <xacro:if value="${launch_mode == 'sim_HW' or hardware == 'unity'}">
+        <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" />
+    </xacro:if>
+
+    <xacro:if value="${(launch_mode == 'real_HW' and hardware != 'unity') or hardware == 'robot'}">
+        <xacro:property name="local_file_paths__file" value="$(find pm_robot_description)/calibration_config/pm_robot_path_real_HW.yaml" />
+        <xacro:property name="path_dict" value="${xacro.load_yaml(local_file_paths__file)}"/>
+        <xacro:property name="pm_robot_bringup_config_file" value="${path_dict['pm_robot_bringup_config_file_path']}"/>
+    </xacro:if>
+
     <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
 
 

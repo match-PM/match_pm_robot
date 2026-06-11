@@ -49,6 +49,7 @@ def generate_launch_description():
     if sim_time:
         mappings = {
             "launch_mode": "sim_HW",
+            "hardware": "unity",
             "with_Gonio_Left": str(
                 bringup_config["pm_robot_gonio_left"]["with_Gonio_Left"]
             ),
@@ -59,6 +60,7 @@ def generate_launch_description():
     else:
         mappings = {
             "launch_mode": "real_HW",
+            "hardware": "robot",
             "with_Gonio_Left": str(
                 bringup_config["pm_robot_gonio_left"]["with_Gonio_Left"]
             ),
@@ -70,7 +72,7 @@ def generate_launch_description():
     moveit_config = (
         MoveItConfigsBuilder("pm_robot", package_name="pm_robot_moveit_config")
         .robot_description(file_path=pm_main_xacro_file, mappings=mappings)
-        .robot_description_semantic(file_path="config/pm_robot.srdf")
+        .robot_description_semantic(file_path="config/pm_robot.srdf", mappings=mappings)
         .trajectory_execution(file_path="config/moveit_controllers.yaml")
         .robot_description_kinematics(file_path="config/kinematics.yaml")
         .planning_pipelines(
