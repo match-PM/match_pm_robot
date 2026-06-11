@@ -4,3 +4,8 @@ pm_robot_description/calibration_config/pm_robot_path_real_HW.yaml
 # Python bytecode caches
 __pycache__/
 *.py[cod]
+
+# ROS/colcon generated output
+build/
+install/
+log/
