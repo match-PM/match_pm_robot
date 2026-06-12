@@ -88,7 +88,12 @@ pm_smparpod_station:
   availabe_chucks:
   - empty
   - chuck_diodenplacement
-  use_chuck: empty
+  - chuck_fiber
+  use_chuck: chuck_fiber
+  available_chucks_center:
+  - empty
+  - chuck_fiber_chip_alignment
+  use_chuck_center: chuck_fiber_chip_alignment
 adhesive_test_point_station:
   - num_x_points: 8
     num_y_points: 8

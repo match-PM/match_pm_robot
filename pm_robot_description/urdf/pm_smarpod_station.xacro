@@ -32,7 +32,7 @@
     <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
 
-    <xacro:smaract_hexapod launch_mode="${launch_mode}" base_link="Smarpod_Station_Base" chuck="${current_pm_robot_bringup_config['pm_smparpod_station']['use_chuck']}"/>
+    <xacro:smaract_hexapod launch_mode="${launch_mode}" base_link="Smarpod_Station_Base" chuck="${current_pm_robot_bringup_config['pm_smparpod_station']['use_chuck']}" chuck_center="${current_pm_robot_bringup_config['pm_smparpod_station']['use_chuck_center']}"/>
 
     <!-- Smarpod Station -->
 
@@ -98,7 +98,7 @@
     name="Smarpod_Station_Base_Joint"
     type="fixed">
     <origin
-      xyz="0.1465 0.15 0.2253999999992"
+      xyz="0.1465 0.1 0.2253999999992"
       rpy="0 0 0" />
     <parent
       link="Smarpod_Station" />

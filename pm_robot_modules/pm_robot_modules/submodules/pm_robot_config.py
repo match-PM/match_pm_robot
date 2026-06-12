@@ -153,7 +153,17 @@ class GonioConfig():
     
     def set_current_chuck(self, chuck:str):
         self._current_chuck = chuck
+        # Ensure the parent key exists in the config dict
+        if self.key_type not in self._config_dict:
+            self._config_dict[self.key_type] = {}
         self._config_dict[self.key_type]['use_chuck'] = chuck
+
+    def set_current_chuck_center(self, chuck:str):
+        self._current_chuck_center = chuck
+        # Ensure the parent key exists in the config dict
+        if self.key_type not in self._config_dict:
+            self._config_dict[self.key_type] = {}
+        self._config_dict[self.key_type]['use_chuck_center'] = chuck
 
     def activate(self):
         self._gonio_active = True
@@ -172,12 +182,20 @@ class GonioConfig():
     def get_activate_status(self)->bool:    
         return self._gonio_active
     
+    def get_available_chucks_center(self)->list[str]:
+        return self._available_chucks_center
+    
+    def get_current_chuck_center(self)->str:
+        return self._current_chuck_center
+    
     def reload_config(self):
         self._gonio_active = self._config_dict[self.key_type][self.key_2]
         self._current_chuck = self._config_dict[self.key_type]['use_chuck']
         self._available_chucks:list[str] = self._config_dict[self.key_type]['availabe_chucks']
-    
-    
+        self._available_chucks_center:list[str] = self._config_dict.get(self.key_type, {}).get('available_chucks_center', [])
+        self._current_chuck_center = self._config_dict.get(self.key_type, {}).get('use_chuck_center', None)
+
+
 class VacuumGripperConfig():
     TOOL_VACUUM_IDENT = 'pm_robot_vacuum_tools'
     TOOL_TIP_LINK_NAME = 'PM_Robot_Vacuum_Tool_Tip'
@@ -331,7 +349,6 @@ class PmRobotConfig:
 
         self._init_local_configs_real_HW()
 
-
         self._use_real_config = use_real_config
 
         if self._use_real_config:
@@ -388,6 +405,12 @@ class PmRobotConfig:
         if self._real_config_available:
             self._active_path = self._real_bringup_config_path if use_real_config else self.sim_bringup_config_path
             self.reload_config()
+
+    def set_to_real_HW(self):
+        self.set_real_HW(True)
+
+    def set_to_sim_HW(self):
+        self.set_real_HW(False)
 
     def get_active_bringup_config_path(self)->str:
         return self._active_path

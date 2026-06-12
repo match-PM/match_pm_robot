@@ -291,7 +291,6 @@
         link="Tool_Parallel_Gripper_Jaw_1_attachment" />
     </joint>
 
-    <!-- Tool_Parallel_Gripper_Jaw_2_attachment DISABLED
     <link
       name="Tool_Parallel_Gripper_Jaw_2_attachment">
       <inertial>
@@ -346,7 +345,7 @@
       <child
         link="Tool_Parallel_Gripper_Jaw_2_attachment" />
     </joint>
-    -->
+   
 
 
   <link name="PM_Robot_Tool_TCP">
