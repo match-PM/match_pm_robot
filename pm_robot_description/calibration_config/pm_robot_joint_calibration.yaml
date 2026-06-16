@@ -137,4 +137,15 @@ Calibration_Cube_Bottom_Joint:
   ry_offset: 0
   rz_offset: 0
 
+Smarpod_Station:
+  x_offset: -1000
+  y_offset: 11000
+  z_offset: 1000
+  rx_offset: 0
+  ry_offset: 0
+  rz_offset: 0
+
+
+
+
 

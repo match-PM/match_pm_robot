@@ -94,12 +94,28 @@
     name="Smarpod_Station_Base">
   </link>
   
+
+  <xacro:property name="Smarpod_Station_Joint_Cal_x" value="${calibration_dict['Smarpod_Station']['x_offset']}"/>
+  <xacro:property name="Smarpod_Station_Joint_Cal_y" value="${calibration_dict['Smarpod_Station']['y_offset']}"/>
+  <xacro:property name="Smarpod_Station_Joint_Cal_z" value="${calibration_dict['Smarpod_Station']['z_offset']}"/>
+  <xacro:property name="Smarpod_Station_Joint_Cal_rx" value="${calibration_dict['Smarpod_Station']['rx_offset']}"/>
+  <xacro:property name="Smarpod_Station_Joint_Cal_ry" value="${calibration_dict['Smarpod_Station']['ry_offset']}"/>
+  <xacro:property name="Smarpod_Station_Joint_Cal_rz" value="${calibration_dict['Smarpod_Station']['rz_offset']}"/>
+  
   <joint
     name="Smarpod_Station_Base_Joint"
     type="fixed">
     <origin
-      xyz="0.1465 0.1 0.2253999999992"
-      rpy="0 0 0" />
+      xyz="
+        ${0.1465 + Smarpod_Station_Joint_Cal_x * 0.000001} 
+        ${0.1 + Smarpod_Station_Joint_Cal_y * 0.000001} 
+        ${0.2254 + Smarpod_Station_Joint_Cal_z * 0.000001}" 
+        rpy="
+        ${0 + Smarpod_Station_Joint_Cal_rx * 3.14159265359/180} 
+        ${0 + Smarpod_Station_Joint_Cal_ry * 3.14159265359/180} 
+        ${0 + Smarpod_Station_Joint_Cal_rz * 3.14159265359/180}" />
+
+
     <parent
       link="Smarpod_Station" />
     <child
