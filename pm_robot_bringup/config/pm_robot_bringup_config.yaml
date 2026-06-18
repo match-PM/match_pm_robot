@@ -90,6 +90,7 @@ pm_smparpod_station:
   - empty
   - chuck_diodenplacement
   - chuck_fiber
+  - chuck_smarpod_calibration
   use_chuck: chuck_fiber
   available_chucks_center:
   - empty
