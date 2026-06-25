@@ -3,35 +3,53 @@ import yaml
 from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
 import copy
 import os
-class ParallelGripperConfig():
+
+
+class ParallelGripperConfig:
     TOOL_GRIPPER_1_JAW_IDENT = 'pm_robot_tool_parallel_gripper_1_jaw'
     TOOL_GRIPPER_2_JAW_IDENT = 'pm_robot_tool_parallel_gripper_2_jaws'
-    
+
     def __init__(self, config_key, config_value) -> None:
         self._config_key = config_key
         self._config_value = config_value
-        self._current_tool: str = self._config_value['use_tool']
-        self._current_tool_attachement: str = self._config_value['use_jaw_type']
-        self._tool_active: bool = self._config_value['use_paralell_gripper']
-        
-        if config_key == self.TOOL_GRIPPER_1_JAW_IDENT:
-            self.data_file_path = get_package_share_directory('pm_robot_description') + '/urdf/urdf_configs/parallel_gripper_1_jaw.yaml'
-        else:
-            self.data_file_path = get_package_share_directory('pm_robot_description') + '/urdf/urdf_configs/parallel_gripper_2_jaw.yaml'
-        
-        self._available_tools = []
-        _available_tools = self._config_value['available_tools']
-        for tool in _available_tools:
-            _available_tool_attachements = []
-            
-            for jaw in tool['availabe_jaws']:
-                _available_tool_attachements.append(jaw)
-            self._available_tools.append((tool['tool_name'], _available_tool_attachements)) 
 
-    def set_current_tool(self, tool:str = None, ext:str = None):
+        self._current_tool = config_value.get('use_tool', '')
+        self._current_tool_attachement = config_value.get('use_jaw_type', '')
+        self._tool_active = config_value.get('use_paralell_gripper', False)
+
+        if config_key == self.TOOL_GRIPPER_1_JAW_IDENT:
+            self.data_file_path = (
+                get_package_share_directory('pm_robot_description')
+                + '/urdf/urdf_configs/parallel_gripper_1_jaw.yaml'
+            )
+        else:
+            self.data_file_path = (
+                get_package_share_directory('pm_robot_description')
+                + '/urdf/urdf_configs/parallel_gripper_2_jaw.yaml'
+            )
+
+        self._load_available_tools()
+
+    def _load_available_tools(self):
+        """Normalize tool definitions from yaml."""
+        self._available_tools = []
+
+        for tool in self._config_value.get('available_tools', []):
+            jaws = (
+                tool.get('available_jaws')      # preferred spelling
+                or tool.get('availabe_jaws')    # backward compatibility
+                or []
+            )
+
+            self._available_tools.append(
+                (tool['tool_name'], list(jaws))
+            )
+
+    def set_current_tool(self, tool: str = None, ext: str = None):
         if tool is not None:
             self._current_tool = tool
             self._config_value['use_tool'] = tool
+
         if ext is not None:
             self._current_tool_attachement = ext
             self._config_value['use_jaw_type'] = ext
@@ -46,57 +64,56 @@ class ParallelGripperConfig():
 
     def get_activate_status(self):
         return self._tool_active
-    
+
     def get_config(self):
         return self._config_value
-    
-    def get_first_extension_for_current_tool(self)->str:
-        return self._available_tools[0][1][0]
 
-    def get_current_extension_list(self)->list[str]:
-        for tool in self._available_tools:
-            if tool[0] == self._current_tool:
-                return tool[1]
+    def get_first_extension_for_current_tool(self) -> str:
+        for tool_name, jaws in self._available_tools:
+            if tool_name == self._current_tool and jaws:
+                return jaws[0]
+        return ""
+
+    def get_current_extension_list(self) -> list[str]:
+        for tool_name, jaws in self._available_tools:
+            if tool_name == self._current_tool:
+                return jaws
         return []
-    
-    def get_current_tool(self)->str:
+
+    def get_current_tool(self) -> str:
         return self._current_tool
-    
-    def get_current_tool_attachment(self)->str:
+
+    def get_current_tool_attachment(self) -> str:
         return self._current_tool_attachement
-    
-    def get_available_tools(self)->list[str]:
+
+    def get_available_tools(self):
         return self._available_tools
-    
-    def get_available_tool_attachments(self)->list[str]:
-        for tool in self._available_tools:
-            if tool[0] == self._current_tool:
-                return tool[1]
-        return []
-    
-    def get_calibration_frame_dict_file_name(self)->str:
-        print(self.data_file_path)
+
+    def get_available_tool_attachments(self) -> list[str]:
+        return self.get_current_extension_list()
+
+    def get_calibration_frame_dict_file_name(self) -> str:
         try:
             with open(self.data_file_path, 'r') as file:
-                
                 data = yaml.safe_load(file)
-                return data[self._current_tool][self._current_tool_attachement]['calibration_file_name']
-        except FileNotFoundError:
+
+            return data[self._current_tool][self._current_tool_attachement][
+                'calibration_file_name'
+            ]
+
+        except (FileNotFoundError, KeyError):
             return None
-        return self.data_file_path
-    
+
     def reload_config(self):
-        self._tool_active = self._config_value['use_paralell_gripper']
-        self._current_tool = self._config_value['use_tool']
-        self._current_tool_attachement = self._config_value['use_jaw_type']
-        _available_tools = self._config_value['available_tools']
-        self._available_tools = []
-        for tool in _available_tools:
-            _available_tool_attachements = []
-            for jaw in tool['availabe_jaws']:
-                _available_tool_attachements.append(jaw)
-            self._available_tools.append((tool['tool_name'], _available_tool_attachements))
-            
+        self._tool_active = self._config_value.get(
+            'use_paralell_gripper', False
+        )
+        self._current_tool = self._config_value.get('use_tool', '')
+        self._current_tool_attachement = self._config_value.get(
+            'use_jaw_type', ''
+        )
+
+        self._load_available_tools()
             
 class DispenserTipConfig():
     def __init__(self, config_value:dict) -> None:

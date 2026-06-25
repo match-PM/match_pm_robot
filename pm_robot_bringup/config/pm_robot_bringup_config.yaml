@@ -35,26 +35,29 @@ pm_robot_gonio_right:
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:
     available_tools:
-    - availabe_jaws:
-      - Default_Jaw
-      tool_name: SmarAct_Piezo_Gripper
-    - availabe_jaws:
-      - Default_Jaw
-      - Flat_Jaw
-      - Sensing_Jaw
-      tool_name: SmarAct_Piezo_Gripper_flat
+      - tool_name: SmarAct_Piezo_Gripper
+        available_jaws:
+          - Default_Jaw
+      - tool_name: SmarAct_Piezo_Gripper_flat
+        available_jaws:
+          - Default_Jaw
+          - Flat_Jaw
+          - Sensing_Jaw
     use_jaw_type: Flat_Jaw
-    use_paralell_gripper: false
+    use_paralell_gripper: true
     use_tool: SmarAct_Piezo_Gripper_flat
     unity_parent: RobotAxisT
   pm_robot_tool_parallel_gripper_2_jaws:
     available_tools:
-    - availabe_jaws:
-      - Jaw_3mm_Lens
-      tool_name: Schunk_MPG_10_plus
-    use_jaw_type: Jaw_3mm_Lens
+      - tool_name: Schunk_MPG_10_plus
+        available_jaws:
+          - Jaw_3mm_Lens
+      - tool_name: Schunk_MPG_20_plus
+        available_jaws:
+          - Jaw_ASG_Gripper
+    use_jaw_type: Jaw_ASG_Gripper
     use_paralell_gripper: false
-    use_tool: Schunk_MPG_10_plus
+    use_tool: Schunk_MPG_20_plus
     unity_parent: RobotAxisT
   pm_robot_vacuum_tools:
     availabe_tools:
@@ -82,7 +85,7 @@ pm_robot_tools:
       tool_name: Schunk_Lens_Gripper_long
     use_tip: Tip_Siemens_Vacuum_Array
     use_tool: Siemens_Vacuum_Array_short
-    use_vacuum_tool: true
+    use_vacuum_tool: false
     unity_parent: RobotAxisT
 pm_smparpod_station:
   with_smarpod_station: false   

@@ -30,7 +30,9 @@
       <xacro:property name="pm_robot_bringup_config_file" value="$(find pm_robot_bringup)/config/pm_robot_bringup_config.yaml" /> -->
 
     </xacro:if>
-
+  
+    <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+    <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
     <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
 
     <xacro:property name="current_tool" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_tool']}"/>
@@ -41,30 +43,29 @@
     <xacro:property name="Gripper_jaw_2_dict" value="${parallel_gripper_configs[current_tool][current_jaw_attachement]}"/>
 
 
-    <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
     <!--%%%%%%%%%%%%% MPG 10-plus Base Parallel Gripper Definitions %%%%%%%%%%%%%-->
     <link
     name="Tool_Parallel_Gripper_Body_2_Jaws">
     <inertial>
       <origin
-        xyz="5.30403682906828E-05 -4.81468891081322E-05 -0.00753129191051478"
+        xyz="-0.000335975164371893 0.005953622519278 -0.00961798832647953"
         rpy="0 0 0" />
       <mass
-        value="0.0183798400393325" />
+        value="0.0219734801011759" />
       <inertia
-        ixx="2.20562725075551E-05"
-        ixy="3.27141658492019E-05"
-        ixz="1.66797947446843E-05"
-        iyy="1.61047701086979E-05"
-        iyz="7.34159323199958E-05"
-        izz="3.58202149775683E-05" />
+        ixx="2.8061799609194E-06"
+        ixy="3.07435258273047E-08"
+        ixz="-1.63779024253226E-09"
+        iyy="1.86483681914571E-06"
+        iyz="3.87737851095455E-09"
+        izz="4.26150237576402E-06" />
     </inertial>
     <visual>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Tool_MPG_10_Base.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Tool_MPG_20_Body.STL" />
       </geometry>
       <material name="grey"/>
     </visual>
@@ -73,7 +74,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Tool_MPG_10_Base.STL" />
+        <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Tool_MPG_20_Body.STL" />
       </geometry>
     </collision>
   </link>
@@ -91,7 +92,7 @@
     <axis xyz="0 0 0" />
   </joint>
 
-  <!--%%%%%%%%%%%%% MPG 10-plus Jaw 2 Parallel Gripper Definitions %%%%%%%%%%%%%-->
+  <!--%%%%%%%%%%%%% MPG 20-plus Jaw 1 Parallel Gripper Definitions %%%%%%%%%%%%%-->
 
       <link
       name="Tool_Parallel_Gripper_Jaw_2">
@@ -114,7 +115,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_2.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/MPG_20_Jaw_2.STL" />
         </geometry>
         <material name="grey"/>
       </visual>
@@ -123,7 +124,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_2.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/MPG_20_Jaw_2.STL" />
         </geometry>
       </collision>
     </link>
@@ -137,17 +138,17 @@
       name="Tool_Parallel_Gripper_Jaw_2_Joint"
       type="prismatic">
       <origin
-        xyz="0.00134999999999982 -0.00399999999999992 -0.0248"
-        rpy="0 0 0" />
+      xyz="0.009317 0 -0.02"        
+      rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Body_2_Jaws" />
       <child
         link="Tool_Parallel_Gripper_Jaw_2" />
       <axis
-        xyz="0 1 0" />
+        xyz="-1 0 0" />
       <limit
         lower="0"
-        upper="0.001"
+        upper="0.002"
         effort="20"
         velocity="0.05" />
     </joint>
@@ -160,7 +161,7 @@
       name="Tool_Parallel_Gripper_Jaw_2_Point"
       type="fixed">
       <origin
-      xyz="-0.0014 0 -0.0075"
+      xyz="0.0 0 0.0"
       rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Jaw_2" />
@@ -171,7 +172,7 @@
     </joint>
 
     
-    <!--%%%%%%%%%%%%% MPG 10-plus Jaw 1 Parallel Gripper Definitions %%%%%%%%%%%%%-->
+    <!--%%%%%%%%%%%%% MPG 20-plus Jaw 1 Parallel Gripper Definitions %%%%%%%%%%%%%-->
       <link
       name="Tool_Parallel_Gripper_Jaw_1">
       <inertial>
@@ -193,7 +194,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_1.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/MPG_20_Jaw_1.STL" />
         </geometry>
         <material name="grey"/>
       </visual>
@@ -202,7 +203,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_1.STL" />
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/MPG_20_Jaw_1.STL" />
         </geometry>
       </collision>
     </link>
@@ -216,17 +217,17 @@
       name="Tool_Parallel_Gripper_Jaw_1_Joint"
       type="prismatic">
       <origin
-        xyz="-0.00135 0.004 -0.0248"
-        rpy="0 0 0" />
+      xyz="-0.009317 0 -0.02"  
+      rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Body_2_Jaws" />
       <child
         link="Tool_Parallel_Gripper_Jaw_1" />
       <axis
-        xyz="0 -1 0" />
+        xyz="1 0 0" />
       <limit
         lower="0"
-        upper="0.001"
+        upper="0.002"
         effort="20"
         velocity="0.05" />
     </joint>
@@ -239,7 +240,7 @@
       name="Tool_Parallel_Gripper_Jaw_1_Point"
       type="fixed">
       <origin
-        xyz="0 0.0014 -0.0075"
+        xyz="0 0.0 0.0"
         rpy="0 0 0" />
       <parent
         link="Tool_Parallel_Gripper_Jaw_1" />
@@ -276,7 +277,6 @@
     <xacro:property name="Gripper_jaw_2_visual_filename" value="${Gripper_jaw_2_dict['Jaw_2']['visual_filename']}"/>
     <xacro:property name="Gripper_jaw_2_collision_filename" value="${Gripper_jaw_2_dict['Jaw_2']['collision_filename']}"/>
 
-
     <xacro:property name="tool_tcp_offset_x" value="${Gripper_jaw_2_dict['tool_TCP_x_offset']}"/>
     <xacro:property name="tool_tcp_offset_y" value="${Gripper_jaw_2_dict['tool_TCP_y_offset']}"/>
     <xacro:property name="tool_tcp_offset_z" value="${Gripper_jaw_2_dict['tool_TCP_z_offset']}"/>
@@ -307,7 +307,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Jaws/${Gripper_jaw_1_visual_filename}" />      
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Jaws/${Gripper_jaw_1_visual_filename}" />      
         </geometry>
         <material
           name="">
@@ -320,7 +320,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Jaws/${Gripper_jaw_1_collision_filename}" />      
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Jaws/${Gripper_jaw_1_collision_filename}" />      
         </geometry>
       </collision>
     </link>
@@ -362,7 +362,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Jaws/${Gripper_jaw_2_visual_filename}" />      
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Jaws/${Gripper_jaw_2_visual_filename}" />      
         </geometry>
         <material
           name="">
@@ -375,7 +375,7 @@
           xyz="0 0 0"
           rpy="0 0 0" />
         <geometry>
-          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Jaws/${Gripper_jaw_2_collision_filename}" />      
+          <mesh filename="file://$(find pm_robot_description)/meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Jaws/${Gripper_jaw_2_collision_filename}" />      
         </geometry>
       </collision>
     </link>
@@ -419,5 +419,6 @@
     <axis xyz="0 0 0" />
   </joint>
 </xacro:macro>
+
 
 </robot>
