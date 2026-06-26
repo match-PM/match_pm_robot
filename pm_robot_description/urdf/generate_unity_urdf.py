@@ -35,9 +35,15 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
     generated_urdfs = []
 
     # Set use_keyence_bottom in yaml file to True
-    original_config['measuring_systems']['use_keyence_bottom'] = True 
+    original_config['measuring_systems']['use_keyence_bottom'] = True
 
     # original_config['pm_smparpod_station']['with_smarpod_station'] = True
+
+    # Disable all tools by default so that the dispenser/chuck/gonio scenarios
+    # don't leak whichever tool happens to be selected in the config. Each tool
+    # type is enabled only inside its own dedicated loop below.
+    original_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper'] = False
+    original_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper'] = False
 
     # Extract the sets of known tips for easy checking
     dispenser_tips = set(original_config['pm_robot_1K_dispenser_tip']['availabe_dispenser_tips'])
@@ -147,6 +153,72 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
                 seen_elements.add(child_str)
                 combined_robot_el.append(child)
 
+    def fix_mesh_paths_only(root):
+        """Convert absolute file:// mesh paths to repo-relative meshes/ paths,
+        without renaming any links."""
+        for mesh_el in root.iter('mesh'):
+            filename = mesh_el.get('filename', '')
+            if filename.startswith('file://'):
+                if 'meshes/' in filename:
+                    mesh_el.set('filename', 'meshes/' + filename.split('meshes/')[-1])
+                else:
+                    mesh_el.set('filename', filename.replace('file://', ''))
+
+    def process_parallel_gripper_urdf(urdf_path, suffix):
+        """Process a parallel-gripper scenario URDF.
+
+        Every gripper config emits the same generic link/joint names
+        (``Tool_Parallel_Gripper_*`` and ``PM_Robot_Tool_TCP``) and different
+        jaw configs can reuse the same jaw STL basenames. To keep the combined
+        URDF free of duplicate link/joint names, every gripper-owned link and
+        joint is given a unique ``suffix`` (tool name + jaw type). Links that
+        belong to the base robot (e.g. ``t_axis_toolchanger``,
+        ``Gripper_Rot_Plate``) are left untouched so they still deduplicate
+        against the other scenarios.
+        """
+        tree = ET.parse(urdf_path)
+        root = tree.getroot()
+
+        fix_mesh_paths_only(root)
+
+        # Rename gripper-owned links.
+        link_name_map = {}
+        for link_el in root.findall('link'):
+            nm = link_el.get('name', '')
+            if nm.startswith('Tool_Parallel_Gripper') or nm == 'PM_Robot_Tool_TCP':
+                new_nm = f"{nm}_{suffix}"
+                link_name_map[nm] = new_nm
+                link_el.set('name', new_nm)
+
+        # Update joints: rewrite parent/child references to the renamed links,
+        # and uniquify the name of any joint owned by the gripper (i.e. whose
+        # child is a gripper link).
+        renamed_links = set(link_name_map.values())
+        for joint_el in root.findall('joint'):
+            parent_el = joint_el.find('parent')
+            if parent_el is not None and parent_el.get('link') in link_name_map:
+                parent_el.set('link', link_name_map[parent_el.get('link')])
+
+            child_el = joint_el.find('child')
+            if child_el is not None and child_el.get('link') in link_name_map:
+                child_el.set('link', link_name_map[child_el.get('link')])
+
+            if child_el is not None and child_el.get('link') in renamed_links:
+                joint_el.set('name', f"{joint_el.get('name')}_{suffix}")
+
+        # Update gazebo references to renamed links.
+        for gz_el in root.findall('gazebo'):
+            ref = gz_el.get('reference')
+            if ref in link_name_map:
+                gz_el.set('reference', link_name_map[ref])
+
+        # Deduplicate and add elements to combined robot.
+        for child in list(root):
+            child_str = ET.tostring(child, encoding='unicode')
+            if child_str not in seen_elements:
+                seen_elements.add(child_str)
+                combined_robot_el.append(child)
+
     try:
         for tip in original_config['pm_robot_1K_dispenser_tip']['availabe_dispenser_tips']:
             original_config['pm_robot_1K_dispenser_tip']['use_dispenser_tip'] = tip
@@ -198,6 +270,44 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
                 # This is a vacuum tool tip scenario, so PM_Robot_Tool_TCP may be renamed with the tip name
                 process_urdf_file(urdf_file, tip)
 
+        # The vacuum tool and the two parallel-gripper groups are selected by
+        # independent flags in the config, so isolate each group by disabling
+        # the others. Iterate the 1-jaw grippers (one moving jaw each).
+        gripper_1_config = original_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']
+        gripper_2_config = original_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']
+        original_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_vacuum_tool'] = False
+
+        gripper_1_config['use_paralell_gripper'] = True
+        gripper_2_config['use_paralell_gripper'] = False
+        for tool in gripper_1_config['available_tools']:
+            gripper_1_config['use_tool'] = tool['tool_name']
+            for jaw in tool['available_jaws']:
+                gripper_1_config['use_jaw_type'] = jaw
+                with open(yaml_path, 'w') as temp_yaml:
+                    yaml.dump(original_config, temp_yaml)
+
+                urdf_file = os.path.join(output_dir, f'temp_gripper1_{tool["tool_name"]}_{jaw}.urdf')
+                subprocess.run(['ros2', 'run', 'xacro', 'xacro', xacro_path, '-o', urdf_file], check=True)
+
+                generated_urdfs.append(urdf_file)
+                process_parallel_gripper_urdf(urdf_file, f'{tool["tool_name"]}_{jaw}')
+
+        # Iterate the 2-jaw grippers (two moving jaws each).
+        gripper_1_config['use_paralell_gripper'] = False
+        gripper_2_config['use_paralell_gripper'] = True
+        for tool in gripper_2_config['available_tools']:
+            gripper_2_config['use_tool'] = tool['tool_name']
+            for jaw in tool['available_jaws']:
+                gripper_2_config['use_jaw_type'] = jaw
+                with open(yaml_path, 'w') as temp_yaml:
+                    yaml.dump(original_config, temp_yaml)
+
+                urdf_file = os.path.join(output_dir, f'temp_gripper2_{tool["tool_name"]}_{jaw}.urdf')
+                subprocess.run(['ros2', 'run', 'xacro', 'xacro', xacro_path, '-o', urdf_file], check=True)
+
+                generated_urdfs.append(urdf_file)
+                process_parallel_gripper_urdf(urdf_file, f'{tool["tool_name"]}_{jaw}')
+
         # for chuck in original_config['pm_smarpod_station']['availabe_chucks']:
         #     original_config['pm_smarpod_station']['use_chuck'] = chuck
         #     with open(yaml_path, 'w') as temp_yaml:
@@ -211,7 +321,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir):
         #     process_urdf_file(urdf_file, chuck)
 
         # Write out the combined URDF (with a single <robot>), now with relative mesh paths
-        combined_urdf_path = os.path.join(output_dir, 'pm_robot_unity_carrier_demo.urdf')
+        combined_urdf_path = os.path.join(output_dir, 'pm_robot_unity_asg_gripper.urdf')
         ET.ElementTree(combined_robot_el).write(combined_urdf_path, encoding='utf-8', xml_declaration=True)
         print(f'pm_robot_unity.urdf file created at: {combined_urdf_path}')
 
