@@ -67,6 +67,10 @@ class PrimitiveSkillsUtils():
         self.client_uv_back_forward= self.node.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveForward",callback_group = self.callback_group_re)
         self.client_uv_back_backward= self.node.create_client(pm_msg_srv.EmptyWithSuccess, "/pm_pneumatic_controller/UV_LED_Back_Joint/MoveBackward",callback_group = self.callback_group_re)
 
+        self.client_move_calibration_target_forward = self.node.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/Camera_Calibration_Platelet_Joint/MoveForward')
+        self.client_move_calibration_target_backward = self.node.create_client(EmptyWithSuccess, '/pm_pneumatic_controller/Camera_Calibration_Platelet_Joint/MoveBackward')
+    
+
         self.client_dips_1k_on = self.node.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
         self.client_dips_1k_off = self.node.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/TurnOff',callback_group = self.callback_group_re)
 
@@ -341,12 +345,14 @@ class PrimitiveSkillsUtils():
             raise PmRobotError(f"Service '{self.client_get_confocal_top_measurement.srv_name}' is not available!")
         
         response:GetValue.Response = self.client_get_confocal_top_measurement.call(request=request_cl)
-
+        
         # convert and units to um 
         if not self.is_unity_running():
             response.data = -1*(response.data-1.0)*1e3
+            #self.logger.error(f"DEBUG RESPONSE: top real {response.data} um")
         else:
             response.data = response.data
+            #self.logger.error(f"DEBUG RESPONSE: top unity {response.data} um")
 
         return response
 
