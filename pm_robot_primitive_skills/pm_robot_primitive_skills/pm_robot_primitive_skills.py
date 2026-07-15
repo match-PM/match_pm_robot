@@ -55,6 +55,10 @@ class PrimitiveSkillsNode(Node):
         self.set_uv_cart_position_srv = self.create_service(pm_msg_srv.SetUvSliderXPositions, self.get_name()+'/set_uv_slider_manual_positions', self.set_uv_cart_positions, callback_group=self.callback_group_mu_ex)
         
         self.uv_cart_publisher = self.create_publisher(Float64MultiArray,"/pm_uv_cart_manual_controller/commands",10)
+
+        self.set_gripper_2_jaws_position_srv = self.create_service(pm_msg_srv.Gripper2JawSetPosition, self.get_name()+'/set_gripper_2_jaws_position', self.set_gripper_2_jaws_position_callback, callback_group=self.callback_group_mu_ex)
+
+        self.gripper_2_jaws_publisher = self.create_publisher(Float64MultiArray,"/pm_parallel_gripper_2_jaws_controller/commands",10)
         
         self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
         
@@ -116,17 +120,33 @@ class PrimitiveSkillsNode(Node):
 
 
     def set_uv_cart_positions(self, request:pm_msg_srv.SetUvSliderXPositions.Request, response:pm_msg_srv.SetUvSliderXPositions.Response):
-        
+
         cmd = Float64MultiArray()
         cmd.data.append(request.uv_slider_front_position_mm*1e-3) # convert to m
-        cmd.data.append(request.uv_slider_back_position_mm*1e-3) # convert to m 
+        cmd.data.append(request.uv_slider_back_position_mm*1e-3) # convert to m
         self.uv_cart_publisher.publish(cmd)
 
         self.logger.warning(f"Setting 'UV Cart Front' to '{request.uv_slider_front_position_mm} mm'")
         self.logger.warning(f"Setting 'UV Cart Back' to '{request.uv_slider_back_position_mm} mm'")
         response.success = True
         return response
-    
+
+    def set_gripper_2_jaws_position_callback(self, request:pm_msg_srv.Gripper2JawSetPosition.Request, response:pm_msg_srv.Gripper2JawSetPosition.Response):
+        """Sets the 2-jaw parallel gripper to the given position for both jaws."""
+        try:
+            cmd = Float64MultiArray()
+            # Both jaws are set to the same value to keep the gripper symmetric.
+            cmd.data.append(request.position)
+            cmd.data.append(request.position)
+            self.gripper_2_jaws_publisher.publish(cmd)
+
+            self.logger.warn(f"Setting 'Tool_Parallel_Gripper_Jaw_1_Joint' and 'Tool_Parallel_Gripper_Jaw_2_Joint' to '{request.position} m'")
+            response.success = True
+        except Exception as e:
+            self.logger.error(f"Error setting 2-jaw gripper position: {e}")
+            response.success = False
+        return response
+
 
     def move_uv_in_curing_position_service_callback(self, request:SetBool.Request, response:SetBool.Response):
         """Moves both UV LEDs in curing position"""

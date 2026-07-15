@@ -291,6 +291,16 @@ def generate_launch_description():
         ],
         )   
 
+    pm_parallel_gripper_2_jaws_controller_launch = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "pm_parallel_gripper_2_jaws_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+        )
+
 
     pm_moveit_server = Node(
         package="pm_moveit_server",
@@ -393,6 +403,8 @@ def generate_launch_description():
         pass
     if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']:
         ld.add_action(pm_parallel_gripper_jaw_controller_launch)
+    if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']:
+        ld.add_action(pm_parallel_gripper_2_jaws_controller_launch)
     ld.add_action(primitive_skills_node)
     ld.add_action(adhesive_displayer)
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):

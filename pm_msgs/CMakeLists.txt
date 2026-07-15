@@ -68,6 +68,7 @@ rosidl_generate_interfaces(
   "srv/GripperGetForces.srv"
   "srv/GripperGetPosition.srv"
   "srv/SetUvSliderXPositions.srv"
+  "srv/Gripper2JawSetPosition.srv"
   "srv/DispenseTestPoints.srv"
   "srv/ChangeToolAndRestart.srv"
   "srv/DispenseAtPath.srv"

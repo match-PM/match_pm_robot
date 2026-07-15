@@ -210,11 +210,11 @@ def generate_launch_description():
         robot_gonio_right_controllers_path
     ]
 
-    # if pm_robot_config.tool._gripper_1_jaw.get_activate_status():
-    #     controller_manager_params.append(robot_single_jaw_controller_path)
+    if pm_robot_config.tool._gripper_1_jaw.get_activate_status():
+        controller_manager_params.append(robot_single_jaw_controller_path)
 
-    # if pm_robot_config.tool._gripper_2_jaw.get_activate_status():
-    #     controller_manager_params.append(robot_two_jaw_controller_path)
+    if pm_robot_config.tool._gripper_2_jaw.get_activate_status():
+        controller_manager_params.append(robot_two_jaw_controller_path)
 
 
     if pm_robot_config.smarpod_station.get_activate_status():
@@ -339,6 +339,16 @@ def generate_launch_description():
         }],
         emulate_tty=True
         
+    )
+
+    pm_parallel_gripper_2_jaws_controller_launch = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "pm_parallel_gripper_2_jaws_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
     )
 
     launch_gonio_left_controller = IncludeLaunchDescription(
@@ -489,6 +499,9 @@ def generate_launch_description():
     if pm_robot_config.smarpod_station.get_activate_status():
         ld.add_action(delayed_smarpod_controller)
         
+    if pm_robot_config.tool._gripper_2_jaw.get_activate_status():
+        ld.add_action(pm_parallel_gripper_2_jaws_controller_launch)
+
     #ld.add_action(primitive_skills_node)
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)
