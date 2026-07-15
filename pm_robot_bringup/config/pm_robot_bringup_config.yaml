@@ -48,7 +48,7 @@ pm_robot_gonio_left:
   - Chuck_Carrier_Demo
   - Chuck_ASG_Dummy
   unity_parent: Gonio_Left_Chuck_Origin
-  use_chuck: Chuck_Siemens_Carrier_P39_V2
+  use_chuck: Chuck_ASG_Dummy
   with_Gonio_Left: true
 pm_robot_gonio_right:
   availabe_chucks:
@@ -84,7 +84,7 @@ pm_robot_tools:
       tool_name: Schunk_MPG_20_plus
     unity_parent: RobotAxisT
     use_jaw_type: Jaw_ASG_Gripper
-    use_paralell_gripper: true
+    use_paralell_gripper: false
     use_tool: Schunk_MPG_20_plus
   pm_robot_vacuum_tools:
     availabe_tools:
@@ -111,9 +111,9 @@ pm_robot_tools:
       - Tip_Lens_12_7_long
       tool_name: Schunk_Lens_Gripper_long
     unity_parent: RobotAxisT
-    use_tip: Tip_Siemens_Vacuum_Array
+    use_tip: Tip_Siemens_Sensor_Bottom
     use_tool: Siemens_Vacuum_Array_short
-    use_vacuum_tool: false
+    use_vacuum_tool: true
 pm_smparpod_station:
   availabe_chucks:
   - empty
