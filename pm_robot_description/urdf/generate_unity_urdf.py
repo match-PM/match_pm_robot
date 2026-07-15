@@ -16,7 +16,9 @@ from datetime import datetime, timezone
 # It also fixes mesh paths, renames links based on the STL file names, and emits a JSON manifest
 # (pm_robot_unity_manifest.json) that maps every YAML selection to the URDF links it owns.
 # The Unity side (configureRobot.cs and the delta-import editor tool) consumes that manifest,
-# so adding a new tool/chuck/tip in ROS requires no Unity code changes.
+# so adding a new tool/chuck/tip in ROS requires no Unity code changes. Empty
+# spawn frames are also described explicitly: their pose still comes from the
+# generated xacro/URDF, while Unity reparents them below the visible chuck/tool.
 ############################################
 
 
@@ -216,20 +218,47 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
         return urdf_file
 
     def finalize_single_level_section(scenarios, yaml_path_key, enable_key,
-                                      select_key, unity_parent):
+                                      select_key, unity_parent,
+                                      spawn_frame_names=()):
         """Diff the scenarios of a single-selection section (dispenser tips,
         chucks) against each other: links present in every scenario are base
         robot, the rest belong to the selected item. Owned links that were not
         STL-renamed (e.g. the STL-less '1K_Dispenser_Tip') are renamed to the
-        YAML selection name so they are unique and follow the convention."""
+        YAML selection name so they are unique and follow the convention.
+
+        Gonio part origins have the same ROS link name in every scenario but a
+        scenario-specific joint origin. Rename those source links before the
+        diff so the combined URDF retains every YAML-defined pose. They are
+        excluded from the normal item links and emitted as spawnPoints instead;
+        Unity creates each one as an empty child of its visible chuck."""
+        scenario_spawn_points = []
+        for yaml_name, root, _ in scenarios:
+            existing_links = link_names(root)
+            present = [name for name in spawn_frame_names if name in existing_links]
+            mapping = {
+                name: f'{name}__unity_source__{yaml_name}'
+                for name in present
+            }
+            if mapping:
+                rename_links(root, mapping,
+                             joint_suffix=f'unity_source_{yaml_name}')
+            scenario_spawn_points.append([
+                {'name': name, 'sourceLink': mapping[name]}
+                for name in present
+            ])
+
         all_sets = [link_names(root) for _, root, _ in scenarios]
         common = set.intersection(*all_sets) if len(all_sets) > 1 else set()
 
         items = []
-        for (yaml_name, root, stl_renamed), links in zip(scenarios, all_sets):
+        for ((yaml_name, root, stl_renamed), links,
+             spawn_points) in zip(scenarios, all_sets, scenario_spawn_points):
             owned = links - common
+            spawn_source_links = {point['sourceLink'] for point in spawn_points}
 
-            generic = sorted(l for l in owned if l not in stl_renamed)
+            generic = sorted(l for l in owned
+                             if l not in stl_renamed and
+                             l not in spawn_source_links)
             if generic:
                 if len(generic) == 1:
                     mapping = {generic[0]: yaml_name}
@@ -238,12 +267,22 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                 rename_links(root, mapping, joint_suffix=yaml_name)
                 owned = (owned - set(mapping)) | set(mapping.values())
 
-            root_links, meshes = item_meta(root, owned)
+            visible_owned = owned - spawn_source_links
+            root_links, meshes = item_meta(root, visible_owned)
+            if spawn_points:
+                if len(root_links) != 1:
+                    raise ValueError(
+                        f"Expected one visible chuck root for '{yaml_name}', "
+                        f"found {root_links}")
+                for point in spawn_points:
+                    point['parentLink'] = root_links[0]
+
             items.append({
                 'yamlNames': [yaml_name],
-                'links': sorted(owned),
+                'links': sorted(visible_owned),
                 'rootLinks': root_links,
                 'meshes': meshes,
+                'spawnPoints': spawn_points,
             })
             add_to_combined(root)
 
@@ -265,7 +304,10 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
         and stay unsuffixed so every scenario deduplicates onto one copy.
         'PM_Robot_Tool_TCP' also appears in every scenario but with a
         different joint origin per tool, so it fails the identity test and is
-        correctly suffixed per tool. Caveat: a part shared identically by two
+        correctly suffixed per tool. It is retained in the combined URDF as a
+        scenario-unique pose source, but represented in the manifest as an
+        empty PM_Robot_Tool_TCP spawn point below the visible tool. Caveat: a
+        part shared identically by two
         tools would be classified as infrastructure and never toggled off in
         Unity (same as the pre-manifest behavior for t_axis_tool).
         """
@@ -308,17 +350,53 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
         for sc, structural in zip(tool_scenarios, per_scenario):
             root = sc['root']
             owned = structural - shared
+            tcp_name = 'PM_Robot_Tool_TCP'
+            if tcp_name not in owned:
+                raise ValueError(
+                    f"Tool scenario {sc['yaml_names']} has no owned {tcp_name}")
+
+            # Vacuum holders/tips are children of the TCP in ROS. Preserve
+            # joint order here so the holder (the first child) becomes the
+            # visible Unity parent; the importer moves its sibling tip below
+            # it while retaining both world poses. Parallel-gripper TCPs are
+            # leaves, so their visible body root is selected below instead.
+            tcp_children = []
+            for joint_el in root.findall('joint'):
+                parent_el = joint_el.find('parent')
+                child_el = joint_el.find('child')
+                if (parent_el is not None and child_el is not None and
+                        parent_el.get('link') == tcp_name and
+                        child_el.get('link') in owned):
+                    tcp_children.append(child_el.get('link'))
+
             mapping = {nm: f"{nm}_{sc['suffix']}" for nm in owned}
             rename_links(root, mapping, joint_suffix=sc['suffix'])
             owned_suffixed = set(mapping.values())
+            tcp_source = mapping[tcp_name]
+            visible_owned = owned_suffixed - {tcp_source}
 
-            root_links, meshes = item_meta(root, owned_suffixed)
+            root_links, meshes = item_meta(root, visible_owned)
+            if tcp_children:
+                tool_parent = mapping[tcp_children[0]]
+            else:
+                candidates = [name for name in root_links if name != tcp_source]
+                if len(candidates) != 1:
+                    raise ValueError(
+                        f"Expected one visible tool root for {sc['yaml_names']}, "
+                        f"found {candidates}")
+                tool_parent = candidates[0]
+
             add_to_combined(root)
             tool_sections[sc['section']]['items'].append({
                 'yamlNames': list(sc['yaml_names']),
-                'links': sorted(owned_suffixed),
-                'rootLinks': root_links,
+                'links': sorted(visible_owned),
+                'rootLinks': [tool_parent],
                 'meshes': meshes,
+                'spawnPoints': [{
+                    'name': tcp_name,
+                    'sourceLink': tcp_source,
+                    'parentLink': tool_parent,
+                }],
             })
 
         manifest_sections.extend(tool_sections.values())
@@ -348,7 +426,8 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
             scenarios.append((chuck, root, stl_renamed))
         finalize_single_level_section(
             scenarios, 'pm_robot_gonio_left', 'with_Gonio_Left', 'use_chuck',
-            gonio_left_config.get('unity_parent', ''))
+            gonio_left_config.get('unity_parent', ''),
+            spawn_frame_names=('Gonio_Left_Part_Origin',))
 
         # --- Gonio right chucks ------------------------------------------------
         scenarios = []
@@ -359,7 +438,9 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
             scenarios.append((chuck, root, stl_renamed))
         finalize_single_level_section(
             scenarios, 'pm_robot_gonio_right', 'with_Gonio_Right', 'use_chuck',
-            gonio_right_config.get('unity_parent', ''))
+            gonio_right_config.get('unity_parent', ''),
+            spawn_frame_names=('Gonio_Right_Part_1_Origin',
+                               'Gonio_Right_Part_2_Origin'))
 
         # --- Tools (vacuum: tool x tip, grippers: tool x jaw) -------------------
         # All tool scenarios are generated first and finalized together in
