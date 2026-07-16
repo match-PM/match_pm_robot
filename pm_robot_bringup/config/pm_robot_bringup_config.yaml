@@ -1,15 +1,42 @@
+adhesive_test_point_station:
+- current_point: 0
+  grid_x_spacing: 5
+  grid_y_spacing: 5
+  num_x_points: 8
+  num_y_points: 8
+  parent_frame:
+    frame_id: Test_Station
+    offset_x: 4
+    offset_y: 4
+    offset_z: 0
+    pitch: 0
+    roll: 0
+    yaw: 0
+- current_point: 0
+  grid_x_spacing: 5
+  grid_y_spacing: 5
+  num_x_points: 8
+  num_y_points: 8
+  parent_frame:
+    frame_id: Test_Station
+    offset_x: 4
+    offset_y: 58
+    offset_z: 0
+    pitch: 0
+    roll: 0
+    yaw: 0
 measuring_systems:
-  use_keyence_bottom: false
   use_confocal_bottom: true
   use_confocal_head: true
+  use_keyence_bottom: false
 pm_robot_1K_dispenser_tip:
   availabe_dispenser_tips:
   - Dis_Tip_Yellow_I_100_A240_L12700
   - Dis_Tip_Lavender_I_150_A310_L12700
   - Dis_Tip_Red_I_250_A520_L12700
   - Dis_Tip_Yellow_I_100_A240_L060
-  use_dispenser_tip: Dis_Tip_Red_I_250_A520_L12700
   unity_parent: 1K_Dispenser_TCP
+  use_dispenser_tip: Dis_Tip_Red_I_250_A520_L12700
 pm_robot_gonio_left:
   availabe_chucks:
   - chuck_gonio_left_Siemens_Carrier
@@ -23,42 +50,45 @@ pm_robot_gonio_left:
   use_chuck: chuck_gonio_left_Siemens_Sensor
   with_Gonio_Left: true
   unity_parent: Gonio_Left_Chuck_Origin
+  use_chuck: Chuck_ASG_Dummy
+  with_Gonio_Left: true
 pm_robot_gonio_right:
   availabe_chucks:
   - chuck_gonio_right_Siemens_UFC
   - chuck_gonio_right_double_lens_holder_12_7
   - chuck_gonio_right_ipeg_active_alignment_station
   - chuck_gonio_right_siemens_SIN
+  - chuck_gonio_right_ASG_bridge
+  unity_parent: Gonio_Right_Chuck_Origin
   use_chuck: chuck_gonio_right_siemens_SIN
   with_Gonio_Right: true
-  unity_parent: Gonio_Right_Chuck_Origin
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:
     available_tools:
-      - tool_name: SmarAct_Piezo_Gripper
-        available_jaws:
-          - Default_Jaw
-      - tool_name: SmarAct_Piezo_Gripper_flat
-        available_jaws:
-          - Default_Jaw
-          - Flat_Jaw
-          - Sensing_Jaw
-    use_jaw_type: Sensing_Jaw
-    use_paralell_gripper: true
-    use_tool: SmarAct_Piezo_Gripper_flat
+    - available_jaws:
+      - Default_Jaw
+      tool_name: SmarAct_Piezo_Gripper
+    - available_jaws:
+      - Default_Jaw
+      - Flat_Jaw
+      - Sensing_Jaw
+      tool_name: SmarAct_Piezo_Gripper_flat
     unity_parent: RobotAxisT
+    use_jaw_type: Sensing_Jaw
+    use_paralell_gripper: false
+    use_tool: SmarAct_Piezo_Gripper_flat
   pm_robot_tool_parallel_gripper_2_jaws:
     available_tools:
-      - tool_name: Schunk_MPG_10_plus
-        available_jaws:
-          - Jaw_3mm_Lens
-      - tool_name: Schunk_MPG_20_plus
-        available_jaws:
-          - Jaw_ASG_Gripper
+    - available_jaws:
+      - Jaw_3mm_Lens
+      tool_name: Schunk_MPG_10_plus
+    - available_jaws:
+      - Jaw_ASG_Gripper
+      tool_name: Schunk_MPG_20_plus
+    unity_parent: RobotAxisT
     use_jaw_type: Jaw_ASG_Gripper
     use_paralell_gripper: false
     use_tool: Schunk_MPG_20_plus
-    unity_parent: RobotAxisT
   pm_robot_vacuum_tools:
     availabe_tools:
     - availabe_tips:
@@ -83,46 +113,20 @@ pm_robot_tools:
     - availabe_tips:
       - Tip_Lens_12_7_long
       tool_name: Schunk_Lens_Gripper_long
-    use_tip: Tip_Siemens_Vacuum_Array
-    use_tool: Siemens_Vacuum_Array_short
-    use_vacuum_tool: false
     unity_parent: RobotAxisT
+    use_tip: Tip_Siemens_Sensor_Bottom
+    use_tool: Siemens_Vacuum_Array_short
+    use_vacuum_tool: true
 pm_smparpod_station:
-  with_smarpod_station: false   
   availabe_chucks:
   - empty
   - chuck_diodenplacement
   - chuck_fiber
   - chuck_smarpod_calibration
-  use_chuck: chuck_fiber
+  - chuck_smarpod_ball_calibration
   available_chucks_center:
   - empty
   - chuck_fiber_chip_alignment
-  use_chuck_center: chuck_fiber_chip_alignment
-adhesive_test_point_station:
-  - num_x_points: 8
-    num_y_points: 8
-    grid_x_spacing: 5
-    grid_y_spacing: 5
-    current_point: 0
-    parent_frame:
-      frame_id: Test_Station
-      offset_x: 4
-      offset_y: 4
-      offset_z: 0
-      roll: 0
-      pitch: 0
-      yaw: 0
-  - num_x_points: 8
-    num_y_points: 8
-    grid_x_spacing: 5
-    grid_y_spacing: 5
-    current_point: 0
-    parent_frame:
-      frame_id: Test_Station
-      offset_x: 4
-      offset_y: 58
-      offset_z: 0
-      roll: 0
-      pitch: 0
-      yaw: 0
+  use_chuck: empty
+  use_chuck_center: empty
+  with_smarpod_station: false

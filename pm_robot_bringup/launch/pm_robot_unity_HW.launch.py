@@ -359,6 +359,16 @@ def generate_launch_description():
         ],
         )   
 
+    pm_parallel_gripper_2_jaws_controller_launch = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "pm_parallel_gripper_2_jaws_controller",
+            "--controller-manager",
+            "/controller_manager",
+        ],
+        )
+
     gonio_orientation_solver_node = Node(
         package="gonio_orientation_solver",
         executable="gonio_orientation_solver",
@@ -417,6 +427,8 @@ def generate_launch_description():
         ld.add_action(launch_gonio_right_controller)
     if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']:
         ld.add_action(pm_parallel_gripper_jaw_controller_launch)
+    if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']:
+        ld.add_action(pm_parallel_gripper_2_jaws_controller_launch)
     ld.add_action(pm_lights_controller_spawner)
     ld.add_action(pm_pneumatic_controller_spawner)
     ld.add_action(pm_nozzle_controller_spawner)
