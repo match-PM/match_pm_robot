@@ -20,7 +20,7 @@ pm_robot_gonio_left:
   - Chuck_Siemens_Carrier_P39_V2
   - Chuck_Carrier_Demo
   - Chuck_ASG_Dummy
-  use_chuck: Chuck_Siemens_Carrier_P39_V2
+  use_chuck: chuck_gonio_left_Siemens_Sensor
   with_Gonio_Left: true
   unity_parent: Gonio_Left_Chuck_Origin
 pm_robot_gonio_right:
@@ -43,7 +43,7 @@ pm_robot_tools:
           - Default_Jaw
           - Flat_Jaw
           - Sensing_Jaw
-    use_jaw_type: Flat_Jaw
+    use_jaw_type: Sensing_Jaw
     use_paralell_gripper: true
     use_tool: SmarAct_Piezo_Gripper_flat
     unity_parent: RobotAxisT
