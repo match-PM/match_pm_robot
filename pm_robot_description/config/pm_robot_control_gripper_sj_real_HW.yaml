@@ -9,8 +9,8 @@ controller_manager:
 pm_parallel_gripper_2_jaws_controller:
   ros__parameters:
     joints:
-      - Tool_Parallel_Gripper_Jaw_Joint_1
-      - Tool_Parallel_Gripper_Jaw_Joint_2
+      - Tool_Parallel_Gripper_Jaw_1_Joint
+      - Tool_Parallel_Gripper_Jaw_2_Joint
 
     command_interfaces:
       - position

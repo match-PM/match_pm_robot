@@ -47,6 +47,8 @@ pm_robot_gonio_left:
   - Chuck_Siemens_Carrier_P39_V2
   - Chuck_Carrier_Demo
   - Chuck_ASG_Dummy
+  use_chuck: chuck_gonio_left_Siemens_Sensor
+  with_Gonio_Left: true
   unity_parent: Gonio_Left_Chuck_Origin
   use_chuck: Chuck_ASG_Dummy
   with_Gonio_Left: true
@@ -56,6 +58,7 @@ pm_robot_gonio_right:
   - chuck_gonio_right_double_lens_holder_12_7
   - chuck_gonio_right_ipeg_active_alignment_station
   - chuck_gonio_right_siemens_SIN
+  - chuck_gonio_right_ASG_bridge
   unity_parent: Gonio_Right_Chuck_Origin
   use_chuck: chuck_gonio_right_siemens_SIN
   with_Gonio_Right: true
@@ -120,6 +123,7 @@ pm_smparpod_station:
   - chuck_diodenplacement
   - chuck_fiber
   - chuck_smarpod_calibration
+  - chuck_smarpod_ball_calibration
   available_chucks_center:
   - empty
   - chuck_fiber_chip_alignment

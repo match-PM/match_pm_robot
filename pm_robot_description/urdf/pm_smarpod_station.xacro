@@ -35,7 +35,6 @@
     <xacro:smaract_hexapod launch_mode="${launch_mode}" base_link="Smarpod_Station_Base" chuck="${current_pm_robot_bringup_config['pm_smparpod_station']['use_chuck']}" chuck_center="${current_pm_robot_bringup_config['pm_smparpod_station']['use_chuck_center']}"/>
 
     <!-- Smarpod Station -->
-
     <link
     name="Smarpod_Station">
     <inertial>
@@ -91,6 +90,33 @@
   </joint>
 
   <link
+    name="Smarpod_Station_Base_Calibration">
+  </link>
+  
+
+  <joint
+    name="Smarpod_Station_Base_Calibration_Joint"
+    type="fixed">
+    <origin
+      xyz="
+        0.1465 
+        0.1 
+        0.2254" 
+        rpy="
+        0 
+        0 
+        0" />
+
+
+    <parent
+      link="Smarpod_Station" />
+    <child
+      link="Smarpod_Station_Base_Calibration" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+  <link
     name="Smarpod_Station_Base">
   </link>
   
@@ -107,9 +133,9 @@
     type="fixed">
     <origin
       xyz="
-        ${0.1465 + Smarpod_Station_Joint_Cal_x * 0.000001} 
-        ${0.1 + Smarpod_Station_Joint_Cal_y * 0.000001} 
-        ${0.2254 + Smarpod_Station_Joint_Cal_z * 0.000001}" 
+        ${0.0 + Smarpod_Station_Joint_Cal_x * 0.000001} 
+        ${0.0 + Smarpod_Station_Joint_Cal_y * 0.000001} 
+        ${0.0 + Smarpod_Station_Joint_Cal_z * 0.000001}" 
         rpy="
         ${0 + Smarpod_Station_Joint_Cal_rx * 3.14159265359/180} 
         ${0 + Smarpod_Station_Joint_Cal_ry * 3.14159265359/180} 
@@ -117,13 +143,12 @@
 
 
     <parent
-      link="Smarpod_Station" />
+      link="Smarpod_Station_Base_Calibration" />
     <child
       link="Smarpod_Station_Base" />
     <axis
       xyz="0 0 0" />
   </joint>
-
 
 
 
