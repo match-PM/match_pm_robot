@@ -139,6 +139,7 @@
                 <hardware>
                     <plugin>smaract_hexapod_hw_interface/SmarPodSystem</plugin>
                     <param name="model_number">10006</param>
+                    <param name="startup_pivot">0.0 0.0 -0.0035</param>
                     <!-- Set the sensor mode. options: disabled, enabled, power_save -->
                     <param name="sensor_mode">power_save</param>
                     <!-- Set the maximum frequency of the sensor, this value should never exceed 12000 -->
