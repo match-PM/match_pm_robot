@@ -139,7 +139,8 @@
                 <hardware>
                     <plugin>smaract_hexapod_hw_interface/SmarPodSystem</plugin>
                     <param name="model_number">10006</param>
-                    <param name="startup_pivot">0.0 0.0 -0.0035</param>
+                    <!-- The value of the starup pivot has been manually calibrated. it is the difference from the hexapod internal model to the kinematic model we created. we measured the top surface with the laser to make sure the pivot is at a certain point below the top surface. -->
+                    <param name="startup_pivot">0.0 0.0 -0.003812</param>
                     <!-- Set the sensor mode. options: disabled, enabled, power_save -->
                     <param name="sensor_mode">power_save</param>
                     <!-- Set the maximum frequency of the sensor, this value should never exceed 12000 -->
