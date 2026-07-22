@@ -145,7 +145,11 @@ Smarpod_Station:
   ry_offset: 0
   rz_offset: 0
 
-
-
-
+CAL_Smarpod_J__t__P:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0
+  y_offset: 0
+  z_offset: 0
 
