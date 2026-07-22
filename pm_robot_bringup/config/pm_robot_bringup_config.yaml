@@ -48,7 +48,7 @@ pm_robot_gonio_left:
   - Chuck_Carrier_Demo
   - Chuck_ASG_Dummy
   unity_parent: Gonio_Left_Chuck_Origin
-  use_chuck: Chuck_ASG_Dummy
+  use_chuck: Chuck_Siemens_Carrier_P39
   with_Gonio_Left: true
 pm_robot_gonio_right:
   availabe_chucks:
@@ -58,7 +58,7 @@ pm_robot_gonio_right:
   - chuck_gonio_right_siemens_SIN
   - chuck_gonio_right_ASG_bridge
   unity_parent: Gonio_Right_Chuck_Origin
-  use_chuck: chuck_gonio_right_siemens_SIN
+  use_chuck: chuck_gonio_right_ASG_bridge
   with_Gonio_Right: true
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:

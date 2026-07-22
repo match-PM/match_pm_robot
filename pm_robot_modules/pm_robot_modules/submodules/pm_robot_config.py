@@ -9,6 +9,21 @@ class ParallelGripperConfig:
     TOOL_GRIPPER_1_JAW_IDENT = 'pm_robot_tool_parallel_gripper_1_jaw'
     TOOL_GRIPPER_2_JAW_IDENT = 'pm_robot_tool_parallel_gripper_2_jaws'
 
+    # Jaw links that physically contact a gripped component (used for collision handling).
+    # The '_attachment' links are the fingertips that actually grip the part; the jaw bodies
+    # are included as well since a larger component can touch them too.
+    TOOL_GRIPPER_1_JAW_LINK_NAMES = [
+        'Tool_Parallel_Gripper_Jaw',
+        'Tool_Parallel_Gripper_Jaw_1_attachment',
+        'Tool_Parallel_Gripper_Jaw_2_attachment',
+    ]
+    TOOL_GRIPPER_2_JAW_LINK_NAMES = [
+        'Tool_Parallel_Gripper_Jaw_1',
+        'Tool_Parallel_Gripper_Jaw_2',
+        'Tool_Parallel_Gripper_Jaw_1_attachment',
+        'Tool_Parallel_Gripper_Jaw_2_attachment',
+    ]
+
     def __init__(self, config_key, config_value) -> None:
         self._config_key = config_key
         self._config_value = config_value
