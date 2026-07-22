@@ -70,6 +70,10 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
     # Helpers
     # ------------------------------------------------------------------
 
+    # The T-axis rotation plate. Unity's OpcUaAxisNames.json maps it to the
+    # driven scene object 'RobotAxisT', which is where every tool must end up.
+    ROT_PLATE = 'Gripper_Rot_Plate'
+
     def is_gripper_owned(name):
         """Links the parallel-gripper xacro emits for the tool itself. They are
         deliberately kept at their generic xacro names (never STL-renamed) and
@@ -140,6 +144,54 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
             ref = gz_el.get('reference')
             if ref in mapping:
                 gz_el.set('reference', mapping[ref])
+
+    def joint_origin_is_identity(joint_el):
+        origin_el = joint_el.find('origin')
+        if origin_el is None:
+            return True
+        return all(float(v) == 0.0
+                   for attr in ('xyz', 'rpy')
+                   for v in origin_el.get(attr, '0 0 0').split())
+
+    def detach_gripper_body_from_tool_changer(root):
+        """The parallel-gripper xacros mount the gripper body on the tool
+        changer link, while vacuum tools hang off their TCP directly below the
+        rotation plate. The STL rename turns that tool changer into
+        't_axis_tool' - a name the Unity scene only knows as the mesh child of
+        its 't_axis_toolchanger' link object - so the importer would resolve it
+        by name and parent the whole gripper onto collision geometry. Re-parent
+        the gripper body to the rotation plate instead, so grippers reach
+        'RobotAxisT' exactly like the vacuum tools do. The tool changer joint
+        is identity, so the gripper's own joint origin stays valid as-is; bail
+        out rather than silently move the tool if that ever changes."""
+        joints = root.findall('joint')
+        joint_by_child = {}
+        for joint_el in joints:
+            child_el = joint_el.find('child')
+            if child_el is not None:
+                joint_by_child[child_el.get('link')] = joint_el
+
+        for joint_el in joints:
+            child_el = joint_el.find('child')
+            parent_el = joint_el.find('parent')
+            if (child_el is None or parent_el is None or
+                    not is_gripper_owned(child_el.get('link'))):
+                continue
+
+            # Only the mount joint of the tool itself is re-parented: jaws and
+            # tips hang off the gripper body and must stay where they are.
+            changer = parent_el.get('link')
+            changer_joint = joint_by_child.get(changer)
+            if (changer == ROT_PLATE or is_gripper_owned(changer) or
+                    changer_joint is None or
+                    changer_joint.find('parent').get('link') != ROT_PLATE):
+                continue
+            if not joint_origin_is_identity(changer_joint):
+                raise ValueError(
+                    f"Cannot re-parent '{child_el.get('link')}' from '{changer}' "
+                    f"to '{ROT_PLATE}': joint '{changer_joint.get('name')}' is "
+                    f"no longer identity, the tool pose would change.")
+            parent_el.set('link', ROT_PLATE)
 
     def process_scenario(urdf_path, keep=None):
         """Parse a scenario URDF, fix mesh paths and rename links to their STL
@@ -316,7 +368,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
         per_scenario = []
         for sc in tool_scenarios:
             root = sc['root']
-            structural = descendants_of(root, 'Gripper_Rot_Plate')
+            structural = descendants_of(root, ROT_PLATE)
             link_els = {l.get('name'): l for l in root.findall('link')}
             joint_els = {}
             for j in root.findall('joint'):
@@ -504,6 +556,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                     urdf_file = write_config_and_run_xacro(
                         f'{tag}_{tool["tool_name"]}_{jaw}')
                     root, _ = process_scenario(urdf_file, keep=is_gripper_owned)
+                    detach_gripper_body_from_tool_changer(root)
                     tool_scenarios.append({
                         'section': section,
                         'yaml_names': [tool['tool_name'], jaw],

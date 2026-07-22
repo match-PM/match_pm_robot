@@ -169,6 +169,22 @@ def generate_launch_description():
         ]
     )
 
+    robot_two_jaw_controller_path = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_gripper_tj_real_HW.yaml",
+        ]
+    )
+
+    robot_single_jaw_controller_path = PathJoinSubstitution(
+        [
+            FindPackageShare("pm_robot_description"),
+            "config",
+            "pm_robot_control_gripper_sj_real_HW.yaml",
+        ]
+    )
+
     robot_description_command = Command(
         ["ros2 param get --hide-type /robot_state_publisher robot_description"]
     )
@@ -180,15 +196,23 @@ def generate_launch_description():
     #     output="both",
     # )
 
+    controller_manager_params = [
+        {"robot_description": robot_description_command},
+        robot_controllers_path,
+        robot_gonio_left_controllers_path,
+        robot_gonio_right_controllers_path,
+    ]
+
+    if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']:
+        controller_manager_params.append(robot_single_jaw_controller_path)
+
+    if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']:
+        controller_manager_params.append(robot_two_jaw_controller_path)
+
     control_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[
-            {"robot_description": robot_description_command},
-            robot_controllers_path,
-            robot_gonio_left_controllers_path,
-            robot_gonio_right_controllers_path,
-        ],
+        parameters=controller_manager_params,
         output="both",
         emulate_tty=True
         # arguments=[                   # Set log level to debug
