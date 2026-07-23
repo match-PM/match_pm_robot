@@ -31,12 +31,22 @@ measuring_systems:
   use_keyence_bottom: false
 pm_robot_1K_dispenser_tip:
   availabe_dispenser_tips:
+  - empty
   - Dis_Tip_Yellow_I_100_A240_L12700
   - Dis_Tip_Lavender_I_150_A310_L12700
   - Dis_Tip_Red_I_250_A520_L12700
   - Dis_Tip_Yellow_I_100_A240_L060
   unity_parent: 1K_Dispenser_TCP
   use_dispenser_tip: Dis_Tip_Red_I_250_A520_L12700
+pm_robot_2K_dispenser_tip:
+  availabe_dispenser_tips:
+  - empty
+  - Dis_Tip_Yellow_I_100_A240_L12700
+  - Dis_Tip_Lavender_I_150_A310_L12700
+  - Dis_Tip_Red_I_250_A520_L12700
+  - Dis_Tip_Yellow_I_100_A240_L060
+  unity_parent: 2K_Dispenser_TCP
+  use_dispenser_tip: empty
 pm_robot_gonio_left:
   availabe_chucks:
   - chuck_gonio_left_Siemens_Carrier
