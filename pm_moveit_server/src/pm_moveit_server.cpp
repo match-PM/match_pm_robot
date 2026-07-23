@@ -1607,7 +1607,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
   float lateral_tolerance_coarse = 1e-2;
   float angular_tolerance_coarse = 0.1;
   float lateral_tolerance_fine = 1e-6;
-  float angular_tolerance_fine = 0.001;
+  float angular_tolerance_fine = 0.002;
   bool wait_success;
 
   wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_coarse, angular_tolerance_coarse);

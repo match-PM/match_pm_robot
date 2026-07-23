@@ -1,155 +1,130 @@
-# x_offset, y_offset, z_offset in um
-# rx_offset, ry_offset, rz_offset in degree
-# DO NOT MODIFY THIS FILE IF YOU DONT KNOW WHAT YOU ARE DOING. Some values where identified manually
-
-Laser_Toolhead_TCP_Joint:  
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+Laser_Toolhead_TCP_Joint:
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 1K_Dispenser_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 2K_Dispenser_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Cam1_Toolhead_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: -1974.540516092
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: -1974.541
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Camera_Station_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 1900.00 # this has been identified experimentally, by looking at the bottom cam image by experts
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 1900.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Station_Laser_Bottom_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Calibration_Qube_Joint:
-  x_offset: 0
-  y_offset: 0
-#  z_offset: -1267
-  z_offset: -11000
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: -11000.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 PM_Robot_Tool_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 PM_Robot_XYZ_Calibration:
-  x_offset: 0
-  y_offset: 0
- #z_offset: 3300 # this has been identified experimentally, by looking at the laser measurement on the gonio part spawning point
-  z_offset: 6300 # this has been identified experimentally, by looking at the laser measurement on the gonio part spawning point
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 6300.0
 Confocal_Sensor_Top_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: -25000.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Confocal_Sensor_Bottom_TCP_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 2360
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 2360.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 T_Axis_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Gonio_Left_Base_Joint:
-  x_offset: 0
-  y_offset: 1000
-  z_offset: 950
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 1000.0
+  z_offset: 950.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Gonio_Right_Base_Joint:
-  x_offset: -15000
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: -90000.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Gonio_Left_Chuck_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Gonio_Right_Chuck_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Calibration_Cube_Bottom_Joint:
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 Smarpod_Station:
-  x_offset: -1000
-  y_offset: 11000
-  z_offset: 1000
-  rx_offset: 0
-  ry_offset: 0
-  rz_offset: 0
-
+  x_offset: -1000.0
+  y_offset: 11000.0
+  z_offset: 1000.0
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
 CAL_Smarpod_J__t__P:
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
-  x_offset: 0
-  y_offset: 0
-  z_offset: 0
-
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
