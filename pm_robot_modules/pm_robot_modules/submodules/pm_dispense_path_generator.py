@@ -167,15 +167,15 @@ class DispenseAction(BaseAction):
         if self.turn_off_length < 0.0:
             raise ValueError("Turn off length cannot be negative for DispenseAction G-code generation.")
        
-        # Create goal vector from offsets
+        # Create goal vector from offsets (expressed in the start frame)
         goal_vector = np.array([self.goal_x, self.goal_y, self.goal_z])
-
-        goal_vector = ros_to_lh_np(goal_vector)
 
         # Convert quaternion to rotation matrix
         r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
-        #rotated_goal = r.apply(goal_vector)  # rotate the goal offsets
-        rotated_goal = r.inv().apply(goal_vector)
+        # Rotate the start-frame offset into world, THEN convert to the
+        # left-handed machine axes. The handedness flip must happen after the
+        # rotation, otherwise it does not commute for tilted start frames.
+        rotated_goal = ros_to_lh_np(r.apply(goal_vector))
 
         # distance 
         distance = np.linalg.norm(rotated_goal)
@@ -268,15 +268,14 @@ class MoveAction(BaseAction):
         if self.goal_x == 0.0 and self.goal_y == 0.0 and self.goal_z == 0.0:
             raise ValueError("Goal offsets cannot all be zero for MoveAction G-code generation.")
         
-        # Create goal vector from offsets
+        # Create goal vector from offsets (expressed in the start frame)
         goal_vector = np.array([self.goal_x, self.goal_y, self.goal_z])
 
-        goal_vector = ros_to_lh_np(goal_vector)
-
-        # Rotate goal if orientation is provided
+        # Rotate the start-frame offset into world, THEN convert to the
+        # left-handed machine axes. The handedness flip must happen after the
+        # rotation, otherwise it does not commute for tilted start frames.
         r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
-        #goal_vector = r.apply(goal_vector)
-        goal_vector = r.inv().apply(goal_vector)
+        goal_vector = ros_to_lh_np(r.apply(goal_vector))
 
         # Add goal to start point
         new_point = Point()
@@ -354,15 +353,14 @@ class DipAction(BaseAction):
         if self.dip_depth <= 0.0:
             raise ValueError("Dip depth must be positive for DipAction G-code generation.")
         
-        # Define dip vector along local -Z
+        # Define dip vector along local -Z (expressed in the start frame)
         dip_vector = np.array([0.0, 0.0, -self.dip_depth])
 
-        dip_vector = ros_to_lh_np(dip_vector)
-
-        # Rotate dip vector according to orientation
+        # Rotate the start-frame dip vector into world, THEN convert to the
+        # left-handed machine axes. The handedness flip must happen after the
+        # rotation, otherwise it does not commute for tilted start frames.
         r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
-        #rotated_dip = r.apply(dip_vector)
-        rotated_dip = r.inv().apply(dip_vector)
+        rotated_dip = ros_to_lh_np(r.apply(dip_vector))
 
         # distance 
         dip_distance = np.linalg.norm(dip_vector)

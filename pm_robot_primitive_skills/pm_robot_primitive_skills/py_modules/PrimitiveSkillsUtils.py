@@ -20,6 +20,7 @@ from pm_opcua_skills_msgs.srv import Dispense
 from pm_msgs.srv import EmptyWithSuccess
 import copy
 from pm_robot_primitive_skills.py_modules.PmRobotError import PmRobotError
+from tf2_ros import Buffer, TransformListener
 
 class PrimitiveSkillsUtils():
     DISPENSER_TRAVEL_DISTANCE = 0.04
@@ -36,7 +37,12 @@ class PrimitiveSkillsUtils():
         self.logger = self.node.get_logger()
 
         self.callback_group_re = ReentrantCallbackGroup()
-    
+
+        # TF buffer used to resolve the orientation of dispense target frames relative
+        # to 'world', so that dispenser approach offsets can be applied along world Z.
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self.node)
+
         self._current_force_sensor_data = Float64MultiArray()
        
         # create clients
@@ -284,6 +290,43 @@ class PrimitiveSkillsUtils():
         if not response.success:
             raise PmRobotError("Failed to extend dispenser on real/unity robot!")
     
+    def add_world_z_offset(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request, dz: float):
+        """
+        Adds a vertical offset of `dz` meters along the world Z axis to the request translation.
+
+        The moveit server applies `translation` in the target frame's local coordinates
+        (the translation is post-multiplied onto the target frame pose). If the target
+        frame's Z axis is not pointing straight up (the frame is tilted), simply adding
+        `dz` to `translation.z` would move the dispenser along the tilted local Z instead
+        of world up, so the dispenser would not end up above the object.
+
+        To compensate, the world offset vector (0, 0, dz) is expressed in the target
+        frame's local coordinates using the frame's orientation relative to 'world', and
+        the resulting components are added to the request translation.
+
+        Args:
+            move_to_frame_request (pm_moveit_srv.MoveToFrame.Request): The request to modify in place.
+            dz (float): Offset in meters along world +Z (positive = upwards).
+        """
+        try:
+            transform = self.tf_buffer.lookup_transform('world',
+                                                        move_to_frame_request.target_frame,
+                                                        rclpy.time.Time(),
+                                                        rclpy.duration.Duration(seconds=1.0))
+        except Exception as e:
+            raise PmRobotError(f"Could not look up transform of frame "
+                               f"'{move_to_frame_request.target_frame}' in 'world': {str(e)}")
+
+        # Quaternion of the target frame expressed in world (world_R_frame).
+        q = transform.transform.rotation
+        x, y, z, w = q.x, q.y, q.z, q.w
+
+        # Express the world offset vector (0, 0, dz) in the target frame's local
+        # coordinates: v_local = R^T * (0, 0, dz), i.e. dz * (third row of R).
+        move_to_frame_request.translation.x += dz * 2.0 * (x * z - y * w)
+        move_to_frame_request.translation.y += dz * 2.0 * (y * z + x * w)
+        move_to_frame_request.translation.z += dz * (1.0 - 2.0 * (x * x + y * y))
+
     def prepare_dispenser(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request) -> bool:
         """
         Prepares the dispenser by moving it to a position above the target frame, opening the protection, and extending the dispenser.
@@ -293,10 +336,12 @@ class PrimitiveSkillsUtils():
 
         move_to_frame_request_copy = copy.deepcopy(move_to_frame_request)
         
-        move_to_frame_request_copy.translation.z += self.DISPENSER_TRAVEL_DISTANCE
-        
-        move_to_frame_request_copy.translation.z += self.DISPENSER_OFFSET_VALUE
-        
+        move_to_frame_request_copy.execute_movement = True
+
+        # Approach from above along world Z (independent of the target frame orientation).
+        self.add_world_z_offset(move_to_frame_request_copy,
+                                self.DISPENSER_TRAVEL_DISTANCE + self.DISPENSER_OFFSET_VALUE)
+
         self.move_dispenser_to_frame(move_to_frame_request_copy)
                 
         self.open_protection()
@@ -406,14 +451,16 @@ class PrimitiveSkillsUtils():
 
         # check flap open not needed
         # check dispenser extended not needed
-        move_to_frame_request.translation.z += float(dispense_z_offset_mm*1e-3)
-        move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
-        
+        # Offsets are applied along world Z so the dispenser stays above the object
+        # even if the target frame is tilted.
+        self.add_world_z_offset(move_to_frame_request,
+                                float(dispense_z_offset_mm*1e-3) + self.DISPENSER_OFFSET_VALUE)
+
         # move to top position
         self.move_dispenser_to_frame(move_to_frame_request)
-        
-        move_to_frame_request.translation.z -= self.DISPENSER_OFFSET_VALUE
-        
+
+        self.add_world_z_offset(move_to_frame_request, -self.DISPENSER_OFFSET_VALUE)
+
         # move to dispenser position
         self.move_dispenser_to_frame(move_to_frame_request)
                 
@@ -427,8 +474,8 @@ class PrimitiveSkillsUtils():
         create_adhesive_viz_point_request.point.name = point_name
         self.create_adhesive_viz_point(create_adhesive_viz_point_request)
 
-        move_to_frame_request.translation.z += self.DISPENSER_OFFSET_VALUE
-        
+        self.add_world_z_offset(move_to_frame_request, self.DISPENSER_OFFSET_VALUE)
+
         self.move_dispenser_to_frame(move_to_frame_request)
         
         return True
