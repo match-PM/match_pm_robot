@@ -413,6 +413,9 @@ class PmRobotConfig:
         self.dispenser_1k = DispenserTipConfig(
             self._config_data['pm_robot_1K_dispenser_tip']
         )
+        self.dispenser_2k = DispenserTipConfig(
+            self._config_data['pm_robot_2K_dispenser_tip']
+        )
 
         self.smarpod_station = GonioConfig(
             type_station=GonioConfig.SMARPOD_STATION,
