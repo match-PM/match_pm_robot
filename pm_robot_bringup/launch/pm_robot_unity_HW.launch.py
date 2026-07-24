@@ -425,9 +425,9 @@ def generate_launch_description():
         emulate_tty=True,
     )
     
-    delayed_rviz = TimerAction(period=15.0, actions=[rviz_node])
-    delayed_move_group = TimerAction(period=15.0, actions=[run_move_group_node])
-    delayed_pm_moveit_server = TimerAction(period=15.0, actions=[pm_moveit_server])
+    delayed_rviz = TimerAction(period=5.0, actions=[rviz_node])
+    delayed_move_group = TimerAction(period=5.0, actions=[run_move_group_node])
+    delayed_pm_moveit_server = TimerAction(period=5.0, actions=[pm_moveit_server])
     delayed_pneumatic_controller_listener = TimerAction(period=15.0, actions=[pneumatic_controller_listener_node])
 
     # Define Launch Description

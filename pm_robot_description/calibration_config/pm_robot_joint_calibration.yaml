@@ -22,7 +22,7 @@ Laser_Toolhead_TCP_Joint:
 Cam1_Toolhead_TCP_Joint:
   x_offset: 0.0
   y_offset: 0.0
-  z_offset: -1974.541
+  z_offset: -11974.541
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
@@ -61,7 +61,7 @@ PM_Robot_XYZ_Calibration:
 Confocal_Sensor_Top_TCP_Joint:
   x_offset: 0.0
   y_offset: 0.0
-  z_offset: -25000.0
+  z_offset: -35000.0
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
@@ -96,7 +96,7 @@ Gonio_Right_Base_Joint:
 Gonio_Left_Chuck_Joint:
   x_offset: 0.0
   y_offset: 0.0
-  z_offset: 0.0
+  z_offset: 10000.0
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
