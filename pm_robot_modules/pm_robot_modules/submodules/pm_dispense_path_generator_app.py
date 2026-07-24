@@ -187,6 +187,7 @@ class DispenserBuilderWidget(QWidget):
         
         self.visualization_widget = VisualizationWidget()
         self.visualization_widget.set_dispenser_generator(self.dispenser_action_list)
+        self.visualization_widget.set_refresh_callback(self.set_visualization_image)
         self.visualization_widget.setMinimumSize(400, 400)
         center_panel.addWidget(self.visualization_widget, 1)
         
@@ -752,6 +753,7 @@ class VisualizationWidget(QWidget):
         self.layout.setSpacing(8)
         self.canvas = None
         self.dispenser_generator = None  # Reference to the sequence generator
+        self.refresh_callback = None  # Optional callback to request a redraw from the parent
         self._create_default_figure()
         self._create_bottom_button()
 
@@ -775,13 +777,28 @@ class VisualizationWidget(QWidget):
         self.set_figure(fig)
 
     def _create_bottom_button(self):
-        """Create the 'Show G-Code' button beneath the figure."""
-        button_layout = QHBoxLayout()
-        button_layout.setSpacing(5)
-        button_layout.setContentsMargins(0, 0, 0, 0)
-        
-        button_layout.addStretch()
-        
+        """Create the 'Show G-Code' button and the length-label toggle beneath the figure.
+
+        Layout (top to bottom):
+            [Show line length]   <- checkbox
+            [Show G-Code]        <- button, centered under the plot
+        The whole bottom block is centered horizontally with the plot.
+        """
+        # Checkbox to toggle the on-canvas line-length labels.
+        self.show_length_labels_checkbox = QCheckBox("Show line length")
+        self.show_length_labels_checkbox.setChecked(
+            getattr(self.dispenser_generator, "show_length_labels", True)
+        )
+        self.show_length_labels_checkbox.toggled.connect(self.on_show_length_labels_toggled)
+
+        # Row 1: checkbox row (centered).
+        checkbox_row = QHBoxLayout()
+        checkbox_row.setContentsMargins(0, 0, 0, 0)
+        checkbox_row.setSpacing(0)
+        checkbox_row.addStretch()
+        checkbox_row.addWidget(self.show_length_labels_checkbox)
+        checkbox_row.addStretch()
+
         self.show_gcode_button = QPushButton("Show G-Code")
         self.show_gcode_button.setMaximumWidth(150)
         self.show_gcode_button.clicked.connect(self.on_show_gcode_clicked)
@@ -801,10 +818,40 @@ class VisualizationWidget(QWidget):
                 background-color: #1565C0;
             }
         """)
-        
-        button_layout.addWidget(self.show_gcode_button)
-        button_layout.addStretch()
-        self.layout.addLayout(button_layout)
+
+        # Row 2: button row (centered).
+        button_row = QHBoxLayout()
+        button_row.setContentsMargins(0, 0, 0, 0)
+        button_row.setSpacing(0)
+        button_row.addStretch()
+        button_row.addWidget(self.show_gcode_button)
+        button_row.addStretch()
+
+        # Bottom container: stack checkbox over the button.
+        bottom_layout = QVBoxLayout()
+        bottom_layout.setContentsMargins(0, 0, 0, 0)
+        bottom_layout.setSpacing(4)
+        bottom_layout.addLayout(checkbox_row)
+        bottom_layout.addLayout(button_row)
+
+        # Center the whole bottom block under the plot.
+        bottom_centering = QHBoxLayout()
+        bottom_centering.setContentsMargins(0, 0, 0, 0)
+        bottom_centering.setSpacing(0)
+        bottom_centering.addStretch()
+        bottom_centering.addLayout(bottom_layout)
+        bottom_centering.addStretch()
+
+        self.layout.addLayout(bottom_centering)
+
+    def on_show_length_labels_toggled(self, checked: bool):
+        """Toggle the line-length labels on the visualization."""
+        if self.dispenser_generator is None:
+            return
+        self.dispenser_generator.show_length_labels = checked
+        # Ask the parent (DispenserBuilderWidget) to refresh the figure.
+        if self.refresh_callback is not None:
+            self.refresh_callback()
 
     def on_show_gcode_clicked(self):
         """Handle the Show G-Code button click."""
@@ -831,6 +878,17 @@ class VisualizationWidget(QWidget):
     def set_dispenser_generator(self, generator):
         """Set the reference to the dispenser sequence generator."""
         self.dispenser_generator = generator
+        # Keep the checkbox in sync with the generator's setting.
+        if self.show_length_labels_checkbox is not None:
+            self.show_length_labels_checkbox.blockSignals(True)
+            self.show_length_labels_checkbox.setChecked(
+                getattr(generator, "show_length_labels", True)
+            )
+            self.show_length_labels_checkbox.blockSignals(False)
+
+    def set_refresh_callback(self, callback):
+        """Register a callback to be invoked when the widget needs a redraw."""
+        self.refresh_callback = callback
 
     def set_figure(self, fig: plt.Figure):
         if self.canvas:
