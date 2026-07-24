@@ -1,5 +1,6 @@
 import json
 import datetime
+import math
 import matplotlib.pyplot as plt
 import numpy as np
 from geometry_msgs.msg import Point, Pose, Quaternion
@@ -104,7 +105,11 @@ class BaseAction:
 class DispenseAction(BaseAction):
     GCODE_ID = "G20"
     LINE_COLOR = 'r'
+    LINE_COLOR_SELECTED = 'orange'
+    TURN_OFF_COLOR = 'purple'  # color used to draw the turn-off portion of the line
+    TURN_OFF_COLOR_SELECTED = 'purple'  # same hue; selection is conveyed by the ON segment
     LINE_WIDTH = [3, 4]  # Default line width for unselected and
+    LEGEND_LABEL = "Dispense"
 
     def __init__(self):
         super().__init__()
@@ -123,29 +128,106 @@ class DispenseAction(BaseAction):
             raise TypeError("Point must be an instance of geometry_msgs.msg.Point")
         
     
-    def add_to_visualization(self, ax, current_point: Point):
+    def add_to_visualization(self, ax, current_point: Point, show_length_labels: bool = True):
         # This method should implement the logic to add this action to a visualization
         # For example, it could plot the action on a matplotlib figure
         # draw line from the current point to the goal point
         new_point = Point()
         new_point.x = current_point.x + self.goal_x
         new_point.y = current_point.y + self.goal_y
-        new_point.z = current_point.z + self.goal_z 
-        
+        new_point.z = current_point.z + self.goal_z
+
         if self._is_selected:
             linewidth = self.LINE_WIDTH[1]
+            color = self.LINE_COLOR_SELECTED
+            turn_off_color = self.TURN_OFF_COLOR_SELECTED
         else:
             linewidth = self.LINE_WIDTH[0]
+            color = self.LINE_COLOR
+            turn_off_color = self.TURN_OFF_COLOR
 
-        ax.plot([current_point.x, new_point.x],
-            [current_point.y, new_point.y],
-            self.LINE_COLOR, label=self.name, linewidth=linewidth)
-        
-        # Optionally, mark the new point with a red dot
-        #ax.plot(new_point.x, new_point.y, 'ro')
+        # Compute error magnitude (length of goal vector)
+        error_value = math.sqrt(
+            (new_point.x - current_point.x) ** 2
+            + (new_point.y - current_point.y) ** 2
+            + (new_point.z - current_point.z) ** 2
+        )
+
+        # The "turn-off" point is the location along the line where the
+        # dispenser switches off. It is `turn_off_length` mm before the end
+        # of the dispense line. The portion between the turn-off point and
+        # the end of the line is drawn in `turn_off_color` to indicate that
+        # portion of the path is performed with the dispenser OFF.
+        if self.turn_off_length > 0.0 and error_value > 0.0:
+            turn_off = min(self.turn_off_length, error_value)
+            ratio = turn_off / error_value  # ratio of the OFF portion, measured from the end
+            turn_off_x = new_point.x - self.goal_x * ratio
+            turn_off_y = new_point.y - self.goal_y * ratio
+        else:
+            turn_off = 0.0
+            turn_off_x = new_point.x
+            turn_off_y = new_point.y
+
+        # Draw the ON portion of the line: from current_point to the turn-off
+        # point (or to new_point if there is no turn-off). This carries the
+        # legend label so it appears once in the legend.
+        ax.plot(
+            [current_point.x, turn_off_x],
+            [current_point.y, turn_off_y],
+            color=color,
+            label=self.LEGEND_LABEL,
+            linewidth=linewidth,
+        )
+
+        # Draw the OFF portion in a different color when there is one.
+        if turn_off > 0.0:
+            ax.plot(
+                [turn_off_x, new_point.x],
+                [turn_off_y, new_point.y],
+                color=turn_off_color,
+                label="Turn Off",
+                linewidth=linewidth,
+            )
+
+        # Draw an arrow head at the end of the line, pointing into the new point.
+        # The arrow shaft starts at the same point as the OFF segment so the
+        # arrow does not visually cover the ON (red) portion. When there is
+        # no turn-off, the arrow starts at current_point and the line is
+        # fully red/orange.
+        if (new_point.x, new_point.y) != (current_point.x, current_point.y):
+            arrow_xytext = (turn_off_x, turn_off_y) if turn_off > 0.0 else (current_point.x, current_point.y)
+            ax.annotate(
+                '',
+                xy=(new_point.x, new_point.y),
+                xytext=arrow_xytext,
+                arrowprops=dict(
+                    arrowstyle='->',
+                    color=turn_off_color if turn_off > 0.0 else color,
+                    lw=linewidth,
+                    shrinkA=0,
+                    shrinkB=0,
+                ),
+            )
+
+        # Place the total error value at the midpoint of the ON portion
+        # (only when enabled). The turn-off text label is intentionally not
+        # drawn; the purple color itself is the visual cue.
+        if show_length_labels:
+            mid_x = (current_point.x + turn_off_x) / 2.0
+            mid_y = (current_point.y + turn_off_y) / 2.0
+            ax.text(
+                mid_x,
+                mid_y,
+                f"{error_value:.2f}mm",
+                color=color,
+                fontsize=8,
+                ha='center',
+                va='center',
+                bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='none', alpha=0.7),
+            )
 
         return new_point  # Return the new point for further actions to use
-    
+
     def get_g_code(self, start_point: Point, orientation: Quaternion) -> Tuple[Point, str]:
         """
         Generate G-code for the move action based on the start point,
@@ -213,6 +295,8 @@ class MoveAction(BaseAction):
     GCODE_ID = "G10"
     LINE_WIDTH = [1 ,2]
     LINE_COLOR = 'k'
+    LINE_COLOR_SELECTED = 'orange'
+    LEGEND_LABEL = "Move"
 
     def __init__(self):
         super().__init__()
@@ -227,26 +311,71 @@ class MoveAction(BaseAction):
             point.y += self.goal_y
             point.z += self.goal_z
 
-    def add_to_visualization(self, ax, current_point: Point):
+    def add_to_visualization(self, ax, current_point: Point, show_length_labels: bool = True):
         # This method should implement the logic to add this action to a visualization
         # For example, it could plot the action on a matplotlib figure
         # draw line from the current point to the goal point
         new_point = Point()
         new_point.x = current_point.x + self.goal_x
         new_point.y = current_point.y + self.goal_y
-        new_point.z = current_point.z + self.goal_z 
-        
+        new_point.z = current_point.z + self.goal_z
+
         if self._is_selected:
             linewidth = self.LINE_WIDTH[1]
+            color = self.LINE_COLOR_SELECTED
         else:
             linewidth = self.LINE_WIDTH[0]
+            color = self.LINE_COLOR
 
-        ax.plot([current_point.x, new_point.x],
+        # Compute error magnitude (length of goal vector)
+        error_value = math.sqrt(
+            (new_point.x - current_point.x) ** 2
+            + (new_point.y - current_point.y) ** 2
+            + (new_point.z - current_point.z) ** 2
+        )
+
+        # Draw the line as a regular plot so it contributes to autoscale bounds
+        # and the legend works.
+        ax.plot(
+            [current_point.x, new_point.x],
             [current_point.y, new_point.y],
-            self.LINE_COLOR, label=self.name, linewidth=linewidth)
-        
+            color=color,
+            label=self.LEGEND_LABEL,
+            linewidth=linewidth,
+        )
+
+        # Draw an arrow head at the end of the line, pointing into the new point.
+        if (new_point.x, new_point.y) != (current_point.x, current_point.y):
+            ax.annotate(
+                '',
+                xy=(new_point.x, new_point.y),
+                xytext=(current_point.x, current_point.y),
+                arrowprops=dict(
+                    arrowstyle='->',
+                    color=color,
+                    lw=linewidth,
+                    shrinkA=0,
+                    shrinkB=0,
+                ),
+            )
+
+        # Place the error value at the midpoint of the line (only when enabled)
+        if show_length_labels:
+            mid_x = (current_point.x + new_point.x) / 2.0
+            mid_y = (current_point.y + new_point.y) / 2.0
+            ax.text(
+                mid_x,
+                mid_y,
+                f"{error_value:.2f}mm",
+                color=color,
+                fontsize=8,
+                ha='center',
+                va='center',
+                bbox=dict(boxstyle='round,pad=0.2', facecolor='white', edgecolor='none', alpha=0.7),
+            )
+
         return new_point  # Return the new point for further actions to use
-    
+
     def get_g_code(self, start_point: Point, orientation: Quaternion) -> Tuple[Point, str]:
         """
         Generate G-code for the move action based on the start point.
@@ -306,6 +435,9 @@ class MoveAction(BaseAction):
 class DipAction(BaseAction):
     GCODE_ID = "G30"
     LINE_WIDTH = [1 ,2]
+    LINE_COLOR = 'g'
+    LINE_COLOR_SELECTED = 'orange'
+    LEGEND_LABEL = "Dip"
 
     def __init__(self):
         super().__init__()
@@ -317,18 +449,23 @@ class DipAction(BaseAction):
     def update_current_point(self, point:Point):
         pass
 
-    def add_to_visualization(self, ax, current_point: Point):
+    def add_to_visualization(self, ax, current_point: Point, show_length_labels: bool = True):
         # This method should implement the logic to add this action to a visualization
         # For example, it could plot the action on a matplotlib figure
         # draw circle at the current point with radius dip_depth
 
         if self._is_selected:
             linewidth = self.LINE_WIDTH[1]
+            color = self.LINE_COLOR_SELECTED
         else:
             linewidth = self.LINE_WIDTH[0]
-    
-        circle = plt.Circle((current_point.x, current_point.y), self.dip_depth,
-                            color='g', fill=False, label=self.name, linewidth=linewidth)
+            color = self.LINE_COLOR
+
+        # Visualization radius is always 1mm, independent of the dip_depth action parameter
+        VIS_RADIUS = 1.0
+
+        circle = plt.Circle((current_point.x, current_point.y), VIS_RADIUS,
+                            color=color, fill=False, label=self.LEGEND_LABEL, linewidth=linewidth)
         ax.add_artist(circle)
 
         return current_point  # Return the current point as no movement is made in this action
@@ -396,6 +533,9 @@ class DipAction(BaseAction):
 class WaitAction(BaseAction):
     GCODE_ID = "G40"
     LINE_WIDTH = [1 ,2]
+    LINE_COLOR = 'y'
+    LINE_COLOR_SELECTED = 'orange'
+    LEGEND_LABEL = "Wait"
 
     def __init__(self):
         super().__init__()
@@ -404,14 +544,28 @@ class WaitAction(BaseAction):
     def update_current_point(self, point:Point):
         pass
 
-    def add_to_visualization(self, ax, current_point: Point):
+    def add_to_visualization(self, ax, current_point: Point, show_length_labels: bool = True):
         # This method should implement the logic to add this action to a visualization
         # For example, it could plot the action on a matplotlib figure
-        # draw circle at the current point with radius dip_depth
+        # draw a small marker at the current point so a wait action is visible
+        # in the sequence and its selection state is obvious.
         if self._is_selected:
             linewidth = self.LINE_WIDTH[1]
+            color = self.LINE_COLOR_SELECTED
         else:
             linewidth = self.LINE_WIDTH[0]
+            color = self.LINE_COLOR
+
+        ax.plot(
+            [current_point.x],
+            [current_point.y],
+            marker='o',
+            color=color,
+            markersize=8 + linewidth,
+            markerfacecolor='none',
+            markeredgewidth=linewidth,
+            label=self.LEGEND_LABEL,
+        )
         return current_point  # Return the current point as no movement is made in this action
     
     def get_g_code(self, start_point: Point, orientation: Quaternion) -> Tuple[Point, str]:
@@ -424,6 +578,9 @@ class WaitAction(BaseAction):
 class SetDispActivationAction(BaseAction):
     GCODE_ID = "G50"
     LINE_WIDTH = [1 ,2]
+    LINE_COLOR = 'm'  # used for activation on (rectangle)
+    LINE_COLOR_SELECTED = 'orange'
+    LEGEND_LABEL = "Dispense Activation"
 
     def __init__(self):
         super().__init__()
@@ -432,24 +589,28 @@ class SetDispActivationAction(BaseAction):
     def update_current_point(self, point:Point):
         pass
 
-    def add_to_visualization(self, ax, current_point: Point):
+    def add_to_visualization(self, ax, current_point: Point, show_length_labels: bool = True):
         if self._is_selected:
             linewidth = self.LINE_WIDTH[1]
+            color = self.LINE_COLOR_SELECTED
         else:
             linewidth = self.LINE_WIDTH[0]
+            color = self.LINE_COLOR
 
-        # draw a rectangle for active state, and a triangle for inactive state
+        # draw a rectangle for active state, and a triangle for inactive state.
+        # When selected, both shapes are drawn using the selected color so the
+        # user can see at a glance which action is currently highlighted.
         if self.activation:
             # Active: draw rectangle
             rect = plt.Rectangle((current_point.x - 1, current_point.y - 1), 2, 2,
-                                 color='m', fill=True, label=self.name, linewidth=linewidth)
+                                 color=color, fill=True, label=f"{self.LEGEND_LABEL} (on)", linewidth=linewidth)
             ax.add_artist(rect)
         else:
             # Inactive: draw triangle
             triangle = plt.Polygon([[current_point.x, current_point.y + 1],
                                     [current_point.x - 1, current_point.y - 1],
                                     [current_point.x + 1, current_point.y - 1]],
-                                    color='c', fill=True, label=self.name, linewidth=linewidth)
+                                    color=color, fill=True, label=f"{self.LEGEND_LABEL} (off)", linewidth=linewidth)
             ax.add_artist(triangle)
 
         return current_point  # Return the current point as no movement is made in this action
@@ -477,6 +638,9 @@ class DispenseSequenceGenerator:
         }  # Dictionary to map action names to classes
         self.file_path = None
         self.current_point = Point()  # Current position of the robot
+        # When True, the visualization shows the line-length label on each
+        # dispense/move line. Toggleable from the UI.
+        self.show_length_labels = True
 
     def add_action(self, action):
         if isinstance(action, BaseAction):
@@ -653,7 +817,11 @@ class DispenseSequenceGenerator:
         else:
             raise IndexError("Index out of range for actions list.")
 
-    def get_visualization(self) -> plt.Figure:
+    def get_visualization(self, show_length_labels: bool = None) -> plt.Figure:
+        # If no flag is provided, fall back to the instance-level setting.
+        if show_length_labels is None:
+            show_length_labels = self.show_length_labels
+
         fig, ax = plt.subplots(figsize=(8, 6))
         ax.set_title("Dispense Sequence Visualization")
         ax.set_xlabel("X (mm)")
@@ -664,11 +832,25 @@ class DispenseSequenceGenerator:
 
         for action in self.actions:
             if isinstance(action, BaseAction):
-                current = action.add_to_visualization(ax, current)
+                current = action.add_to_visualization(
+                    ax, current, show_length_labels=show_length_labels
+                )
 
-        # Only show legend if labels are set
-        if ax.get_legend_handles_labels()[1]:  # labels list is non-empty
-            ax.legend()
+        # Build a deduplicated legend: each action type appears at most once,
+        # so the legend explains what the colors/shapes mean rather than listing
+        # every individual action.
+        seen_labels = set()
+        legend_handles = []
+        legend_labels = []
+        for handle, label in zip(*ax.get_legend_handles_labels()):
+            if not label or label in seen_labels:
+                continue
+            seen_labels.add(label)
+            legend_handles.append(handle)
+            legend_labels.append(label)
+
+        if legend_handles:
+            ax.legend(legend_handles, legend_labels)
 
         ax.grid(True)
         
