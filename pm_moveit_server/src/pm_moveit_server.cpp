@@ -553,7 +553,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
     RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "FK validation - position error: %.9f, orientation error: %.9f rad", position_error, orientation_error);
 
     // Define acceptable error thresholds
-    const double max_position_error = 1e-6;    // 0.1 mm
+    const double max_position_error = 1e-6; // 0.1 mm
 
     // pose_is_accurate = (position_error <= max_position_error) && (orientation_error <= max_orientation_error);
     pose_is_accurate = (position_error <= max_position_error);
@@ -1640,8 +1640,6 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
   return std::make_tuple(wait_success, joint_names, target_joint_values, msg);
 }
 
-
-
 std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> align_smarpod(const std::shared_ptr<pm_moveit_interfaces::srv::AlignGonio::Request> request)
 {
   init_time = std::chrono::high_resolution_clock::now();
@@ -1650,7 +1648,6 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
 
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Aligning Smarpod Request Received...");
 
-  
   auto move_group = smarpod_move_group;
   std::string planning_group = "smarpod_endeffector";
   std::string endeffector = move_group->getEndEffectorLink();
@@ -1688,7 +1685,6 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
     return {false, joint_names, target_joint_values, msg};
   }
 
-  
   geometry_msgs::msg::TransformStamped transform_target;
   geometry_msgs::msg::TransformStamped transform_endeffector;
   std::tie(success_frame, transform_target) = get_pose_of_frame_in_frame("world", request->target_frame);
@@ -2363,14 +2359,21 @@ int main(int argc, char **argv)
   auto reset_gonio_left_srv = pm_moveit_server_node->create_service<pm_msgs::srv::EmptyWithSuccess>("pm_moveit_server/reset_gonio_left", std::bind(&reset_gonio_left, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
   auto reset_gonio_right_srv = pm_moveit_server_node->create_service<pm_msgs::srv::EmptyWithSuccess>("pm_moveit_server/reset_gonio_right", std::bind(&reset_gonio_right, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
 
-  std::string bringup_package_share_directory = ament_index_cpp::get_package_share_directory("pm_robot_bringup");
-  std::string file_path = bringup_package_share_directory + "/config/pm_robot_bringup_config.yaml";
+  if (!pm_moveit_server_node->has_parameter("bringup_config_file"))
+  {
+    pm_moveit_server_node->declare_parameter<std::string>(
+        "bringup_config_file",
+        ament_index_cpp::get_package_share_directory("pm_robot_bringup") + "/config/pm_robot_bringup_config.yaml");
+  }
 
+  const std::string file_path = pm_moveit_server_node->get_parameter("bringup_config_file").as_string();
   YAML::Node config = YAML::LoadFile(file_path);
   bool with_smarpod_station = config["pm_smparpod_station"]["with_smarpod_station"].as<bool>();
 
-  // print with_smarpod_station
-  // RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "With Smarpod Station: %s", with_smarpod_station ? "true" : "false");
+  RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"),
+               "DEBUG - Loaded bringup config from '%s'. Smarpod station enabled: %s",
+               file_path.c_str(),
+               with_smarpod_station ? "true" : "false");
 
   rclcpp::Service<pm_moveit_interfaces::srv::MoveToPose>::SharedPtr move_smarpod_to_pose_srv;
   rclcpp::Service<pm_moveit_interfaces::srv::MoveRelative>::SharedPtr move_smarpod_relative_srv;
@@ -2388,7 +2391,6 @@ int main(int argc, char **argv)
     align_smarpod_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::AlignGonio>("pm_moveit_server/align_smarpod", std::bind(&align_smarpod_srv_cb, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
     reset_smarpod_srv = pm_moveit_server_node->create_service<pm_msgs::srv::EmptyWithSuccess>("pm_moveit_server/reset_smarpod", std::bind(&reset_smarpod, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);
     smarpod_trajectory_publisher = pm_moveit_server_node->create_publisher<trajectory_msgs::msg::JointTrajectory>("/smaract_hexapod_controller/joint_trajectory", 10);
-
   }
 
   auto align_gonio_right_srv = pm_moveit_server_node->create_service<pm_moveit_interfaces::srv::AlignGonio>("pm_moveit_server/align_gonio_right", std::bind(&align_gonio_right, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, callback_group_me);

@@ -29,7 +29,7 @@ from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig, ParallelG
 pm_robot_config = PmRobotConfig(use_real_config=True)
 
 def generate_launch_description():
-    bringup_config_path = os.path.join(get_package_share_directory("pm_robot_bringup"),"config/pm_robot_bringup_config.yaml",)
+    bringup_config_path = pm_robot_config.get_active_bringup_config_path()
 
     with open(bringup_config_path) as f:
         bringup_config = yaml.safe_load(f)
@@ -424,6 +424,7 @@ def generate_launch_description():
         # output="log",
         parameters=[
             {"use_sim_time": sim_time},
+            {"bringup_config_file": bringup_config_path},
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
             moveit_config.robot_description_kinematics,
