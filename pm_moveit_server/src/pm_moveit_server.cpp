@@ -553,10 +553,14 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>> calculate_IK(std
     RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "FK validation - position error: %.9f, orientation error: %.9f rad", position_error, orientation_error);
 
     // Define acceptable error thresholds
-    const double max_position_error = 1e-6; // 0.1 mm
+    const double max_position_error = 1e-6;       // 1 um
+    const double max_orientation_error = 1e-3;    // ~0.057 deg
 
-    // pose_is_accurate = (position_error <= max_position_error) && (orientation_error <= max_orientation_error);
     pose_is_accurate = (position_error <= max_position_error);
+    if (planning_group == "smarpod_endeffector")
+    {
+      pose_is_accurate = pose_is_accurate && (orientation_error <= max_orientation_error);
+    }
 
     if (!pose_is_accurate)
     {
@@ -821,6 +825,20 @@ geometry_msgs::msg::Quaternion check_rotation(geometry_msgs::msg::Quaternion rot
   return rotation;
 }
 
+geometry_msgs::msg::Quaternion add_rotation_offset_deg(const geometry_msgs::msg::Quaternion &rotation,
+                                                       const geometry_msgs::msg::Vector3 &rotation_offset_deg)
+{
+  tf2::Quaternion target_rotation(rotation.x, rotation.y, rotation.z, rotation.w);
+  tf2::Quaternion rotation_offset;
+  rotation_offset.setRPY(rotation_offset_deg.x * M_PI / 180.0,
+                         rotation_offset_deg.y * M_PI / 180.0,
+                         rotation_offset_deg.z * M_PI / 180.0);
+
+  tf2::Quaternion result = target_rotation * rotation_offset;
+  result.normalize();
+  return tf2::toMsg(result);
+}
+
 std::string check_collision_contacts(planning_scene::PlanningScene &ps, moveit::core::RobotState &state)
 {
   collision_detection::CollisionRequest req;
@@ -1029,14 +1047,43 @@ void publish_target_joint_trajectory_gonio_right(std::vector<double> target_join
 
 void publish_target_joint_trajectory_smarpod(std::string planning_group,
                                              std::vector<double> target_joint_values,
-                                             float time_from_start)
+                                             float time_from_start,
+                                             std::vector<std::string> source_joint_names = {})
 {
   (void)planning_group; // currently unused
   auto trajectory_msg = std::make_shared<trajectory_msgs::msg::JointTrajectory>();
   trajectory_msg->joint_names = {"SP_X_Joint", "SP_Y_Joint", "SP_Z_Joint", "SP_A_Joint", "SP_B_Joint", "SP_C_Joint"}; // Specify joint names
 
   trajectory_msgs::msg::JointTrajectoryPoint point;
-  point.positions = {target_joint_values[0], target_joint_values[1], target_joint_values[2], target_joint_values[3], target_joint_values[4], target_joint_values[5]}; // Specify joint positions
+  if (!source_joint_names.empty())
+  {
+    point.positions.resize(trajectory_msg->joint_names.size());
+    for (size_t i = 0; i < trajectory_msg->joint_names.size(); ++i)
+    {
+      auto it = std::find(source_joint_names.begin(), source_joint_names.end(), trajectory_msg->joint_names[i]);
+      if (it == source_joint_names.end())
+      {
+        RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Cannot publish Smarpod trajectory. Joint '%s' not found in source joint names.", trajectory_msg->joint_names[i].c_str());
+        return;
+      }
+      const size_t source_index = std::distance(source_joint_names.begin(), it);
+      if (source_index >= target_joint_values.size())
+      {
+        RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Cannot publish Smarpod trajectory. Missing value for joint '%s'.", trajectory_msg->joint_names[i].c_str());
+        return;
+      }
+      point.positions[i] = target_joint_values[source_index];
+    }
+  }
+  else
+  {
+    if (target_joint_values.size() != trajectory_msg->joint_names.size())
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Cannot publish Smarpod trajectory. Expected 6 joint values, got %zu.", target_joint_values.size());
+      return;
+    }
+    point.positions = target_joint_values;
+  }
   point.velocities = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};                                                                                                                  // Specify joint velocities
   point.accelerations = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};                                                                                                               // Specify joint accelerations
   point.time_from_start.sec = time_from_start;                                                                                                                        // Specify duration
@@ -1087,11 +1134,21 @@ void log_target_pose_delta(std::string endeffector, geometry_msgs::msg::Pose tar
   double deltaOrientX = target_pose.orientation.x - moved_to_pose.orientation.x;
   double deltaOrientY = target_pose.orientation.y - moved_to_pose.orientation.y;
   double deltaOrientZ = target_pose.orientation.z - moved_to_pose.orientation.z;
+  tf2::Quaternion target_q(target_pose.orientation.x,
+                           target_pose.orientation.y,
+                           target_pose.orientation.z,
+                           target_pose.orientation.w);
+  tf2::Quaternion moved_q(moved_to_pose.orientation.x,
+                          moved_to_pose.orientation.y,
+                          moved_to_pose.orientation.z,
+                          moved_to_pose.orientation.w);
+  const double angular_distance_deg = target_q.angleShortestPath(moved_q) * 180.0 / M_PI;
 
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Pose Deltas: ");
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "X: %f um", deltaX * 1000000);
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Y: %f um", deltaY * 1000000);
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Z: %f um", deltaZ * 1000000);
+  RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Angular distance: %f deg", angular_distance_deg);
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Q_w: %f", deltaOrientW);
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Q_x: %f", deltaOrientX);
   RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Q_y: %f", deltaOrientY);
@@ -1173,7 +1230,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
     start_execute_time = std::chrono::high_resolution_clock::now();
     if (planning_group == "smarpod_endeffector")
     {
-      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0);
+      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0, joint_names);
     }
     else
     {
@@ -1199,7 +1256,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   // this may not be necessary anymore
   if (planning_group == "smarpod_endeffector")
   {
-    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1);
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1, joint_names);
     wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
 
@@ -1319,7 +1376,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, geometry_msgs::m
     start_execute_time = std::chrono::high_resolution_clock::now();
     if (planning_group == "smarpod_endeffector")
     {
-      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0);
+      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0, joint_names);
     }
     else
     {
@@ -1345,7 +1402,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, geometry_msgs::m
   // this may not be necessary anymore
   if (planning_group == "smarpod_endeffector")
   {
-    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0);
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0, joint_names);
     wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   else
@@ -1424,7 +1481,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
     start_execute_time = std::chrono::high_resolution_clock::now();
     if (planning_group == "smarpod_endeffector")
     {
-      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0);
+      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0, joint_names);
     }
     else
     {
@@ -1449,7 +1506,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> mov
   // this may not be necessary anymore
   if (planning_group == "smarpod_endeffector")
   {
-    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1);
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1, joint_names);
     wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   else
@@ -1651,14 +1708,12 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
   auto move_group = smarpod_move_group;
   std::string planning_group = "smarpod_endeffector";
   std::string endeffector = move_group->getEndEffectorLink();
-  geometry_msgs::msg::Quaternion target_rotation;
   std::vector<double> target_joint_values;
   std::vector<std::string> joint_names;
   std::string msg;
   bool success_ik;
   std::string target_endeffector_frame;
   std::string endeffector_frame_parent = "SP_X_Axis";
-  bool success_frame = false;
   std::string endeffector_frame_override = request->endeffector_frame_override;
 
   joint_names = move_group->getJointNames();
@@ -1687,8 +1742,24 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
 
   geometry_msgs::msg::TransformStamped transform_target;
   geometry_msgs::msg::TransformStamped transform_endeffector;
-  std::tie(success_frame, transform_target) = get_pose_of_frame_in_frame("world", request->target_frame);
-  std::tie(success_frame, transform_endeffector) = get_pose_of_frame_in_frame("world", target_endeffector_frame);
+  bool success_target_frame = false;
+  bool success_endeffector_frame = false;
+  std::tie(success_target_frame, transform_target) = get_pose_of_frame_in_frame("world", request->target_frame);
+  std::tie(success_endeffector_frame, transform_endeffector) = get_pose_of_frame_in_frame("world", target_endeffector_frame);
+
+  if (!success_target_frame || !success_endeffector_frame)
+  {
+    if (!success_target_frame)
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Target frame lookup failed: %s", request->target_frame.c_str());
+    }
+    if (!success_endeffector_frame)
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Endeffector frame lookup failed: %s", target_endeffector_frame.c_str());
+    }
+    msg = "Specified frame not found! Make sure the component is spawned and the frame exists.";
+    return {false, joint_names, target_joint_values, msg};
+  }
 
   // log frames
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Target Frame: %s", request->target_frame.c_str());
@@ -1701,10 +1772,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
   target_pose.position.x = transform_endeffector.transform.translation.x;
   target_pose.position.y = transform_endeffector.transform.translation.y;
   target_pose.position.z = transform_endeffector.transform.translation.z;
-  target_pose.orientation.x = transform_target.transform.rotation.x;
-  target_pose.orientation.y = transform_target.transform.rotation.y;
-  target_pose.orientation.z = transform_target.transform.rotation.z;
-  target_pose.orientation.w = transform_target.transform.rotation.w;
+  target_pose.orientation = add_rotation_offset_deg(transform_target.transform.rotation, request->rotation_offset_deg);
 
   if (endeffector_frame_override != default_endeffector_string)
   {
@@ -1744,7 +1812,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
     start_execute_time = std::chrono::high_resolution_clock::now();
     if (planning_group == "smarpod_endeffector")
     {
-      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0);
+      publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.0, joint_names);
     }
     else
     {
@@ -1769,7 +1837,7 @@ std::tuple<bool, std::vector<std::string>, std::vector<double>, std::string> ali
   // this may not be necessary anymore
   if (planning_group == "smarpod_endeffector")
   {
-    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1);
+    publish_target_joint_trajectory_smarpod(planning_group, target_joint_values, 0.1, joint_names);
     wait_success = wait_for_movement_to_finish(joint_names, target_joint_values, lateral_tolerance_fine, angular_tolerance_fine);
   }
   else
