@@ -1095,6 +1095,10 @@ bool wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vect
 {
   RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Waiting for goal to be reached...");
 
+  const bool is_smarpod_movement = !joint_names.empty() &&
+                                   std::all_of(joint_names.begin(), joint_names.end(), [](const std::string &joint_name)
+                                                { return joint_name.rfind("SP_", 0) == 0; });
+
   int max_wait_time_counter = 50;
   int wait_time_counter = 0;
 
@@ -1105,6 +1109,12 @@ bool wait_for_movement_to_finish(std::vector<std::string> joint_names, std::vect
   }
   if (wait_time_counter >= max_wait_time_counter)
   {
+    if (is_smarpod_movement)
+    {
+      RCLCPP_WARN(rclcpp::get_logger("pm_moveit"),
+                  "SmarPod goal not reached within the wait period. The SmarPod may still be moving; continuing without failing the request.");
+      return true;
+    }
     RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "ERROR: Goal not reached in time!");
     return false;
   }
