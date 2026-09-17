@@ -31,6 +31,15 @@ def generate_launch_description():
         ],
     )
 
+    Spawn_virtual_smarpod_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            "smaract_hexapod_virtual_controller", "--inactive",
+            "--controller-manager", "/controller_manager",
+        ],
+    )
+
     # Custom SmarPod Controller
     Spawn_custom_smarpod_controller = Node(
         package='controller_manager',
@@ -64,5 +73,6 @@ def generate_launch_description():
     #ld.add_action(Spawn_smarpod_JSB)
     #ld.add_action(delay_Spawn_smarpod_controller)
     ld.add_action(Spawn_smarpod_controller)
+    ld.add_action(Spawn_virtual_smarpod_controller)
     ld.add_action(delay_Spawn_custom_smarpod_controller)
     return ld

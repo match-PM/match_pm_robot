@@ -241,7 +241,8 @@ def generate_launch_description():
             'launch',
             'smaract_controller.launch.py'
             ])
-        ])
+        ]),
+        launch_arguments={"launch_mode": "sim_HW"}.items(),
         )
     
     launch_smarpod_translator = Node(

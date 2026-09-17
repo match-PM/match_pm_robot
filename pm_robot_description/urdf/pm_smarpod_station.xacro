@@ -30,6 +30,13 @@
     </xacro:if>
 
     <xacro:property name="current_pm_robot_bringup_config" value="${xacro.load_yaml(pm_robot_bringup_config_file)}"/>
+    <!-- Real SmarPod is a separate hardware component from PMSystem. -->
+    <xacro:if value="${launch_mode == 'real_HW'}">
+      <xacro:include filename="$(find smaract_hexapod_description)/urdf/ros2_control.xacro" />
+      <xacro:smaract_hexapod_ros2_control_sim_hw launch_mode="${launch_mode}"
+        startup_pivot="${current_pm_robot_bringup_config['pm_smparpod_station'].get('startup_pivot', '0 0 0')}" />
+    </xacro:if>
+
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
 
     <xacro:property name="smarpod_chuck_calibration" value="${calibration_dict.get('Smarpod_Chuck', dict())}"/>

@@ -12,6 +12,7 @@ find_package(hardware_interface REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(pm_client REQUIRED)
+find_package(Threads REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -34,6 +35,7 @@ add_library(
   include/pm_hardware_interface/hoenle_uv.hpp
 )
 target_include_directories(pm_hardware_interface PRIVATE include/)
+target_link_libraries(pm_hardware_interface Threads::Threads)
 
 ament_target_dependencies(
   pm_hardware_interface

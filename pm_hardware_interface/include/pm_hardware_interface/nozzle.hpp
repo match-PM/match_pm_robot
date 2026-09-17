@@ -64,10 +64,8 @@ struct NozzleState
         interfaces.emplace_back(CommandInterface(this->name, "State", &this->pressure_cmd));
     }
 
-    void read(PMClient::Robot &robot)
+    void update(PMClient::NozzleState state)
     {
-        auto &pm_nozzle = robot.get_nozzle(this->id);
-        auto state = pm_nozzle.get_state();
         switch (state)
         {
             case PMClient::NozzleState::Air:
@@ -83,9 +81,13 @@ struct NozzleState
 
         if (!initialized)
         {
-            this->pressure_cmd = this->pressure;
             initialized = true;
         }
+    }
+
+    void read(PMClient::Robot &robot)
+    {
+        this->update(robot.get_nozzle(this->id).get_state());
     }
 
     void write(PMClient::Robot &robot)

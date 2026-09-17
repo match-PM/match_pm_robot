@@ -2,7 +2,10 @@
 #define PM_SYSTEM_H
 
 #include <array>
+#include <condition_variable>
+#include <mutex>
 #include <string>
+#include <thread>
 #include <vector>
 
 #include "hardware_interface/system_interface.hpp"
@@ -35,10 +38,30 @@ class PMSystem : public hardware_interface::SystemInterface
     struct Config
     {
         std::string opcua_endpoint;
+        unsigned int opcua_timeout_ms = 1000;
+        double auxiliary_io_poll_rate_hz = 10.0;
+        double auxiliary_sensor_poll_rate_hz = 10.0;
+        double auxiliary_lighting_poll_rate_hz = 2.0;
     };
 
+    // The motion client is owned exclusively by the ros2_control thread.
     PMClient::Client m_pm_client;
+
+    // open62541 clients are not shared concurrently; auxiliary traffic has its
+    // own client and worker so it cannot block the motion read/write cycle.
+    PMClient::Client m_auxiliary_client;
     Config m_config;
+
+    // Latest-value auxiliary state and command mailbox. The mutex protects
+    // communication between ros2_control and the auxiliary worker only.
+    std::thread m_auxiliary_thread;
+    std::mutex m_auxiliary_mutex;
+    std::condition_variable m_auxiliary_condition;
+    bool m_auxiliary_running = false;
+    PMClient::AuxiliaryIoState m_auxiliary_io_state{};
+    PMClient::AuxiliarySensorState m_auxiliary_sensor_state{};
+    PMClient::AuxiliaryLightingState m_auxiliary_lighting_state{};
+    PMClient::AuxiliaryCommands m_pending_auxiliary_commands{};
 
     std::array<AxisState, 8> m_axes{
         AxisState{AxisId::X, Unit::Meters},
@@ -91,8 +114,20 @@ class PMSystem : public hardware_interface::SystemInterface
 
     double m_dummy_state{};
 
+    void start_auxiliary_worker();
+
+    void stop_auxiliary_worker();
+
+    void auxiliary_worker();
+
+    void apply_auxiliary_state();
+
+    void queue_auxiliary_commands();
+
   public:
     PMSystem();
+
+    ~PMSystem() override;
 
     RCLCPP_SHARED_PTR_DEFINITIONS(PMSystem)
 

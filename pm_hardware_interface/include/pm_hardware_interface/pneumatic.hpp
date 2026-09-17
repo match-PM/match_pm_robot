@@ -70,14 +70,12 @@ struct PneumaticState
         interfaces.emplace_back(CommandInterface(this->name, "Move_Command", &this->move_command));
     }
 
-    void read(PMClient::Robot &robot)
+    void update(Position position)
     {
-        auto &pm_pneumatic = robot.get_pneumatic(this->id);
-
         bool invert_physical_pos = this->id == PneumaticId::ProtectDoseur ||
                                    this->id == PneumaticId::Glue || this->id == PneumaticId::UV1;
 
-        switch (pm_pneumatic.get_position())
+        switch (position)
         {
             case Position::Forward:
                 this->fwd_or_bwd = 1.0;
@@ -95,9 +93,13 @@ struct PneumaticState
 
         if (!initialized)
         {
-            this->move_command = this->fwd_or_bwd;
             initialized = true;
         }
+    }
+
+    void read(PMClient::Robot &robot)
+    {
+        this->update(robot.get_pneumatic(this->id).get_position());
     }
 
     void write(PMClient::Robot &robot)
