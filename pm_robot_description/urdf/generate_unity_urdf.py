@@ -54,17 +54,22 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
     gripper_1_config = tools_cfg['pm_robot_tool_parallel_gripper_1_jaw']
     gripper_2_config = tools_cfg['pm_robot_tool_parallel_gripper_2_jaws']
     vacuum_config = tools_cfg['pm_robot_vacuum_tools']
-    dispenser_config = original_config['pm_robot_1K_dispenser_tip']
+    dispenser_1K_config = original_config['pm_robot_1K_dispenser_tip']
+    dispenser_2K_config = original_config['pm_robot_2K_dispenser_tip']
     gonio_left_config = original_config['pm_robot_gonio_left']
     gonio_right_config = original_config['pm_robot_gonio_right']
 
-    # Disable all tools by default so no scenario leaks whichever tool happens
-    # to be selected in the config. Each tool type is enabled only inside its
-    # own dedicated loop below. This keeps the per-scenario link sets clean,
-    # which the manifest diffing below relies on.
+    # Disable all tools and dispenser tips by default so no scenario leaks
+    # whichever one happens to be selected in the config. Each is enabled only
+    # inside its own dedicated loop below. This keeps the per-scenario link
+    # sets clean, which the manifest diffing below relies on - and it matters
+    # doubly for the tips: the 1K and 2K dispenser share the same tip STLs, so
+    # a leaked 1K tip would carry the exact link name a 2K scenario produces.
     gripper_1_config['use_paralell_gripper'] = False
     gripper_2_config['use_paralell_gripper'] = False
     vacuum_config['use_vacuum_tool'] = False
+    dispenser_1K_config['use_dispenser_tip'] = 'empty'
+    dispenser_2K_config['use_dispenser_tip'] = 'empty'
 
     # ------------------------------------------------------------------
     # Helpers
@@ -271,12 +276,19 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
 
     def finalize_single_level_section(scenarios, yaml_path_key, enable_key,
                                       select_key, unity_parent,
-                                      spawn_frame_names=()):
+                                      spawn_frame_names=(), link_suffix=None):
         """Diff the scenarios of a single-selection section (dispenser tips,
         chucks) against each other: links present in every scenario are base
         robot, the rest belong to the selected item. Owned links that were not
         STL-renamed (e.g. the STL-less '1K_Dispenser_Tip') are renamed to the
         YAML selection name so they are unique and follow the convention.
+
+        ``link_suffix`` appends '_<suffix>' to every owned link of the section.
+        The 2K dispenser tips are modelled from the same STL files as the 1K
+        ones, so without it both sections would claim identically named links -
+        one link name, two parents in the combined URDF and one ambiguous
+        object in Unity's name-keyed scene index. The 1K section stays
+        unsuffixed so the tips already present in the Unity scene keep matching.
 
         Gonio part origins have the same ROS link name in every scenario but a
         scenario-specific joint origin. Rename those source links before the
@@ -319,6 +331,15 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                 rename_links(root, mapping, joint_suffix=yaml_name)
                 owned = (owned - set(mapping)) | set(mapping.values())
 
+            if link_suffix:
+                # Joint names are left alone here, exactly like for the STL
+                # renames in process_scenario: the joints already differ per
+                # scenario through their renamed child link.
+                mapping = {l: f'{l}_{link_suffix}'
+                           for l in owned if l not in spawn_source_links}
+                rename_links(root, mapping)
+                owned = (owned - set(mapping)) | set(mapping.values())
+
             visible_owned = owned - spawn_source_links
             root_links, meshes = item_meta(root, visible_owned)
             if spawn_points:
@@ -329,13 +350,18 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                 for point in spawn_points:
                     point['parentLink'] = root_links[0]
 
-            items.append({
-                'yamlNames': [yaml_name],
-                'links': sorted(visible_owned),
-                'rootLinks': root_links,
-                'meshes': meshes,
-                'spawnPoints': spawn_points,
-            })
+            # The 'empty' selection owns nothing; emitting it as an item would
+            # only produce a rootLink-less entry that Unity warns about and
+            # never activates (configureRobot treats 'empty' as "no selection"
+            # by name anyway).
+            if visible_owned or spawn_points:
+                items.append({
+                    'yamlNames': [yaml_name],
+                    'links': sorted(visible_owned),
+                    'rootLinks': root_links,
+                    'meshes': meshes,
+                    'spawnPoints': spawn_points,
+                })
             add_to_combined(root)
 
         manifest_sections.append({
@@ -460,14 +486,27 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
     try:
         # --- 1K dispenser tips -------------------------------------------------
         scenarios = []
-        for tip in dispenser_config['availabe_dispenser_tips']:
-            dispenser_config['use_dispenser_tip'] = tip
-            urdf_file = write_config_and_run_xacro(tip)
+        for tip in dispenser_1K_config['availabe_dispenser_tips']:
+            dispenser_1K_config['use_dispenser_tip'] = tip
+            urdf_file = write_config_and_run_xacro(f'1K_{tip}')
             root, stl_renamed = process_scenario(urdf_file)
             scenarios.append((tip, root, stl_renamed))
+        dispenser_1K_config['use_dispenser_tip'] = 'empty'
         finalize_single_level_section(
             scenarios, 'pm_robot_1K_dispenser_tip', '', 'use_dispenser_tip',
-            dispenser_config.get('unity_parent', ''))
+            dispenser_1K_config.get('unity_parent', ''))
+
+        # --- 2K dispenser tips -------------------------------------------------
+        scenarios = []
+        for tip in dispenser_2K_config['availabe_dispenser_tips']:
+            dispenser_2K_config['use_dispenser_tip'] = tip
+            urdf_file = write_config_and_run_xacro(f'2K_{tip}')
+            root, stl_renamed = process_scenario(urdf_file)
+            scenarios.append((tip, root, stl_renamed))
+        dispenser_2K_config['use_dispenser_tip'] = 'empty'
+        finalize_single_level_section(
+            scenarios, 'pm_robot_2K_dispenser_tip', '', 'use_dispenser_tip',
+            dispenser_2K_config.get('unity_parent', ''), link_suffix='2K')
 
         # --- Gonio left chucks -------------------------------------------------
         scenarios = []

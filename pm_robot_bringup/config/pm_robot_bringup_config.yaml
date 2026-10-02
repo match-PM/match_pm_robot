@@ -1,5 +1,5 @@
 adhesive_test_point_station:
-- current_point: 0
+- current_point: 4
   grid_x_spacing: 5
   grid_y_spacing: 5
   num_x_points: 8
@@ -46,7 +46,7 @@ pm_robot_2K_dispenser_tip:
   - Dis_Tip_Red_I_250_A520_L12700
   - Dis_Tip_Yellow_I_100_A240_L060
   unity_parent: 2K_Dispenser_TCP
-  use_dispenser_tip: empty
+  use_dispenser_tip: Dis_Tip_Yellow_I_100_A240_L12700
 pm_robot_gonio_left:
   availabe_chucks:
   - chuck_gonio_left_Siemens_Carrier
@@ -58,7 +58,7 @@ pm_robot_gonio_left:
   - Chuck_Carrier_Demo
   - Chuck_ASG_Dummy
   unity_parent: Gonio_Left_Chuck_Origin
-  use_chuck: Chuck_Siemens_Carrier_P39
+  use_chuck: chuck_gonio_left_Siemens_Carrier
   with_Gonio_Left: true
 pm_robot_gonio_right:
   availabe_chucks:
@@ -68,7 +68,7 @@ pm_robot_gonio_right:
   - chuck_gonio_right_siemens_SIN
   - chuck_gonio_right_ASG_bridge
   unity_parent: Gonio_Right_Chuck_Origin
-  use_chuck: chuck_gonio_right_ASG_bridge
+  use_chuck: chuck_gonio_right_siemens_SIN
   with_Gonio_Right: true
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:
@@ -95,7 +95,7 @@ pm_robot_tools:
       tool_name: Schunk_MPG_20_plus
     unity_parent: RobotAxisT
     use_jaw_type: Jaw_ASG_Gripper
-    use_paralell_gripper: true
+    use_paralell_gripper: false
     use_tool: Schunk_MPG_20_plus
   pm_robot_vacuum_tools:
     availabe_tools:
@@ -122,9 +122,9 @@ pm_robot_tools:
       - Tip_Lens_12_7_long
       tool_name: Schunk_Lens_Gripper_long
     unity_parent: RobotAxisT
-    use_tip: Tip_Siemens_Sensor_Bottom
+    use_tip: Tip_Siemens_Vacuum_Array
     use_tool: Siemens_Vacuum_Array_short
-    use_vacuum_tool: false
+    use_vacuum_tool: true
 pm_smparpod_station:
   availabe_chucks:
   - empty

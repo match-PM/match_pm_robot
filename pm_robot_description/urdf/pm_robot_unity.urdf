@@ -495,42 +495,10 @@
   <link name="1K_Dispenser_TCP">
     </link>
   <joint name="1K_Dispenser_TCP_Joint" type="fixed">
-    <origin rpy="         0.0          0.0          0.0" xyz="         -0.001          -0.0318          -0.1223" />
+    <origin rpy="         0.0         0.0         0.0" xyz="         -0.001         -0.0318         -0.11" />
     <parent link="1K_Dispenser" />
     <child link="1K_Dispenser_TCP" />
     <axis xyz="0 0 0" />
-  </joint>
-  
-  
-  <link name="Dis_Tip_Yellow_I_100_A240_L12700">
-    <inertial>
-      <origin rpy="0 0 0" xyz="-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024" />
-      <mass value="0.00266749600701752" />
-      <inertia ixx="7.71061807673942e-05" ixy="5.31796627071765e-05" ixz="-8.5237329598285e-05" iyy="7.72096804248683e-05" iyz="2.74255625257587e-05" izz="1.50227360147676e-05" />
-    </inertial>
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0" />
-      <geometry>
-        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL" />
-      </geometry>
-      <material name="orange">
-        </material>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0" />
-      <geometry>
-        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <gazebo reference="Dis_Tip_Yellow_I_100_A240_L12700">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
-  <joint name="1K_Dispenser_Tip_Joint" type="fixed">
-    
-    <origin rpy="0 0 0" xyz="0.000 0 0 " />
-    <parent link="1K_Dispenser_TCP" />
-    <child link="Dis_Tip_Yellow_I_100_A240_L12700" />
   </joint>
   
   <link name="2K_Glue_Cartridge">
@@ -567,7 +535,7 @@
   <link name="2K_Dispenser_TCP">
     </link>
   <joint name="2K_Dispenser_TCP_Joint" type="fixed">
-    <origin rpy="         0.0          0.0          0.0" xyz="         0.0          -0.045          -0.04614" />
+    <origin rpy="         0.0         0.0         0.0" xyz="         0.0         -0.045         -0.04" />
     <parent link="2K_Glue_Cartridge" />
     <child link="2K_Dispenser_TCP" />
     <axis xyz="0 0 0" />
@@ -600,7 +568,7 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   <joint name="Cam1_Toolhead_TCP_Joint" type="fixed">
-    <origin rpy="         0.0          0.0          0.0" xyz="         -0.0320000000000003          -0.0579999999999998          -0.517313246516092" />
+    <origin rpy="         0.0          0.0          0.0" xyz="         -0.0320000000000003          -0.0579999999999998          -0.517313247" />
     <parent link="Z_Axis" />
     <child link="Cam1_Toolhead_TCP" />
     <axis xyz="0 0 0" />
@@ -1012,16 +980,16 @@
     <child link="Gonio_Right_Chuck_Origin" />
     <axis xyz="0 0 0" />
   </joint>
-  <link name="Aufnahme_Siemens_SIN">
+  <link name="Chuck_Siemens_UFC_Gonio_Right">
     <inertial>
-      <origin rpy="0 0 0" xyz="5.59390553235764E-05 -9.12635236913575E-05 0.0152274426375652" />
-      <mass value="0.0856656121839983" />
-      <inertia ixx="3.48375448091363e-05" ixy="-1.87959500268895e-08" ixz="-1.42085132889756e-07" iyy="3.90675984394833e-05" iyz="-1.05819558807241e-07" izz="4.51557660342253e-05" />
+      <origin rpy="0 0 0" xyz="-4.91275391850676E-05 -7.08920350384057E-06 0.0216564841336891" />
+      <mass value="0.133934804202608" />
+      <inertia ixx="3.05433990945277e-05" ixy="-2.55507616624267e-10" ixz="-1.7486699307754e-08" iyy="4.80787890381723e-05" iyz="2.24246430305895e-09" izz="7.18729232269431e-05" />
     </inertial>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0" />
       <geometry>
-        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Aufnahme_Siemens_SIN.STL" />
+        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Chuck_Siemens_UFC_Gonio_Right.STL" />
       </geometry>
       <material name="white">
       </material>
@@ -1029,21 +997,21 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0" />
       <geometry>
-        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Aufnahme_Siemens_SIN.STL" />
+        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Chuck_Siemens_UFC_Gonio_Right.STL" />
       </geometry>
     </collision>
   </link>
   <joint name="Gonio_Right_Chuck_Joint" type="fixed">
     <origin rpy="       0        0        0" xyz="       0.0        0.0        0.0" />
     <parent link="Gonio_Right_Chuck_Origin" />
-    <child link="Aufnahme_Siemens_SIN" />
+    <child link="Chuck_Siemens_UFC_Gonio_Right" />
     <axis xyz="0 0 0" />
   </joint>
   
   <link name="Gonio_Right_Part_1_Origin">
     </link>
   <joint name="Gonio_Right_Part_1_Origin_Joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.01774801 0.01093 0.054" />
+    <origin rpy="0 0 0" xyz="0.0175 0.01025 0.0525" />
     <parent link="Gonio_Right_Chuck_Origin" />
     <child link="Gonio_Right_Part_1_Origin" />
     <axis xyz="0 0 0" />
@@ -1145,7 +1113,7 @@
   <link name="Gonio_Left_Chuck_Origin">
     </link>
   <joint name="Gonio_Left_Chuck_Origin_Joint" type="fixed">
-    <origin rpy="         0.0          0.0          0.0" xyz="         0.0          0.0          -0.015" />
+    <origin rpy="         0.0          0.0          0.0" xyz="         0.0          0.0          -0.004999999999999999" />
     <parent link="Gonio_Left_Stage_2" />
     <child link="Gonio_Left_Chuck_Origin" />
     <axis xyz="0 0 0" />
@@ -1526,7 +1494,44 @@
       
     </plugin>
   </gazebo>
-<link name="Dis_Tip_Lavender_I_150_A310_L12700">
+<joint name="1K_Dispenser_TCP_Joint" type="fixed">
+    <origin rpy="         0.0         0.0         0.0" xyz="         -0.001         -0.0318         -0.1227" />
+    <parent link="1K_Dispenser" />
+    <child link="1K_Dispenser_TCP" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="Dis_Tip_Yellow_I_100_A240_L12700">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024" />
+      <mass value="0.00266749600701752" />
+      <inertia ixx="7.71061807673942e-05" ixy="5.31796627071765e-05" ixz="-8.5237329598285e-05" iyy="7.72096804248683e-05" iyz="2.74255625257587e-05" izz="1.50227360147676e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL" />
+      </geometry>
+      <material name="orange">
+          </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="Dis_Tip_Yellow_I_100_A240_L12700">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="1K_Dispenser_Tip_Joint" type="fixed">
+    
+    <origin rpy="0 0 0" xyz="0.000 0 0 " />
+    <parent link="1K_Dispenser_TCP" />
+    <child link="Dis_Tip_Yellow_I_100_A240_L12700" />
+  </joint>
+  
+  <link name="Dis_Tip_Lavender_I_150_A310_L12700">
     <inertial>
       <origin rpy="0 0 0" xyz="-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024" />
       <mass value="0.00266749600701752" />
@@ -1538,7 +1543,7 @@
         <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Lavender_I_150_A310_L12700.STL" />
       </geometry>
       <material name="blue">
-        </material>
+          </material>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0" />
@@ -1569,7 +1574,7 @@
         <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Red_I_250_A520_L12700.STL" />
       </geometry>
       <material name="red">
-        </material>
+          </material>
     </visual>
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0" />
@@ -1589,13 +1594,116 @@
   </joint>
   
   <joint name="1K_Dispenser_TCP_Joint" type="fixed">
-    <origin rpy="         0.0          0.0          0.0" xyz="         -0.001          -0.0318          -0.11800000000000001" />
+    <origin rpy="         0.0         0.0         0.0" xyz="         -0.001         -0.0318         -0.127" />
     <parent link="1K_Dispenser" />
     <child link="1K_Dispenser_TCP" />
     <axis xyz="0 0 0" />
   </joint>
+  <joint name="2K_Dispenser_TCP_Joint" type="fixed">
+    <origin rpy="         0.0         0.0         0.0" xyz="         0.0         -0.045         -0.0527" />
+    <parent link="2K_Glue_Cartridge" />
+    <child link="2K_Dispenser_TCP" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="Dis_Tip_Yellow_I_100_A240_L12700_2K">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024" />
+      <mass value="0.00266749600701752" />
+      <inertia ixx="7.71061807673942e-05" ixy="5.31796627071765e-05" ixz="-8.5237329598285e-05" iyy="7.72096804248683e-05" iyz="2.74255625257587e-05" izz="1.50227360147676e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL" />
+      </geometry>
+      <material name="orange">
+          </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="Dis_Tip_Yellow_I_100_A240_L12700_2K">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="2K_Dispenser_Tip_Joint" type="fixed">
+    
+    <origin rpy="0 0 0" xyz="0.0 0 0 " />
+    <parent link="2K_Dispenser_TCP" />
+    <child link="Dis_Tip_Yellow_I_100_A240_L12700_2K" />
+  </joint>
   
+  <link name="Dis_Tip_Lavender_I_150_A310_L12700_2K">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024" />
+      <mass value="0.00266749600701752" />
+      <inertia ixx="7.71061807673942e-05" ixy="5.31796627071765e-05" ixz="-8.5237329598285e-05" iyy="7.72096804248683e-05" iyz="2.74255625257587e-05" izz="1.50227360147676e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Lavender_I_150_A310_L12700.STL" />
+      </geometry>
+      <material name="blue">
+          </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Lavender_I_150_A310_L12700.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="Dis_Tip_Lavender_I_150_A310_L12700_2K">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="2K_Dispenser_Tip_Joint" type="fixed">
+    
+    <origin rpy="0 0 0" xyz="0.0 0 0 " />
+    <parent link="2K_Dispenser_TCP" />
+    <child link="Dis_Tip_Lavender_I_150_A310_L12700_2K" />
+  </joint>
   
+  <link name="Dis_Tip_Red_I_250_A520_L12700_2K">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.29882314770198E-12 -2.87859854641722E-08 0.0233706132060024" />
+      <mass value="0.00266749600701752" />
+      <inertia ixx="0.0734343917353869" ixy="-5.65230035141878e-06" ixz="-0.000161953758832679" iyy="0.0377139193260435" iyz="0.00720112978111611" izz="0.0598441739891415" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Red_I_250_A520_L12700.STL" />
+      </geometry>
+      <material name="red">
+          </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Dispenser_Tips/Dis_Tip_Red_I_250_A520_L12700.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="Dis_Tip_Red_I_250_A520_L12700_2K">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="2K_Dispenser_Tip_Joint" type="fixed">
+    
+    <origin rpy="0 0 0" xyz="0.0 0 0 " />
+    <parent link="2K_Dispenser_TCP" />
+    <child link="Dis_Tip_Red_I_250_A520_L12700_2K" />
+  </joint>
+  
+  <joint name="2K_Dispenser_TCP_Joint" type="fixed">
+    <origin rpy="         0.0         0.0         0.0" xyz="         0.0         -0.045         -0.057" />
+    <parent link="2K_Glue_Cartridge" />
+    <child link="2K_Dispenser_TCP" />
+    <axis xyz="0 0 0" />
+  </joint>
   <link name="Chuck_Siemens_Carrier">
     <inertial>
       <origin rpy="0 0 0" xyz="0.00930287068817187 0.00707331634668878 0.0446054201819608" />
@@ -1892,34 +2000,6 @@
     <axis xyz="0 0 0" />
   </joint>
   
-  <link name="Chuck_Siemens_UFC_Gonio_Right">
-    <inertial>
-      <origin rpy="0 0 0" xyz="-4.91275391850676E-05 -7.08920350384057E-06 0.0216564841336891" />
-      <mass value="0.133934804202608" />
-      <inertia ixx="3.05433990945277e-05" ixy="-2.55507616624267e-10" ixz="-1.7486699307754e-08" iyy="4.80787890381723e-05" iyz="2.24246430305895e-09" izz="7.18729232269431e-05" />
-    </inertial>
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0" />
-      <geometry>
-        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Chuck_Siemens_UFC_Gonio_Right.STL" />
-      </geometry>
-      <material name="white">
-      </material>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0" />
-      <geometry>
-        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Chuck_Siemens_UFC_Gonio_Right.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint name="Gonio_Right_Chuck_Joint" type="fixed">
-    <origin rpy="       0        0        0" xyz="       0.0        0.0        0.0" />
-    <parent link="Gonio_Right_Chuck_Origin" />
-    <child link="Chuck_Siemens_UFC_Gonio_Right" />
-    <axis xyz="0 0 0" />
-  </joint>
-  
   <link name="Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_Siemens_UFC">
     </link>
   <joint name="Gonio_Right_Part_1_Origin_Joint_unity_source_chuck_gonio_right_Siemens_UFC" type="fixed">
@@ -2016,6 +2096,34 @@
   </joint>
   
   
+  
+  <link name="Aufnahme_Siemens_SIN">
+    <inertial>
+      <origin rpy="0 0 0" xyz="5.59390553235764E-05 -9.12635236913575E-05 0.0152274426375652" />
+      <mass value="0.0856656121839983" />
+      <inertia ixx="3.48375448091363e-05" ixy="-1.87959500268895e-08" ixz="-1.42085132889756e-07" iyy="3.90675984394833e-05" iyz="-1.05819558807241e-07" izz="4.51557660342253e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Aufnahme_Siemens_SIN.STL" />
+      </geometry>
+      <material name="white">
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Gonio_Right/Gonio_Right_Chucks/Aufnahme_Siemens_SIN.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Gonio_Right_Chuck_Joint" type="fixed">
+    <origin rpy="       0        0        0" xyz="       0.0        0.0        0.0" />
+    <parent link="Gonio_Right_Chuck_Origin" />
+    <child link="Aufnahme_Siemens_SIN" />
+    <axis xyz="0 0 0" />
+  </joint>
   
   <link name="Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_siemens_SIN">
     </link>
@@ -3873,7 +3981,7 @@
   <link name="PM_Robot_Tool_TCP_Schunk_MPG_20_plus_Jaw_ASG_Gripper">
   </link>
   <joint name="PM_Robot_Tool_TCP_Joint_Schunk_MPG_20_plus_Jaw_ASG_Gripper" type="fixed">
-    <origin rpy="       0.0        0.0        0.0" xyz="       0.0        0.0        -0.08843000000000001" />
+    <origin rpy="       0.0        0.0        1.5707963267950003" xyz="       0.0        0.0        -0.07843" />
     <parent link="Gripper_Rot_Plate" />
     <child link="PM_Robot_Tool_TCP_Schunk_MPG_20_plus_Jaw_ASG_Gripper" />
     <axis xyz="0 0 0" />

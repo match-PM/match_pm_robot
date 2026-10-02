@@ -26,6 +26,24 @@ class PrimitiveSkillsUtils():
     DISPENSER_TRAVEL_DISTANCE = 0.04
     DISPENSER_OFFSET_VALUE = 0.01
     DEFAULT_DISPENSE_HEIGHT = 0.5 # mm
+
+    # Stroke of the '2K_Dispenser_Joint' (see pm_robot.xacro), the 2K equivalent of
+    # DISPENSER_TRAVEL_DISTANCE.
+    DISPENSER_2K_TRAVEL_DISTANCE = 0.05
+    # The moveit server has no dedicated move group for the 2K dispenser. The 2K TCP is
+    # part of the Z_Axis chain just like the cam1 TCP, so the cam1 move group (pure XYZ)
+    # is used and the constant offset between both TCPs is compensated in the request.
+    DISPENSER_2K_TCP_FRAME = "2K_Dispenser_TCP"
+    CAM1_TCP_FRAME = "Cam1_Toolhead_TCP"
+
+    # Reference point of the adhesive dot visualization: a dispense of
+    # ADHESIVE_DOT_REF_TIME_MS leaves a dot of ADHESIVE_DOT_REF_DIAMETER_MM. Other times are
+    # scaled from this (see adhesive_dot_diameter_from_time) and clamped so that a very short
+    # or a very long dispense still produces a dot that is visible but not absurd.
+    ADHESIVE_DOT_REF_DIAMETER_MM = 4.0
+    ADHESIVE_DOT_REF_TIME_MS = 500.0
+    ADHESIVE_DOT_MIN_DIAMETER_MM = 0.4
+    ADHESIVE_DOT_MAX_DIAMETER_MM = 10.0
     
     REAL_MODE = 0
     UNITY_MODE = 1
@@ -80,6 +98,11 @@ class PrimitiveSkillsUtils():
         self.client_dips_1k_on = self.node.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/Pressure',callback_group = self.callback_group_re)
         self.client_dips_1k_off = self.node.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Doseur_Nozzle/TurnOff',callback_group = self.callback_group_re)
 
+        # Valve of the 2K glue cartridge. Opening/closing it is what 'G50 A1'/'G50 A0'
+        # does in the path based 2K dispensing.
+        self.client_dips_2k_on = self.node.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Glue_2K_Doseur/Pressure',callback_group = self.callback_group_re)
+        self.client_dips_2k_off = self.node.create_client(pm_msg_srv.EmptyWithSuccess,'/pm_nozzle_controller/Glue_2K_Doseur/TurnOff',callback_group = self.callback_group_re)
+
         self.client_uv_controller_on = self.node.create_client(pm_msg_srv.UVSetOnOff, '/pm_uv_controller/Hoenle_UV/SetOnOff',callback_group = self.callback_group_re)
         self.client_uv_controller_time = self.node.create_client(pm_msg_srv.UVSetTime, '/pm_uv_controller/Hoenle_UV/SetTime',callback_group = self.callback_group_re)
         self.client_uv_controller_intensity = self.node.create_client(pm_msg_srv.UVSetPower, '/pm_uv_controller/Hoenle_UV/SetPower',callback_group = self.callback_group_re)
@@ -118,6 +141,72 @@ class PrimitiveSkillsUtils():
             raise PmRobotError("Failed to move dispenser to frame!")
         return response
             
+    def move_2k_dispenser_to_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request,
+                                   z_offset_m = 0.0)-> pm_moveit_srv.MoveToFrame.Response:
+        """
+        Moves the 2K dispenser TCP to the specified frame with an optional z offset.
+
+        There is no dedicated moveit service for the 2K dispenser. The cam1 move group is
+        used instead (same XYZ axes), and the constant offset between the cam1 TCP and the
+        2K dispenser TCP is compensated in the request.
+
+        The endeffector override of the moveit server is deliberately NOT used for this:
+        for the cam1 move group the override only replaces the position of the target pose
+        and leaves its orientation undefined, which makes the requested `translation` (the
+        approach and dispense offsets) be applied along arbitrary axes.
+
+        Args:
+            move_to_frame_request (pm_moveit_srv.MoveToFrame.Request): The request containing the target frame and movement parameters.
+            z_offset_m (float, optional): The offset in meters to be added to the z-axis of the target frame. Defaults to 0.0.
+        Returns:
+            pm_moveit_srv.MoveToFrame.Response: The response from the move_to_frame service call.
+        Raises:
+            PmRobotError: If the move_to_frame service is not available or if the service call fails.
+        """
+        if not self.client_move_cam.wait_for_service(timeout_sec=1.0):
+            raise PmRobotError(f"Service '{self.client_move_cam.srv_name}' not available")
+
+        # The TCP compensation must not end up in the caller's request: the same request
+        # is reused for the following moves of a dispense sequence, which would otherwise
+        # apply the compensation again for every move.
+        req = copy.deepcopy(move_to_frame_request)
+
+        self.add_world_z_offset(req, z_offset_m)
+
+        # Both TCPs are rigidly attached to the Z axis. Moving the cam1 TCP by the
+        # (cam1 -> 2K) vector in the opposite direction puts the 2K TCP on the target.
+        d_x, d_y, d_z = self._get_world_offset_between_frames(self.CAM1_TCP_FRAME,
+                                                              self.DISPENSER_2K_TCP_FRAME)
+        self.add_world_offset(req, -d_x, -d_y, -d_z)
+
+        response:pm_moveit_srv.MoveToFrame.Response = self.client_move_cam.call(req)
+        if not response.success:
+            raise PmRobotError(f"Failed to move 2K dispenser to frame '{req.target_frame}': {response.message}")
+        return response
+
+    def _get_world_offset_between_frames(self, from_frame: str, to_frame: str):
+        """
+        Returns the vector from `from_frame` to `to_frame`, expressed in world axes.
+
+        Args:            from_frame (str): Name of the frame the vector starts at.            to_frame (str): Name of the frame the vector points to.
+        Returns:            tuple[float, float, float]: (dx, dy, dz) in meters along the world axes.
+        Raises:            PmRobotError: If one of the frames can not be looked up.
+        """
+        try:
+            transform_from = self.tf_buffer.lookup_transform('world', from_frame,
+                                                             rclpy.time.Time(),
+                                                             rclpy.duration.Duration(seconds=1.0))
+            transform_to = self.tf_buffer.lookup_transform('world', to_frame,
+                                                           rclpy.time.Time(),
+                                                           rclpy.duration.Duration(seconds=1.0))
+        except Exception as e:
+            raise PmRobotError(f"Could not look up transform between '{from_frame}' and "
+                               f"'{to_frame}' in 'world': {str(e)}")
+
+        return (transform_to.transform.translation.x - transform_from.transform.translation.x,
+                transform_to.transform.translation.y - transform_from.transform.translation.y,
+                transform_to.transform.translation.z - transform_from.transform.translation.z)
+
     def create_adhesive_viz_point(self, request: pm_msg_srv.CreateVizAdhesivePoint.Request)->pm_msg_srv.CreateVizAdhesivePoint.Response:
         if not self.client_create_adhesive_viz_point.wait_for_service(timeout_sec=1.0):
             raise PmRobotError(f"Service '{self.client_create_adhesive_viz_point.srv_name}' not available")
@@ -294,18 +383,33 @@ class PrimitiveSkillsUtils():
         """
         Adds a vertical offset of `dz` meters along the world Z axis to the request translation.
 
-        The moveit server applies `translation` in the target frame's local coordinates
-        (the translation is post-multiplied onto the target frame pose). If the target
-        frame's Z axis is not pointing straight up (the frame is tilted), simply adding
-        `dz` to `translation.z` would move the dispenser along the tilted local Z instead
-        of world up, so the dispenser would not end up above the object.
-
-        To compensate, the world offset vector (0, 0, dz) is expressed in the target
-        frame's local coordinates using the frame's orientation relative to 'world', and
-        the resulting components are added to the request translation.
+        See `add_world_offset` for why the offset cannot simply be added to translation.z.
 
         Args:
             move_to_frame_request (pm_moveit_srv.MoveToFrame.Request): The request to modify in place.
+            dz (float): Offset in meters along world +Z (positive = upwards).
+        """
+        self.add_world_offset(move_to_frame_request, 0.0, 0.0, dz)
+
+    def add_world_offset(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request,
+                         dx: float, dy: float, dz: float):
+        """
+        Adds an offset of (dx, dy, dz) meters along the world axes to the request translation.
+
+        The moveit server applies `translation` in the target frame's local coordinates
+        (the translation is post-multiplied onto the target frame pose). If the target
+        frame's axes are not aligned with world (the frame is tilted), simply adding the
+        offset to the translation would move the robot along the tilted local axes instead
+        of the world axes, so the dispenser would not end up above the object.
+
+        To compensate, the world offset vector is expressed in the target frame's local
+        coordinates using the frame's orientation relative to 'world', and the resulting
+        components are added to the request translation.
+
+        Args:
+            move_to_frame_request (pm_moveit_srv.MoveToFrame.Request): The request to modify in place.
+            dx (float): Offset in meters along world +X.
+            dy (float): Offset in meters along world +Y.
             dz (float): Offset in meters along world +Z (positive = upwards).
         """
         try:
@@ -321,11 +425,17 @@ class PrimitiveSkillsUtils():
         q = transform.transform.rotation
         x, y, z, w = q.x, q.y, q.z, q.w
 
-        # Express the world offset vector (0, 0, dz) in the target frame's local
-        # coordinates: v_local = R^T * (0, 0, dz), i.e. dz * (third row of R).
-        move_to_frame_request.translation.x += dz * 2.0 * (x * z - y * w)
-        move_to_frame_request.translation.y += dz * 2.0 * (y * z + x * w)
-        move_to_frame_request.translation.z += dz * (1.0 - 2.0 * (x * x + y * y))
+        # Express the world offset vector in the target frame's local coordinates:
+        # v_local = R^T * v_world, i.e. the components of v_world along the columns of R.
+        move_to_frame_request.translation.x += (dx * (1.0 - 2.0 * (y * y + z * z))
+                                                + dy * 2.0 * (x * y + z * w)
+                                                + dz * 2.0 * (x * z - y * w))
+        move_to_frame_request.translation.y += (dx * 2.0 * (x * y - z * w)
+                                                + dy * (1.0 - 2.0 * (x * x + z * z))
+                                                + dz * 2.0 * (y * z + x * w))
+        move_to_frame_request.translation.z += (dx * 2.0 * (x * z + y * w)
+                                                + dy * 2.0 * (y * z - x * w)
+                                                + dz * (1.0 - 2.0 * (x * x + y * y)))
 
     def prepare_dispenser(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request) -> bool:
         """
@@ -353,6 +463,33 @@ class PrimitiveSkillsUtils():
         return True
         
     
+    def prepare_2k_dispenser(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request) -> bool:
+        """
+        Prepares the 2K dispenser by moving it to a position above the target frame and extending it.
+
+        Same logic as `prepare_dispenser`, but the 2K dispenser has no protection lid, so
+        only the pneumatic cylinder ('2K_Dispenser_Joint') is moved forward.
+
+        Args:            move_to_frame_request (pm_moveit_srv.MoveToFrame.Request): The request containing the target frame and movement parameters.
+        Raises:            PmRobotError: If any of the steps (moving to frame, extending dispenser) fail.
+        """
+
+        move_to_frame_request_copy = copy.deepcopy(move_to_frame_request)
+
+        move_to_frame_request_copy.execute_movement = True
+
+        # Approach from above along world Z (independent of the target frame orientation).
+        self.add_world_z_offset(move_to_frame_request_copy,
+                                self.DISPENSER_2K_TRAVEL_DISTANCE + self.DISPENSER_OFFSET_VALUE)
+
+        self.move_2k_dispenser_to_frame(move_to_frame_request_copy)
+
+        self.extend_2k_dispenser()
+
+        time.sleep(0.5)
+
+        return True
+
     def dispense(self, time:float):
         """
         Dispenses for the given time in seconds.
@@ -480,6 +617,132 @@ class PrimitiveSkillsUtils():
         
         return True
     
+    def dispense_2k(self, time_ms:float):
+        """
+        Dispenses adhesive with the 2K dispenser for the given time in milliseconds.
+
+        The 2K dispenser has no time controlled dispense skill. Instead the glue valve is
+        opened and closed again after `time_ms`, which is exactly what the 'G50 A1' /
+        'G50 A0' activation commands do in the path based 2K dispensing. Because the axes
+        do not move while dispensing at a point, the xyz axis controller does not have to
+        be deactivated (handed over to the machine controller) for this.
+
+        Args:            time_ms (float): Time in milliseconds to keep the glue valve open.
+        Returns:            bool: True if dispensing was successful.
+        Raises:            PmRobotError: If the time is invalid, the valve services are not available or if a service call fails.
+        """
+
+        if time_ms <= 0:
+            raise PmRobotError(f"Dispense time ({time_ms}) must be greater than 0!")
+
+        # Neither Gazebo nor Unity provide the nozzle controller, so only the dwell is simulated.
+        if self.get_mode() != self.REAL_MODE:
+            self.node.get_logger().warn("Simulation is running, skipping 2K dispense command!")
+            time.sleep(time_ms * 1e-3)
+            return True
+
+        if not self.client_dips_2k_on.wait_for_service(timeout_sec=1.0):
+            raise PmRobotError(f"Service '{self.client_dips_2k_on.srv_name}' is not available!")
+
+        if not self.client_dips_2k_off.wait_for_service(timeout_sec=1.0):
+            raise PmRobotError(f"Service '{self.client_dips_2k_off.srv_name}' is not available!")
+
+        request = pm_msg_srv.EmptyWithSuccess.Request()
+
+        response_on:pm_msg_srv.EmptyWithSuccess.Response = self.client_dips_2k_on.call(request)
+
+        try:
+            if not response_on.success:
+                raise PmRobotError("Failed to open the 2K glue valve!")
+
+            time.sleep(time_ms * 1e-3)
+
+        finally:
+            # Always close the valve again, also if the dwell was interrupted.
+            response_off:pm_msg_srv.EmptyWithSuccess.Response = self.client_dips_2k_off.call(request)
+
+        if not response_off.success:
+            raise PmRobotError("Failed to close the 2K glue valve!")
+
+        return True
+
+    def adhesive_dot_diameter_from_time(self, time_ms: float) -> float:
+        """
+        Diameter (mm) of the visualized adhesive dot for a given dispense time.
+
+        The dispensed volume grows linearly with the time the glue valve is open
+        (V = Q * t), and a dot of volume V has a diameter proportional to V**(1/3), so the
+        dot diameter grows with the cube root of the dispense time. The result is anchored
+        at ADHESIVE_DOT_REF_DIAMETER_MM for ADHESIVE_DOT_REF_TIME_MS and clamped to
+        [ADHESIVE_DOT_MIN_DIAMETER_MM, ADHESIVE_DOT_MAX_DIAMETER_MM].
+
+        This is purely a visualization value (RViz marker / Unity adhesive dot), it does not
+        describe the real dot on the component.
+
+        Args:            time_ms (float): Time in milliseconds the glue valve is open.
+        Returns:            float: Dot diameter in millimeters.
+        """
+
+        if time_ms <= 0:
+            return self.ADHESIVE_DOT_MIN_DIAMETER_MM
+
+        diameter = self.ADHESIVE_DOT_REF_DIAMETER_MM * (time_ms / self.ADHESIVE_DOT_REF_TIME_MS) ** (1.0 / 3.0)
+
+        return float(min(max(diameter, self.ADHESIVE_DOT_MIN_DIAMETER_MM),
+                         self.ADHESIVE_DOT_MAX_DIAMETER_MM))
+
+    def dispense_2k_at_frame(self, move_to_frame_request: pm_moveit_srv.MoveToFrame.Request,
+                             point_name: str,
+                             time_ms:float = 500.0,
+                             dispense_z_offset_mm: float = DEFAULT_DISPENSE_HEIGHT
+                             ) -> bool:
+        """
+        Dispenses with the 2K dispenser at the specified frame with the given time and z offset.
+
+        Same sequence as `dispense_at_frame`, but with the 2K dispenser TCP and the 2K glue valve.
+
+        Args:            move_to_frame_request (pm_moveit_srv.MoveToFrame.Request): The request containing the target frame and movement parameters.            point_name (str): Name of the created adhesive visualization point.            time_ms (float, optional): Time in milliseconds to dispense. Defaults to 500.0.            dispense_z_offset_mm (float, optional): Z offset in millimeters for dispensing. Defaults to DEFAULT_DISPENSE_HEIGHT.
+        Raises:            PmRobotError: If the move_2k_dispenser_to_frame or dispense_2k methods fail, or if the create_adhesive_viz_point service is not available or fails.
+        """
+
+        if time_ms <= 0:
+            raise PmRobotError(f"Dispense time ({time_ms}) must be greater than 0!")
+
+        # The dispenser is expected to be extended already (see prepare_2k_dispenser).
+        # Offsets are applied along world Z so the dispenser stays above the object
+        # even if the target frame is tilted.
+        self.add_world_z_offset(move_to_frame_request,
+                                float(dispense_z_offset_mm*1e-3) + self.DISPENSER_OFFSET_VALUE)
+
+        # move to top position
+        self.move_2k_dispenser_to_frame(move_to_frame_request)
+
+        self.add_world_z_offset(move_to_frame_request, -self.DISPENSER_OFFSET_VALUE)
+
+        # move to dispenser position
+        self.move_2k_dispenser_to_frame(move_to_frame_request)
+
+        self.dispense_2k(time_ms=time_ms)
+
+        create_adhesive_viz_point_request = pm_msg_srv.CreateVizAdhesivePoint.Request()
+        create_adhesive_viz_point_request.point.parent_frame = move_to_frame_request.target_frame
+
+        create_adhesive_viz_point_request.point.hight = dispense_z_offset_mm # in mm
+        # The longer the valve was open, the more adhesive is on the component — so the
+        # visualized dot grows with the dispense time instead of being a fixed 1 mm.
+        create_adhesive_viz_point_request.point.diameter = self.adhesive_dot_diameter_from_time(time_ms)
+        create_adhesive_viz_point_request.point.name = point_name
+        self.logger.info(f"2K dispense at '{point_name}': {time_ms} ms -> "
+                         f"adhesive dot of {create_adhesive_viz_point_request.point.diameter:.3f} mm diameter")
+        create_adhesive_viz_point_request.point.endeffector_frame = self.DISPENSER_2K_TCP_FRAME
+        self.create_adhesive_viz_point(create_adhesive_viz_point_request)
+
+        self.add_world_z_offset(move_to_frame_request, self.DISPENSER_OFFSET_VALUE)
+
+        self.move_2k_dispenser_to_frame(move_to_frame_request)
+
+        return True
+
     def is_gazebo_running(self):
         """Check if the Gazebo node is active."""
         node_names = self.node.get_node_names()

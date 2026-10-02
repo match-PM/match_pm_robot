@@ -34,6 +34,7 @@
 #include <iomanip>
 #include <geometry_msgs/msg/pose.hpp>
 #include <chrono>
+#include <mutex>
 
 Eigen::Affine3d poseMsgToAffine(const geometry_msgs::msg::Pose &pose_msg)
 {
@@ -157,6 +158,9 @@ std::shared_ptr<moveit::planning_interface::MoveGroupInterface::Plan> plan;
 std::shared_ptr<tf2_ros::TransformListener> tf_listener_{nullptr};
 std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
 sensor_msgs::msg::JointState::SharedPtr global_joint_state;
+// global_joint_state is written from the (reentrant) joint state callback while it is read
+// from the service callbacks, so every access has to be guarded.
+std::mutex global_joint_state_mutex;
 // create shared pointer to node publisher
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> xyz_trajectory_publisher;
 std::shared_ptr<rclcpp::Publisher<trajectory_msgs::msg::JointTrajectory>> t_trajectory_publisher;
@@ -243,6 +247,7 @@ void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg)
     // std::cout << "Joint Name: " << msg->name[i] << ", Position: " << msg->position[i] << std::endl;
     //  RCLCPP_INFO(rclcpp::get_logger("pm_moveit"), "Joint Name: %s, Value: %f",msg->name[i].c_str(), msg->position[i]);
   }
+  std::lock_guard<std::mutex> lock(global_joint_state_mutex);
   global_joint_state = msg;
 }
 
@@ -281,6 +286,20 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
   //               target_joint_values[i]);
   // }
 
+  // Take a local reference to the last received joint state. The callback may replace the
+  // global pointer at any time, which would free the message while it is being read here.
+  sensor_msgs::msg::JointState::SharedPtr joint_state;
+  {
+    std::lock_guard<std::mutex> lock(global_joint_state_mutex);
+    joint_state = global_joint_state;
+  }
+
+  if (!joint_state)
+  {
+    RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "No joint state received yet!");
+    return false;
+  }
+
   float delta_value;
   float multiplier = 1;
   for (size_t i = 0; i < target_joints.size(); i++)
@@ -312,16 +331,21 @@ bool check_goal_reached(std::vector<std::string> target_joints, std::vector<doub
     //             delta_value * 1e6);
 
     // find joint in joint state
-    auto it = std::find(global_joint_state->name.begin(), global_joint_state->name.end(), target_joints[i]);
-    if (it == global_joint_state->name.end())
+    auto it = std::find(joint_state->name.begin(), joint_state->name.end(), target_joints[i]);
+    if (it == joint_state->name.end())
     {
       // Joint not found
       // Handle error or return false
       RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Joint not found in joint state!");
       return false;
     }
-    int current_joint_index = std::distance(global_joint_state->name.begin(), it);
-    float current_joint_value = global_joint_state->position[current_joint_index];
+    size_t current_joint_index = std::distance(joint_state->name.begin(), it);
+    if (current_joint_index >= joint_state->position.size())
+    {
+      RCLCPP_ERROR(rclcpp::get_logger("pm_moveit"), "Joint '%s' has no position in joint state!", target_joints[i].c_str());
+      return false;
+    }
+    float current_joint_value = joint_state->position[current_joint_index];
     float difference = std::abs(current_joint_value - target_joint_values[i]);
 
     RCLCPP_WARN(rclcpp::get_logger("pm_moveit"), "Joint: %s, Target: %.9f, Current: %.9f, Delta (um/deg): %.9f, Used Theshold (um/deg): %.9f",
