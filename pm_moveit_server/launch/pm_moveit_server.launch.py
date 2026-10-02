@@ -24,13 +24,13 @@ from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 import xacro
 import sys
+from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig
+
+pm_robot_config = PmRobotConfig(use_real_config=False)
 
 
 def generate_launch_description():
-    bringup_config_path = os.path.join(
-        get_package_share_directory("pm_robot_bringup"),
-        "config/pm_robot_bringup_config.yaml",
-    )
+    bringup_config_path = pm_robot_config.get_active_bringup_config_path()
 
     f = open(bringup_config_path)
     bringup_config = yaml.load(f, Loader=SafeLoader)
@@ -88,6 +88,7 @@ def generate_launch_description():
         # output="log",
         parameters=[
             {"use_sim_time": sim_time},
+            {"bringup_config_file": bringup_config_path},
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
             moveit_config.robot_description_kinematics,

@@ -24,6 +24,23 @@ enum class AxisId
     V,
 };
 
+// Position and speed returned together by the batched real-time read.
+struct AxisMotionState
+{
+    int position = 0;
+    int speed = 0;
+};
+
+// Only fields marked with has_* are included in the next batched write.
+// This prevents unchanged controller commands from being sent every cycle.
+struct AxisMotionCommand
+{
+    bool has_target = false;
+    int target = 0;
+    bool has_speed = false;
+    int speed = 0;
+};
+
 /**
  * Auflistung der möglichen Toleranzen einer Achse.
  */

@@ -22,6 +22,15 @@
     </group>
 
     <xacro:if value="${current_pm_robot_bringup_config['pm_smparpod_station']['with_smarpod_station']}">
+        <!-- Virtual coordinate feedback is known to MoveIt, but not planned. -->
+        <xacro:if value="${launch_mode == 'real_HW'}">
+            <passive_joint name="SP_PV_X_Joint"/>
+            <passive_joint name="SP_PV_Y_Joint"/>
+            <passive_joint name="SP_PV_Z_Joint"/>
+            <passive_joint name="SP_PV_A_Joint"/>
+            <passive_joint name="SP_PV_B_Joint"/>
+            <passive_joint name="SP_PV_C_Joint"/>
+        </xacro:if>
         <group name="smarpod_endeffector">
             <chain base_link="pm_robot_base_link" tip_link="Smarpod_Top_Plate" />
         </group>

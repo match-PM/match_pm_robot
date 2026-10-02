@@ -22,6 +22,18 @@ import copy
 from pm_robot_primitive_skills.py_modules.PmRobotError import PmRobotError
 from pm_robot_primitive_skills.py_modules.PrimitiveSkillsUtils import PrimitiveSkillsUtils
 
+try:
+    from smarpod_interfaces.srv import SetVirtualPivot
+    from std_srvs.srv import Trigger
+    from pm_robot_primitive_skills.py_modules.smarpod_virtual_controller import SmarpodVirtualController
+    smarpod_missing_package = None
+except ModuleNotFoundError as error:
+    if (error.name or '').split('.')[0] not in (
+            'smarpod_interfaces', 'controller_manager_msgs', 'std_srvs'):
+        raise
+    smarpod_missing_package = error.name
+    SmarpodVirtualController = None
+
 class PrimitiveSkillsNode(Node):
     
     def __init__(self):
@@ -35,7 +47,7 @@ class PrimitiveSkillsNode(Node):
         sim_time = self.get_parameter('use_sim_time').value
         
         self.logger = self.get_logger()
-
+        
         self.callback_group_re = ReentrantCallbackGroup()
         self.callback_group_mu_ex = MutuallyExclusiveCallbackGroup()
         
@@ -48,6 +60,19 @@ class PrimitiveSkillsNode(Node):
         self.dispense_at_frames_srv = self.create_service(pm_msg_srv.DispenseAtPoints, self.get_name()+'/dispense_at_frames', self.dispense_at_points_callback)
         self.move_uv_in_curing_position_service = self.create_service(SetBool, self.get_name()+"/move_uv_in_curing_position", self.move_uv_in_curing_position_service_callback,callback_group=self.callback_group_mu_ex)
         self.uv_curing = self.create_service(pm_msg_srv.UVCuringSkill, self.get_name()+'/uv_curing', self.uv_curing_callback, callback_group=self.callback_group_mu_ex)
+        if SmarpodVirtualController is not None:
+            self.smarpod_switch_group = MutuallyExclusiveCallbackGroup()
+            self.smarpod_virtual_controller = SmarpodVirtualController(self)
+            self.activate_smarpod_virtual_controller_srv = self.create_service(
+                SetVirtualPivot, self.get_name()+'/activate_smarpod_virtual_controller',
+                self.activate_smarpod_virtual_controller_callback, callback_group=self.smarpod_switch_group)
+            self.reset_smarpod_virtual_controller_srv = self.create_service(
+                Trigger, self.get_name()+'/reset_smarpod_virtual_controller',
+                self.reset_smarpod_virtual_controller_callback, callback_group=self.smarpod_switch_group)
+        else:
+            self.logger.warning(
+                f"Optional package '{smarpod_missing_package}' is unavailable; "
+                'SmarPod virtual controller services disabled')
         
         self.get_confocal_top_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_top_measurement', self.get_confocal_top_measurement_callback)
         self.get_confocal_bottom_measurement_srv = self.create_service(GetValue, self.get_name()+'/get_confocal_bottom_measurement', self.get_confocal_bottom_measurement_callback)
@@ -61,6 +86,19 @@ class PrimitiveSkillsNode(Node):
         self.gripper_2_jaws_publisher = self.create_publisher(Float64MultiArray,"/pm_parallel_gripper_2_jaws_controller/commands",10)
         
         self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
+
+    def activate_smarpod_virtual_controller_callback(self, request, response):
+        response.success, response.message = self.smarpod_virtual_controller.activate(
+            request.frame_name)
+        if not response.success:
+            self.get_logger().error(response.message)
+        return response
+
+    def reset_smarpod_virtual_controller_callback(self, request, response):
+        response.success, response.message = self.smarpod_virtual_controller.reset()
+        if not response.success:
+            self.get_logger().error(response.message)
+        return response
         
 
     def uv_curing_callback(self, request: pm_msg_srv.UVCuringSkill.Request, 

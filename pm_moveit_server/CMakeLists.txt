@@ -56,6 +56,7 @@ ament_target_dependencies(pm_moveit_server
   tf2
   pm_moveit_interfaces
   pm_msgs
+  yaml_cpp_vendor
 )
 
 # Install Cpp executables
