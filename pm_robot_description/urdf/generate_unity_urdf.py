@@ -19,6 +19,8 @@ from datetime import datetime, timezone
 # so adding a new tool/chuck/tip in ROS requires no Unity code changes. Empty
 # spawn frames are also described explicitly: their pose still comes from the
 # generated xacro/URDF, while Unity reparents them below the visible chuck/tool.
+# The smarpod station (smaract_hexapod_description) is covered as well: its
+# base goes into the combined URDF, its chucks into the manifest.
 ############################################
 
 
@@ -47,6 +49,12 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
     # Manifest sections collected while iterating the scenario loops
     manifest_sections = []
 
+    # Relative mesh path (as written to the combined URDF) -> absolute source
+    # file. Meshes come from several packages (pm_robot_description,
+    # smaract_hexapod_description), so the relative path alone does not say
+    # where to copy a mesh from.
+    mesh_sources = {}
+
     # Set use_keyence_bottom in yaml file to True
     original_config['measuring_systems']['use_keyence_bottom'] = True
 
@@ -58,18 +66,24 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
     dispenser_2K_config = original_config['pm_robot_2K_dispenser_tip']
     gonio_left_config = original_config['pm_robot_gonio_left']
     gonio_right_config = original_config['pm_robot_gonio_right']
+    smarpod_config = original_config['pm_smparpod_station']
 
-    # Disable all tools and dispenser tips by default so no scenario leaks
-    # whichever one happens to be selected in the config. Each is enabled only
-    # inside its own dedicated loop below. This keeps the per-scenario link
-    # sets clean, which the manifest diffing below relies on - and it matters
-    # doubly for the tips: the 1K and 2K dispenser share the same tip STLs, so
-    # a leaked 1K tip would carry the exact link name a 2K scenario produces.
+    # Disable all tools, dispenser tips and the smarpod station by default so
+    # no scenario leaks whichever one happens to be selected in the config.
+    # Each is enabled only inside its own dedicated loop below. This keeps the
+    # per-scenario link sets clean, which the manifest diffing below relies on
+    # - and it matters doubly for the tips: the 1K and 2K dispenser share the
+    # same tip STLs, so a leaked 1K tip would carry the exact link name a 2K
+    # scenario produces. The smarpod station additionally shifts Gonio Right
+    # (pm_robot_gonio_right.xacro), which must not reach the other scenarios.
     gripper_1_config['use_paralell_gripper'] = False
     gripper_2_config['use_paralell_gripper'] = False
     vacuum_config['use_vacuum_tool'] = False
     dispenser_1K_config['use_dispenser_tip'] = 'empty'
     dispenser_2K_config['use_dispenser_tip'] = 'empty'
+    smarpod_config['with_smarpod_station'] = False
+    smarpod_config['use_chuck'] = 'empty'
+    smarpod_config['use_chuck_center'] = 'empty'
 
     # ------------------------------------------------------------------
     # Helpers
@@ -86,6 +100,23 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
         Unity scene objects are named."""
         return name.startswith('Tool_Parallel_Gripper') or name == 'PM_Robot_Tool_TCP'
 
+    def to_relative_mesh_path(filename):
+        """'file://<pkg share>/meshes/x/y.STL' -> 'meshes/x/y.STL', recording
+        the absolute source for copy_to_unity_project. Two packages must not
+        provide different files under the same relative path: Unity keeps
+        all meshes in one folder tree (Assets/PM_Robot/meshes)."""
+        source = filename.replace('file://', '')
+        if 'meshes/' in filename:
+            rel_path = 'meshes/' + filename.split('meshes/')[-1]
+        else:
+            rel_path = source
+        known = mesh_sources.setdefault(rel_path, source)
+        if os.path.realpath(known) != os.path.realpath(source):
+            raise ValueError(
+                f"Mesh path '{rel_path}' is provided by two sources: "
+                f"'{known}' and '{source}'")
+        return rel_path
+
     def fix_mesh_paths_and_link_names(xml_element, link_name_map, keep=None):
         if xml_element.tag == 'link' and not (keep and keep(xml_element.get('name'))):
             old_name = xml_element.get('name')
@@ -95,10 +126,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                 if filename:
                     # Convert to relative path if needed
                     if filename.startswith('file://'):
-                        if 'meshes/' in filename:
-                            rel_path = 'meshes/' + filename.split('meshes/')[-1]
-                        else:
-                            rel_path = filename.replace('file://', '')
+                        rel_path = to_relative_mesh_path(filename)
                         geom_el.set('filename', rel_path)
                         filename = rel_path
 
@@ -115,10 +143,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
             for mesh_el in xml_element.findall('.//mesh'):
                 filename = mesh_el.get('filename', '')
                 if filename.startswith('file://'):
-                    if 'meshes/' in filename:
-                        mesh_el.set('filename', 'meshes/' + filename.split('meshes/')[-1])
-                    else:
-                        mesh_el.set('filename', filename.replace('file://', ''))
+                    mesh_el.set('filename', to_relative_mesh_path(filename))
 
         # Recurse into children
         for child in xml_element:
@@ -238,15 +263,20 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                     stack.append(ch)
         return result
 
-    def item_meta(root, owned):
-        """Root links (owned links whose parent is outside the item) and mesh
-        paths referenced by the owned links."""
+    def parent_links(root):
+        """Child link name -> parent link name."""
         parent_of = {}
         for joint_el in root.findall('joint'):
             parent_el = joint_el.find('parent')
             child_el = joint_el.find('child')
             if parent_el is not None and child_el is not None:
                 parent_of[child_el.get('link')] = parent_el.get('link')
+        return parent_of
+
+    def item_meta(root, owned):
+        """Root links (owned links whose parent is outside the item) and mesh
+        paths referenced by the owned links."""
+        parent_of = parent_links(root)
 
         root_links = sorted(l for l in owned if parent_of.get(l) not in owned)
 
@@ -259,8 +289,28 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                         meshes.append(fn)
         return root_links, meshes
 
-    def add_to_combined(root):
+    def add_to_combined(root, subtree_root=None):
+        """Append the scenario's elements to the combined URDF (deduplicated).
+        With ``subtree_root`` only that link, its descendants and their
+        joints/gazebo tags are taken; everything else is left to the
+        scenarios that own it."""
+        keep = None
+        if subtree_root:
+            keep = descendants_of(root, subtree_root) | {subtree_root}
+
         for child in list(root):
+            if keep is not None:
+                if child.tag == 'link':
+                    name = child.get('name')
+                elif child.tag == 'joint':
+                    child_el = child.find('child')
+                    name = child_el.get('link') if child_el is not None else None
+                elif child.tag == 'gazebo':
+                    name = child.get('reference')
+                else:
+                    name = None
+                if name not in keep:
+                    continue
             child_str = ET.tostring(child, encoding='unicode')
             if child_str not in seen_elements:
                 seen_elements.add(child_str)
@@ -276,7 +326,8 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
 
     def finalize_single_level_section(scenarios, yaml_path_key, enable_key,
                                       select_key, unity_parent,
-                                      spawn_frame_names=(), link_suffix=None):
+                                      spawn_frame_names=(), link_suffix=None,
+                                      subtree_root=None):
         """Diff the scenarios of a single-selection section (dispenser tips,
         chucks) against each other: links present in every scenario are base
         robot, the rest belong to the selected item. Owned links that were not
@@ -294,7 +345,12 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
         scenario-specific joint origin. Rename those source links before the
         diff so the combined URDF retains every YAML-defined pose. They are
         excluded from the normal item links and emitted as spawnPoints instead;
-        Unity creates each one as an empty child of its visible chuck."""
+        Unity creates each one as an empty child of its visible chuck. A
+        selection without a visible chuck (the smarpod 'empty' chuck) keeps
+        the frame on its URDF parent, a base robot link.
+
+        ``subtree_root`` limits what is added to the combined URDF to that
+        link's subtree (see add_to_combined)."""
         scenario_spawn_points = []
         for yaml_name, root, _ in scenarios:
             existing_links = link_names(root)
@@ -342,18 +398,23 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
 
             visible_owned = owned - spawn_source_links
             root_links, meshes = item_meta(root, visible_owned)
-            if spawn_points:
+            if spawn_points and visible_owned:
                 if len(root_links) != 1:
                     raise ValueError(
                         f"Expected one visible chuck root for '{yaml_name}', "
                         f"found {root_links}")
                 for point in spawn_points:
                     point['parentLink'] = root_links[0]
+            elif spawn_points:
+                parent_of = parent_links(root)
+                for point in spawn_points:
+                    point['parentLink'] = parent_of[point['sourceLink']]
 
-            # The 'empty' selection owns nothing; emitting it as an item would
-            # only produce a rootLink-less entry that Unity warns about and
-            # never activates (configureRobot treats 'empty' as "no selection"
-            # by name anyway).
+            # An 'empty' selection usually owns nothing; emitting it as an
+            # item would only produce an entry Unity never activates. It is
+            # kept when it owns a spawn frame (smarpod 'empty' chuck): Unity
+            # then toggles that frame like a chuck, so exactly one frame of
+            # that name is active.
             if visible_owned or spawn_points:
                 items.append({
                     'yamlNames': [yaml_name],
@@ -362,7 +423,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
                     'meshes': meshes,
                     'spawnPoints': spawn_points,
                 })
-            add_to_combined(root)
+            add_to_combined(root, subtree_root)
 
         manifest_sections.append({
             'yamlPath': yaml_path_key,
@@ -533,6 +594,34 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
             spawn_frame_names=('Gonio_Right_Part_1_Origin',
                                'Gonio_Right_Part_2_Origin'))
 
+        # --- Smarpod station chucks ------------------------------------------
+        # Two independent selections: the chuck on the moving top plate and
+        # the center chuck on the fixed SmarPod_Origin. Each has its own part
+        # spawn frame, which falls back to the top plate for 'empty'. Only the
+        # station subtree is added to the combined URDF: the station also
+        # shifts Gonio Right, whose unshifted pose the other scenarios own.
+        # The subtree includes the station base (axes, stages, top plate);
+        # it is shared by every scenario, so it never becomes a manifest item.
+        smarpod_config['with_smarpod_station'] = True
+        for select_key, available_key, spawn_frame, unity_parent in (
+                ('use_chuck', 'availabe_chucks',
+                 'Smarpod_Part_Spawn', 'Smarpod_Top_Plate'),
+                ('use_chuck_center', 'available_chucks_center',
+                 'Smarpod_Part_Spawn_Center', 'SmarPod_Origin')):
+            scenarios = []
+            for chuck in smarpod_config[available_key]:
+                smarpod_config[select_key] = chuck
+                urdf_file = write_config_and_run_xacro(f'smarpod_{select_key}_{chuck}')
+                root, stl_renamed = process_scenario(urdf_file)
+                scenarios.append((chuck, root, stl_renamed))
+            smarpod_config[select_key] = 'empty'
+            finalize_single_level_section(
+                scenarios, 'pm_smparpod_station', 'with_smarpod_station',
+                select_key, unity_parent,
+                spawn_frame_names=(spawn_frame,),
+                subtree_root='Smarpod_Station')
+        smarpod_config['with_smarpod_station'] = False
+
         # --- Tools (vacuum: tool x tip, grippers: tool x jaw) -------------------
         # All tool scenarios are generated first and finalized together in
         # finalize_tool_sections: each tool-owned link gets a
@@ -628,7 +717,7 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
 
         if unity_project:
             copy_to_unity_project(unity_project, combined_urdf_path,
-                                  manifest_path, combined_robot_el, output_dir)
+                                  manifest_path, combined_robot_el, mesh_sources)
 
     finally:
         # Restore the original YAML configuration
@@ -642,10 +731,11 @@ def generate_combined_urdf(yaml_path, xacro_path, output_dir,
 
 
 def copy_to_unity_project(unity_project, urdf_path, manifest_path,
-                          combined_robot_el, output_dir):
+                          combined_robot_el, mesh_sources):
     """Copy the combined URDF, the manifest, and any missing STL meshes into
     <unity_project>/Assets/PM_Robot/. Existing meshes are left untouched (their
-    Unity .meta files must not be regenerated)."""
+    Unity .meta files must not be regenerated). ``mesh_sources`` maps each
+    relative mesh path to its file in the providing ROS package."""
     pm_robot_dir = os.path.join(unity_project, 'Assets', 'PM_Robot')
     if not os.path.isdir(pm_robot_dir):
         raise FileNotFoundError(f'Not a Unity pm_robot project (missing {pm_robot_dir})')
@@ -653,9 +743,6 @@ def copy_to_unity_project(unity_project, urdf_path, manifest_path,
     shutil.copyfile(urdf_path, os.path.join(pm_robot_dir, os.path.basename(urdf_path)))
     shutil.copyfile(manifest_path, os.path.join(pm_robot_dir, os.path.basename(manifest_path)))
 
-    # Mesh paths in the combined URDF are relative to the package share dir
-    # (the parent of the urdf output dir).
-    meshes_root = os.path.dirname(output_dir)
     copied = 0
     for mesh_el in combined_robot_el.iter('mesh'):
         rel_path = mesh_el.get('filename', '')
@@ -664,7 +751,7 @@ def copy_to_unity_project(unity_project, urdf_path, manifest_path,
         dst = os.path.join(pm_robot_dir, rel_path)
         if os.path.exists(dst):
             continue
-        src = os.path.join(meshes_root, rel_path)
+        src = mesh_sources.get(rel_path, '')
         if not os.path.exists(src):
             print(f'WARNING: mesh not found in ROS package: {src}')
             continue

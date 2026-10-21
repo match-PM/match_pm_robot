@@ -1118,16 +1118,16 @@
     <child link="Gonio_Left_Chuck_Origin" />
     <axis xyz="0 0 0" />
   </joint>
-  <link name="Chuck_ASG_Dummy">
+  <link name="Chuck_Siemens_Sensor">
     <inertial>
-      <origin rpy="0 0 0" xyz="-3.32359125018167E-05 0.00272468115334823 0.0359237418777792" />
-      <mass value="0.112748686597636" />
-      <inertia ixx="2.13192473501217e-05" ixy="-6.99429943347508e-08" ixz="4.53784426369965e-08" iyy="8.76142851849096e-05" iyz="-1.2408110212611e-06" izz="8.47795368409762e-05" />
+      <origin rpy="0 0 0" xyz="-3.84147559289952E-05 0.00708674028490255 0.0372986610029385" />
+      <mass value="0.0867575149913972" />
+      <inertia ixx="1.95387514762084e-05" ixy="-3.94243659687735e-08" ixz="-7.05273020033425e-09" iyy="2.93438945343926e-05" iyz="-6.75363420168913e-07" izz="2.35055667738253e-05" />
     </inertial>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0" />
       <geometry>
-        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_ASG_Dummy.STL" />
+        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Sensor.STL" />
       </geometry>
       <material name="white">
         </material>
@@ -1135,27 +1135,27 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0" />
       <geometry>
-        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_ASG_Dummy.STL" />
+        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Sensor.STL" />
       </geometry>
     </collision>
   </link>
   <joint name="Gonio_Left_Chuck_Joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0.00" />
     <parent link="Gonio_Left_Chuck_Origin" />
-    <child link="Chuck_ASG_Dummy" />
+    <child link="Chuck_Siemens_Sensor" />
     <axis xyz="0 0 0" />
   </joint>
   
   <link name="Gonio_Left_Part_Origin">
     </link>
   <joint name="Gonio_Left_Part_Origin_Joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.0164 0.00859 0.1" />
+    <origin rpy="0 0 0" xyz="0.0175 0.023 0.09655" />
     <parent link="Gonio_Left_Chuck_Origin" />
     <child link="Gonio_Left_Part_Origin" />
     <axis xyz="0 0 0" />
   </joint>
   
-  <gazebo reference="Chuck_ASG_Dummy">
+  <gazebo reference="Chuck_Siemens_Sensor">
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   
@@ -1386,6 +1386,7 @@
       </plugin>
     </sensor>
   </gazebo>
+  
   
   <ros2_control name="GazeboSystem" type="system">
     <hardware>
@@ -1786,34 +1787,6 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   
-  <link name="Chuck_Siemens_Sensor">
-    <inertial>
-      <origin rpy="0 0 0" xyz="-3.84147559289952E-05 0.00708674028490255 0.0372986610029385" />
-      <mass value="0.0867575149913972" />
-      <inertia ixx="1.95387514762084e-05" ixy="-3.94243659687735e-08" ixz="-7.05273020033425e-09" iyy="2.93438945343926e-05" iyz="-6.75363420168913e-07" izz="2.35055667738253e-05" />
-    </inertial>
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0" />
-      <geometry>
-        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Sensor.STL" />
-      </geometry>
-      <material name="white">
-        </material>
-    </visual>
-    <collision>
-      <origin rpy="0 0 0" xyz="0 0 0" />
-      <geometry>
-        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Sensor.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint name="Gonio_Left_Chuck_Joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.00" />
-    <parent link="Gonio_Left_Chuck_Origin" />
-    <child link="Chuck_Siemens_Sensor" />
-    <axis xyz="0 0 0" />
-  </joint>
-  
   <link name="Gonio_Left_Part_Origin__unity_source__chuck_gonio_left_Siemens_Sensor">
     </link>
   <joint name="Gonio_Left_Part_Origin_Joint_unity_source_chuck_gonio_left_Siemens_Sensor" type="fixed">
@@ -1822,10 +1795,6 @@
     <child link="Gonio_Left_Part_Origin__unity_source__chuck_gonio_left_Siemens_Sensor" />
     <axis xyz="0 0 0" />
   </joint>
-  
-  <gazebo reference="Chuck_Siemens_Sensor">
-    <turnGravityOff>true</turnGravityOff>
-  </gazebo>
   
   <link name="Chuck_Siemens_Carrier_P39">
     <inertial>
@@ -1991,6 +1960,34 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   
+  <link name="Chuck_ASG_Dummy">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-3.32359125018167E-05 0.00272468115334823 0.0359237418777792" />
+      <mass value="0.112748686597636" />
+      <inertia ixx="2.13192473501217e-05" ixy="-6.99429943347508e-08" ixz="4.53784426369965e-08" iyy="8.76142851849096e-05" iyz="-1.2408110212611e-06" izz="8.47795368409762e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_ASG_Dummy.STL" />
+      </geometry>
+      <material name="white">
+        </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_ASG_Dummy.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Gonio_Left_Chuck_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.00" />
+    <parent link="Gonio_Left_Chuck_Origin" />
+    <child link="Chuck_ASG_Dummy" />
+    <axis xyz="0 0 0" />
+  </joint>
+  
   <link name="Gonio_Left_Part_Origin__unity_source__Chuck_ASG_Dummy">
     </link>
   <joint name="Gonio_Left_Part_Origin_Joint_unity_source_Chuck_ASG_Dummy" type="fixed">
@@ -1999,6 +1996,10 @@
     <child link="Gonio_Left_Part_Origin__unity_source__Chuck_ASG_Dummy" />
     <axis xyz="0 0 0" />
   </joint>
+  
+  <gazebo reference="Chuck_ASG_Dummy">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
   
   <link name="Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_Siemens_UFC">
     </link>
@@ -2010,6 +2011,13 @@
   </joint>
   
   
+  
+  <joint name="Gonio_Left_Part_Origin_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0164 0.00859 0.1" />
+    <parent link="Gonio_Left_Chuck_Origin" />
+    <child link="Gonio_Left_Part_Origin" />
+    <axis xyz="0 0 0" />
+  </joint>
   
   <link name="Chuck_Double_Lens_Holder_12_7">
     <inertial>
@@ -2174,6 +2182,949 @@
   </joint>
   
   
+  
+  <link name="SmarPod_Origin">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000115674408481878 4.3455677874632E-01 0.00518901166455497" />
+      <mass value="500.360244074757092" />
+      <inertia ixx="0.00100587075765343" ixy="2.39856870538707E-01" ixz="2.80480689068284E-01" iyy="0.00101471193331311" iyz="-9.50059374674845E-01" izz="0.00201708421229238" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/SmarPod_Origin.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/SmarPod_Origin.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  
+  <joint name="SmarPod_Origin_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.0" />
+    <parent link="Smarpod_Station_Base" />
+    <child link="SmarPod_Origin" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="Smarpod_Pivot_Base_Origin">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000115674408481878 4.3455677874632E-01 0.00518901166455497" />
+      <mass value="500.360244074757092" />
+      <inertia ixx="0.00100587075765343" ixy="2.39856870538707E-01" ixz="2.80480689068284E-01" iyy="0.00101471193331311" iyz="-9.50059374674845E-01" izz="0.00201708421229238" />
+    </inertial>
+  </link>
+  <joint name="Smarpod_Pivot_Base_Origin_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0573743036851433" />
+    <parent link="SmarPod_Origin" />
+    <child link="Smarpod_Pivot_Base_Origin" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="SP_X_Axis">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.13867117656886 0.0294673421865695 0.0322225410424505" />
+      <mass value="3.46651857022574" />
+      <inertia ixx="0.0263967056575219" ixy="-0.000746452162875097" ixz="-6.60103497268881E-01" iyy="0.0104790265642698" iyz="-0.000507544087069928" izz="0.0342327102580871" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="SP_X_Axis">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="SP_X_Joint" type="prismatic">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
+    <parent link="Smarpod_Pivot_Base_Origin" />
+    <child link="SP_X_Axis" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.1" lower="-0.01" upper="0.01" velocity="35" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="SP_Y_Axis">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.13867117656886 0.0294673421865695 0.0322225410424505" />
+      <mass value="3.46651857022574" />
+      <inertia ixx="0.0263967056575219" ixy="-0.000746452162875097" ixz="-6.60103497268881E-01" iyy="0.0104790265642698" iyz="-0.000507544087069928" izz="0.0342327102580871" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="SP_Y_Axis">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="SP_Y_Joint" type="prismatic">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
+    <parent link="SP_X_Axis" />
+    <child link="SP_Y_Axis" />
+    <axis xyz="0 1 0" />
+    <limit effort="0.1" lower="-0.01" upper="0.01" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="SP_Z_Axis">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.13867117656886 0.0294673421865695 0.0322225410424505" />
+      <mass value="3.46651857022574" />
+      <inertia ixx="0.0263967056575219" ixy="-0.000746452162875097" ixz="-6.60103497268881E-01" iyy="0.0104790265642698" iyz="-0.000507544087069928" izz="0.0342327102580871" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="SP_Z_Axis">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="SP_Z_Joint" type="prismatic">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
+    <parent link="SP_Y_Axis" />
+    <child link="SP_Z_Axis" />
+    <axis xyz="0 0 1" />
+    <limit effort="0.1" lower="-0.01" upper="0.01" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  
+  <link name="SP_A_Axis">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.13867117656886 0.0294673421865695 0.0322225410424505" />
+      <mass value="3.46651857022574" />
+      <inertia ixx="0.0263967056575219" ixy="-0.000746452162875097" ixz="-6.60103497268881E-01" iyy="0.0104790265642698" iyz="-0.000507544087069928" izz="0.0342327102580871" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="SP_A_Axis">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <link name="SP_C_Axis">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.13867117656886 0.0294673421865695 0.0322225410424505" />
+      <mass value="3.46651857022574" />
+      <inertia ixx="0.0263967056575219" ixy="-0.000746452162875097" ixz="-6.60103497268881E-01" iyy="0.0104790265642698" iyz="-0.000507544087069928" izz="0.0342327102580871" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="SP_C_Axis">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <link name="SP_B_Axis">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.13867117656886 0.0294673421865695 0.0322225410424505" />
+      <mass value="3.46651857022574" />
+      <inertia ixx="0.0263967056575219" ixy="-0.000746452162875097" ixz="-6.60103497268881E-01" iyy="0.0104790265642698" iyz="-0.000507544087069928" izz="0.0342327102580871" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="SP_B_Axis">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="SP_C_Joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
+    <parent link="SP_Z_Axis" />
+    <child link="SP_C_Axis" />
+    <axis xyz="0 0 1" />
+    <limit effort="0.1" lower="-0.349066" upper="0.349066" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <joint name="SP_B_Joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
+    <parent link="SP_C_Axis" />
+    <child link="SP_B_Axis" />
+    <axis xyz="0 1 0" />
+    <limit effort="0.1" lower="-0.349066" upper="0.349066" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <joint name="SP_A_Joint" type="revolute">
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
+    <parent link="SP_B_Axis" />
+    <child link="SP_A_Axis" />
+    <axis xyz="1 0 0" />
+    <limit effort="0.1" lower="-0.349066" upper="0.349066" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_Top_Plate">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-8.97776294070382E-01 7.62020262626441E-01 0.00496321958307749" />
+      <mass value="0.1" />
+      <inertia ixx="5.78544111423082E-01" ixy="-1.0594309472348E-01" ixz="-3.55606498481884E-01" iyy="5.78606868887532E-01" iyz="-5.52110095884091E-01" izz="0.000115234659795365" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_Top_Plate.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_Top_Plate.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_Top_Plate">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_Top_Plate_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0" />
+    <parent link="SP_A_Axis" />
+    <child link="Smarpod_Top_Plate" />
+    <axis xyz="0 0 0" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  
+  
+  <link name="Smarpod_Part_Spawn__unity_source__empty">
+    </link>
+  <joint name="smarpod_part_spawn_joint_unity_source_empty" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Smarpod_Part_Spawn__unity_source__empty" />
+    <origin xyz="0.0 0.0 0.0" />
+  </joint>
+  <link name="Smarpod_Part_Spawn_Center">
+    </link>
+  <joint name="smarpod_part_spawn_center_joint" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Smarpod_Part_Spawn_Center" />
+    <origin xyz="0.0 0.0 0.0" />
+  </joint>
+  
+  <link name="Smarpod_A_Stage_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.16023578801785E-01 0.0247751892546865 -0.000210361878445467" />
+      <mass value="0.1" />
+      <inertia ixx="5.51700011610151E-01" ixy="-1.75203964008593E-01" ixz="-1.80526055393165E-01" iyy="7.25629781746008E-01" iyz="2.16722973573367E-01" izz="1.253258476352E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_A_Stage_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_A_Stage_1.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_A_Stage_1">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_A_Stage_1_Joint" type="prismatic">
+    <origin rpy="0 0 0" xyz="0 -0.11 0.0233" />
+    <parent link="SmarPod_Origin" />
+    <child link="Smarpod_A_Stage_1" />
+    <axis xyz="0 -1 0" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_A_Stage_2">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000652857985147887 0.0300494777131996 0.009177736372205" />
+      <mass value="0.1" />
+      <inertia ixx="9.98096864448635E-01" ixy="4.31001961659525E-01" ixz="-2.37088268452878E-01" iyy="7.66831650403072E-01" iyz="-7.46550390643979E-01" izz="1.38109251264444E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_A_Stage_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_A_Stage_2.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_A_Stage_2">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_A_Stage_2_Joint" type="prismatic">
+    <origin rpy="0 0 -1.5707963267949" xyz="-0.03 0.0212386752719503 0.011" />
+    <parent link="Smarpod_A_Stage_1" />
+    <child link="Smarpod_A_Stage_2" />
+    <axis xyz="0 -1 0" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_A_Stage_3">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.22225478481848E-01 0.0141591617382052 -0.00740478303750262" />
+      <mass value="0.1" />
+      <inertia ixx="1.40743142173703E-01" ixy="1.10344892086608E-01" ixz="-8.16577255284425E-01" iyy="4.43146869340753E-01" iyz="5.7188915279526E-01" izz="1.10867849001894E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_A_Stage_3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_A_Stage_3.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_A_Stage_3">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_A_Stage_3_Joint" type="prismatic">
+    <origin rpy="0 0 1.5707963267949" xyz="-0.00253689759876602 0.03 0.0259362157397364" />
+    <parent link="Smarpod_A_Stage_2" />
+    <child link="Smarpod_A_Stage_3" />
+    <axis xyz="0 -0.86602540378444 0.499999999999997" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_C_Stage_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.16023570812937E-01 0.0247751893114078 -0.000210361915583886" />
+      <mass value="0.1" />
+      <inertia ixx="5.51700014477524E-01" ixy="-1.75203964262733E-01" ixz="-1.80526056563053E-01" iyy="7.25629784611764E-01" iyz="2.16722973572946E-01" izz="1.25325847547698E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_C_Stage_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_C_Stage_1.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_C_Stage_1">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_C_Stage_1_Joint" type="prismatic">
+    <origin rpy="0 0 2.09439510239321" xyz="0.0952627944162877 0.0550000000000009 0.0233" />
+    <parent link="SmarPod_Origin" />
+    <child link="Smarpod_C_Stage_1" />
+    <axis xyz="0 -1 0" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_C_Stage_2">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000652858062738612 0.03004947750205 0.00917773766627061" />
+      <mass value="0.1" />
+      <inertia ixx="9.98097100944404E-01" ixy="4.30995179502273E-01" ixz="-2.37088255097514E-01" iyy="7.66831673601403E-01" iyz="-7.46545924890167E-01" izz="1.38109269497091E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_C_Stage_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_C_Stage_2.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_C_Stage_2">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_C_Stage_2_Joint" type="prismatic">
+    <origin rpy="0 0 -1.5707963267949" xyz="-0.0300000000000004 0.0212386752719508 0.0109999999999993" />
+    <parent link="Smarpod_C_Stage_1" />
+    <child link="Smarpod_C_Stage_2" />
+    <axis xyz="0 -1 0" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_C_Stage_3">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.2018486135323E-01 0.0141591609481026 -0.00740478322853082" />
+      <mass value="0.1" />
+      <inertia ixx="1.40743143835985E-01" ixy="1.06062795706572E-01" ixz="-7.88087766002222E-01" iyy="4.43146876561248E-01" iyz="5.71889148008975E-01" izz="1.1086784901102E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_C_Stage_3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_C_Stage_3.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_C_Stage_3">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_C_Stage_3_Joint" type="prismatic">
+    <origin rpy="0 0 1.5707963267949" xyz="-0.00253689759876601 0.0299999999999999 0.0259362157397364" />
+    <parent link="Smarpod_C_Stage_2" />
+    <child link="Smarpod_C_Stage_3" />
+    <axis xyz="0 -0.866025403784441 0.499999999999995" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_B_Stage_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.16023570813223E-01 0.0247751893114078 -0.0002103619156017" />
+      <mass value="0.1" />
+      <inertia ixx="5.51700014477523E-01" ixy="-1.75203963733502E-01" ixz="-1.80526056563058E-01" iyy="7.25629784611764E-01" iyz="2.16722973572947E-01" izz="1.25325847547698E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_B_Stage_1.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_B_Stage_1.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_B_Stage_1">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_B_Stage_1_Joint" type="prismatic">
+    <origin rpy="0 0 -2.09439510239321" xyz="-0.0952627944162879 0.0550000000000004 0.0233" />
+    <parent link="SmarPod_Origin" />
+    <child link="Smarpod_B_Stage_1" />
+    <axis xyz="0 -1 0" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_B_Stage_2">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000652858067155968 0.0300494774330553 0.00917773767012908" />
+      <mass value="0.1" />
+      <inertia ixx="9.98097100964306E-01" ixy="4.30994857336727E-01" ixz="-2.37088255091762E-01" iyy="7.66831673583624E-01" iyz="-7.46545594865821E-01" izz="1.38109269497073E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_B_Stage_2.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_B_Stage_2.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_B_Stage_2">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_B_Stage_2_Joint" type="prismatic">
+    <origin rpy="0 0 -1.5707963267949" xyz="-0.03 0.0212386752719502 0.0109999999999993" />
+    <parent link="Smarpod_B_Stage_1" />
+    <child link="Smarpod_B_Stage_2" />
+    <axis xyz="0 -1 0" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Smarpod_B_Stage_3">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-1.22313518276452E-01 0.0141591609478842 -0.00740478322837319" />
+      <mass value="0.1" />
+      <inertia ixx="1.407431438344E-01" ixy="1.13557800874835E-01" ixz="-8.34213168697538E-01" iyy="4.43146876535531E-01" iyz="5.71889148001332E-01" izz="1.10867849008051E-01" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_B_Stage_3.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_B_Stage_3.STL" />
+      </geometry>
+    </collision>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <gazebo reference="Smarpod_B_Stage_3">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <joint name="Smarpod_B_Stage_3_Joint" type="prismatic">
+    <origin rpy="0 0 1.5707963267949" xyz="-0.00253689759876589 0.03 0.0259362157397364" />
+    <parent link="Smarpod_B_Stage_2" />
+    <child link="Smarpod_B_Stage_3" />
+    <axis xyz="0 -0.866025403784442 0.499999999999994" />
+    <limit effort="0.1" lower="-0.02" upper="0.02" velocity="1" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Top_Plate_A">
+    <inertial>
+      <mass value="1.0" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <joint name="Top_Plate_A_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -0.0588334882222388 0" />
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Top_Plate_A" />
+    <axis xyz="0 0 0" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Top_Plate_B">
+    <inertial>
+      <mass value="1.0" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <joint name="Top_Plate_B_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.0509512951020539 0.0294167446162847 0" />
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Top_Plate_B" />
+    <axis xyz="0 0 0" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  <link name="Top_Plate_C">
+    <inertial>
+      <mass value="1.0" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1" />
+    </inertial>
+    <gazebo>
+      <mu1>0.0</mu1>
+      <mu2>0.0</mu2>
+    </gazebo>
+  </link>
+  <joint name="Top_Plate_C_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0509512956853688 0.0294167436059538 0" />
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Top_Plate_C" />
+    <axis xyz="0 0 0" />
+    <friction>
+      <ode>
+        <mu1>0.0</mu1>
+        <mu2>0.0</mu2>
+      </ode>
+    </friction>
+  </joint>
+  
+  <link name="Smarpod_Station">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0921880695439856 0.106740010574494 0.186664921950654" />
+      <mass value="0.782282249809798" />
+      <inertia ixx="0.00477442216909529" ixy="-5.89281059975844E-08" ixz="2.37578030999895E-10" iyy="0.00354235482448058" iyz="2.44320538923886E-08" izz="0.00631238764877303" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_Station.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/Smarpod_Station.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="Smarpod_Station_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.6 0.31 0" />
+    <parent link="pm_robot_base_link" />
+    <child link="Smarpod_Station" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="Smarpod_Station_Base_Calibration">
+  </link>
+  <joint name="Smarpod_Station_Base_Calibration_Joint" type="fixed">
+    <origin rpy="         0          0          0" xyz="         0.1465          0.1          0.2254" />
+    <parent link="Smarpod_Station" />
+    <child link="Smarpod_Station_Base_Calibration" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <link name="Smarpod_Station_Base">
+  </link>
+  <joint name="Smarpod_Station_Base_Joint" type="fixed">
+    <origin rpy="         0.0          0.0          0.0" xyz="         -0.001          0.011          0.001" />
+    <parent link="Smarpod_Station_Base_Calibration" />
+    <child link="Smarpod_Station_Base" />
+    <axis xyz="0 0 0" />
+  </joint>
+  
+  <link name="Chuck_Diodenplacement">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-9.19297095559313E-19 -2.27077957540206E-18 0.0172248900305356" />
+      <mass value="0.129863306528145" />
+      <inertia ixx="4.82948612003887e-05" ixy="-3.25500417801018e-21" ixz="1.64704228720239e-21" iyy="4.99204835318359e-05" iyz="-1.66535047771477e-23" izz="7.72305136475402e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/Chuck_Diodenplacement.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/Chuck_Diodenplacement.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="smarpod_chuck_joint" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Chuck_Diodenplacement" />
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.01763" />
+  </joint>
+  <link name="Smarpod_Part_Spawn__unity_source__chuck_diodenplacement">
+    </link>
+  <joint name="smarpod_part_spawn_joint_unity_source_chuck_diodenplacement" type="fixed">
+    <parent link="Chuck_Diodenplacement" />
+    <child link="Smarpod_Part_Spawn__unity_source__chuck_diodenplacement" />
+    <origin xyz="0.0 0.0 0.005" />
+  </joint>
+  <link name="Baugruppe_Smarpod_Chucks_Fiber">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-9.19297095559313E-19 -2.27077957540206E-18 0.0172248900305356" />
+      <mass value="0.129863306528145" />
+      <inertia ixx="4.82948612003887e-05" ixy="-3.25500417801018e-21" ixz="1.64704228720239e-21" iyy="4.99204835318359e-05" iyz="-1.66535047771477e-23" izz="7.72305136475402e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/Baugruppe_Smarpod_Chucks_Fiber.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/Baugruppe_Smarpod_Chucks_Fiber.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="smarpod_chuck_joint" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Baugruppe_Smarpod_Chucks_Fiber" />
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.01763" />
+  </joint>
+  <link name="Smarpod_Part_Spawn__unity_source__chuck_fiber">
+    </link>
+  <joint name="smarpod_part_spawn_joint_unity_source_chuck_fiber" type="fixed">
+    <parent link="Baugruppe_Smarpod_Chucks_Fiber" />
+    <child link="Smarpod_Part_Spawn__unity_source__chuck_fiber" />
+    <origin xyz="0.0 -0.015 0.00851" />
+  </joint>
+  <link name="calibration_target_holder">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-9.19297095559313E-19 -2.27077957540206E-18 0.0172248900305356" />
+      <mass value="0.129863306528145" />
+      <inertia ixx="4.82948612003887e-05" ixy="-3.25500417801018e-21" ixz="1.64704228720239e-21" iyy="4.99204835318359e-05" iyz="-1.66535047771477e-23" izz="7.72305136475402e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/calibration_target_holder.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/calibration_target_holder.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="smarpod_chuck_joint" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="calibration_target_holder" />
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.01763" />
+  </joint>
+  <link name="Smarpod_Part_Spawn__unity_source__chuck_smarpod_calibration">
+    </link>
+  <joint name="smarpod_part_spawn_joint_unity_source_chuck_smarpod_calibration" type="fixed">
+    <parent link="calibration_target_holder" />
+    <child link="Smarpod_Part_Spawn__unity_source__chuck_smarpod_calibration" />
+    <origin xyz="0.0 0.0 0.0055" />
+  </joint>
+  <link name="Chuck_Smarpod_Calibration_Ball">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-9.19297095559313E-19 -2.27077957540206E-18 0.0172248900305356" />
+      <mass value="0.129863306528145" />
+      <inertia ixx="4.82948612003887e-05" ixy="-3.25500417801018e-21" ixz="1.64704228720239e-21" iyy="4.99204835318359e-05" iyz="-1.66535047771477e-23" izz="7.72305136475402e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/Chuck_Smarpod_Calibration_Ball.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks/Chuck_Smarpod_Calibration_Ball.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="smarpod_chuck_joint" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Chuck_Smarpod_Calibration_Ball" />
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.01763" />
+  </joint>
+  <link name="Smarpod_Part_Spawn__unity_source__chuck_smarpod_ball_calibration">
+    </link>
+  <joint name="smarpod_part_spawn_joint_unity_source_chuck_smarpod_ball_calibration" type="fixed">
+    <parent link="Chuck_Smarpod_Calibration_Ball" />
+    <child link="Smarpod_Part_Spawn__unity_source__chuck_smarpod_ball_calibration" />
+    <origin xyz="0.01 -0.01 0.0183" />
+  </joint>
+  <link name="Smarpod_Part_Spawn">
+    </link>
+  <joint name="smarpod_part_spawn_joint" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Smarpod_Part_Spawn" />
+    <origin xyz="0.0 0.0 0.0" />
+  </joint>
+  <link name="Smarpod_Part_Spawn_Center__unity_source__empty">
+    </link>
+  <joint name="smarpod_part_spawn_center_joint_unity_source_empty" type="fixed">
+    <parent link="Smarpod_Top_Plate" />
+    <child link="Smarpod_Part_Spawn_Center__unity_source__empty" />
+    <origin xyz="0.0 0.0 0.0" />
+  </joint>
+  
+  <link name="Chuck_center_fiber_chip_alignment">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-9.19297095559313E-19 -2.27077957540206E-18 0.0172248900305356" />
+      <mass value="0.129863306528145" />
+      <inertia ixx="4.82948612003887e-05" ixy="-3.25500417801018e-21" ixz="1.64704228720239e-21" iyy="4.99204835318359e-05" iyz="-1.66535047771477e-23" izz="7.72305136475402e-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks_center/Chuck_center_fiber_chip_alignment.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/chucks_center/Chuck_center_fiber_chip_alignment.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="smarpod_chuck_center_joint" type="fixed">
+    <parent link="SmarPod_Origin" />
+    <child link="Chuck_center_fiber_chip_alignment" />
+    <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.011" />
+  </joint>
+  <link name="Smarpod_Part_Spawn_Center__unity_source__chuck_fiber_chip_alignment">
+    </link>
+  <joint name="smarpod_part_spawn_center_joint_unity_source_chuck_fiber_chip_alignment" type="fixed">
+    <parent link="Chuck_center_fiber_chip_alignment" />
+    <child link="Smarpod_Part_Spawn_Center__unity_source__chuck_fiber_chip_alignment" />
+    <origin xyz="0.01 0.0035 0.07225" />
+  </joint>
   
   <joint name="Calibration_Cube_Bottom_Joint" type="fixed">
     <origin rpy="0 0 0" xyz="0.0 0.0 -0.004" />

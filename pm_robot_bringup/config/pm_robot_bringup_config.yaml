@@ -135,6 +135,6 @@ pm_smparpod_station:
   available_chucks_center:
   - empty
   - chuck_fiber_chip_alignment
-  use_chuck: empty
-  use_chuck_center: empty
+  use_chuck: chuck_fiber
+  use_chuck_center: chuck_fiber_chip_alignment
   with_smarpod_station: false
