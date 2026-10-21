@@ -64,6 +64,25 @@ def ros_to_lh_np(vector: np.ndarray) -> np.ndarray:
     p = np.array([vector[0], vector[1], -vector[2]])
     return p
 
+# Components below this (mm) are treated as exactly zero.
+ROTATION_NOISE_THRESHOLD_MM = 1e-6
+
+def rotate_to_machine_axes(vector: np.ndarray, orientation: Quaternion) -> np.ndarray:
+    """
+    Rotate a start-frame offset into world, THEN convert to the left-handed machine axes.
+    The handedness flip must happen after the rotation, otherwise it does not commute for
+    tilted start frames.
+
+    Floating point noise of the rotation (e.g. 1e-24 mm for an axis that does not move) is
+    set to exactly zero. Otherwise it ends up as a tiny but non-zero axis speed in the
+    G-code, and the executor (e.g. Unity) stretches the whole move to an endless duration
+    to keep that axis synchronized.
+    """
+    r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
+    rotated = ros_to_lh_np(r.apply(vector))
+    rotated[np.abs(rotated) < ROTATION_NOISE_THRESHOLD_MM] = 0.0
+    return rotated
+
 
 
 class BaseAction:
@@ -252,12 +271,7 @@ class DispenseAction(BaseAction):
         # Create goal vector from offsets (expressed in the start frame)
         goal_vector = np.array([self.goal_x, self.goal_y, self.goal_z])
 
-        # Convert quaternion to rotation matrix
-        r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
-        # Rotate the start-frame offset into world, THEN convert to the
-        # left-handed machine axes. The handedness flip must happen after the
-        # rotation, otherwise it does not commute for tilted start frames.
-        rotated_goal = ros_to_lh_np(r.apply(goal_vector))
+        rotated_goal = rotate_to_machine_axes(goal_vector, orientation)
 
         # distance 
         distance = np.linalg.norm(rotated_goal)
@@ -266,7 +280,7 @@ class DispenseAction(BaseAction):
         if distance < self.turn_off_length:
             raise ValueError("Turn off length cannot be greater than the distance to move for DispenseAction G-code generation.")
         
-        turn_off_time = move_time/(distance / self.turn_off_length)
+        turn_off_time = move_time * self.turn_off_length / distance
 
         x_speed = rotated_goal[0] / move_time if move_time > 0 else 0.0
         y_speed = rotated_goal[1] / move_time if move_time > 0 else 0.0
@@ -400,11 +414,7 @@ class MoveAction(BaseAction):
         # Create goal vector from offsets (expressed in the start frame)
         goal_vector = np.array([self.goal_x, self.goal_y, self.goal_z])
 
-        # Rotate the start-frame offset into world, THEN convert to the
-        # left-handed machine axes. The handedness flip must happen after the
-        # rotation, otherwise it does not commute for tilted start frames.
-        r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
-        goal_vector = ros_to_lh_np(r.apply(goal_vector))
+        goal_vector = rotate_to_machine_axes(goal_vector, orientation)
 
         # Add goal to start point
         new_point = Point()
@@ -493,11 +503,7 @@ class DipAction(BaseAction):
         # Define dip vector along local -Z (expressed in the start frame)
         dip_vector = np.array([0.0, 0.0, -self.dip_depth])
 
-        # Rotate the start-frame dip vector into world, THEN convert to the
-        # left-handed machine axes. The handedness flip must happen after the
-        # rotation, otherwise it does not commute for tilted start frames.
-        r = R.from_quat([orientation.x, orientation.y, orientation.z, orientation.w])
-        rotated_dip = ros_to_lh_np(r.apply(dip_vector))
+        rotated_dip = rotate_to_machine_axes(dip_vector, orientation)
 
         # distance 
         dip_distance = np.linalg.norm(dip_vector)

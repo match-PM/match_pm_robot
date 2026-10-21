@@ -188,9 +188,8 @@ def generate_launch_description():
         ]
     )
 
-    robot_description_command = Command(
-        ["ros2 param get --hide-type /robot_state_publisher robot_description"]
-    )
+    # Same string robot_state_publisher gets; avoids 'ros2 param get', which fails when the ros2 daemon is broken
+    robot_description_command = robot_description_raw
 
     # control_manager = Node(
     #     package="controller_manager",

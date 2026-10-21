@@ -27,11 +27,13 @@ try:
     from std_srvs.srv import Trigger
     from pm_robot_primitive_skills.py_modules.smarpod_virtual_controller import SmarpodVirtualController
     smarpod_missing_package = None
-except ModuleNotFoundError as error:
+except ImportError as error:
+    # ModuleNotFoundError: package not installed; ImportError: installed
+    # smarpod_interfaces is too old to provide SetVirtualPivot.
     if (error.name or '').split('.')[0] not in (
             'smarpod_interfaces', 'controller_manager_msgs', 'std_srvs'):
         raise
-    smarpod_missing_package = error.name
+    smarpod_missing_package = error.name if isinstance(error, ModuleNotFoundError) else str(error)
     SmarpodVirtualController = None
 
 class PrimitiveSkillsNode(Node):
