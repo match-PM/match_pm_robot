@@ -70,6 +70,12 @@ pm_robot_gonio_right:
   unity_parent: Gonio_Right_Chuck_Origin
   use_chuck: chuck_gonio_right_Siemens_UFC
   with_Gonio_Right: true
+confocal_sensor_head:
+  availabe_configs:
+  - distance_sensor_z_5_y_16_x_29
+  - distance_sensor_z_10_y_16_x_29
+  - distance_sensor_z_20_y_16_x_29
+  use_config: distance_sensor_z_5_y_16_x_29
 pm_robot_tools:
   pm_robot_tool_parallel_gripper_1_jaw:
     available_tools:

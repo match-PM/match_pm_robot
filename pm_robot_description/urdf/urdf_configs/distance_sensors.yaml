@@ -1,0 +1,20 @@
+distance_sensor_z_5_y_16_x_29:
+  x: "0.029"
+  y: "0.016"
+  z: "0.005"
+  visual_filename: "distance_sensor_z_5_y_16_x_29.STL"
+  collision_filename: "distance_sensor_z_5_y_16_x_29_col.STL"
+
+distance_sensor_z_10_y_16_x_29:
+  x: "0.029"
+  y: "0.016"
+  z: "0.01"
+  visual_filename: "distance_sensor_z_10_y_16_x_29.STL"
+  collision_filename: "distance_sensor_z_10_y_16_x_29_col.STL"
+
+distance_sensor_z_20_y_16_x_29:
+  x: "0.029"
+  y: "0.016"
+  z: "0.02"
+  visual_filename: "distance_sensor_z_20_y_16_x_29.STL"
+  collision_filename: "distance_sensor_z_20_y_16_x_29_col.STL"

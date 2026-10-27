@@ -1,0 +1,9 @@
+# Directory containing the default pm_robot_configuration.yaml requirement file.
+string rsap_path
+
+# Optional alternative file. Relative paths are resolved below rsap_path;
+# absolute paths are used directly. Leave empty to use the default filename.
+string file_path_override
+---
+bool success
+string message

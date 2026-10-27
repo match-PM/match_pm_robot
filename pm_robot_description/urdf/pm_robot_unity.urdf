@@ -724,7 +724,7 @@
     <child link="Confocal_Sensor_Bottom" />
     <axis xyz="0 0 0" />
   </joint>
-  <link name="Confocal_Sensor_Top">
+  <link name="distance_sensor_z_5_y_16_x_29">
     <inertial>
       <origin rpy="0 0 0" xyz="-0.0129992374574083 -0.0182302838306646 0.0532500614504829" />
       <mass value="0.0655666647000771" />
@@ -733,7 +733,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0" />
       <geometry>
-        <mesh filename="meshes/Confocal_Sensor_Top.STL" />
+        <mesh filename="meshes/distance_sensors/distance_sensor_z_5_y_16_x_29.STL" />
       </geometry>
       <material name="">
         <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
@@ -742,22 +742,14 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0" />
       <geometry>
-        <mesh filename="meshes/Confocal_Sensor_Top_coll.STL" />
+        <mesh filename="meshes/distance_sensors/distance_sensor_z_5_y_16_x_29_col.STL" />
       </geometry>
     </collision>
   </link>
   <joint name="TCP_Confocal_Sensor_Top_Joint" type="fixed">
-    <origin rpy="             0.0              0.0              0.0" xyz="             0.176999957149375              -0.0580000000000008              -0.500500000000003" />
+    <origin rpy="             0.0              0.0              0.0" xyz="             0.177             -0.057999999999999996             -0.5005" />
     <parent link="Z_Axis" />
-    <child link="Confocal_Sensor_Top" />
-    <axis xyz="0 0 0" />
-  </joint>
-  <link name="TCP_Confocal_Sensor_Top_2">
-      </link>
-  <joint name="TCP_Confocal_Sensor_Top_2_Joint" type="fixed">
-    <origin rpy="             0.0              0.0              0.0" xyz="             0.147499957149374              -0.1065              -0.5025" />
-    <parent link="Z_Axis" />
-    <child link="TCP_Confocal_Sensor_Top_2" />
+    <child link="distance_sensor_z_5_y_16_x_29" />
     <axis xyz="0 0 0" />
   </joint>
   
@@ -1484,9 +1476,9 @@
   </ros2_control>
   <gazebo>
     <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
-      <parameters>/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_sim_HW.yaml</parameters>
-      <parameters>/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_gonio_right_sim_HW.yaml</parameters>
-      <parameters>/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_gonio_left_sim_HW.yaml</parameters>
+      <parameters>/home/niklas/ros2_ws/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_sim_HW.yaml</parameters>
+      <parameters>/home/niklas/ros2_ws/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_gonio_right_sim_HW.yaml</parameters>
+      <parameters>/home/niklas/ros2_ws/install/pm_robot_description/share/pm_robot_description/config/pm_robot_control_gonio_left_sim_HW.yaml</parameters>
       
       
       
@@ -2182,6 +2174,73 @@
   </joint>
   
   
+  
+  <joint name="Gonio_Right_Part_1_Origin_Joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.04009 0.01093 0.038" />
+    <parent link="Gonio_Right_Chuck_Origin" />
+    <child link="Gonio_Right_Part_1_Origin" />
+    <axis xyz="0 0 0" />
+  </joint>
+  
+  
+  
+  <link name="distance_sensor_z_10_y_16_x_29">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0129992374574083 -0.0182302838306646 0.0532500614504829" />
+      <mass value="0.0655666647000771" />
+      <inertia ixx="6.2078599619276E-05" ixy="-1.1064871149157E-05" ixz="-1.62845145975249E-06" iyy="3.63712240262645E-05" iyz="-4.78563533641753E-06" izz="4.07979832865319E-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/distance_sensors/distance_sensor_z_10_y_16_x_29.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/distance_sensors/distance_sensor_z_10_y_16_x_29_col.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="TCP_Confocal_Sensor_Top_Joint" type="fixed">
+    <origin rpy="             0.0              0.0              0.0" xyz="             0.177             -0.057999999999999996             -0.5055" />
+    <parent link="Z_Axis" />
+    <child link="distance_sensor_z_10_y_16_x_29" />
+    <axis xyz="0 0 0" />
+  </joint>
+  
+  <link name="distance_sensor_z_20_y_16_x_29">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0129992374574083 -0.0182302838306646 0.0532500614504829" />
+      <mass value="0.0655666647000771" />
+      <inertia ixx="6.2078599619276E-05" ixy="-1.1064871149157E-05" ixz="-1.62845145975249E-06" iyy="3.63712240262645E-05" iyz="-4.78563533641753E-06" izz="4.07979832865319E-05" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/distance_sensors/distance_sensor_z_20_y_16_x_29.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/distance_sensors/distance_sensor_z_20_y_16_x_29_col.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="TCP_Confocal_Sensor_Top_Joint" type="fixed">
+    <origin rpy="             0.0              0.0              0.0" xyz="             0.177             -0.057999999999999996             -0.5155" />
+    <parent link="Z_Axis" />
+    <child link="distance_sensor_z_20_y_16_x_29" />
+    <axis xyz="0 0 0" />
+  </joint>
   
   <link name="SmarPod_Origin">
     <inertial>
@@ -3205,15 +3264,6 @@
     <origin rpy="0 0 0" xyz="0 0 0" />
     <parent link="PM_Robot_Tool_TCP_Tool_SPT_Toolholder_Tip_R_A1000_I500" />
     <child link="Tool_Tip_R_A1000_I500_Tool_SPT_Toolholder_Tip_R_A1000_I500" />
-    <axis xyz="0 0 0" />
-  </joint>
-  
-  
-  
-  <joint name="Gonio_Right_Part_1_Origin_Joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0.04009 0.01093 0.038" />
-    <parent link="Gonio_Right_Chuck_Origin" />
-    <child link="Gonio_Right_Part_1_Origin" />
     <axis xyz="0 0 0" />
   </joint>
   

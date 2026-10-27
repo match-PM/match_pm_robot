@@ -38,6 +38,12 @@
     <xacro:property name="current_pm_robot_2K_dipsenser_tip" value="${current_pm_robot_bringup_config['pm_robot_2K_dispenser_tip']['use_dispenser_tip']}"/>
     <xacro:property name="current_vacuum_tool" value="${current_pm_robot_bringup_config['pm_robot_tools']['pm_robot_vacuum_tools']['use_tool']}"/>
 
+    <!-- The selected confocal head supplies both its geometry and its TCP offset. -->
+    <xacro:property name="distance_sensor_configs_file" value="$(find pm_robot_description)/urdf/urdf_configs/distance_sensors.yaml" />
+    <xacro:property name="distance_sensor_configs" value="${xacro.load_yaml(distance_sensor_configs_file)}"/>
+    <xacro:property name="current_confocal_sensor_head" value="${current_pm_robot_bringup_config['confocal_sensor_head']['use_config']}"/>
+    <xacro:property name="current_confocal_sensor_head_config" value="${distance_sensor_configs[current_confocal_sensor_head]}"/>
+
     <xacro:property name="calibration_dict" value="${xacro.load_yaml(pm_robot_joint_calibraion_file)}"/>
 
 
@@ -911,7 +917,7 @@
         <visual>
           <origin xyz="0 0 0" rpy="0 0 0" />
           <geometry>
-            <mesh filename="file://$(find pm_robot_description)/meshes/Confocal_Sensor_Top.STL" />
+            <mesh filename="file://$(find pm_robot_description)/meshes/distance_sensors/${current_confocal_sensor_head_config['visual_filename']}" />
           </geometry>
           <material name="">
             <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
@@ -920,7 +926,7 @@
         <collision>
           <origin xyz="0 0 0" rpy="0 0 0" />
           <geometry>
-            <mesh filename="file://$(find pm_robot_description)/meshes/Confocal_Sensor_Top_coll.STL" />
+            <mesh filename="file://$(find pm_robot_description)/meshes/distance_sensors/${current_confocal_sensor_head_config['collision_filename']}" />
           </geometry>
         </collision>
       </link>
@@ -932,42 +938,21 @@
       <xacro:property name="Confocal_Sensor_Top_TCP_Joint_Cal_ry" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['ry_offset']}"/>
       <xacro:property name="Confocal_Sensor_Top_TCP_Joint_Cal_rz" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['rz_offset']}"/>
 
+      <xacro:property name="Confocal_Sensor_Head_Offset_x" value="${float(current_confocal_sensor_head_config['x'])}"/>
+      <xacro:property name="Confocal_Sensor_Head_Offset_y" value="${float(current_confocal_sensor_head_config['y'])}"/>
+      <xacro:property name="Confocal_Sensor_Head_Offset_z" value="${float(current_confocal_sensor_head_config['z'])}"/>
+
       <joint name="TCP_Confocal_Sensor_Top_Joint" type="fixed">
         <origin xyz="
-            ${0.176999957149375 + Confocal_Sensor_Top_TCP_Joint_Cal_x*0.000001} 
-            ${-0.0580000000000008 + Confocal_Sensor_Top_TCP_Joint_Cal_y*0.000001} 
-            ${-0.500500000000003 + Confocal_Sensor_Top_TCP_Joint_Cal_z*0.000001}" 
+            ${0.148 + Confocal_Sensor_Head_Offset_x + Confocal_Sensor_Top_TCP_Joint_Cal_x*0.000001}
+            ${-0.074 + Confocal_Sensor_Head_Offset_y + Confocal_Sensor_Top_TCP_Joint_Cal_y*0.000001}
+            ${-0.4955 - Confocal_Sensor_Head_Offset_z + Confocal_Sensor_Top_TCP_Joint_Cal_z*0.000001}"
             rpy="
             ${0 + Confocal_Sensor_Top_TCP_Joint_Cal_rx*3.14159265359/180} 
             ${0 + Confocal_Sensor_Top_TCP_Joint_Cal_ry*3.14159265359/180} 
             ${0 + Confocal_Sensor_Top_TCP_Joint_Cal_rz*3.14159265359/180}" />
         <parent link="Z_Axis" />
         <child link="TCP_Confocal_Sensor_Top" />
-        <axis xyz="0 0 0" />
-      </joint>
-
-      <link 
-        name="TCP_Confocal_Sensor_Top_2">
-      </link>
-      
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_x" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['x_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_y" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['y_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_z" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['z_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_rx" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['rx_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_ry" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['ry_offset']}"/>
-      <xacro:property name="Confocal_Sensor_Top_TCP_2_Joint_Cal_rz" value="${calibration_dict['Confocal_Sensor_Top_TCP_Joint']['rz_offset']}"/>
-
-      <joint name="TCP_Confocal_Sensor_Top_2_Joint" type="fixed">
-        <origin xyz="
-            ${0.147499957149374 + Confocal_Sensor_Top_TCP_2_Joint_Cal_x*0.000001} 
-            ${-0.1065 + Confocal_Sensor_Top_TCP_2_Joint_Cal_y*0.000001} 
-            ${-0.5025 + Confocal_Sensor_Top_TCP_2_Joint_Cal_z*0.000001}" 
-            rpy="
-            ${0 + Confocal_Sensor_Top_TCP_2_Joint_Cal_rx*3.14159265359/180} 
-            ${0 + Confocal_Sensor_Top_TCP_2_Joint_Cal_ry*3.14159265359/180} 
-            ${0 + Confocal_Sensor_Top_TCP_2_Joint_Cal_rz*3.14159265359/180}" />
-        <parent link="Z_Axis" />
-        <child link="TCP_Confocal_Sensor_Top_2" />
         <axis xyz="0 0 0" />
       </joint>
 

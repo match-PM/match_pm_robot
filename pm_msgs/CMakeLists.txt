@@ -30,6 +30,7 @@ rosidl_generate_interfaces(
   "msg/VizAdhesivePoints.msg"
   "msg/DispensePoint.msg"
   "msg/UvCuringSpotProperty.msg"
+  "msg/PmRobotConfiguration.msg"
 
   "srv/ForceSensingMove.srv"
   "srv/DispenseAtPoints.srv"
@@ -72,6 +73,7 @@ rosidl_generate_interfaces(
   "srv/DispenseTestPoints.srv"
   "srv/ChangeToolAndRestart.srv"
   "srv/DispenseAtPath.srv"
+  "srv/CheckPmRobotConfiguration.srv"
   DEPENDENCIES geometry_msgs
 )
 

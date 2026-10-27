@@ -2,8 +2,11 @@ import rclpy
 from rclpy.node import Node
 import time
 
+import yaml
+
 from rclpy.executors import MultiThreadedExecutor, SingleThreadedExecutor
 from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
+from rclpy.qos import QoSProfile, DurabilityPolicy, ReliabilityPolicy
 import rclpy.time
 
 from pm_moveit_interfaces.srv import MoveToPose,  MoveToFrame, MoveRelative
@@ -21,6 +24,11 @@ from pm_msgs.srv import EmptyWithSuccess
 import copy
 from pm_robot_primitive_skills.py_modules.PmRobotError import PmRobotError
 from pm_robot_primitive_skills.py_modules.PrimitiveSkillsUtils import PrimitiveSkillsUtils
+from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig
+from pm_robot_modules.submodules.configuration_requirements import (
+    compare_configuration_subset,
+    resolve_configuration_file,
+)
 
 try:
     from smarpod_interfaces.srv import SetVirtualPivot
@@ -42,6 +50,16 @@ class PrimitiveSkillsNode(Node):
         super().__init__('pm_robot_primitive_skills')
 
         self.pm_primitive_skills_utils = PrimitiveSkillsUtils(self)
+
+        if not self.has_parameter('use_real_config'):
+            self.declare_parameter('use_real_config', False)
+        self.use_real_config = bool(
+            self.get_parameter('use_real_config').value
+        )
+        self.pm_robot_config = PmRobotConfig(
+            use_real_config=self.use_real_config
+        )
+        self._current_bringup_config = None
 
         if not self.has_parameter('use_sim_time'):
             self.declare_parameter('use_sim_time', False)
@@ -86,8 +104,126 @@ class PrimitiveSkillsNode(Node):
         self.set_gripper_2_jaws_position_srv = self.create_service(pm_msg_srv.Gripper2JawSetPosition, self.get_name()+'/set_gripper_2_jaws_position', self.set_gripper_2_jaws_position_callback, callback_group=self.callback_group_mu_ex)
 
         self.gripper_2_jaws_publisher = self.create_publisher(Float64MultiArray,"/pm_parallel_gripper_2_jaws_controller/commands",10)
+
+        config_qos = QoSProfile(
+            depth=1,
+            reliability=ReliabilityPolicy.RELIABLE,
+            durability=DurabilityPolicy.TRANSIENT_LOCAL,
+        )
+        self.current_config_publisher = self.create_publisher(
+            pm_msg_msg.PmRobotConfiguration,
+            self.get_name() + '/current_pm_robot_configuration',
+            config_qos,
+        )
+        self.check_config_service = self.create_service(
+            pm_msg_srv.CheckPmRobotConfiguration,
+            self.get_name() + '/check_pm_robot_configuration',
+            self.check_pm_robot_configuration_callback,
+            callback_group=self.callback_group_re,
+        )
+        self.current_config_timer = self.create_timer(
+            5.0,
+            self.publish_current_pm_robot_configuration,
+            callback_group=self.callback_group_re,
+        )
+        self.publish_current_pm_robot_configuration()
         
-        self.logger.info(f"Primitive skills node started! Using sim time: {sim_time}")
+        config_mode = 'real hardware' if self.use_real_config else 'simulation'
+        self.logger.info(
+            f"Primitive skills node started! Using sim time: {sim_time}; "
+            f"bringup configuration mode: {config_mode}"
+        )
+
+    def publish_current_pm_robot_configuration(self):
+        """Reload and publish the active bringup configuration as YAML."""
+        try:
+            self.pm_robot_config.reload_config()
+            current_config = self.pm_robot_config.get_config_data()
+
+            message = pm_msg_msg.PmRobotConfiguration()
+            message.config_file_path = (
+                self.pm_robot_config.get_active_bringup_config_path()
+            )
+            message.use_real_config = self.use_real_config
+            message.config_yaml = yaml.safe_dump(
+                current_config,
+                default_flow_style=False,
+                sort_keys=False,
+            )
+
+            self._current_bringup_config = current_config
+            self.current_config_publisher.publish(message)
+        except Exception as error:
+            self.logger.error(
+                'Failed to publish the current PM robot configuration: '
+                f'{error}'
+            )
+
+    @staticmethod
+    def _count_configuration_properties(configuration):
+        if isinstance(configuration, dict):
+            return sum(
+                PrimitiveSkillsNode._count_configuration_properties(value)
+                for value in configuration.values()
+            )
+        return 1
+
+    def check_pm_robot_configuration_callback(self, request, response):
+        """Compare the published bringup config with a partial requirement file."""
+        try:
+            requirement_path = resolve_configuration_file(
+                request.rsap_path,
+                request.file_path_override,
+            )
+            if not requirement_path.is_file():
+                raise FileNotFoundError(
+                    f"Configuration requirement file not found: "
+                    f"{requirement_path}"
+                )
+
+            with requirement_path.open('r', encoding='utf-8') as config_file:
+                required_config = yaml.safe_load(config_file)
+
+            if not isinstance(required_config, dict) or not required_config:
+                raise ValueError(
+                    'The configuration requirement file must contain at least '
+                    'one YAML property.'
+                )
+
+            if self._current_bringup_config is None:
+                self.publish_current_pm_robot_configuration()
+            if self._current_bringup_config is None:
+                raise RuntimeError(
+                    'No current bringup configuration has been published.'
+                )
+
+            differences = compare_configuration_subset(
+                self._current_bringup_config,
+                required_config,
+            )
+            if differences:
+                response.success = False
+                response.message = (
+                    f"PM robot configuration does not match "
+                    f"'{requirement_path}':\n- "
+                    + '\n- '.join(differences)
+                )
+                return response
+
+            checked_properties = self._count_configuration_properties(
+                required_config
+            )
+            response.success = True
+            response.message = (
+                f"PM robot configuration matches '{requirement_path}' "
+                f"({checked_properties} properties checked)."
+            )
+        except Exception as error:
+            response.success = False
+            response.message = str(error)
+            self.logger.error(response.message)
+
+        return response
 
     def activate_smarpod_virtual_controller_callback(self, request, response):
         response.success, response.message = self.smarpod_virtual_controller.activate(
@@ -328,7 +464,8 @@ def main(args=None):
     finally:
         executor.shutdown()
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 

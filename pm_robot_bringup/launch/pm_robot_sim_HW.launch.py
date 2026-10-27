@@ -337,7 +337,8 @@ def generate_launch_description():
         name="pm_robot_primitive_skills",
         # output="log",
         parameters=[
-            {"use_sim_time": sim_time}
+            {"use_sim_time": sim_time},
+            {"use_real_config": False},
         ],
         emulate_tty=True,
     )

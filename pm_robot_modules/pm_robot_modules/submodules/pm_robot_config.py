@@ -4,6 +4,10 @@ from ament_index_python.packages import get_package_share_directory, PackageNotF
 import copy
 import os
 
+from pm_robot_modules.submodules.configuration_requirements import (
+    merge_configuration_subset,
+)
+
 
 class ParallelGripperConfig:
     TOOL_GRIPPER_1_JAW_IDENT = 'pm_robot_tool_parallel_gripper_1_jaw'
@@ -152,6 +156,38 @@ class DispenserTipConfig():
     def reload_config(self):
         self._current_dispenser_tip = self._config_value['use_dispenser_tip']
         self._available_dispenser_tips:list[str] = self._config_value['availabe_dispenser_tips']
+
+
+class ConfocalSensorHeadConfig:
+    """Selection of the confocal sensor head described by the bringup config."""
+
+    def __init__(self, config_value: dict) -> None:
+        self._config_value = config_value
+        self.reload_config()
+
+    def set_current_config(self, config_name: str):
+        self._current_config = config_name
+        self._config_value['use_config'] = config_name
+
+    def get_config(self):
+        return self._config_value
+
+    def get_available_configs(self) -> list[str]:
+        return self._available_configs
+
+    def get_current_config(self) -> str:
+        return self._current_config
+
+    def reload_config(self):
+        self._current_config = self._config_value['use_config']
+        # Keep accepting the spelling used by the existing bringup YAML while
+        # also supporting the corrected spelling for future configurations.
+        self._available_configs = list(
+            self._config_value.get(
+                'available_configs',
+                self._config_value.get('availabe_configs', [])
+            )
+        )
 
 class GonioConfig():
     WITH_GONIO_LEFT = 'with_Gonio_Left'
@@ -417,6 +453,10 @@ class PmRobotConfig:
             self._config_data['pm_robot_2K_dispenser_tip']
         )
 
+        self.confocal_sensor_head = ConfocalSensorHeadConfig(
+            self._config_data['confocal_sensor_head']
+        )
+
         self.smarpod_station = GonioConfig(
             type_station=GonioConfig.SMARPOD_STATION,
             full_config_dict=self._config_data
@@ -424,6 +464,25 @@ class PmRobotConfig:
 
     def get_config_data(self):
         return copy.deepcopy(self._config_data)
+
+    def apply_config_data(self, config_data: dict):
+        """Apply a full or partial configuration without saving it to disk."""
+        if not isinstance(config_data, dict):
+            raise ValueError('The loaded configuration must be a YAML mapping.')
+        merged_config = merge_configuration_subset(
+            self._config_data,
+            config_data,
+        )
+        previous_config = self._config_data
+        self._config_data = merged_config
+        try:
+            self._initialize_subcomponents()
+        except Exception as error:
+            self._config_data = previous_config
+            self._initialize_subcomponents()
+            raise ValueError(
+                f'The loaded configuration is invalid: {error}'
+            ) from error
 
     def save_config(self):
         with open(self._active_path, 'w') as file:
@@ -491,4 +550,3 @@ if __name__ == "__main__":
     config = PmRobotConfig()
     config.tool.get_active_tool_name()
     print(config.tool.get_active_tool_name())
-    
