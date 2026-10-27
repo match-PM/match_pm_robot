@@ -788,15 +788,21 @@ def main():
         description='Generate the combined Unity URDF and manifest for the pm_robot.')
     parser.add_argument(
         '--yaml',
-        default='/home/match-pm/ros2_ws/install/pm_robot_bringup/share/pm_robot_bringup/config/pm_robot_bringup_config.yaml',
+        default=os.path.expanduser(
+            '~/ros2_ws/install/pm_robot_bringup/share/pm_robot_bringup/'
+            'config/pm_robot_bringup_config.yaml'),
         help='Path to the installed pm_robot_bringup_config.yaml')
     parser.add_argument(
         '--xacro',
-        default='/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf/pm_robot_main.xacro',
+        default=os.path.expanduser(
+            '~/ros2_ws/install/pm_robot_description/share/'
+            'pm_robot_description/urdf/pm_robot_main.xacro'),
         help='Path to the installed pm_robot_main.xacro')
     parser.add_argument(
         '--output-dir',
-        default='/home/match-pm/ros2_ws/install/pm_robot_description/share/pm_robot_description/urdf',
+        default=os.path.expanduser(
+            '~/ros2_ws/install/pm_robot_description/share/'
+            'pm_robot_description/urdf'),
         help='Directory for the combined URDF and manifest')
     parser.add_argument(
         '--output-name', default='pm_robot_unity.urdf',

@@ -519,8 +519,16 @@ class PmRobotConfig:
         try:
             with open(self.file_path_pm_robot_config) as f:
                 pm_robot_config = yaml.safe_load(f)    
-            self._real_bringup_config_path = pm_robot_config['pm_robot_bringup_config_file_path']
-            self._real_joint_config_path = pm_robot_config['pm_robot_calibration_file_path']
+            self._real_bringup_config_path = os.path.expandvars(
+                os.path.expanduser(
+                    pm_robot_config['pm_robot_bringup_config_file_path']
+                )
+            )
+            self._real_joint_config_path = os.path.expandvars(
+                os.path.expanduser(
+                    pm_robot_config['pm_robot_calibration_file_path']
+                )
+            )
         except Exception as e:
             print(f"Error reading {self.file_path_pm_robot_config}: {e}")
             raise LookupError("TBD")
