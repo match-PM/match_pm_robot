@@ -188,6 +188,14 @@ def generate_launch_description():
         ]
     )
 
+    smarpod_controller_path = PathJoinSubstitution(
+        [
+            FindPackageShare("smaract_hexapod_description"),
+            "config",
+            "smaract_hexapod_control_real.yaml",
+        ]
+    )
+
     # Same string robot_state_publisher gets; avoids 'ros2 param get', which fails when the ros2 daemon is broken
     robot_description_command = robot_description_raw
 
@@ -210,6 +218,11 @@ def generate_launch_description():
 
     if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']:
         controller_manager_params.append(robot_two_jaw_controller_path)
+
+    with_smarpod_station = bringup_config['pm_smparpod_station']['with_smarpod_station']
+
+    if with_smarpod_station:
+        controller_manager_params.append(smarpod_controller_path)
 
     control_manager = Node(
         package="controller_manager",
@@ -347,6 +360,20 @@ def generate_launch_description():
         )
     )
 
+    launch_smarpod_station_controller = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare(pkg_name),
+                        "launch",
+                        "pm_robot_launch_smarpod_controller.launch.py",
+                    ]
+                )
+            ]
+        )
+    )
+
     launch_gonio_parallel_gripper_controller = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
@@ -433,6 +460,7 @@ def generate_launch_description():
     delayed_move_group = TimerAction(period=5.0, actions=[run_move_group_node])
     delayed_pm_moveit_server = TimerAction(period=5.0, actions=[pm_moveit_server])
     delayed_pneumatic_controller_listener = TimerAction(period=15.0, actions=[pneumatic_controller_listener_node])
+    delayed_smarpod_controller = TimerAction(period=12.0, actions=[launch_smarpod_station_controller])
 
     # Define Launch Description
     ld = LaunchDescription()
@@ -453,6 +481,8 @@ def generate_launch_description():
         ld.add_action(launch_gonio_left_controller)
     if bringup_config['pm_robot_gonio_right']['with_Gonio_Right']:
         ld.add_action(launch_gonio_right_controller)
+    if with_smarpod_station:
+        ld.add_action(delayed_smarpod_controller)
     if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_1_jaw']['use_paralell_gripper']:
         ld.add_action(pm_parallel_gripper_jaw_controller_launch)
     if bringup_config['pm_robot_tools']['pm_robot_tool_parallel_gripper_2_jaws']['use_paralell_gripper']:
