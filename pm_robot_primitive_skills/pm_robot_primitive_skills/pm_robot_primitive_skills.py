@@ -26,7 +26,8 @@ from pm_robot_primitive_skills.py_modules.PmRobotError import PmRobotError
 from pm_robot_primitive_skills.py_modules.PrimitiveSkillsUtils import PrimitiveSkillsUtils
 from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig
 from pm_robot_modules.submodules.configuration_requirements import (
-    compare_configuration_subset,
+    RobotConfigurationState,
+    read_configuration,
     resolve_configuration_file,
 )
 
@@ -59,7 +60,17 @@ class PrimitiveSkillsNode(Node):
         self.pm_robot_config = PmRobotConfig(
             use_real_config=self.use_real_config
         )
-        self._current_bringup_config = None
+        self.declare_parameter('loaded_pm_robot_configuration_yaml', '')
+        loaded_yaml = self.get_parameter(
+            'loaded_pm_robot_configuration_yaml'
+        ).value
+        loaded_config = yaml.safe_load(loaded_yaml) if loaded_yaml else None
+        if loaded_config is not None and (
+                not isinstance(loaded_config, dict) or not loaded_config):
+            raise ValueError('The launch-time configuration must be a nonempty mapping.')
+        self.configuration_state = RobotConfigurationState(
+            self.pm_robot_config.get_active_bringup_config_path(), loaded_config
+        )
 
         if not self.has_parameter('use_sim_time'):
             self.declare_parameter('use_sim_time', False)
@@ -67,6 +78,11 @@ class PrimitiveSkillsNode(Node):
         sim_time = self.get_parameter('use_sim_time').value
         
         self.logger = self.get_logger()
+        if loaded_config is None:
+            self.logger.warning(
+                'No launch-time robot configuration was supplied; configuration '
+                'checks will fail until started with the bringup snapshot.'
+            )
         
         self.callback_group_re = ReentrantCallbackGroup()
         self.callback_group_mu_ex = MutuallyExclusiveCallbackGroup()
@@ -115,11 +131,24 @@ class PrimitiveSkillsNode(Node):
             self.get_name() + '/current_pm_robot_configuration',
             config_qos,
         )
+        self.config_callback_group = MutuallyExclusiveCallbackGroup()
         self.check_config_service = self.create_service(
             pm_msg_srv.CheckPmRobotConfiguration,
             self.get_name() + '/check_pm_robot_configuration',
             self.check_pm_robot_configuration_callback,
-            callback_group=self.callback_group_re,
+            callback_group=self.config_callback_group,
+        )
+        self.set_config_service = self.create_service(
+            pm_msg_srv.SetPmRobotConfiguration,
+            self.get_name() + '/set_pm_robot_configuration',
+            self.set_pm_robot_configuration_callback,
+            callback_group=self.config_callback_group,
+        )
+        self.change_tool_service = self.create_service(
+            pm_msg_srv.ChangeTool,
+            self.get_name() + '/change_tool',
+            self.change_tool_callback,
+            callback_group=self.config_callback_group,
         )
         self.current_config_timer = self.create_timer(
             5.0,
@@ -135,10 +164,11 @@ class PrimitiveSkillsNode(Node):
         )
 
     def publish_current_pm_robot_configuration(self):
-        """Reload and publish the active bringup configuration as YAML."""
+        """Publish the immutable configuration captured by robot bringup."""
         try:
-            self.pm_robot_config.reload_config()
-            current_config = self.pm_robot_config.get_config_data()
+            current_config = self.configuration_state.loaded
+            if current_config is None:
+                return
 
             message = pm_msg_msg.PmRobotConfiguration()
             message.config_file_path = (
@@ -151,7 +181,6 @@ class PrimitiveSkillsNode(Node):
                 sort_keys=False,
             )
 
-            self._current_bringup_config = current_config
             self.current_config_publisher.publish(message)
         except Exception as error:
             self.logger.error(
@@ -169,38 +198,14 @@ class PrimitiveSkillsNode(Node):
         return 1
 
     def check_pm_robot_configuration_callback(self, request, response):
-        """Compare the published bringup config with a partial requirement file."""
+        """Check requirements against the loaded robot and the current file."""
         try:
             requirement_path = resolve_configuration_file(
                 request.rsap_path,
                 request.file_path_override,
             )
-            if not requirement_path.is_file():
-                raise FileNotFoundError(
-                    f"Configuration requirement file not found: "
-                    f"{requirement_path}"
-                )
-
-            with requirement_path.open('r', encoding='utf-8') as config_file:
-                required_config = yaml.safe_load(config_file)
-
-            if not isinstance(required_config, dict) or not required_config:
-                raise ValueError(
-                    'The configuration requirement file must contain at least '
-                    'one YAML property.'
-                )
-
-            if self._current_bringup_config is None:
-                self.publish_current_pm_robot_configuration()
-            if self._current_bringup_config is None:
-                raise RuntimeError(
-                    'No current bringup configuration has been published.'
-                )
-
-            differences = compare_configuration_subset(
-                self._current_bringup_config,
-                required_config,
-            )
+            required_config = read_configuration(requirement_path)
+            differences = self.configuration_state.check(required_config)
             if differences:
                 response.success = False
                 response.message = (
@@ -215,7 +220,7 @@ class PrimitiveSkillsNode(Node):
             )
             response.success = True
             response.message = (
-                f"PM robot configuration matches '{requirement_path}' "
+                f"Loaded and on-disk configurations match '{requirement_path}' "
                 f"({checked_properties} properties checked)."
             )
         except Exception as error:
@@ -223,6 +228,77 @@ class PrimitiveSkillsNode(Node):
             response.message = str(error)
             self.logger.error(response.message)
 
+        return response
+
+    def set_pm_robot_configuration_callback(self, request, response):
+        """Merge requested fields into the bringup file for the next launch."""
+        try:
+            requirement_path = resolve_configuration_file(
+                request.rsap_path, request.file_path_override
+            )
+            required_config = read_configuration(requirement_path)
+            restart_required = self.configuration_state.update(required_config)
+            response.success = True
+            response.message = (
+                f"Updated bringup configuration '{self.configuration_state.path}' "
+                f"using '{requirement_path}'. "
+                + ('Restart the robot to load the configuration.'
+                   if restart_required else 'The robot already has this configuration loaded.')
+            )
+        except Exception as error:
+            response.success = False
+            response.message = str(error)
+            self.logger.error(response.message)
+        return response
+
+    def change_tool_callback(self, request, response):
+        """Save a tool and attachment for the next launch without restarting."""
+        try:
+            tool_name = request.tool_name.strip()
+            attachment_name = request.attachment_name.strip()
+            # The launch supplies use_real_config for the robot this node serves.
+            # Load a fresh copy to preserve other changes made to the file.
+            config = PmRobotConfig(use_real_config=self.use_real_config)
+            grippers = [
+                config.tool._gripper_vacuum,
+                config.tool._gripper_1_jaw,
+                config.tool._gripper_2_jaw,
+            ]
+            selected = None
+            available_tools = []
+            for gripper in grippers:
+                for name, attachments in gripper.get_available_tools():
+                    available_tools.append(name)
+                    if name == tool_name:
+                        selected = gripper
+                        available_attachments = attachments
+            if selected is None:
+                raise ValueError(
+                    f"Tool '{tool_name}' not found in config. "
+                    f"Available: {available_tools}"
+                )
+            if not attachment_name or attachment_name not in available_attachments:
+                raise ValueError(
+                    f"Invalid attachment '{attachment_name}' for tool '{tool_name}'. "
+                    f"Available: {available_attachments}"
+                )
+
+            for gripper in grippers:
+                gripper.deactivate()
+            selected.activate()
+            selected.set_current_tool(tool=tool_name, ext=attachment_name)
+            config.save_config()
+            response.success = True
+            response.message = (
+                f"Tool changed to '{tool_name}' with attachment '{attachment_name}'. "
+                f"Config saved to '{config.get_active_bringup_config_path()}'. "
+                'Restart the robot to load the configuration.'
+            )
+            self.logger.info(response.message)
+        except Exception as error:
+            response.success = False
+            response.message = str(error)
+            self.logger.error(response.message)
         return response
 
     def activate_smarpod_virtual_controller_callback(self, request, response):

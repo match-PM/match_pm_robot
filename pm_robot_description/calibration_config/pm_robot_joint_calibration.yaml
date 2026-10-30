@@ -1,127 +1,113 @@
-Laser_Toolhead_TCP_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 0.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
 1K_Dispenser_TCP_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 0.0
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
 2K_Dispenser_TCP_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
   x_offset: 0.0
   y_offset: 0.0
   z_offset: 0.0
+CAL_Smarpod_J__t__P:
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
-Cam1_Toolhead_TCP_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: -1974.541
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Camera_Station_TCP_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 1900.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Station_Laser_Bottom_TCP_Joint:
   x_offset: 0.0
   y_offset: 0.0
   z_offset: 0.0
+Calibration_Cube_Bottom_Joint:
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
 Calibration_Qube_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
   x_offset: 0.0
   y_offset: 0.0
   z_offset: -11000.0
+Cam1_Toolhead_TCP_Joint:
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
-PM_Robot_Tool_TCP_Joint:
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: -1974.541
+Camera_Station_TCP_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 1900.0
+Confocal_Sensor_Bottom_TCP_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 2360.0
+Confocal_Sensor_Top_TCP_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
   x_offset: 0.0
   y_offset: 0.0
   z_offset: 0.0
+Gonio_Left_Base_Joint:
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 1000.0
+  z_offset: 950.0
+Gonio_Left_Chuck_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 10000.0
+Gonio_Right_Base_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+Gonio_Right_Chuck_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+Laser_Toolhead_TCP_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0
+PM_Robot_Tool_TCP_Joint:
+  rx_offset: -4.966222681969448e-13
+  ry_offset: -1.000052563921852
+  rz_offset: -0.0036907374213279625
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.017695129139738697
 PM_Robot_XYZ_Calibration:
   x_offset: 0.0
   y_offset: 0.0
   z_offset: 6300.0
-Confocal_Sensor_Top_TCP_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 0.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Confocal_Sensor_Bottom_TCP_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 2360.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-T_Axis_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 0.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Gonio_Left_Base_Joint:
-  x_offset: 0.0
-  y_offset: 1000.0
-  z_offset: 950.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Gonio_Right_Base_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 0.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Gonio_Left_Chuck_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 10000.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Gonio_Right_Chuck_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 0.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Calibration_Cube_Bottom_Joint:
-  x_offset: 0.0
-  y_offset: 0.0
-  z_offset: 0.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-Smarpod_Station:
-  x_offset: -1000.0
-  y_offset: 11000.0
-  z_offset: 1000.0
-  rx_offset: 0.0
-  ry_offset: 0.0
-  rz_offset: 0.0
-CAL_Smarpod_J__t__P:
+Smarpod_Chuck:
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
@@ -135,11 +121,24 @@ Smarpod_Chuck_Center:
   x_offset: 0.0
   y_offset: 0.0
   z_offset: 0.0
-Smarpod_Chuck:
+Smarpod_Station:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: -1000.0
+  y_offset: 11000.0
+  z_offset: 1000.0
+Station_Laser_Bottom_TCP_Joint:
   rx_offset: 0.0
   ry_offset: 0.0
   rz_offset: 0.0
   x_offset: 0.0
   y_offset: 0.0
   z_offset: 0.0
-
+T_Axis_Joint:
+  rx_offset: 0.0
+  ry_offset: 0.0
+  rz_offset: 0.0
+  x_offset: 0.0
+  y_offset: 0.0
+  z_offset: 0.0

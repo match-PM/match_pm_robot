@@ -1,11 +1,81 @@
 """Helpers for partial PM robot configuration requirement files."""
 
 import copy
+import os
 from pathlib import Path
+import tempfile
 from typing import Any
+
+import yaml
 
 
 DEFAULT_CONFIGURATION_FILE_NAME = 'pm_robot_configuration.yaml'
+
+
+def read_configuration(path: Path) -> dict[str, Any]:
+    """Read a nonempty YAML configuration mapping."""
+    with path.open(encoding='utf-8') as config_file:
+        configuration = yaml.safe_load(config_file)
+    if not isinstance(configuration, dict) or not configuration:
+        raise ValueError(f"'{path}' must contain at least one YAML property.")
+    return configuration
+
+
+class RobotConfigurationState:
+    """Keep the robot's launch snapshot separate from its editable file."""
+
+    def __init__(self, path: str, loaded_configuration: dict | None):
+        self.path = Path(path)
+        self.loaded = copy.deepcopy(loaded_configuration)
+
+    def check(self, required: dict) -> list[str]:
+        if not isinstance(self.loaded, dict) or not self.loaded:
+            raise RuntimeError(
+                'No launch-time configuration snapshot is available. Start the '
+                'node through the robot bringup launch file or supply the '
+                'loaded_pm_robot_configuration_yaml parameter from bringup.'
+            )
+        disk = read_configuration(self.path)
+        differences = []
+        for label, current in [('Loaded robot', self.loaded), ('On-disk', disk)]:
+            differences.extend(
+                f'{label}: {difference}'
+                for difference in compare_configuration_subset(current, required)
+            )
+        # Check both directions to detect added/deleted properties as well.
+        if (compare_configuration_subset(disk, self.loaded)
+                or compare_configuration_subset(self.loaded, disk)):
+            differences.append(
+                'The on-disk configuration differs from the loaded robot '
+                'configuration. Restart the robot to load the file.'
+            )
+        return differences
+
+    def update(self, required: dict) -> bool:
+        """Save only supplied fields; return whether a restart is required."""
+        current = read_configuration(self.path)
+        merged = merge_configuration_subset(current, required)
+        if merged != current:
+            # Resolve symlinks so a symlink install still updates the source file.
+            destination = self.path.resolve(strict=True)
+            temporary_path = None
+            try:
+                with tempfile.NamedTemporaryFile(
+                        mode='w', encoding='utf-8', dir=destination.parent,
+                        delete=False) as temporary:
+                    temporary_path = Path(temporary.name)
+                    yaml.safe_dump(merged, temporary, sort_keys=False)
+                    temporary.flush()
+                    os.fsync(temporary.fileno())
+                temporary_path.chmod(destination.stat().st_mode & 0o777)
+                os.replace(temporary_path, destination)
+            finally:
+                if temporary_path is not None:
+                    temporary_path.unlink(missing_ok=True)
+        return self.loaded is None or bool(
+            compare_configuration_subset(merged, self.loaded)
+            or compare_configuration_subset(self.loaded, merged)
+        )
 
 
 def merge_configuration_subset(

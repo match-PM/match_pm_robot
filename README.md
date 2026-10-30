@@ -115,3 +115,66 @@ ros2 launch pm_robot_bringup pm_robot_unity_HW.launch.py
 [Building a robot with ROS2](https://www.youtube.com/@ArticulatedRobotics/playlists)
 
 
+
+
+### Change the configured tool
+
+`/pm_robot_primitive_skills/change_tool` uses `pm_msgs/srv/ChangeTool` with
+`tool_name` and `attachment_name`. It validates the pair, activates its gripper,
+and saves the bringup configuration selected by the running node's launch-time
+`use_real_config` setting (real hardware: true; Gazebo/Unity: false). The response
+contains `success`, `message`, and the saved file path within the message.
+
+```bash
+ros2 service call /pm_robot_primitive_skills/change_tool pm_msgs/srv/ChangeTool "{tool_name: 'Siemens_Vacuum_Array_angled', attachment_name: 'Tip_Siemens_Vacuum_Array'}"
+```
+
+This service only changes the configuration file. Restart the robot separately
+to load the tool. It does not restart launches, wait, or reconfigure Unity.
+The published launch-time configuration snapshot remains unchanged.
+
+### Check and set robot configuration
+
+The primitive skills node provides two services with identical request fields
+(`rsap_path`, `file_path_override`) and response fields (`success`, `message`):
+
+- `/pm_robot_primitive_skills/check_pm_robot_configuration`
+  (`pm_msgs/srv/CheckPmRobotConfiguration`) checks the supplied YAML requirements
+  against both the configuration captured at robot launch and the current bringup
+  file. It also returns `success: false` if the complete bringup file differs from
+  the launch snapshot, even outside the requested fields.
+- `/pm_robot_primitive_skills/set_pm_robot_configuration`
+  (`pm_msgs/srv/SetPmRobotConfiguration`) merges only the supplied fields into the
+  active real-hardware or simulation bringup file. Unknown keys and incompatible
+  value types are rejected before writing. `success: true` means the file was
+  saved; the response message states whether a robot restart is required.
+
+Both services default to `pm_robot_configuration.yaml` inside `rsap_path`.
+`file_path_override` may name another relative file inside that directory or an
+absolute path. For example, a requirement file can contain only:
+
+```yaml
+pm_robot_1K_dispenser_tip:
+  use_dispenser_tip: Dis_Tip_Red_I_250_A520_L12700
+```
+
+```bash
+ros2 service call /pm_robot_primitive_skills/check_pm_robot_configuration pm_msgs/srv/CheckPmRobotConfiguration "{rsap_path: '/path/to/process', file_path_override: ''}"
+ros2 service call /pm_robot_primitive_skills/set_pm_robot_configuration pm_msgs/srv/SetPmRobotConfiguration "{rsap_path: '/path/to/process', file_path_override: ''}"
+```
+
+Setting configuration does not restart the robot or replace its running URDF,
+controllers, or MoveIt model. Restart the complete robot bringup to load changed
+configuration, then check again. The `current_pm_robot_configuration` topic
+publishes the launch snapshot, so editing the file does not change that topic.
+Real, Unity, and simulation launch files supply the
+`loaded_pm_robot_configuration_yaml` parameter. Custom launch files must pass the
+same YAML snapshot used to launch their robot; without it the check service fails
+because the loaded robot configuration cannot be verified.
+
+After changing these interfaces, rebuild and source the workspace:
+
+```bash
+colcon build --packages-select pm_msgs pm_robot_modules pm_robot_primitive_skills pm_robot_bringup
+source install/setup.bash
+```

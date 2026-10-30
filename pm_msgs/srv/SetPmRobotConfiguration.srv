@@ -1,0 +1,8 @@
+# Merge supplied fields into the active bringup file. The robot must be
+# restarted to load changed configuration; success means the file was saved.
+# Uses the same path resolution and partial YAML format as the check service.
+string rsap_path
+string file_path_override
+---
+bool success
+string message

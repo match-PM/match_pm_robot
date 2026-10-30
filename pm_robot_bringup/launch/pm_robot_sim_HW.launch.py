@@ -339,6 +339,8 @@ def generate_launch_description():
         parameters=[
             {"use_sim_time": sim_time},
             {"use_real_config": False},
+            {"loaded_pm_robot_configuration_yaml": ParameterValue(
+                yaml.safe_dump(bringup_config), value_type=str)},
         ],
         emulate_tty=True,
     )

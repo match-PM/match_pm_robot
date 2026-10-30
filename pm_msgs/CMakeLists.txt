@@ -72,8 +72,10 @@ rosidl_generate_interfaces(
   "srv/Gripper2JawSetPosition.srv"
   "srv/DispenseTestPoints.srv"
   "srv/ChangeToolAndRestart.srv"
+  "srv/ChangeTool.srv"
   "srv/DispenseAtPath.srv"
   "srv/CheckPmRobotConfiguration.srv"
+  "srv/SetPmRobotConfiguration.srv"
   DEPENDENCIES geometry_msgs
 )
 

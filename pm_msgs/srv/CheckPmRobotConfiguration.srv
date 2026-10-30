@@ -1,3 +1,5 @@
+# Check requirements against both the launch snapshot and the current file.
+# Also returns false if the complete file differs from the launch snapshot.
 # Directory containing the default pm_robot_configuration.yaml requirement file.
 string rsap_path
 

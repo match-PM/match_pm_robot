@@ -1,0 +1,5 @@
+string tool_name        # Tool name from the active bringup configuration
+string attachment_name  # Tip/jaw belonging to the selected tool
+---
+bool success
+string message
