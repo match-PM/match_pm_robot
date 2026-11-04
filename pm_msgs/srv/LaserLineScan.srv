@@ -1,0 +1,6 @@
+uint32 length_um
+uint32 interval
+---
+bool success
+float64[] distances
+string message
