@@ -13,6 +13,8 @@ find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(pm_msgs REQUIRED)
+find_package(pm_client REQUIRED)
+find_package(Threads REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -32,6 +34,8 @@ add_library(
   include/pm_sensor_controller/sensor_controller.hpp
 )
 target_include_directories(pm_sensor_controller PRIVATE include/)
+target_compile_features(pm_sensor_controller PUBLIC cxx_std_17)
+target_link_libraries(pm_sensor_controller Threads::Threads)
 
 ament_target_dependencies(
   pm_sensor_controller
@@ -41,6 +45,7 @@ ament_target_dependencies(
   rclcpp
   rclcpp_lifecycle
   pm_msgs
+  pm_client
 )
 pluginlib_export_plugin_description_file(controller_interface pm_sensor_controller.xml)
 
@@ -65,6 +70,19 @@ ament_export_dependencies(
   pluginlib
   rclcpp
   rclcpp_lifecycle
+  pm_msgs
+  pm_client
 )
+
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/test_laser_service.cpp")
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_laser_service test/test_laser_service.cpp TIMEOUT 30)
+  target_include_directories(test_laser_service PRIVATE include/)
+  target_link_libraries(test_laser_service pm_sensor_controller)
+  ament_target_dependencies(test_laser_service
+    controller_interface hardware_interface rclcpp rclcpp_lifecycle pm_msgs pm_client)
+elseif(BUILD_TESTING)
+  message(WARNING "Laser service regression test source is unavailable; test_laser_service is not built")
+endif()
 
 ament_package()

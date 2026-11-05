@@ -1,7 +1,10 @@
 
+#include "pm_msgs/srv/laser_line_scan.hpp"
 #include "pm_opcua_skills_msgs/srv/dispense.hpp"
+
 // #include "pm_opcua_skills_msgs/srv/force_sensing_move.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
+#include <limits>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
 
@@ -12,20 +15,61 @@
 
 #define PI 3.14159265359
 
-using namespace pm_opcua_skills_msgs::srv;
+using Dispense = pm_opcua_skills_msgs::srv::Dispense;
+using LaserLineScan = pm_msgs::srv::LaserLineScan;
 using namespace control_msgs::action;
 
 class Controller : public rclcpp::Node
 {
     PMClient::Client m_client;
+    PMClient::Client m_laser_client;
+    rclcpp::CallbackGroup::SharedPtr m_laser_group;
+    unsigned int m_scan_timeout_ms = 120000;
     std::string opcua_server_address_;
     rclcpp::Service<Dispense>::SharedPtr m_dispense_service;
+    rclcpp::Service<LaserLineScan>::SharedPtr m_laser_line_service;
+
     // rclcpp::Service<ForceSensingMove>::SharedPtr m_force_sensing_move_service;
 
     // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr
     // xyz_joint_client;
 
     // rclcpp_action::Client<control_msgs::action::FollowJointTrajectory>::SharedPtr t_joint_client;
+
+    void laser_line_scan_callback(
+        const LaserLineScan::Request::SharedPtr request, LaserLineScan::Response::SharedPtr response
+    )
+    {
+        response->success = false;
+        response->distances.clear();
+
+        // ROS and OPC UA use UInt32; validate the supported sensor range.
+        if (request->length_um < 1 || request->length_um > 1100 || request->interval < 1 ||
+            request->interval > std::numeric_limits<unsigned int>::max())
+        {
+            response->message =
+                "length_um must be 1..1100 and interval must be a positive UInt32 (in um)";
+            RCLCPP_WARN(get_logger(), "%s", response->message.c_str());
+            return;
+        }
+
+        const auto result = m_laser_client.get_robot().skills->laser_line_scan(
+            static_cast<unsigned int>(request->interval),
+            static_cast<unsigned int>(request->length_um),
+            opcua_server_address_, m_scan_timeout_ms
+        );
+        response->success = result.success;
+        response->distances = result.distances;
+        response->message = result.message;
+        response->actual_length_um = result.actual_length_um;
+        response->actual_interval_um = result.actual_interval_um;
+        response->sample_count = static_cast<std::uint32_t>(result.distances.size());
+        response->restoration_verified = result.restoration_verified;
+        if (!response->success)
+        {
+            RCLCPP_ERROR(get_logger(), "Laser line scan failed: %s", response->message.c_str());
+        }
+    }
 
   public:
     Controller() : Node("pm_opcua_skills_controller")
@@ -36,6 +80,14 @@ class Controller : public rclcpp::Node
         );
         m_client.connect(opcua_server_address_);
         m_client.init();
+        const auto scan_timeout = declare_parameter<int>("laser_scan_timeout_ms", 120000);
+        if (scan_timeout < 1 || scan_timeout > 600000)
+            throw std::invalid_argument("laser_scan_timeout_ms must be 1..600000");
+        m_scan_timeout_ms = static_cast<unsigned int>(scan_timeout);
+        m_laser_client.set_timeout(1000);
+        m_laser_client.connect(opcua_server_address_);
+        m_laser_client.init();
+        m_laser_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
 
         m_dispense_service = create_service<Dispense>(
             "~/Dispense",
@@ -55,6 +107,15 @@ class Controller : public rclcpp::Node
                     RCLCPP_ERROR(get_logger(), "Error calling dispense skill");
                 }
             }
+        );
+
+        m_laser_line_service = create_service<LaserLineScan>(
+            "~/LaserLineScan",
+            [this](
+                const LaserLineScan::Request::SharedPtr request,
+                LaserLineScan::Response::SharedPtr response
+            ) { laser_line_scan_callback(request, response); },
+            rmw_qos_profile_services_default, m_laser_group
         );
 
         // m_force_sensing_move_service = create_service<ForceSensingMove>(
@@ -198,7 +259,10 @@ class Controller : public rclcpp::Node
 int main(int argc, char **argv)
 {
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<Controller>());
+    auto controller = std::make_shared<Controller>();
+    rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions{}, 2);
+    executor.add_node(controller);
+    executor.spin();
     rclcpp::shutdown();
     return 0;
 }

@@ -92,10 +92,10 @@ int main()
     using namespace KeyenceSensorHead_;
     FakeSerial serial;
     CKeyenceDetector detector(serial);
-    serial.responses = {"OP,+0001.25,00000,010", "OP,+0002.50,00001,010", "OP,+0003.75,00002,010", "UNRELATED"};
+    serial.responses = {"OP,+0001.25,00000,010", "OP,+0002.50,00001,010", "OP,+0003.75,00002,010", "OP,+0004.00,00003,010", "UNRELATED"};
     auto profile = detector.GetMeasureProfile(3, 1);
-    Check(serial.reads == 3 && serial.responses.front() == "UNRELATED", "Reader consumed one record too many");
-    Check(std::count(profile.begin(), profile.end(), ';') == 3, "Incorrect profile record count");
+    Check(serial.reads == 4 && serial.responses.front() == "UNRELATED", "Reader consumed one record too many");
+    Check(std::count(profile.begin(), profile.end(), ';') == 4, "Incorrect profile record count");
     Check(SemaphoreSendReceive == TRUE, "Success did not release serial ownership");
 
     serial.responses.clear(); serial.reads = 0;
@@ -113,8 +113,8 @@ int main()
     Check(threw && SemaphoreSendReceive == TRUE, "Exception leaked ownership");
 
     serial.throw_at = 0; serial.reads = 0;
-    serial.responses = {"OP,+0001.25,00000,010"};
-    Check(!detector.GetMeasureProfile(1, 1).empty() && serial.reads == 1, "Single-point read/recovery failed");
+    serial.responses = {"OP,+0001.25,00000,010", "OP,+0002.50,00001,010"};
+    Check(!detector.GetMeasureProfile(1, 1).empty() && serial.reads == 2, "Single-point read/recovery failed");
     int previous = serial.reads;
     Check(detector.GetMeasureProfile(0, 1).empty() && detector.GetMeasureProfile(1, 0).empty(), "Invalid parameters accepted");
     Check(serial.reads == previous, "Invalid parameters accessed the serial port");

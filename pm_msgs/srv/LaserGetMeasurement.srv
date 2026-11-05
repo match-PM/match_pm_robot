@@ -1,2 +1,6 @@
+# Zero uses the controller's configured default. Maximum: 600000 ms.
+uint32 timeout_ms
 ---
-float64 measurement
+bool success
+LaserMeasurement sample
+string message

@@ -202,13 +202,17 @@ void PMSystem::auxiliary_worker()
                 PMClient::AuxiliarySensorState state{};
                 if (m_auxiliary_client.read_auxiliary_sensor_state(state))
                 {
-                    sensor_failures = 0;
+                    if (state.force_valid) sensor_failures = 0;
+                    else log_failure("force sensor quality", sensor_failures);
                     std::lock_guard<std::mutex> lock(m_auxiliary_mutex);
+                    if (!state.force_valid) state.force_measurements = m_auxiliary_sensor_state.force_measurements;
                     m_auxiliary_sensor_state = state;
                 }
                 else
                 {
                     log_failure("sensor read", sensor_failures);
+                    std::lock_guard<std::mutex> lock(m_auxiliary_mutex);
+                    m_auxiliary_sensor_state.laser_measurement = std::numeric_limits<double>::quiet_NaN();
                 }
             }
 

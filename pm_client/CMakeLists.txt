@@ -34,6 +34,7 @@ add_library(
   include/pm_client/skills.hpp
 )
 target_include_directories(pm_client PRIVATE include/)
+target_compile_features(pm_client PUBLIC cxx_std_17)
 
 ament_target_dependencies(pm_client open62541)
 ament_export_targets(pm_client HAS_LIBRARY_TARGET)

@@ -1,6 +1,7 @@
 
 
 #include <memory>
+#include <cmath>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -540,8 +541,13 @@ bool Client::read_auxiliary_sensor_state(AuxiliarySensorState &state)
 
     AuxiliarySensorState new_state{};
     const bool success = read_nodes(m_client, nodes, [&](const UA_DataValue *values) {
-        return read_double(values[0], new_state.laser_measurement) &&
-               read_double_array(values[1], new_state.force_measurements);
+        // Invalid laser quality must not discard a valid force sample.
+        if (!read_double(values[0], new_state.laser_measurement) ||
+            !std::isfinite(new_state.laser_measurement) ||
+            new_state.laser_measurement == -9998.99 || new_state.laser_measurement == -9999.99)
+            new_state.laser_measurement = std::numeric_limits<double>::quiet_NaN();
+        new_state.force_valid = read_double_array(values[1], new_state.force_measurements);
+        return true;
     });
 
     if (success)
@@ -1077,6 +1083,14 @@ void Client::init()
 
                     get_node_id_from_ref("Dispense", &skills->dispense_method);
                     get_node_id_from_ref("ForceSensingMove", &skills->force_sensing_move_method);
+                    get_node_id_from_ref("LaserLineScan", &skills->laser_line_scan_method);
+                    get_node_id_from_ref("StartLaserLineScan", &skills->start_laser_line_scan_method);
+                    get_node_id_from_ref(
+                        "GetLaserLineScanResult", &skills->get_laser_line_scan_result_method
+                    );
+                    get_node_id_from_ref("GetLaserMeasurementState", &skills->laser_measurement_state_method);
+                    get_node_id_from_ref("RequestLaserMeasurement", &skills->request_laser_measurement_method);
+                    get_node_id_from_ref("GetLaserMeasurementResult", &skills->laser_measurement_result_method);
                 }
             }
 
@@ -1242,6 +1256,26 @@ void Client::init()
 //         throw std::runtime_error{UA_StatusCode_name(status)};
 //     }
 // }
+
+void Client::call_method_once(
+    UA_NodeId object_id, UA_NodeId method_id, std::size_t input_size, UA_Variant *inputs,
+    std::size_t *output_size, UA_Variant **outputs, UA_UInt32 timeout_ms
+)
+{
+    auto *config = UA_Client_getConfig(m_client);
+    const auto previous_timeout = config->timeout;
+    if (timeout_ms != 0) config->timeout = timeout_ms;
+    *output_size = 0;
+    *outputs = nullptr;
+    const auto status = UA_Client_call(
+        m_client, object_id, method_id, input_size, inputs, output_size, outputs
+    );
+    config->timeout = previous_timeout;
+    if (status != UA_STATUSCODE_GOOD)
+    {
+        throw std::runtime_error{UA_StatusCode_name(status)};
+    }
+}
 
 // // ChatGPT revised function with retry mechanism
 void Client::call_method(

@@ -36,6 +36,7 @@ ament_target_dependencies(
   trajectory_msgs
   pm_opcua_skills_msgs
   pm_client
+  pm_msgs
 )
 
 install(TARGETS

@@ -3,6 +3,7 @@
 #include <array>
 #include <iostream>
 #include <memory>
+#include <limits>
 #include <string>
 
 #include "open62541/open62541.h"
@@ -25,7 +26,8 @@ struct AuxiliaryIoState
 
 struct AuxiliarySensorState
 {
-    double laser_measurement = 0.0;
+    double laser_measurement = std::numeric_limits<double>::quiet_NaN();
+    bool force_valid = false;
     std::array<double, 7> force_measurements{};
 };
 
@@ -256,6 +258,12 @@ class Client
 
         UA_Variant_delete(variant);
     }
+
+    // Side-effecting jobs must not be replayed automatically after a lost reply.
+    void call_method_once(
+        UA_NodeId object_id, UA_NodeId method_id, std::size_t input_size, UA_Variant *inputs,
+        std::size_t *output_size, UA_Variant **outputs, UA_UInt32 timeout_ms = 0
+    );
 
     void call_method(
         UA_NodeId object_id, UA_NodeId method_id, std::size_t input_size, UA_Variant *inputs,

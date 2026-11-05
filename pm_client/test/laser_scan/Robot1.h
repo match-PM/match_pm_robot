@@ -5,6 +5,10 @@ struct FakeKeyence
     std::mutex mutex;
     std::condition_variable condition;
     bool block = false;
+    bool block_scalar = false;
+    bool scalar_entered = false;
+    bool throw_scalar = false;
+    double scalar_value = 42.25;
     bool entered = false;
     bool throw_read = false;
     bool wrong_width = false;
@@ -32,6 +36,7 @@ struct FakeKeyence
     void Reset()
     {
         block = entered = throw_read = wrong_width = false;
+        block_scalar = scalar_entered = throw_scalar = false; scalar_value = 42.25;
         machine_error = disabled = empty_write_reply = empty_program_reply = false;
         wrong_selection = wrong_restoration = delayed_restoration = multiple_frames = false;
         padded_numbers = error_after_selection = false;
@@ -91,7 +96,16 @@ struct FakeKeyence
         if (throw_read) throw std::runtime_error("Fake sensor exception");
         return profiles.empty() ? "" : profiles[std::min(size_t(reads - 1), profiles.size() - 1)];
     }
-    double GetMesureOut1(BOOL, CLong &) { ++scalar_reads; return 42.25; }
+    double GetMesureOut1(BOOL, CLong &)
+    {
+        std::unique_lock<std::mutex> lock(mutex);
+        scalar_entered = true;
+        condition.notify_all();
+        condition.wait(lock, [&] { return !block_scalar; });
+        ++scalar_reads;
+        if (throw_scalar) throw std::runtime_error("Fake scalar exception");
+        return scalar_value;
+    }
 };
 struct FakeRobot { FakeKeyence Keyence; };
 extern FakeRobot Robot1;

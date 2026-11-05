@@ -4,3 +4,7 @@ uint32 interval
 bool success
 float64[] distances
 string message
+uint32 actual_length_um
+uint32 actual_interval_um
+uint32 sample_count
+bool restoration_verified

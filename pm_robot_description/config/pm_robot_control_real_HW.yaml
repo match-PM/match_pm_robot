@@ -151,3 +151,9 @@ pm_robot_xyz_axis_controller:
     #   X_Axis_Joint: { trajectory: 0.002, goal: 0.0000000001 }
     #   Y_Axis_Joint: { trajectory: 0.002, goal: 0.0000000001 }
     #   Z_Axis_Joint: { trajectory: 0.002, goal: 0.0000000001 }
+
+pm_sensor_controller:
+  ros__parameters:
+    laser_opcua_endpoint: "opc.tcp://PC1M0484-1:4840"
+    laser_measurement_timeout_ms: 120000
+    laser_rpc_timeout_ms: 500

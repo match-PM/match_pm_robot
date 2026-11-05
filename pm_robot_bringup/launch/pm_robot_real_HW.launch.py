@@ -324,6 +324,8 @@ def generate_launch_description():
             "pm_sensor_controller",
             "--controller-manager",
             "/controller_manager",
+            "--param-file",
+            robot_controllers_path,
         ],
         emulate_tty=True
     )

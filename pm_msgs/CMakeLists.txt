@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 
 
 if(BUILD_TESTING)
@@ -31,6 +32,7 @@ rosidl_generate_interfaces(
   "msg/DispensePoint.msg"
   "msg/UvCuringSpotProperty.msg"
   "msg/PmRobotConfiguration.msg"
+  "msg/LaserMeasurement.msg"
 
   "srv/ForceSensingMove.srv"
   "srv/DispenseAtPoints.srv"
@@ -74,9 +76,10 @@ rosidl_generate_interfaces(
   "srv/ChangeToolAndRestart.srv"
   "srv/ChangeTool.srv"
   "srv/DispenseAtPath.srv"
+  "srv/LaserLineScan.srv"
   "srv/CheckPmRobotConfiguration.srv"
   "srv/SetPmRobotConfiguration.srv"
-  DEPENDENCIES geometry_msgs
+  DEPENDENCIES geometry_msgs builtin_interfaces
 )
 
 ament_export_dependencies(rosidl_default_runtime)

@@ -12,6 +12,7 @@
 using BOOL = int;
 using LONG = std::int32_t;
 using DWORD = std::uint32_t;
+using ULONGLONG = std::uint64_t;
 using CLong = int;
 using CBool = bool;
 using VOID = void;
@@ -19,6 +20,7 @@ constexpr BOOL TRUE = 1;
 constexpr BOOL FALSE = 0;
 extern std::atomic<DWORD> fake_clock;
 inline DWORD GetTickCount() { return fake_clock.load(); }
+inline ULONGLONG GetTickCount64() { return fake_clock.load(); }
 inline void Wait(int ms) { fake_clock.fetch_add(ms); std::this_thread::yield(); }
 using CRITICAL_SECTION = std::recursive_mutex;
 inline void InitializeCriticalSection(CRITICAL_SECTION *) {}
