@@ -3,6 +3,10 @@
 # Uses the same path resolution and partial YAML format as the check service.
 string rsap_path
 string file_path_override
+
+# Optional fields as YAML text. When set, rsap_path and file_path_override
+# are ignored and no requirement file is read.
+string configuration_yaml
 ---
 bool success
 string message

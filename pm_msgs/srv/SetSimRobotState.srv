@@ -1,0 +1,18 @@
+# Provided by the Unity simulation (RobotStateTeleporter.cs).
+# Places the joints directly at the given positions (no simulated motion)
+# and makes the drives hold them there. Joints that are not listed keep
+# their state. The caller must deactivate the ros2_control motion
+# controllers first, otherwise they move the joints back.
+
+# Unity ArticulationBody (URDF link) names and joint positions,
+# [m] for prismatic and [rad] for revolute joints.
+string[] joint_names
+float64[] joint_positions
+
+# Also place the SmarPod platform (ignored if the SmarPod is not active).
+bool set_smarpod
+# SmarPod platform pose X, Y, Z [m] and A, B, C [rad].
+float64[6] smarpod_pose
+---
+bool success
+string message

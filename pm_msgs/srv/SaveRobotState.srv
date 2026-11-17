@@ -1,0 +1,17 @@
+# Save the complete state of the Unity-simulated PM robot to one YAML file:
+# the loaded robot configuration, every joint, the SmarPod, pneumatic
+# cylinders, nozzles (vacuum), lights and UV.
+# Provided by pm_robot_sim_state; available only with the Unity simulation.
+
+# Absolute path, or a name relative to the node's state_directory parameter
+# (default ~/pm_robot_states). ".yaml" is appended when missing.
+string file_path
+# Free text stored in the file.
+string description
+# Replace an existing file instead of failing.
+bool overwrite
+---
+bool success
+# Absolute path of the written file.
+string file_path
+string message

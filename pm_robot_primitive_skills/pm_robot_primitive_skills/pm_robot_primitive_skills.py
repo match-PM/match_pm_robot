@@ -27,6 +27,7 @@ from pm_robot_primitive_skills.py_modules.PrimitiveSkillsUtils import PrimitiveS
 from pm_robot_modules.submodules.pm_robot_config import PmRobotConfig
 from pm_robot_modules.submodules.configuration_requirements import (
     RobotConfigurationState,
+    parse_configuration,
     read_configuration,
     resolve_configuration_file,
 )
@@ -197,20 +198,36 @@ class PrimitiveSkillsNode(Node):
             )
         return 1
 
+    @staticmethod
+    def _requested_configuration(request):
+        """Return the requirements of a check/set request and their source.
+
+        YAML text in ``configuration_yaml`` takes precedence over a file.
+        """
+        if request.configuration_yaml.strip():
+            return (
+                parse_configuration(
+                    request.configuration_yaml, 'configuration_yaml'),
+                'the supplied configuration',
+            )
+        requirement_path = resolve_configuration_file(
+            request.rsap_path,
+            request.file_path_override,
+        )
+        return read_configuration(requirement_path), f"'{requirement_path}'"
+
     def check_pm_robot_configuration_callback(self, request, response):
         """Check requirements against the loaded robot and the current file."""
         try:
-            requirement_path = resolve_configuration_file(
-                request.rsap_path,
-                request.file_path_override,
+            required_config, source = self._requested_configuration(request)
+            differences = self.configuration_state.check(
+                required_config, loaded_only=request.check_loaded_only
             )
-            required_config = read_configuration(requirement_path)
-            differences = self.configuration_state.check(required_config)
             if differences:
                 response.success = False
                 response.message = (
                     f"PM robot configuration does not match "
-                    f"'{requirement_path}':\n- "
+                    f"{source}:\n- "
                     + '\n- '.join(differences)
                 )
                 return response
@@ -218,9 +235,14 @@ class PrimitiveSkillsNode(Node):
             checked_properties = self._count_configuration_properties(
                 required_config
             )
+            checked = (
+                'Loaded configuration matches'
+                if request.check_loaded_only
+                else 'Loaded and on-disk configurations match'
+            )
             response.success = True
             response.message = (
-                f"Loaded and on-disk configurations match '{requirement_path}' "
+                f"{checked} {source} "
                 f"({checked_properties} properties checked)."
             )
         except Exception as error:
@@ -233,15 +255,12 @@ class PrimitiveSkillsNode(Node):
     def set_pm_robot_configuration_callback(self, request, response):
         """Merge requested fields into the bringup file for the next launch."""
         try:
-            requirement_path = resolve_configuration_file(
-                request.rsap_path, request.file_path_override
-            )
-            required_config = read_configuration(requirement_path)
+            required_config, source = self._requested_configuration(request)
             restart_required = self.configuration_state.update(required_config)
             response.success = True
             response.message = (
                 f"Updated bringup configuration '{self.configuration_state.path}' "
-                f"using '{requirement_path}'. "
+                f"using {source}. "
                 + ('Restart the robot to load the configuration.'
                    if restart_required else 'The robot already has this configuration loaded.')
             )

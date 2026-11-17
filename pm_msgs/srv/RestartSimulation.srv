@@ -1,0 +1,10 @@
+# Provided by the Unity simulation (SimulationRestartService.cs).
+# Restarts the Unity simulation so that it loads the bringup configuration
+# again. The response is sent before the restart begins.
+---
+bool success
+# True when the Unity Editor leaves and re-enters Play Mode. False in a
+# player build, where Play Mode cannot be restarted; the caller must then
+# reconfigure the running scene (configure_robot) instead.
+bool play_mode_restart
+string message

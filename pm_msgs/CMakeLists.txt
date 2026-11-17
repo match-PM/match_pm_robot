@@ -79,6 +79,11 @@ rosidl_generate_interfaces(
   "srv/LaserLineScan.srv"
   "srv/CheckPmRobotConfiguration.srv"
   "srv/SetPmRobotConfiguration.srv"
+  "srv/SaveRobotState.srv"
+  "srv/LoadRobotState.srv"
+  "srv/GetSimRobotState.srv"
+  "srv/SetSimRobotState.srv"
+  "srv/RestartSimulation.srv"
   DEPENDENCIES geometry_msgs builtin_interfaces
 )
 

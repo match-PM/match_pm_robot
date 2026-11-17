@@ -11,13 +11,35 @@ import yaml
 
 DEFAULT_CONFIGURATION_FILE_NAME = 'pm_robot_configuration.yaml'
 
+# Equipment sections whose selections only matter while the equipment is
+# enabled: section path -> path of its enable flag. Mirrors the enableKey of
+# the sections in pm_robot_unity_manifest.json (generate_unity_urdf.py); keep
+# both in sync when equipment is added.
+CONDITIONAL_SECTIONS: dict[tuple[str, ...], tuple[str, ...]] = {
+    ('pm_robot_gonio_left',): ('pm_robot_gonio_left', 'with_Gonio_Left'),
+    ('pm_robot_gonio_right',): ('pm_robot_gonio_right', 'with_Gonio_Right'),
+    ('pm_smparpod_station',): ('pm_smparpod_station', 'with_smarpod_station'),
+    ('confocal_sensor_head',): ('measuring_systems', 'use_confocal_head'),
+    ('pm_robot_tools', 'pm_robot_vacuum_tools'):
+        ('pm_robot_tools', 'pm_robot_vacuum_tools', 'use_vacuum_tool'),
+    ('pm_robot_tools', 'pm_robot_tool_parallel_gripper_1_jaw'):
+        ('pm_robot_tools', 'pm_robot_tool_parallel_gripper_1_jaw', 'use_paralell_gripper'),
+    ('pm_robot_tools', 'pm_robot_tool_parallel_gripper_2_jaws'):
+        ('pm_robot_tools', 'pm_robot_tool_parallel_gripper_2_jaws', 'use_paralell_gripper'),
+}
+
 
 def read_configuration(path: Path) -> dict[str, Any]:
     """Read a nonempty YAML configuration mapping."""
     with path.open(encoding='utf-8') as config_file:
-        configuration = yaml.safe_load(config_file)
+        return parse_configuration(config_file.read(), f"'{path}'")
+
+
+def parse_configuration(text: str, source: str = 'The configuration') -> dict[str, Any]:
+    """Parse a nonempty YAML configuration mapping from text."""
+    configuration = yaml.safe_load(text)
     if not isinstance(configuration, dict) or not configuration:
-        raise ValueError(f"'{path}' must contain at least one YAML property.")
+        raise ValueError(f'{source} must contain at least one YAML property.')
     return configuration
 
 
@@ -28,19 +50,33 @@ class RobotConfigurationState:
         self.path = Path(path)
         self.loaded = copy.deepcopy(loaded_configuration)
 
-    def check(self, required: dict) -> list[str]:
+    def check(self, required: dict, loaded_only: bool = False) -> list[str]:
+        """
+        Return the differences between ``required`` and the robot.
+
+        With ``loaded_only`` only the launch snapshot is checked, so edits to
+        the bringup file that are not loaded yet do not count.
+        """
         if not isinstance(self.loaded, dict) or not self.loaded:
             raise RuntimeError(
                 'No launch-time configuration snapshot is available. Start the '
                 'node through the robot bringup launch file or supply the '
                 'loaded_pm_robot_configuration_yaml parameter from bringup.'
             )
+        # Selections of equipment that the requirements disable are not checked.
+        if loaded_only:
+            return [
+                f'Loaded robot: {difference}'
+                for difference in compare_configuration_subset(
+                    self.loaded, required, ignore_disabled=True)
+            ]
         disk = read_configuration(self.path)
         differences = []
         for label, current in [('Loaded robot', self.loaded), ('On-disk', disk)]:
             differences.extend(
                 f'{label}: {difference}'
-                for difference in compare_configuration_subset(current, required)
+                for difference in compare_configuration_subset(
+                    current, required, ignore_disabled=True)
             )
         # Check both directions to detect added/deleted properties as well.
         if (compare_configuration_subset(disk, self.loaded)
@@ -146,12 +182,34 @@ def resolve_configuration_file(rsap_path: str, file_path_override: str) -> Path:
     return base_path / DEFAULT_CONFIGURATION_FILE_NAME
 
 
-def compare_configuration_subset(
-        current: dict[str, Any], required: dict[str, Any]) -> list[str]:
-    """Return differences where ``required`` does not match ``current``."""
-    differences: list[str] = []
+def disabled_sections(required: dict[str, Any]) -> set[tuple[str, ...]]:
+    """Return the CONDITIONAL_SECTIONS whose enable flag ``required`` sets to false."""
+    disabled = set()
+    for section, flag in CONDITIONAL_SECTIONS.items():
+        value: Any = required
+        for key in flag:
+            value = value.get(key) if isinstance(value, dict) else None
+        if value is False:
+            disabled.add(section)
+    return disabled
 
-    def compare(current_value: Any, required_value: Any, path: str):
+
+def compare_configuration_subset(
+        current: dict[str, Any], required: dict[str, Any],
+        ignore_disabled: bool = False) -> list[str]:
+    """
+    Return differences where ``required`` does not match ``current``.
+
+    With ``ignore_disabled``, a section of CONDITIONAL_SECTIONS whose enable
+    flag ``required`` sets to false is only checked for that flag: which tool
+    or chuck is selected for disabled equipment does not matter.
+    """
+    differences: list[str] = []
+    skipped = disabled_sections(required) if ignore_disabled else set()
+    enable_flags = {CONDITIONAL_SECTIONS[section] for section in skipped}
+
+    def compare(current_value: Any, required_value: Any, path: str,
+                keys: tuple[str, ...] = ()):
         if isinstance(required_value, dict):
             if not isinstance(current_value, dict):
                 differences.append(
@@ -161,6 +219,9 @@ def compare_configuration_subset(
                 return
 
             for key, expected_child in required_value.items():
+                child_keys = keys + (key,)
+                if keys in skipped and child_keys not in enable_flags:
+                    continue
                 child_path = f'{path}.{key}' if path else str(key)
                 if key not in current_value:
                     differences.append(
@@ -168,7 +229,7 @@ def compare_configuration_subset(
                         'bringup configuration'
                     )
                     continue
-                compare(current_value[key], expected_child, child_path)
+                compare(current_value[key], expected_child, child_path, child_keys)
             return
 
         values_match = (

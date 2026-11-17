@@ -1,0 +1,1078 @@
+{
+  "generatedAt": "2026-11-02T21:27:47.659828+00:00",
+  "sourceConfig": "pm_robot_bringup_config.yaml",
+  "urdf": "pm_robot_unity.urdf",
+  "sections": [
+    {
+      "yamlPath": "pm_robot_1K_dispenser_tip",
+      "enableYamlPath": "",
+      "enableKey": "",
+      "selectKeys": [
+        "use_dispenser_tip"
+      ],
+      "unityParent": "1K_Dispenser_TCP",
+      "items": [
+        {
+          "yamlNames": [
+            "Dis_Tip_Yellow_I_100_A240_L12700"
+          ],
+          "links": [
+            "Dis_Tip_Yellow_I_100_A240_L12700"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Yellow_I_100_A240_L12700"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "Dis_Tip_Lavender_I_150_A310_L12700"
+          ],
+          "links": [
+            "Dis_Tip_Lavender_I_150_A310_L12700"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Lavender_I_150_A310_L12700"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Lavender_I_150_A310_L12700.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "Dis_Tip_Red_I_250_A520_L12700"
+          ],
+          "links": [
+            "Dis_Tip_Red_I_250_A520_L12700"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Red_I_250_A520_L12700"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Red_I_250_A520_L12700.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "Dis_Tip_Yellow_I_100_A240_L060"
+          ],
+          "links": [
+            "Dis_Tip_Yellow_I_100_A240_L12700"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Yellow_I_100_A240_L12700"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL"
+          ],
+          "spawnPoints": []
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_robot_2K_dispenser_tip",
+      "enableYamlPath": "",
+      "enableKey": "",
+      "selectKeys": [
+        "use_dispenser_tip"
+      ],
+      "unityParent": "2K_Dispenser_TCP",
+      "items": [
+        {
+          "yamlNames": [
+            "Dis_Tip_Yellow_I_100_A240_L12700"
+          ],
+          "links": [
+            "Dis_Tip_Yellow_I_100_A240_L12700_2K"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Yellow_I_100_A240_L12700_2K"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "Dis_Tip_Lavender_I_150_A310_L12700"
+          ],
+          "links": [
+            "Dis_Tip_Lavender_I_150_A310_L12700_2K"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Lavender_I_150_A310_L12700_2K"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Lavender_I_150_A310_L12700.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "Dis_Tip_Red_I_250_A520_L12700"
+          ],
+          "links": [
+            "Dis_Tip_Red_I_250_A520_L12700_2K"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Red_I_250_A520_L12700_2K"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Red_I_250_A520_L12700.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "Dis_Tip_Yellow_I_100_A240_L060"
+          ],
+          "links": [
+            "Dis_Tip_Yellow_I_100_A240_L12700_2K"
+          ],
+          "rootLinks": [
+            "Dis_Tip_Yellow_I_100_A240_L12700_2K"
+          ],
+          "meshes": [
+            "meshes/Dispenser_Tips/Dis_Tip_Yellow_I_100_A240_L12700.STL"
+          ],
+          "spawnPoints": []
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_robot_gonio_left",
+      "enableYamlPath": "",
+      "enableKey": "with_Gonio_Left",
+      "selectKeys": [
+        "use_chuck"
+      ],
+      "unityParent": "Gonio_Left_Chuck_Origin",
+      "items": [
+        {
+          "yamlNames": [
+            "chuck_gonio_left_Siemens_Carrier"
+          ],
+          "links": [
+            "Chuck_Siemens_Carrier"
+          ],
+          "rootLinks": [
+            "Chuck_Siemens_Carrier"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Carrier.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__chuck_gonio_left_Siemens_Carrier",
+              "parentLink": "Chuck_Siemens_Carrier"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_gonio_left_Siemens_Carrier_SIN"
+          ],
+          "links": [
+            "Chuck_Siemens_Carrier_SIN"
+          ],
+          "rootLinks": [
+            "Chuck_Siemens_Carrier_SIN"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Carrier_SIN.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__chuck_gonio_left_Siemens_Carrier_SIN",
+              "parentLink": "Chuck_Siemens_Carrier_SIN"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_gonio_left_Siemens_Sensor"
+          ],
+          "links": [
+            "Chuck_Siemens_Sensor"
+          ],
+          "rootLinks": [
+            "Chuck_Siemens_Sensor"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Sensor.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__chuck_gonio_left_Siemens_Sensor",
+              "parentLink": "Chuck_Siemens_Sensor"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Chuck_Siemens_Carrier_P39"
+          ],
+          "links": [
+            "Chuck_Siemens_Carrier_P39"
+          ],
+          "rootLinks": [
+            "Chuck_Siemens_Carrier_P39"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Carrier_P39.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__Chuck_Siemens_Carrier_P39",
+              "parentLink": "Chuck_Siemens_Carrier_P39"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_gonio_left_IPEG_Demonstrator"
+          ],
+          "links": [
+            "Chuck_ipeg_Demonstrator"
+          ],
+          "rootLinks": [
+            "Chuck_ipeg_Demonstrator"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_ipeg_Demonstrator.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__chuck_gonio_left_IPEG_Demonstrator",
+              "parentLink": "Chuck_ipeg_Demonstrator"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Chuck_Siemens_Carrier_P39_V2"
+          ],
+          "links": [
+            "Chuck_Siemens_Carrier_P39_V2"
+          ],
+          "rootLinks": [
+            "Chuck_Siemens_Carrier_P39_V2"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Carrier_P39_V2.STL",
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Siemens_Carrier_P39_V2_coll.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__Chuck_Siemens_Carrier_P39_V2",
+              "parentLink": "Chuck_Siemens_Carrier_P39_V2"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Chuck_Carrier_Demo"
+          ],
+          "links": [
+            "Chuck_Carrier_Demo"
+          ],
+          "rootLinks": [
+            "Chuck_Carrier_Demo"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_Carrier_Demo.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__Chuck_Carrier_Demo",
+              "parentLink": "Chuck_Carrier_Demo"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Chuck_ASG_Dummy"
+          ],
+          "links": [
+            "Chuck_ASG_Dummy"
+          ],
+          "rootLinks": [
+            "Chuck_ASG_Dummy"
+          ],
+          "meshes": [
+            "meshes/Gonio_Left/Gonio_Left_Chucks/Chuck_ASG_Dummy.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Left_Part_Origin",
+              "sourceLink": "Gonio_Left_Part_Origin__unity_source__Chuck_ASG_Dummy",
+              "parentLink": "Chuck_ASG_Dummy"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_robot_gonio_right",
+      "enableYamlPath": "",
+      "enableKey": "with_Gonio_Right",
+      "selectKeys": [
+        "use_chuck"
+      ],
+      "unityParent": "Gonio_Right_Chuck_Origin",
+      "items": [
+        {
+          "yamlNames": [
+            "chuck_gonio_right_Siemens_UFC"
+          ],
+          "links": [
+            "Chuck_Siemens_UFC_Gonio_Right"
+          ],
+          "rootLinks": [
+            "Chuck_Siemens_UFC_Gonio_Right"
+          ],
+          "meshes": [
+            "meshes/Gonio_Right/Gonio_Right_Chucks/Chuck_Siemens_UFC_Gonio_Right.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Right_Part_1_Origin",
+              "sourceLink": "Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_Siemens_UFC",
+              "parentLink": "Chuck_Siemens_UFC_Gonio_Right"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_gonio_right_double_lens_holder_12_7"
+          ],
+          "links": [
+            "Chuck_Double_Lens_Holder_12_7"
+          ],
+          "rootLinks": [
+            "Chuck_Double_Lens_Holder_12_7"
+          ],
+          "meshes": [
+            "meshes/Gonio_Right/Gonio_Right_Chucks/Chuck_Double_Lens_Holder_12_7.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Right_Part_1_Origin",
+              "sourceLink": "Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_double_lens_holder_12_7",
+              "parentLink": "Chuck_Double_Lens_Holder_12_7"
+            },
+            {
+              "name": "Gonio_Right_Part_2_Origin",
+              "sourceLink": "Gonio_Right_Part_2_Origin__unity_source__chuck_gonio_right_double_lens_holder_12_7",
+              "parentLink": "Chuck_Double_Lens_Holder_12_7"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_gonio_right_ipeg_active_alignment_station"
+          ],
+          "links": [
+            "IpeG_Active_Alignment_Station"
+          ],
+          "rootLinks": [
+            "IpeG_Active_Alignment_Station"
+          ],
+          "meshes": [
+            "meshes/Gonio_Right/Gonio_Right_Chucks/IpeG_Active_Alignment_Station.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Right_Part_1_Origin",
+              "sourceLink": "Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_ipeg_active_alignment_station",
+              "parentLink": "IpeG_Active_Alignment_Station"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_gonio_right_siemens_SIN"
+          ],
+          "links": [
+            "Aufnahme_Siemens_SIN"
+          ],
+          "rootLinks": [
+            "Aufnahme_Siemens_SIN"
+          ],
+          "meshes": [
+            "meshes/Gonio_Right/Gonio_Right_Chucks/Aufnahme_Siemens_SIN.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Right_Part_1_Origin",
+              "sourceLink": "Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_siemens_SIN",
+              "parentLink": "Aufnahme_Siemens_SIN"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_gonio_right_ASG_bridge"
+          ],
+          "links": [
+            "Gonio_Right_Chuck_ASG_Bruecke"
+          ],
+          "rootLinks": [
+            "Gonio_Right_Chuck_ASG_Bruecke"
+          ],
+          "meshes": [
+            "meshes/Gonio_Right/Gonio_Right_Chucks/Gonio_Right_Chuck_ASG_Bruecke.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Gonio_Right_Part_1_Origin",
+              "sourceLink": "Gonio_Right_Part_1_Origin__unity_source__chuck_gonio_right_ASG_bridge",
+              "parentLink": "Gonio_Right_Chuck_ASG_Bruecke"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "yamlPath": "confocal_sensor_head",
+      "enableYamlPath": "measuring_systems",
+      "enableKey": "use_confocal_head",
+      "selectKeys": [
+        "use_config"
+      ],
+      "unityParent": "Z_Axis",
+      "items": [
+        {
+          "yamlNames": [
+            "distance_sensor_z_5_y_16_x_29"
+          ],
+          "links": [
+            "distance_sensor_z_5_y_16_x_29"
+          ],
+          "rootLinks": [
+            "distance_sensor_z_5_y_16_x_29"
+          ],
+          "meshes": [
+            "meshes/distance_sensors/distance_sensor_z_5_y_16_x_29.STL",
+            "meshes/distance_sensors/distance_sensor_z_5_y_16_x_29_col.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "distance_sensor_z_10_y_16_x_29"
+          ],
+          "links": [
+            "distance_sensor_z_10_y_16_x_29"
+          ],
+          "rootLinks": [
+            "distance_sensor_z_10_y_16_x_29"
+          ],
+          "meshes": [
+            "meshes/distance_sensors/distance_sensor_z_10_y_16_x_29.STL",
+            "meshes/distance_sensors/distance_sensor_z_10_y_16_x_29_col.STL"
+          ],
+          "spawnPoints": []
+        },
+        {
+          "yamlNames": [
+            "distance_sensor_z_20_y_16_x_29"
+          ],
+          "links": [
+            "distance_sensor_z_20_y_16_x_29"
+          ],
+          "rootLinks": [
+            "distance_sensor_z_20_y_16_x_29"
+          ],
+          "meshes": [
+            "meshes/distance_sensors/distance_sensor_z_20_y_16_x_29.STL",
+            "meshes/distance_sensors/distance_sensor_z_20_y_16_x_29_col.STL"
+          ],
+          "spawnPoints": []
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_smparpod_station",
+      "enableYamlPath": "",
+      "enableKey": "with_smarpod_station",
+      "selectKeys": [
+        "use_chuck"
+      ],
+      "unityParent": "Smarpod_Top_Plate",
+      "items": [
+        {
+          "yamlNames": [
+            "empty"
+          ],
+          "links": [],
+          "rootLinks": [],
+          "meshes": [],
+          "spawnPoints": [
+            {
+              "name": "Smarpod_Part_Spawn",
+              "sourceLink": "Smarpod_Part_Spawn__unity_source__empty",
+              "parentLink": "Smarpod_Top_Plate"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_diodenplacement"
+          ],
+          "links": [
+            "Chuck_Diodenplacement"
+          ],
+          "rootLinks": [
+            "Chuck_Diodenplacement"
+          ],
+          "meshes": [
+            "meshes/chucks/Chuck_Diodenplacement.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Smarpod_Part_Spawn",
+              "sourceLink": "Smarpod_Part_Spawn__unity_source__chuck_diodenplacement",
+              "parentLink": "Chuck_Diodenplacement"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_fiber"
+          ],
+          "links": [
+            "Baugruppe_Smarpod_Chucks_Fiber"
+          ],
+          "rootLinks": [
+            "Baugruppe_Smarpod_Chucks_Fiber"
+          ],
+          "meshes": [
+            "meshes/chucks/Baugruppe_Smarpod_Chucks_Fiber.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Smarpod_Part_Spawn",
+              "sourceLink": "Smarpod_Part_Spawn__unity_source__chuck_fiber",
+              "parentLink": "Baugruppe_Smarpod_Chucks_Fiber"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_smarpod_calibration"
+          ],
+          "links": [
+            "calibration_target_holder"
+          ],
+          "rootLinks": [
+            "calibration_target_holder"
+          ],
+          "meshes": [
+            "meshes/chucks/calibration_target_holder.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Smarpod_Part_Spawn",
+              "sourceLink": "Smarpod_Part_Spawn__unity_source__chuck_smarpod_calibration",
+              "parentLink": "calibration_target_holder"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_smarpod_ball_calibration"
+          ],
+          "links": [
+            "Chuck_Smarpod_Calibration_Ball"
+          ],
+          "rootLinks": [
+            "Chuck_Smarpod_Calibration_Ball"
+          ],
+          "meshes": [
+            "meshes/chucks/Chuck_Smarpod_Calibration_Ball.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Smarpod_Part_Spawn",
+              "sourceLink": "Smarpod_Part_Spawn__unity_source__chuck_smarpod_ball_calibration",
+              "parentLink": "Chuck_Smarpod_Calibration_Ball"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_smparpod_station",
+      "enableYamlPath": "",
+      "enableKey": "with_smarpod_station",
+      "selectKeys": [
+        "use_chuck_center"
+      ],
+      "unityParent": "SmarPod_Origin",
+      "items": [
+        {
+          "yamlNames": [
+            "empty"
+          ],
+          "links": [],
+          "rootLinks": [],
+          "meshes": [],
+          "spawnPoints": [
+            {
+              "name": "Smarpod_Part_Spawn_Center",
+              "sourceLink": "Smarpod_Part_Spawn_Center__unity_source__empty",
+              "parentLink": "Smarpod_Top_Plate"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "chuck_fiber_chip_alignment"
+          ],
+          "links": [
+            "Chuck_center_fiber_chip_alignment"
+          ],
+          "rootLinks": [
+            "Chuck_center_fiber_chip_alignment"
+          ],
+          "meshes": [
+            "meshes/chucks_center/Chuck_center_fiber_chip_alignment.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "Smarpod_Part_Spawn_Center",
+              "sourceLink": "Smarpod_Part_Spawn_Center__unity_source__chuck_fiber_chip_alignment",
+              "parentLink": "Chuck_center_fiber_chip_alignment"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_robot_tools/pm_robot_vacuum_tools",
+      "enableYamlPath": "",
+      "enableKey": "use_vacuum_tool",
+      "selectKeys": [
+        "use_tool",
+        "use_tip"
+      ],
+      "unityParent": "RobotAxisT",
+      "items": [
+        {
+          "yamlNames": [
+            "Tool_SPT_Toolholder",
+            "Tip_R_A1000_I500"
+          ],
+          "links": [
+            "Tool_Schunk_SPT_Holder_Tool_SPT_Toolholder_Tip_R_A1000_I500",
+            "Tool_Tip_R_A1000_I500_Tool_SPT_Toolholder_Tip_R_A1000_I500"
+          ],
+          "rootLinks": [
+            "Tool_Schunk_SPT_Holder_Tool_SPT_Toolholder_Tip_R_A1000_I500"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/SPT_Toolholder/Tool_Schunk_SPT_Holder.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/SPT_Toolholder/Tips/Tool_Tip_R_A1000_I500.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Tool_SPT_Toolholder_Tip_R_A1000_I500",
+              "parentLink": "Tool_Schunk_SPT_Holder_Tool_SPT_Toolholder_Tip_R_A1000_I500"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Tool_Schunk_SPT_Tool_old",
+            "Tip_R_A1000_I500"
+          ],
+          "links": [
+            "Tool_Schunk_SPT_Holder_Tool_Schunk_SPT_Tool_old_Tip_R_A1000_I500",
+            "Tool_Tip_R_A1000_I500_Tool_Schunk_SPT_Tool_old_Tip_R_A1000_I500"
+          ],
+          "rootLinks": [
+            "Tool_Schunk_SPT_Holder_Tool_Schunk_SPT_Tool_old_Tip_R_A1000_I500"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/SPT_Toolholder_old/Tool_Schunk_SPT_Holder.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/SPT_Toolholder_old/Tips/Tool_Tip_R_A1000_I500.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Tool_Schunk_SPT_Tool_old_Tip_R_A1000_I500",
+              "parentLink": "Tool_Schunk_SPT_Holder_Tool_Schunk_SPT_Tool_old_Tip_R_A1000_I500"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Siemens_Vacuum_Array",
+            "Tip_Siemens_Vacuum_Array"
+          ],
+          "links": [
+            "Tool_Holder_Siemens_Vacuum_Array_Siemens_Vacuum_Array_Tip_Siemens_Vacuum_Array",
+            "Tool_Tip_Vacuum_Array_Siemens_Vacuum_Array_Tip_Siemens_Vacuum_Array"
+          ],
+          "rootLinks": [
+            "Tool_Holder_Siemens_Vacuum_Array_Siemens_Vacuum_Array_Tip_Siemens_Vacuum_Array"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tool_Holder_Siemens_Vacuum_Array.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tool_Tip_Vacuum_Array.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Siemens_Vacuum_Array_Tip_Siemens_Vacuum_Array",
+              "parentLink": "Tool_Holder_Siemens_Vacuum_Array_Siemens_Vacuum_Array_Tip_Siemens_Vacuum_Array"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Siemens_Vacuum_Array_short",
+            "Tip_Siemens_Vacuum_Array"
+          ],
+          "links": [
+            "Tool_Holder_Siemens_Vacuum_Array_short_Siemens_Vacuum_Array_short_Tip_Siemens_Vacuum_Array",
+            "Tool_Tip_Vacuum_Array_Siemens_Vacuum_Array_short_Tip_Siemens_Vacuum_Array"
+          ],
+          "rootLinks": [
+            "Tool_Holder_Siemens_Vacuum_Array_short_Siemens_Vacuum_Array_short_Tip_Siemens_Vacuum_Array"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tool_Holder_Siemens_Vacuum_Array_short.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tool_Tip_Vacuum_Array.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Siemens_Vacuum_Array_short_Tip_Siemens_Vacuum_Array",
+              "parentLink": "Tool_Holder_Siemens_Vacuum_Array_short_Siemens_Vacuum_Array_short_Tip_Siemens_Vacuum_Array"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Siemens_Vacuum_Array_short",
+            "Tip_Siemens_Sensor_Bottom"
+          ],
+          "links": [
+            "Tip_Siemens_Sensor_Bottom_Siemens_Vacuum_Array_short_Tip_Siemens_Sensor_Bottom",
+            "Tool_Holder_Siemens_Vacuum_Array_short_Siemens_Vacuum_Array_short_Tip_Siemens_Sensor_Bottom"
+          ],
+          "rootLinks": [
+            "Tool_Holder_Siemens_Vacuum_Array_short_Siemens_Vacuum_Array_short_Tip_Siemens_Sensor_Bottom"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tool_Holder_Siemens_Vacuum_Array_short.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tip_Siemens_Sensor_Bottom.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Siemens_Vacuum_Array_short_Tip_Siemens_Sensor_Bottom",
+              "parentLink": "Tool_Holder_Siemens_Vacuum_Array_short_Siemens_Vacuum_Array_short_Tip_Siemens_Sensor_Bottom"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Siemens_Vacuum_Array_angled",
+            "Tip_Siemens_Vacuum_Array"
+          ],
+          "links": [
+            "Tool_Holder_Siemens_Vacuum_Array_angled_Siemens_Vacuum_Array_angled_Tip_Siemens_Vacuum_Array",
+            "Tool_Tip_Vacuum_Array_Siemens_Vacuum_Array_angled_Tip_Siemens_Vacuum_Array"
+          ],
+          "rootLinks": [
+            "Tool_Holder_Siemens_Vacuum_Array_angled_Siemens_Vacuum_Array_angled_Tip_Siemens_Vacuum_Array"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tool_Holder_Siemens_Vacuum_Array_angled.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/Siemens_Vacuum_Array/Tool_Tip_Vacuum_Array.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Siemens_Vacuum_Array_angled_Tip_Siemens_Vacuum_Array",
+              "parentLink": "Tool_Holder_Siemens_Vacuum_Array_angled_Siemens_Vacuum_Array_angled_Tip_Siemens_Vacuum_Array"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Schunk_Lens_Gripper",
+            "Tip_Lens_12_7"
+          ],
+          "links": [
+            "Tip_Lens_12_7_Schunk_Lens_Gripper_Tip_Lens_12_7",
+            "Tool_Schunk_Lens_Holder_Schunk_Lens_Gripper_Tip_Lens_12_7"
+          ],
+          "rootLinks": [
+            "Tool_Schunk_Lens_Holder_Schunk_Lens_Gripper_Tip_Lens_12_7"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/Lens_Gripper/Tool_Schunk_Lens_Holder.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/Lens_Gripper/Tips/Tip_Lens_12_7.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Schunk_Lens_Gripper_Tip_Lens_12_7",
+              "parentLink": "Tool_Schunk_Lens_Holder_Schunk_Lens_Gripper_Tip_Lens_12_7"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Schunk_Lens_Gripper_long",
+            "Tip_Lens_12_7_long"
+          ],
+          "links": [
+            "Tip_Lens_12_7_long_Schunk_Lens_Gripper_long_Tip_Lens_12_7_long",
+            "Tool_Schunk_Lens_Holder_long_Schunk_Lens_Gripper_long_Tip_Lens_12_7_long"
+          ],
+          "rootLinks": [
+            "Tool_Schunk_Lens_Holder_long_Schunk_Lens_Gripper_long_Tip_Lens_12_7_long"
+          ],
+          "meshes": [
+            "meshes/Tools/Schunk_Vacuum_Tools/Lens_Gripper_long/Tool_Schunk_Lens_Holder_long.STL",
+            "meshes/Tools/Schunk_Vacuum_Tools/Lens_Gripper_long/Tips/Tip_Lens_12_7_long.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Schunk_Lens_Gripper_long_Tip_Lens_12_7_long",
+              "parentLink": "Tool_Schunk_Lens_Holder_long_Schunk_Lens_Gripper_long_Tip_Lens_12_7_long"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_robot_tools/pm_robot_tool_parallel_gripper_1_jaw",
+      "enableYamlPath": "",
+      "enableKey": "use_paralell_gripper",
+      "selectKeys": [
+        "use_tool",
+        "use_jaw_type"
+      ],
+      "unityParent": "RobotAxisT",
+      "items": [
+        {
+          "yamlNames": [
+            "SmarAct_Piezo_Gripper",
+            "Default_Jaw"
+          ],
+          "links": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_Point_SmarAct_Piezo_Gripper_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_attachment_SmarAct_Piezo_Gripper_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_Point_SmarAct_Piezo_Gripper_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_attachment_SmarAct_Piezo_Gripper_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_SmarAct_Piezo_Gripper_Default_Jaw"
+          ],
+          "rootLinks": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_Default_Jaw"
+          ],
+          "meshes": [
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Base.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Default_Jaw_1.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Default_Jaw_2.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_SmarAct_Piezo_Gripper_Default_Jaw",
+              "parentLink": "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_Default_Jaw"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "SmarAct_Piezo_Gripper_flat",
+            "Default_Jaw"
+          ],
+          "links": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_Point_SmarAct_Piezo_Gripper_flat_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_attachment_SmarAct_Piezo_Gripper_flat_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_Point_SmarAct_Piezo_Gripper_flat_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_attachment_SmarAct_Piezo_Gripper_flat_Default_Jaw",
+            "Tool_Parallel_Gripper_Jaw_SmarAct_Piezo_Gripper_flat_Default_Jaw"
+          ],
+          "rootLinks": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Default_Jaw"
+          ],
+          "meshes": [
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Tool_Parallel_Gripper_Base_flat.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw_flat.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Default_Jaw_1.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Default_Jaw_2.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_SmarAct_Piezo_Gripper_flat_Default_Jaw",
+              "parentLink": "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Default_Jaw"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "SmarAct_Piezo_Gripper_flat",
+            "Flat_Jaw"
+          ],
+          "links": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Flat_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_Point_SmarAct_Piezo_Gripper_flat_Flat_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_attachment_SmarAct_Piezo_Gripper_flat_Flat_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_Point_SmarAct_Piezo_Gripper_flat_Flat_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_attachment_SmarAct_Piezo_Gripper_flat_Flat_Jaw",
+            "Tool_Parallel_Gripper_Jaw_SmarAct_Piezo_Gripper_flat_Flat_Jaw"
+          ],
+          "rootLinks": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Flat_Jaw"
+          ],
+          "meshes": [
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Tool_Parallel_Gripper_Base_flat.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw_flat.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Jaw_Flat_Config_ROS_Jaw1.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Jaw_Flat_Config_ROS_Jaw2.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_SmarAct_Piezo_Gripper_flat_Flat_Jaw",
+              "parentLink": "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Flat_Jaw"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "SmarAct_Piezo_Gripper_flat",
+            "Sensing_Jaw"
+          ],
+          "links": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Sensing_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_Point_SmarAct_Piezo_Gripper_flat_Sensing_Jaw",
+            "Tool_Parallel_Gripper_Jaw_1_attachment_SmarAct_Piezo_Gripper_flat_Sensing_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_Point_SmarAct_Piezo_Gripper_flat_Sensing_Jaw",
+            "Tool_Parallel_Gripper_Jaw_2_attachment_SmarAct_Piezo_Gripper_flat_Sensing_Jaw",
+            "Tool_Parallel_Gripper_Jaw_SmarAct_Piezo_Gripper_flat_Sensing_Jaw"
+          ],
+          "rootLinks": [
+            "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Sensing_Jaw"
+          ],
+          "meshes": [
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Tool_Parallel_Gripper_Base_flat.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/SmarAct_Gripper_Jaw_flat.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Jaw_Sensing_1.STL",
+            "meshes/Tools/Parallel_Gripper_1_Jaw/SmarAct_Piezo_Gripper/Jaw_Sensing_2.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_SmarAct_Piezo_Gripper_flat_Sensing_Jaw",
+              "parentLink": "Tool_Parallel_Gripper_Body_SmarAct_Piezo_Gripper_flat_Sensing_Jaw"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "yamlPath": "pm_robot_tools/pm_robot_tool_parallel_gripper_2_jaws",
+      "enableYamlPath": "",
+      "enableKey": "use_paralell_gripper",
+      "selectKeys": [
+        "use_tool",
+        "use_jaw_type"
+      ],
+      "unityParent": "RobotAxisT",
+      "items": [
+        {
+          "yamlNames": [
+            "Schunk_MPG_10_plus",
+            "Jaw_3mm_Lens"
+          ],
+          "links": [
+            "Tool_Parallel_Gripper_Body_2_Jaws_Schunk_MPG_10_plus_Jaw_3mm_Lens",
+            "Tool_Parallel_Gripper_Jaw_1_Point_Schunk_MPG_10_plus_Jaw_3mm_Lens",
+            "Tool_Parallel_Gripper_Jaw_1_Schunk_MPG_10_plus_Jaw_3mm_Lens",
+            "Tool_Parallel_Gripper_Jaw_1_attachment_Schunk_MPG_10_plus_Jaw_3mm_Lens",
+            "Tool_Parallel_Gripper_Jaw_2_Point_Schunk_MPG_10_plus_Jaw_3mm_Lens",
+            "Tool_Parallel_Gripper_Jaw_2_Schunk_MPG_10_plus_Jaw_3mm_Lens",
+            "Tool_Parallel_Gripper_Jaw_2_attachment_Schunk_MPG_10_plus_Jaw_3mm_Lens"
+          ],
+          "rootLinks": [
+            "Tool_Parallel_Gripper_Body_2_Jaws_Schunk_MPG_10_plus_Jaw_3mm_Lens"
+          ],
+          "meshes": [
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Tool_MPG_10_Base.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_2.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/MPG_10_Jaw_1.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Jaws/Gripper_Jaw_1_3MM_Lens_for_MPG_10.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_10_plus/Jaws/Gripper_Jaw_2_3MM_Lens_for_MPG_10.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Schunk_MPG_10_plus_Jaw_3mm_Lens",
+              "parentLink": "Tool_Parallel_Gripper_Body_2_Jaws_Schunk_MPG_10_plus_Jaw_3mm_Lens"
+            }
+          ]
+        },
+        {
+          "yamlNames": [
+            "Schunk_MPG_20_plus",
+            "Jaw_ASG_Gripper"
+          ],
+          "links": [
+            "Tool_Parallel_Gripper_Body_2_Jaws_Schunk_MPG_20_plus_Jaw_ASG_Gripper",
+            "Tool_Parallel_Gripper_Jaw_1_Point_Schunk_MPG_20_plus_Jaw_ASG_Gripper",
+            "Tool_Parallel_Gripper_Jaw_1_Schunk_MPG_20_plus_Jaw_ASG_Gripper",
+            "Tool_Parallel_Gripper_Jaw_1_attachment_Schunk_MPG_20_plus_Jaw_ASG_Gripper",
+            "Tool_Parallel_Gripper_Jaw_2_Point_Schunk_MPG_20_plus_Jaw_ASG_Gripper",
+            "Tool_Parallel_Gripper_Jaw_2_Schunk_MPG_20_plus_Jaw_ASG_Gripper",
+            "Tool_Parallel_Gripper_Jaw_2_attachment_Schunk_MPG_20_plus_Jaw_ASG_Gripper"
+          ],
+          "rootLinks": [
+            "Tool_Parallel_Gripper_Body_2_Jaws_Schunk_MPG_20_plus_Jaw_ASG_Gripper"
+          ],
+          "meshes": [
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Tool_MPG_20_Body.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/MPG_20_Jaw_2.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/MPG_20_Jaw_1.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Jaws/ASG_Bridge_Long_Jaw_1.STL",
+            "meshes/Tools/Parallel_Gripper_2_Jaws/MPG_20_plus/Jaws/ASG_Bridge_Long_Jaw_2.STL"
+          ],
+          "spawnPoints": [
+            {
+              "name": "PM_Robot_Tool_TCP",
+              "sourceLink": "PM_Robot_Tool_TCP_Schunk_MPG_20_plus_Jaw_ASG_Gripper",
+              "parentLink": "Tool_Parallel_Gripper_Body_2_Jaws_Schunk_MPG_20_plus_Jaw_ASG_Gripper"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

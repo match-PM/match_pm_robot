@@ -35,6 +35,7 @@ measuring_systems:
   use_confocal_bottom: true
   use_confocal_head: true
   use_keyence_bottom: false
+  use_robot_head_camera: false
 pm_robot_1K_dispenser_tip:
   availabe_dispenser_tips:
   - empty

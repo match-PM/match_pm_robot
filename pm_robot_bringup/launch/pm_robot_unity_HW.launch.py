@@ -458,6 +458,18 @@ def generate_launch_description():
         emulate_tty=True,
     )
     
+    # Saves/restores complete robot states. Unity only: a restore places the
+    # joints directly in the simulation, which the real robot cannot do.
+    sim_state_node = Node(
+        package="pm_robot_sim_state",
+        executable="pm_robot_sim_state",
+        name="pm_robot_sim_state",
+        parameters=[
+            {"use_sim_time": sim_time}
+        ],
+        emulate_tty=True,
+    )
+
     delayed_rviz = TimerAction(period=5.0, actions=[rviz_node])
     delayed_move_group = TimerAction(period=5.0, actions=[run_move_group_node])
     delayed_pm_moveit_server = TimerAction(period=5.0, actions=[pm_moveit_server])
@@ -498,6 +510,7 @@ def generate_launch_description():
 
     ld.add_action(primitive_skills_node)
     ld.add_action(adhesive_displayer)
+    ld.add_action(sim_state_node)
     
     # if (str(mappings['with_Tool_MPG_10']) == 'true'):
     #     ld.add_action(launch_gonio_parallel_gripper_controller)

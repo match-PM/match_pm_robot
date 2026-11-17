@@ -1,0 +1,15 @@
+# Restore a state saved by SaveRobotState. The robot jumps to the saved
+# state without simulated motion.
+# Provided by pm_robot_sim_state; available only with the Unity simulation.
+#
+# If the saved configuration differs from the running robot, the saved
+# configuration is written to the bringup file, Unity is restarted, and the
+# response has success=false and restart_required=true. Restart the robot
+# launch and call this service again.
+
+# Absolute path, or a name relative to the node's state_directory parameter.
+string file_path
+---
+bool success
+bool restart_required
+string message

@@ -1,0 +1,17 @@
+# Provided by the Unity simulation (RobotStateTeleporter.cs).
+# Reads the state of every active articulated joint in the scene.
+---
+bool success
+string message
+
+# Unity ArticulationBody (URDF link) names and joint positions,
+# [m] for prismatic and [rad] for revolute joints.
+string[] joint_names
+float64[] joint_positions
+
+# True when the SmarPod station is active in the scene.
+bool has_smarpod
+# SmarPod platform pose X, Y, Z [m] and A, B, C [rad].
+float64[6] smarpod_pose
+# SmarPod translational speed [m/s].
+float64 smarpod_speed

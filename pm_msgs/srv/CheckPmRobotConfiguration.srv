@@ -6,6 +6,15 @@ string rsap_path
 # Optional alternative file. Relative paths are resolved below rsap_path;
 # absolute paths are used directly. Leave empty to use the default filename.
 string file_path_override
+
+# Optional requirements as YAML text. When set, rsap_path and
+# file_path_override are ignored and no requirement file is read.
+string configuration_yaml
+
+# Check only against the launch snapshot (the configuration the robot is
+# running with). The bringup file on disk is then neither compared with the
+# requirements nor with the launch snapshot.
+bool check_loaded_only
 ---
 bool success
 string message
