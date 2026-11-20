@@ -1,4 +1,4 @@
-# Laser line scans and fresh measurements
+# Laser line scans and ordinary measurements
 
 The system has one physical Keyence sensor. Only the Windows server opens its
 serial connection. ROS communicates with that server through OPC UA. Neither
@@ -6,16 +6,15 @@ ROS service adds robot motion.
 
 ## ROS interfaces and migration
 
-Rebuild `pm_msgs` and every affected ROS caller together with the changed client,
-hardware interface and controllers. Existing measurement clients and Float64
-subscribers must migrate; retaining a service or topic name does not preserve
-wire compatibility. Update the Windows server at the same time.
+Ordinary reads use the hardware state snapshot; line scans use a separate OPC UA skill.
+Rebuild `pm_msgs`, the sensor controller, and scalar callers together when
+restoring the original scalar service and topic formats.
 
 | Interface | Contract |
 | --- | --- |
 | `/pm_opcua_skills_controller/LaserLineScan` | `pm_msgs/srv/LaserLineScan`: UInt32 `length_um` and `interval`; response includes `success`, `distances`, `message`, `actual_length_um`, `actual_interval_um`, `sample_count`, and `restoration_verified`. |
-| `/pm_sensor_controller/Laser/GetMeasurement` | `pm_msgs/srv/LaserGetMeasurement`: `timeout_ms` (zero uses the configured default); response includes `success`, a `sample` of type `pm_msgs/msg/LaserMeasurement`, and `message`. It waits for a new validated driver read rather than returning a pre-request cached number. |
-| `/pm_sensor_controller/Laser/Stream` | `pm_msgs/msg/LaserMeasurement`, replacing `std_msgs/msg/Float64`: measurement, validity, valid-read sequence, last successful read-completion timestamp, age, OPC UA status, scanning state, and diagnostic message. |
+| `/pm_sensor_controller/Laser/GetMeasurement` | `pm_msgs/srv/LaserGetMeasurement`: empty request; response contains `float64 measurement`. Returns the latest `Laser/Measurement` hardware snapshot immediately without starting an acquisition or waiting for a scan. |
+| `/pm_sensor_controller/Laser/Stream` | `std_msgs/msg/Float64`: the scalar hardware snapshot, published on controller updates. Unavailable hardware values are NaN. |
 
 Heights retain the sensor's native units. No metre conversion or calibration is
 invented. Confirm the deployed sensor's units and calibration before converting
@@ -73,55 +72,28 @@ An unknown/replaced ID is a terminal failure. These slots are process-wide and
 not session-owned. Trusted callers and diagnostic tools must coordinate result
 collection; IDs provide correlation, not access control.
 
-## Fresh ordinary readings
+## Ordinary readings and separation from scans
 
-An ordinary read never runs concurrently with a profile in the Windows worker.
-A fresh-measurement request accepted during a profile survives the old
-one-second cache-demand window. After the profile, the worker verifies program
-4 and performs the new driver read. An acquisition already in progress when a
-request arrives cannot satisfy that request. A retained request takes priority
-over admitting another profile, so repeated scans cannot starve it.
+PMSystem's auxiliary OPC UA client reads the laser measurement variable alongside
+force sensor data and exports it through `Laser/Measurement`. The sensor
+controller copies that state on each update and returns it immediately from
+`/Laser/GetMeasurement`. Calls neither invoke `RequestLaserMeasurement` nor
+reserve a pending measurement slot. There is no sensor-controller OPC UA client,
+worker, or fresh-read timeout configuration.
 
-There is one outstanding fresh-measurement slot. Another outstanding request is
-rejected. Completion retains a valid result until collected or older than the
-500 ms freshness limit; unsuccessful/expired results may be replaced. Each poll
-must carry both request ID and server epoch, so an old request cannot silently
-match a new server instance. Requests expire at their server-side deadline.
-A timeout does not cancel an active profile or bypass its restoration.
+The scalar contract carries no source timestamp or scan status and does not
+promise a new acquisition for each request. Invalid quality, non-finite readings,
+sentinel values, and failed sensor transport are represented as NaN by the
+hardware path. Callers must reject non-finite values before using them for motion
+or frame corrections. Scan-time availability depends on the Windows server's
+published ordinary measurement variable; a cached value is not evidence that a
+scan has completed or restored ordinary acquisition.
 
-Each successful scalar read advances the sequence and sets a source timestamp.
-Initial, failed, sentinel (`-9998.99` or `-9999.99`), stale, and scan-time samples
-are unavailable. Failed attempts do not advance the successful-read sequence or
-source time. Numeric values are NaN when unavailable; callers must check
-`valid` and `status_code`, not only whether a response arrived. During a scan,
-the topic reports unavailable ordinary data.
-
-The server computes age with its monotonic clock. The client conservatively
-adds the RPC round-trip duration; ROS adds time since receipt. Samples older
-than 500 ms are unusable. This avoids comparing unsynchronised Windows and ROS
-wall clocks to establish freshness. The source timestamp is still useful for
-logging. Consumers can impose a stricter age requirement.
-
-The sensor controller uses a dedicated OPC UA client and worker for this
-service/topic, separate from PMSystem's auxiliary and motion clients. Deferred
-service responses and a 10 ms timer keep the executor available while the worker
-waits. Only one ROS fresh-read request is retained; extra requests fail promptly.
-Deadlines start when the ROS callback accepts the request. This is bounded
-application waiting, not a hard real-time delivery guarantee. Deactivation
-rejects outstanding work and joins the worker after its current network work.
-
-Set these parameters on `pm_sensor_controller`:
-
-| Parameter | Default and meaning |
-| --- | --- |
-| `laser_opcua_endpoint` | Empty, disabling connections until explicitly configured. The real-hardware YAML supplies `opc.tcp://PC1M0484-1:4840`; override it to match PMSystem's endpoint, including Unity/simulation deployments. |
-| `laser_measurement_timeout_ms` | 120000; valid range 1..600000. A nonzero service `timeout_ms` overrides this default. |
-| `laser_rpc_timeout_ms` | 500; valid range 1..5000. Each service RPC also respects the remaining caller budget. |
-
-A missing/older server yields an explicit error; there is no direct ROS serial
-fallback. Valid force data continues updating when laser quality is bad, and
-invalid force data does not replace the last force snapshot. PMSystem's legacy
-numeric laser state becomes NaN on invalid readings or failed sensor transport.
+`/pm_opcua_skills_controller/LaserLineScan` remains the separate scan operation.
+Its configure/acquire/restore protocol is unchanged. The server/client optional
+fresh-measurement methods described above remain available, but ordinary ROS
+reads do not call them. No Windows change is required for this ROS read-path
+restoration.
 
 The skills controller uses separate clients/callback groups for scans and
 Dispense, with a two-thread executor. Its `laser_scan_timeout_ms` defaults to
@@ -162,14 +134,14 @@ Driver framing checks happen before the worker's normalisation.
 
    ```bash
    colcon build --packages-select pm_msgs pm_client pm_hardware_interface \
-     pm_sensor_controller pm_opcua_skills_controller
+     pm_sensor_controller pm_opcua_skills_controller pm_skills
    source install/setup.bash
    ```
 
-3. Update all external scalar subscribers/service callers for the changed ROS
-   types. The current repository has no additional non-test callers to migrate.
-4. Restart the Windows application and the ROS launch that owns these controllers
-   together. General launch instructions are in [the repository README](../README.md).
+3. Rebuild `pm_skills` and external scalar clients using the restored
+   `response.measurement` field and `std_msgs/msg/Float64` topic type.
+4. Restart the ROS launch that owns these controllers. Deploy Windows changes
+   only when updating the separate line-scan implementation. General launch instructions are in [the repository README](../README.md).
    Validate calibration, program recovery, native-operation exclusion, and one
    stationary scan on the real machine before relying on the measurements.
 
@@ -185,6 +157,12 @@ python3 pm_client/test/laser_scan/run_checks.py \
 ```
 
 The server root contains `Soft`; the prefix contains `include` and `lib`. Add
-`--sanitize` for address/undefined-behavior checks. The source checkout did not
-include the referenced sensor-controller service and auxiliary-sensor tests, so
-those paths have not been verified by this runner.
+`--sanitize` for address/undefined-behavior checks. The controller snapshot regression test runs separately:
+
+```bash
+colcon test --packages-select pm_sensor_controller --ctest-args -R test_laser_service
+colcon test-result --test-result-base build/pm_sensor_controller --verbose
+```
+
+This exercises the real ROS service with simulated hardware state interfaces,
+including repeated reads, invalid values, and deactivation; it requires no OPC UA server.
